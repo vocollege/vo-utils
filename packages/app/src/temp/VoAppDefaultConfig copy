@@ -1,0 +1,18 @@
+import { VoAppConfigType } from '../VoAppTypes';
+const defaultConfig: VoAppConfigType = {
+    auth: {
+        BASE_URL: '',
+        ENDPOINT: '/oauth',
+        STORAGE: {
+            STATE: 'voapp_state',
+            VERIFIER: 'voapp_verifier',
+            ACCESS_TOKEN: 'voapp_accesstoken',
+            TOKEN_TYPE: 'voapp_tokentype'
+        }    
+    },
+    api: {
+        BASE_URL: '',
+        ENDPOINT: '/api/v1',
+    }
+}
+export default defaultConfig;
