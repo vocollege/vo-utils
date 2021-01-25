@@ -31,7 +31,6 @@ class GraphClient {
 
     static getGraphClientLinks(getToken: any, refreshToken: any) {
 
-
         // Create an errorLink to handle errors, e.g. when the token has expired
         // and has to be renewed. This works as an interceptor for GraphQL calls.
         const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
