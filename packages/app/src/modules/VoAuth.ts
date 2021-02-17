@@ -134,7 +134,6 @@ class VoAuth extends VoBase {
                     this.user = response.data;
                     resolve(this.user);
                 } catch(error) {
-                    console.error('Auth.loadUser()', error);
                     reject(error);
                 }
             }

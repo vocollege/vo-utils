@@ -7,16 +7,27 @@ import {
     from
   } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
+import { createUploadLink } from 'apollo-upload-client';
+
+import VoAuth from '../VoAuth';
 
 class GraphClient {
 
-    static createGraphClient(url: string, getToken: any, refreshToken: any) {
-        
-        // Create a httpLink to send GraphQL operations over HTTP.
-        const httpLink = new HttpLink({ uri: url });
+    static createGraphClient(url: string, uploadLink = false) {
+        let httpLink;
+
+        if (!uploadLink) {
+            // Create a httpLink to send GraphQL operations over HTTP.
+            httpLink = new HttpLink({ uri: url });
+        }
+        else {
+            // Create a Apollo Link capable of file uploads.
+            httpLink = createUploadLink({ uri: url });
+        }
 
         // Get other Apollo Links.
-        const links = this.getGraphClientLinks(getToken, refreshToken);
+        // const links = this.getGraphClientLinks(getToken, refreshToken);
+        const links = this.getGraphClientLinks();
 
         return new ApolloClient({
           cache: new InMemoryCache(),
@@ -26,10 +37,9 @@ class GraphClient {
             httpLink
           ])
         });
-        
     }
 
-    static getGraphClientLinks(getToken: any, refreshToken: any) {
+    static getGraphClientLinks() {
 
         // Create an errorLink to handle errors, e.g. when the token has expired
         // and has to be renewed. This works as an interceptor for GraphQL calls.
@@ -39,7 +49,8 @@ class GraphClient {
                     switch (err.message) {
                         case 'Unauthenticated.':
                             return new Observable((observer) => {
-                                refreshToken().then((token: any) => {
+
+                                    VoAuth.refreshToken().then((token: any) => {
                                     const oldHeaders = operation.getContext().headers;
                                     operation.setContext({
                                         headers: {
@@ -69,7 +80,7 @@ class GraphClient {
         // Create authLink that ensures that all calls include
         // the access token.
         const authLink = new ApolloLink((operation, forward) => {
-            const token = getToken();
+            const token = VoAuth.getToken();
             const currentHeaders = operation.getContext().headers;
             operation.setContext(() => ({
                 ...currentHeaders,
