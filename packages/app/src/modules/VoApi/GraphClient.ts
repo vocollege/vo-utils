@@ -49,8 +49,7 @@ class GraphClient {
                     switch (err.message) {
                         case 'Unauthenticated.':
                             return new Observable((observer) => {
-
-                                    VoAuth.refreshToken().then((token: any) => {
+                                VoAuth.refreshToken().then((token: any) => {
                                     const oldHeaders = operation.getContext().headers;
                                     operation.setContext({
                                         headers: {

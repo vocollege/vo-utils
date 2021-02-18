@@ -1,5 +1,6 @@
 import axios from 'axios';
 import crypto from 'crypto-js';
+import { Ability, AnyMongoAbility } from '@casl/ability';
 
 import * as Helpers from './VoHelpers';
 import VoBase from './VoBase';
@@ -14,12 +15,14 @@ class VoAuth extends VoBase {
     verifier: string;
     challenge: string;
     user: any = null;
+    ability: AnyMongoAbility;
 
     constructor(key: string) {
         super(key);
         this.state = '';
         this.verifier = '';
         this.challenge = '';
+        this.ability = new Ability();
     }
 
     get getAppLoginUrl() {
@@ -131,7 +134,8 @@ class VoAuth extends VoBase {
                 try {
                     this.setSession(token);
                     const response = await VoApi.getUser();
-                    this.user = response.data;
+                    this.user = response.data.data;
+                    this.ability.update(this.user.permissions);                    
                     resolve(this.user);
                 } catch(error) {
                     reject(error);
