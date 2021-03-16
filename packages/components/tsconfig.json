@@ -9,7 +9,8 @@
     "strict": true,
     "esModuleInterop": true,
     "baseUrl": "src",
-  },
+    "allowSyntheticDefaultImports": true
+},
   "include": [
     "src/index.ts"
   ],

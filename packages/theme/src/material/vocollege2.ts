@@ -1,10 +1,17 @@
-import { createMuiTheme, responsiveFontSizes, Theme, ThemeOptions } from '@material-ui/core/styles';
-import { Shadows } from '@material-ui/core/styles/shadows';
+import {
+  createMuiTheme,
+  responsiveFontSizes,
+  Theme,
+  ThemeOptions,
+} from "@material-ui/core/styles";
+import { Shadows } from "@material-ui/core/styles/shadows";
 import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
 
 declare module "@material-ui/core/styles/createPalette" {
-  interface PaletteColor { 
+  interface PaletteColor {
+    lighter: string;
     darker: string;
+    extra: string;
   }
 }
 
@@ -15,61 +22,73 @@ declare module "@material-ui/core/styles/shape" {
   }
 }
 
-// const originalTheme = createMuiTheme();
-
 // Lägg in style for knappar här
 // Läs mer: https://material-ui.com/guides/typescript/#customization-of-theme
 
 const options = {
-  themeName: 'VO-College Front 2.0',
+  themeName: "VO-College Front 2.0",
   spacing: 8,
   palette: {
     background: {
-      default: "#ffffff"
+      default: "#ffffff",
     },
-    primary: { main: '#0078be' },
-    secondary: { 
-      main: '#78c38c', 
-      contrastText: '#ffffff', 
-      dark: "#1E9141", 
-      light: "#F4F9F4", 
-      darker: "#000" // @TODO ta in riktiga färger
+    primary: {
+      ligther: "#BFDDEF",
+      kight: "#80BCDF",
+      main: "#0078BE",
+      dark: "#005FAF",
+      darker: "#004B96",
+      contrastText: "#ffffff",
     },
-    success: { main: '#1e9141', contrastText: '#ffffff' },
-    // text: {
-    //   primary: { primary: '#646464', secondary: '#808080', disabled: '#1a1a1a' }
-    // }
+    secondary: {
+      lighter: "#DDF0E2", // VO Primary 2 25%
+      light: "#BCE1C6", // VO Primary 2 50%
+      main: "#78C38C", // VO Primary 2
+      dark: "#41A55F", // VO Primary 2 Darker 1
+      darker: "#1E9141", // VO Primary 2 Darker 2
+      extra: "#F4F9F4", // VO Primary 2 extra
+      contrastText: "#ffffff",
+    },
+    warning: {
+      lighter: "#F7DFD0", // VO Secondary 2 25%
+      light: "#F0BFA0", // VO Secondary 2 50%
+      main: "#E07E41", // VO Secondary 1
+    },
+    success: { main: "#1e9141", contrastText: "#ffffff" },
+    text: {
+      primary: "#646464",
+    },
+    grey: {
+      100: "#F0F0F0",
+      300: "#B2B2B2",
+      700: "#646464", // VO Secondary 4
+    },
   },
   shape: {
     borderRadius: 40,
     borderRadiusField: 6,
-    drawerWidth: 240
+    drawerWidth: 240,
   },
   typography: {
     htmlFontSize: 18,
     fontSize: 18,
     fontFamily: "Lato, sans-serif",
-    // fontFamily: [
-        // "Lato",
-        // "sans-serif"
-    // ],
     h2: {
-      fontWeight: 600
+      // fontWeight: 600,
     },
     h4: {
-      fontSize: "1.5rem",
-      fontWeight: 600,
-      lineHeight: 1.33,
+      // fontSize: "1.5rem",
+      // fontWeight: 600,
+      // lineHeight: 1.33,
     },
     h5: {
-      // fontWeight: 600,
-      fontSize: "1.40rem",
-      lineHeight: 1.33,
+      // fontSize: "1.40rem",
+      // lineHeight: 1.33,
     },
     h6: {
-      fontWeight: 600,
-      lineHeight: 1.4
-    }
+      // fontWeight: 600,
+      // lineHeight: 1.4,
+    },
   },
 
   shadows: [
@@ -100,7 +119,7 @@ const options = {
     "0px 10px 14px -6px rgba(0,0,0,0.2),0px 22px 35px 3px rgba(0,0,0,0.14),0px 8px 42px 7px rgba(0,0,0,0.12)",
     "0px 11px 14px -7px rgba(0,0,0,0.2),0px 23px 36px 3px rgba(0,0,0,0.14),0px 9px 44px 8px rgba(0,0,0,0.12)",
     "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
-  ]
+  ],
 };
 
 // @note For some reason "options" gets a Typescript error when defining custom shadows,
@@ -109,4 +128,3 @@ const options = {
 let theme = createMuiTheme(options);
 theme = responsiveFontSizes(theme);
 export default theme;
-

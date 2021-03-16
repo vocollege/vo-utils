@@ -1,6 +1,6 @@
 import crypto from "crypto-js";
 
-const base64Url = (string: crypto.lib.WordArray | String) => {
+export const base64Url = (string: crypto.lib.WordArray | String) => {
   return string
     .toString(crypto.enc.Base64)
     .replace(/\+/g, "-")
@@ -8,11 +8,11 @@ const base64Url = (string: crypto.lib.WordArray | String) => {
     .replace(/=/g, "");
 };
 
-const createRandomString = (num: number) => {
+export const createRandomString = (num: number) => {
   return [...Array(num)].map(() => Math.random().toString(36)[2]).join("");
 };
 
-const localStorage = {
+export const localStorage = {
   set: (key: string, value: string) => {
     try {
       window.localStorage.setItem(key, value);
@@ -45,32 +45,32 @@ type encodeQueryDataType = {
   [key: string]: any;
 };
 
-const encodeQueryData = (data: encodeQueryDataType) => {
+export const encodeQueryData = (data: encodeQueryDataType) => {
   const ret = [];
   for (let d in data)
     ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
   return ret.join("&");
 };
 
-const regexPatterns = {
+export const regexPatterns = {
   username: /(^[a-z]{3,})([0-9]?)+$/,
   email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
   stringNonDigit: /^[^0-9]+$/,
   password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, // At least 8 characters, 1 uppercase, 1 lowercase and 1 digit.
-  cleanName: /(^[A-Za-z]{1,})(\w?)+$/
-}
+  cleanName: /(^[A-Za-z]{1,})(\w?)+$/,
+};
 
 type errorObjectType = {
   message: string;
   fields?: {
-    [key: string]: string
-  }
-}
+    [key: string]: string;
+  };
+};
 
-const getError = (error: any): errorObjectType => {
-  let message = '';
-  let fields: {[key: string]: string} = {};
-  if (typeof error === 'string') {
+export const getError = (error: any): errorObjectType => {
+  let message = "";
+  let fields: { [key: string]: string } = {};
+  if (typeof error === "string") {
     message = error;
   }
   if (error.message) {
@@ -78,17 +78,69 @@ const getError = (error: any): errorObjectType => {
   } else if (error.debugMessage) {
     message = error.debugMessage;
   }
-  if (error.graphQLErrors && error.graphQLErrors[0].extensions.category && error.graphQLErrors[0].extensions.category === 'validation') {
+  if (
+    error.graphQLErrors &&
+    error.graphQLErrors[0].extensions.category &&
+    error.graphQLErrors[0].extensions.category === "validation"
+  ) {
     fields = Object.assign({}, error.graphQLErrors[0].extensions.validation);
   }
   const result: errorObjectType = {
-    message
-  }
+    message,
+  };
   if (Object.keys(fields).length > 0) {
     result.fields = fields;
   }
   return result;
-}
+};
+
+export const getTemporaryId = () => {
+  return `new_${Math.random().toString(36).substr(2, 12)}`;
+};
+
+export const createSlug = (function () {
+  var translate_re = /[öäåüÖÄÅÜ]/g;
+  var translate: { [key: string]: any } = {
+    å: "a",
+    ä: "a",
+    ö: "o",
+    ü: "u",
+    Å: "A",
+    Ä: "A",
+    Ö: "O",
+    Ü: "U", // probably more to come
+  };
+  return (value: string) => {
+    value = value.trim().replaceAll(" ", "-").toLocaleLowerCase();
+    return value.replace(translate_re, (match: any) => {
+      return translate[match];
+    });
+    // return encodeURIComponent(
+    //   value.replace(translate_re, (match: any) => {
+    //     return translate[match];
+    //   })
+    // );
+  };
+})();
+
+const makeSortString = (function () {
+  var translate_re = /[öäåüÖÄÅÜ]/g;
+  var translate: { [key: string]: any } = {
+    å: "a",
+    ä: "a",
+    ö: "o",
+    ü: "u",
+    Å: "A",
+    Ä: "A",
+    Ö: "O",
+    Ü: "U", // probably more to come
+  };
+  return function (s: any) {
+    return s.replace(translate_re, function (match: any) {
+      return translate[match];
+    });
+  };
+})();
 
 // const formatError = (error: string | [any]) => {
 //   if (typeof error === "string") {
@@ -106,11 +158,11 @@ const getError = (error: any): errorObjectType => {
 //   );
 // };
 
-export {
-  base64Url,
-  createRandomString,
-  localStorage,
-  encodeQueryData,
-  regexPatterns,
-  getError
-};
+// export {
+//   base64Url,
+//   createRandomString,
+//   localStorage,
+//   encodeQueryData,
+//   regexPatterns,
+//   getError
+// };
