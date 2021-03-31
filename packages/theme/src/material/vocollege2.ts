@@ -74,19 +74,23 @@ const options = {
     fontSize: 18,
     fontFamily: "Lato, sans-serif",
     h2: {
-      // fontWeight: 600,
+      fontWeight: 600,
+    },
+    h3: {
+      fontWeight: 600,
     },
     h4: {
       // fontSize: "1.5rem",
-      // fontWeight: 600,
+      fontWeight: 600,
       // lineHeight: 1.33,
     },
     h5: {
       // fontSize: "1.40rem",
+      fontWeight: 600,
       // lineHeight: 1.33,
     },
     h6: {
-      // fontWeight: 600,
+      fontWeight: 600,
       // lineHeight: 1.4,
     },
   },

@@ -1,3 +1,5 @@
 import VoTextField from "./VoTextField";
 import VoPickerField from "./VoPickerField";
-export { VoTextField, VoPickerField };
+import VoSelectField from "./VoSelectField";
+export { VoTextField, VoPickerField, VoSelectField };
+export * from "./VoSelectField";

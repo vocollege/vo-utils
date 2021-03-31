@@ -1,0 +1,85 @@
+version: "3"
+
+networks:
+  laravel:
+
+services:
+  site:
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - "${APP_DIR}:/var/www/html:delegated"
+    depends_on:
+      - php
+      - postgres
+    networks:
+      - laravel
+
+  postgres:
+    # image: postgis/postgis:11-2.5-alpine
+    image: postgres:11-alpine
+    container_name: postgres
+    volumes:
+        - "${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=vocollege
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=vocollege_app_dev
+    ports:
+      - "5432:5432"
+    networks:
+      - laravel
+
+  php:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: php
+    volumes:
+      - "${APP_DIR}:/var/www/html:delegated"
+    ports:
+      - "9000:9000"
+    networks:
+      - laravel
+
+  composer:
+    build:
+      context: .
+      dockerfile: composer.dockerfile
+    container_name: composer
+    volumes:
+      - "${APP_DIR}:/var/www/html"
+    working_dir: /var/www/html
+    depends_on:
+      - php
+    user: laravel
+    networks:
+      - laravel
+    entrypoint: ["composer", "--ignore-platform-reqs"]
+
+  npm:
+    image: node:13.7
+    container_name: npm
+    volumes:
+      - "${APP_DIR}:/var/www/html"
+    working_dir: /var/www/html
+    entrypoint: ["npm"]
+
+  artisan:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: artisan
+    volumes:
+      - "${APP_DIR}:/var/www/html:delegated"
+    depends_on:
+      - postgres
+    working_dir: /var/www/html
+    user: laravel
+    entrypoint: ["php", "/var/www/html/artisan"]
+    networks:
+      - laravel

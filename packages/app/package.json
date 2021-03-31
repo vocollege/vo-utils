@@ -1,6 +1,6 @@
 {
   "name": "@vocollege/app",
-  "version": "0.0.40",
+  "version": "0.0.47",
   "description": "",
   "main": "dist/index.js",
   "scripts": {

@@ -98,7 +98,7 @@ export const getTemporaryId = () => {
   return `new_${Math.random().toString(36).substr(2, 12)}`;
 };
 
-export const createSlug = (function () {
+export const createSlug2 = (value: string) => {
   var translate_re = /[öäåüÖÄÅÜ]/g;
   var translate: { [key: string]: any } = {
     å: "a",
@@ -110,37 +110,36 @@ export const createSlug = (function () {
     Ö: "O",
     Ü: "U", // probably more to come
   };
-  return (value: string) => {
-    value = value.trim().replaceAll(" ", "-").toLocaleLowerCase();
-    return value.replace(translate_re, (match: any) => {
-      return translate[match];
-    });
-    // return encodeURIComponent(
-    //   value.replace(translate_re, (match: any) => {
-    //     return translate[match];
-    //   })
-    // );
-  };
-})();
+  value = value.trim().replaceAll(" ", "-").toLocaleLowerCase();
+  value = value.replace(translate_re, (match: any) => {
+    return translate[match];
+  });
+  return value;
+  // return encodeURIComponent(
+  //   value.replace(translate_re, (match: any) => {
+  //     return translate[match];
+  //   })
+  // );
+};
 
-const makeSortString = (function () {
-  var translate_re = /[öäåüÖÄÅÜ]/g;
-  var translate: { [key: string]: any } = {
-    å: "a",
-    ä: "a",
-    ö: "o",
-    ü: "u",
-    Å: "A",
-    Ä: "A",
-    Ö: "O",
-    Ü: "U", // probably more to come
-  };
-  return function (s: any) {
-    return s.replace(translate_re, function (match: any) {
-      return translate[match];
-    });
-  };
-})();
+// const makeSortString = (function () {
+//   var translate_re = /[öäåüÖÄÅÜ]/g;
+//   var translate: { [key: string]: any } = {
+//     å: "a",
+//     ä: "a",
+//     ö: "o",
+//     ü: "u",
+//     Å: "A",
+//     Ä: "A",
+//     Ö: "O",
+//     Ü: "U", // probably more to come
+//   };
+//   return function (s: any) {
+//     return s.replace(translate_re, function (match: any) {
+//       return translate[match];
+//     });
+//   };
+// })();
 
 // const formatError = (error: string | [any]) => {
 //   if (typeof error === "string") {

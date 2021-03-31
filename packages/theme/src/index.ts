@@ -1,2 +1,2 @@
-import vocollege2 from './material/vocollege2';
-export default vocollege2;
+export { default } from "./material/vocollege2";
+export * from "./material/vocollege2-global";
