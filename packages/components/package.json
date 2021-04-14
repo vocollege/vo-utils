@@ -1,10 +1,11 @@
 {
   "name": "@vocollege/components",
-  "version": "0.0.18",
+  "version": "0.0.31",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rm -Rf ./dist && mkdir ./dist && tsc",
+    "build": "rm -Rf ./dist && mkdir ./dist && npm run images && tsc",
+    "images": "copyfiles -f src/VoLogo/images/*.svg dist/VoLogo/images",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -15,17 +16,26 @@
     "@material-ui/pickers": "^3.2.10",
     "@types/react": "^16.8.0",
     "@types/react-dom": "^16.8.0",
+    "@types/react-router-dom": "^5.1.7",
+    "copyfiles": "^2.4.1",
     "dayjs": "^1.10.4",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0",
+    "react-hook-form": "^6.14.1",
+    "react-router-dom": "^5.2.0",
     "typescript": "^4.1.3"
   },
   "peerDependencies": {
+    "@apollo/client": "^3.3.7",
     "@date-io/dayjs": "^1.3.13",
     "@material-ui/core": "^4.11.2",
     "@material-ui/pickers": "^3.2.10",
+    "@vocollege/app": "*",
     "dayjs": "^1.10.4",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "notistack": "^1.0.3",
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0",
+    "react-hook-form": "^6.14.1",
+    "react-router-dom": "^5.2.0"
   }
 }
