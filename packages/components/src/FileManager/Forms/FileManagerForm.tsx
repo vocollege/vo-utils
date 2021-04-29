@@ -1,0 +1,303 @@
+import React, { useEffect, useReducer } from "react";
+import { useMutation, ApolloError } from "@apollo/client";
+// import { useSnackbar } from "notistack";
+import Grid from "@material-ui/core/Grid";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+
+// Custom.
+import { Vapor } from "@vocollege/app";
+import VoTextField from "../../VoTextField";
+import { FormField } from "Form/global";
+import { reducer } from "./state";
+import { fakeMutation } from "@vocollege/app";
+// import FileManagerDialog from "../Dialog";
+import EditDialog from "../../EditDialog";
+import FileUploader from "FileUploader";
+import { FileManagerFormProps, FileManagerBreadcrumbLink } from "../global";
+import { I18n } from "@vocollege/app";
+import { getBucket } from "../FileManagerHelper";
+
+let typingTimer: number;
+
+const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
+  const {
+    title,
+    initialState,
+    portfolio,
+    folder,
+    onChange,
+    onCancel,
+    operations,
+    messages,
+    open,
+    client,
+    fields,
+    editElement,
+  } = props;
+  const { handleSubmit, register, errors, setValue, formState } = useForm({
+    mode: "onChange",
+  });
+  const { isDirty } = formState;
+  // const { enqueueSnackbar } = useSnackbar();
+  const [state, dispatch] = useReducer(reducer, initialState);
+  // const [uploadProgress, setUploadProgress] = useState(0);
+
+  // Methods.
+
+  const handleError = (error: ApolloError) => {
+    // enqueueSnackbar(error.message, {
+    //   variant: "error",
+    // });
+    toast.error(error.message);
+  };
+
+  const handleCompleted = (data: any) => {
+    // enqueueSnackbar(
+    //   isCreateNew() ? messages?.itemCreated : messages?.itemUpdated,
+    //   {
+    //     variant: "success",
+    //   }
+    // );
+    toast.success(
+      isCreateNew() ? messages?.itemCreated : messages?.itemUpdated
+    );
+    let keys = Object.keys(data);
+    if (onChange) {
+      onChange(data[keys[0]]);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    clearTimeout(typingTimer);
+    dispatch({
+      key: name,
+      value: value,
+    });
+    typingTimer = window.setTimeout(async () => {
+      setValue(name, value, { shouldValidate: true, shouldDirty: true });
+    }, 300);
+  };
+
+  const handleFileChange = (file: any, name: string) => {
+    dispatch({
+      value: {
+        filename: file.name,
+        filesize: file.size,
+        filetype: file.type,
+        file: file,
+      },
+    });
+    setValue(`${name}size`, file.size, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const handleSave = async () => {
+    const variables: { [key: string]: any } = {
+      input: { ...state },
+    };
+
+    // Use this if stream against vo-app should be used.
+    // if (state.file) {
+    //   variables.file = state.file;
+    // }
+
+    // Delete values handled outside "input".
+    delete variables.input.id;
+    delete variables.input.file;
+    let bucket = portfolio ? getBucket(portfolio) : "";
+
+    try {
+      if (state.file) {
+        const response = await Vapor.store(state.file, {
+          // progress: (progress: any) => {
+          //   setUploadProgress(Math.round(progress * 100));
+          // },
+          bucket: bucket,
+          baseURL: process.env.REACT_APP_API_BASE_URL,
+          headers: {
+            Authorization: "vanderlei",
+          },
+        });
+        variables.input.tempFile = {
+          bucket: response.bucket,
+          key: response.key,
+          uuid: response.uuid,
+        };
+      }
+      if (!isCreateNew()) {
+        variables.id = state.id;
+        update({
+          variables: variables,
+        });
+      } else {
+        create({
+          variables: variables,
+        });
+      }
+    } catch (error) {
+      // enqueueSnackbar(error.message, {
+      //   variant: "error",
+      // });
+      toast.error(error.message);
+    }
+  };
+
+  const getField = (field: FormField) => {
+    switch (field.type) {
+      case "text":
+        register(field.name, field?.validation);
+        return (
+          <VoTextField
+            name={field.name}
+            label={field.label}
+            value={state[field.name]}
+            onChange={handleChange}
+            variant="filled"
+            fullWidth
+            type="text"
+            required={field?.required}
+            error={!!errors[field.name]}
+            helperText={errors[field.name] ? errors[field.name]?.message : ""}
+            inputProps={{
+              autoComplete: "off",
+            }}
+          />
+        );
+      case "file_uploader":
+        register(`${field.name}size`, field?.validation);
+        return (
+          <FileUploader
+            onChange={(file) => handleFileChange(file, field.name)}
+            value={{
+              name: state[`${field.name}name`],
+              size: state[`${field.name}size`],
+              type: state[`${field.name}type`],
+            }}
+          />
+        );
+      default:
+        return <div></div>;
+    }
+  };
+
+  const getParentPath = () => {
+    if (!portfolio) {
+      return "/";
+    }
+    const fullPath = [portfolio?.title || portfolio?.name];
+    if (folder) {
+      if (folder.fullPath && folder.fullPath.length > 0) {
+        folder.fullPath.forEach((v: FileManagerBreadcrumbLink) => {
+          fullPath.push(v.title);
+        });
+      }
+      fullPath.push(folder.title);
+    }
+    return ` / ${fullPath.join(" / ")} / `;
+  };
+
+  const getContentText = () => {
+    return (
+      <>
+        <strong>{I18n.get.docs.label.path}:</strong>&nbsp;
+        {getParentPath()}
+        <strong>{state.title}</strong>
+      </>
+    );
+  };
+
+  const isCreateNew = () => {
+    return !state.id || state.id === "";
+  };
+
+  const getTitle = () => {
+    if (title) {
+      return title;
+    }
+    if (messages) {
+      return isCreateNew() ? messages.createTitle : messages.updateTitle;
+    }
+    return "";
+  };
+
+  const getSubtitle = () => {
+    return !isCreateNew() && editElement ? `ID: ${editElement?.id}` : "";
+  };
+
+  // Api.
+
+  const [create, { loading: createLoading }] = useMutation(
+    operations?.create || fakeMutation,
+    {
+      client: client || undefined,
+      onError: handleError,
+      onCompleted: handleCompleted,
+    }
+  );
+
+  const [update, { loading: updateLoading }] = useMutation(
+    operations?.update || fakeMutation,
+    {
+      client: client || undefined,
+      onError: handleError,
+      onCompleted: handleCompleted,
+    }
+  );
+
+  // Effects.
+
+  useEffect(() => {
+    if (open) {
+      let newValues: { [key: string]: any } = {};
+      Object.keys(state).forEach((key: any) => {
+        if (editElement && editElement.hasOwnProperty(key)) {
+          newValues[key] = editElement[key];
+          setValue(key, editElement[key]);
+        } else {
+          if (portfolio && key === "portfolio_id") {
+            newValues[key] = portfolio.id;
+          } else if (folder && key === "folder_id") {
+            newValues[key] = folder.id;
+          } else {
+            newValues[key] = initialState[key];
+            setValue(key, initialState[key]);
+          }
+        }
+      });
+      dispatch({
+        value: newValues,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  return (
+    <EditDialog
+      open={open}
+      title={getTitle()}
+      subtitle={getSubtitle()}
+      contentText={getContentText()}
+      onConfirm={handleSubmit(handleSave)}
+      onCancel={onCancel}
+      loading={createLoading || updateLoading}
+      saveDisabled={!isDirty}
+    >
+      <Grid container spacing={2}>
+        {fields &&
+          fields.map((field: FormField, fieldIndex: number) => {
+            return (
+              <Grid key={fieldIndex} item {...field.grid}>
+                {getField(field)}
+              </Grid>
+            );
+          })}
+      </Grid>
+    </EditDialog>
+  );
+};
+
+export default FileManagerForm;

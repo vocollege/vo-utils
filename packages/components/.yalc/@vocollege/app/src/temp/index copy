@@ -1,0 +1,31 @@
+import Auth from './src/Auth';
+import Api from './src/Api';
+import VoAppDefaultConfig from './VoAppDefaultConfig';
+import { VoAppType, VoAppConfigType } from './VoAppTypes';
+
+function voApp(): VoAppType {
+    let config: VoAppConfigType = Object.assign({}, VoAppDefaultConfig);
+
+    // Instantiate classes without config.
+    let auth = new Auth();
+    let api = new Api();
+
+    return {
+        configure: (customConfig: VoAppConfigType) => {
+
+            // Set the config parameters.
+            Object.keys(customConfig).forEach((key: string) => {
+                Object.assign(config[key], customConfig[key]);
+            });
+
+            // Create new class instances, now with passed config.
+            auth = new Auth(config.auth);
+            api = new Api(config.api);
+            
+        },
+        config: (): VoAppConfigType => config,
+        auth: () => auth,
+        api: () => api
+    }
+}
+export default voApp();

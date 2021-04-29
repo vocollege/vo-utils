@@ -1,0 +1,33 @@
+import axios from 'axios';
+import { ApiConfigType } from '../VoAppTypes';
+
+class Api {
+
+    config: ApiConfigType|undefined;
+
+    constructor(config?: ApiConfigType) {
+        this.config = config;
+
+    }
+
+
+    async getUser() {
+        
+        try {
+            const user = await axios.get(this.getUrl() + '/user');
+            
+        } catch(error) {
+            console.error('Api.getUser()', error);
+        }
+
+
+
+    }
+
+    getUrl() {
+        return this.config.BASE_URL + '/' + this.config.ENDPOINT;
+    }
+
+}
+
+export default Api;

@@ -1,0 +1,26 @@
+export type AuthStorageConfigType = {
+    STATE: string,
+    VERIFIER: string,
+    ACCESS_TOKEN: string,
+    TOKEN_TYPE: string
+}
+export type AuthConfigType = {
+    BASE_URL: string,
+    ENDPOINT?: string,
+    STORAGE?: AuthStorageConfigType
+}
+export type ApiConfigType = {
+    BASE_URL: string,
+    ENDPOINT?: string,
+}
+export type VoAppConfigType = {
+    [key: string]: any,
+    auth: AuthConfigType,
+    api: ApiConfigType
+}
+export type VoAppType = {
+    configure: Function,
+    config?: Function,
+    auth: any,
+    api: any
+}

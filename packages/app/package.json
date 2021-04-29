@@ -1,6 +1,6 @@
 {
   "name": "@vocollege/app",
-  "version": "0.0.51",
+  "version": "0.0.52",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -9,21 +9,20 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@types/crypto-js": "^4.0.1",
-    "axios": "^0.21.1",
-    "crypto-js": "^4.0.0"
-  },
   "devDependencies": {
     "@apollo/client": "^3.3.7",
     "@casl/ability": "^5.2.2",
     "@casl/react": "^2.2.2",
     "@types/apollo-upload-client": "^14.1.0",
+    "@types/crypto-js": "^4.0.1",
+    "@types/js-cookie": "^2.2.6",
     "@types/node": "^14.14.21",
     "@types/react": "^17.0.0",
     "apollo-upload-client": "^14.1.3",
-    "graphql": "^15.4.0",
-    "react": "^16.8.0 || ^17.0.0",
+    "axios": "^0.21.1",
+    "crypto-js": "^4.0.0",
+    "graphql": "^14.0.0 || ^15.0.0",
+    "react": "^17.0.0",
     "typescript": "^4.1.3"
   },
   "peerDependencies": {
@@ -31,7 +30,9 @@
     "@casl/ability": "^5.2.2",
     "@casl/react": "^2.2.2",
     "apollo-upload-client": "^14.1.3",
+    "axios": "^0.21.1",
+    "crypto-js": "^4.0.0",
     "graphql": "^14.0.0 || ^15.0.0",
-    "react": "^16.8.0 || ^17.0.0"
+    "react": "^17.0.0"
   }
 }

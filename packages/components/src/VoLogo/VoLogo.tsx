@@ -3,8 +3,8 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Fade from "@material-ui/core/Fade";
 
 // Custom.
-import Logo from "./images/vocollege.svg";
-import LogoWhite from "./images/vocollege_white.svg";
+// import Logo from "./images/vocollege.svg";
+// import LogoWhite from "./images/vocollege_white.svg";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,21 +22,24 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface VoLogoProps {
+export interface VoLogoProps {
   color?: "normal" | "white";
   alt?: string;
   src?: string | null;
+  srcWhite?: string | null;
 }
 
 const VoLogo: React.FC<VoLogoProps> = (props) => {
-  const { color = "normal", alt = "", src = null } = props;
+  const { color = "normal", alt = "", src = null, srcWhite = null } = props;
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <img className={classes.logo} src={src || Logo} alt={alt} />
-      <Fade in={color === "white"}>
-        <img className={classes.logo} src={src || LogoWhite} alt={alt} />
-      </Fade>
+      {src && <img className={classes.logo} src={src} alt={alt} />}
+      {srcWhite && (
+        <Fade in={color === "white"}>
+          <img className={classes.logo} src={srcWhite} alt={alt} />
+        </Fade>
+      )}
     </div>
   );
 };

@@ -1,0 +1,271 @@
+{
+    "user": {
+        "label": "Användare",
+        "labels": {
+            "name": "Användarnamn",
+            "email": "E-post",
+            "firstname": "Förnamn",
+            "lastname": "Efternamn",
+            "password": "Lösenord",
+            "passwordCurrent": "Nuvarande lösenord",
+            "passwordRepeat": "Upprepa lösenord",
+            "users": "Användare"
+        },
+        "messages": {
+            "userSaved": "Användaren har uppdaterats",
+            "userDeleted": "Användaren har raderats"
+        }
+    },
+    "acl": {
+        "label": "ACL",
+        "labels": {
+            "name": "Namn",
+            "label": "Etikett"
+        },
+        "messages": {
+            "roleSaved": "Rollen har sparats",
+            "roleDeleted": "Rollen har raderats",
+            "permissionSaved": "Behörigheterna har sparats"
+        },
+        "errors": {
+            "invalidName": "Ogiltigt namn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'redaktör', 'Styrgrupp_20'",
+            "routeNotAllowed": "Du har inte behörighet till '::route'"
+        }
+    },
+    "role": {
+        "label": "Roll"
+    },
+    "article": {
+        "label": "Artikel",
+        "messages": {
+            "articleSaved": "Artikeln har sparats",
+            "articleDeleted": "Artikeln har raderats"
+        }
+    },
+    "page": {
+        "label": "Sida",
+        "messages": {
+            "pageSaved": "Sidan har sparats",
+            "pageDeleted": "Sidan har raderats"
+        }
+    },
+    "queue": {
+        "label": "Kö",
+        "messages": {
+            "queueSaved": "Kön har sparats",
+            "queueDeleted": "Kön har raderats"
+        }
+    },
+    "menu": {
+        "label": "Meny",
+        "labels": {
+            "menus": "Menyer",
+            "links": "Länkar",
+            "createLink": "Skapa länk",
+            "updateLink": "Uppdatera länk",
+            "menuLinkTitle": "Menylänkens titel",
+            "customUrl": "Valfri URL",
+            "setCustomUrl": "Sätt valfri webbadress (URL)"
+        },
+        "messages": {
+            "menuSaved": "Menyn har sparats",
+            "menuDeleted": "Menyn har raderats"
+        }
+    },
+    "group": {
+        "label": "Grupp",
+        "labels": {
+            "groups": "Grupper",
+            "groupRoles": "Grupproller",
+            "groupPermissions": "Gruppbehörigheter"
+        },
+        "errors": {
+            "invalidGroupName": "Ogiltigt gruppnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'nationellt', 'krnoberg'"
+        },
+        "messages": {
+            "groupSaved": "Gruppen har sparats",
+            "groupDeleted": "Gruppen har raderats"
+        },
+        "categories": {
+            "region": "Regionalt college",
+            "local": "Lokalt college",
+            "other": "Annat"
+        }
+    },
+    "settings": {
+        "label": {
+            "newsSectionQueue": "Kö för nyhetssektion",
+            "puffSectionQueue": "Kö för puffsektion",
+            "infoSectionQueue": "Kö för infosektion",
+            "mainMenu": "Meny för huvudnavigering",
+            "headerMenu": "Meny på sidans huvud"
+        },
+        "messages": {
+            "settingsSaved": "Inställningarna har sparats"
+        }
+    },
+    "entities": {
+        "label": {
+            "search": "Sök",
+            "searchContent": "Sök innehåll",
+            "searchByTitle": "Sök efter innehållets titel"
+        }
+    },
+    "tag": {
+        "label": "Tagg",
+        "labels": {
+            "tags": "Taggar"
+        }
+    },
+    "docs": {
+        "label": {
+            "portfolio": "Portfölj",
+            "portfolios": "Portföljer",
+            "thePortfolio": "Portföljen",
+            "folder": "Mapp",
+            "theFolder": "Mappen",
+            "file": "Fil",
+            "theFile": "Filen",
+            "fileTitle": "Filens titel",
+            "fileDescription": "Filens beskrivning",
+            "createPortfolio": "Skapa portfölj",
+            "updatePortfolio": "Redigera portfölj",
+            "createFolder": "Skapa mapp",
+            "updateFolder": "Redigera mapp",
+            "createFile": "Skapa fil",
+            "updateFile": "Redigera fil",
+            "path": "Sökväg",
+            "selectFile": "Välj fil",
+            "portfolioName": "Portföljens namn",
+            "filename": "Filnamn",
+            "filesize": "Filstorlek",
+            "filetype": "Filtyp",
+            "diskName": "Disknamn",
+            "public": "Publikt"
+        },
+        "errors": {
+            "invalidPortfolioName": "Ogiltigt portföljnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'konferens', 'konferens2020', 'Nationellt_2018_Foto'"
+        },
+        "helperText": {
+            "name": "Detta värde används internt i systemet.",
+            "title": "Titel används här i gränssnittet för att identifierra din portfölj."
+        },
+        "messages": {
+            "portfolioCreated": "Portföljen har skapats",
+            "portfolioUpdated": "Portföljen har uppdaterats",
+            "folderCreated": "Mappen har skapats",
+            "folderUpdated": "Mappen har uppdaterats",
+            "fileCreated": "Filen har skapats",
+            "fileUpdated": "Filen har uppdaterats"
+        }
+    },
+    "auth": {
+        "actions": {
+            "clickToSingIn": "Klicka här för att logga in"
+        }
+    },
+    "form": {
+        "errors": {
+            "required": "Obligatoriskt",
+            "invalidName": "Ogiltigt namn. Det får endast innehålla småbokstäver, minst 3, följd av en eller flera siffror, t ex: 'ann', 'admin10', 'ann1980', 'peter20'",
+            "invalidEmail": "Ogiltig e-postadress",
+            "invalidFirstname": "Ogiltigt förnamn",
+            "invalidLastname": "Ogiltigt efternamn",
+            "password": "Lösenordet måste vara minst 8 tecken, varav 1 versal, 1 gemen och 1 siffra",
+            "passwordNotMatch": "Lösenorden matchar inte"
+        },
+        "labels": {
+            "createUser": "Skapa användare",
+            "updateUser": "Uppdatera användare:",
+            "searchField": "Sök…",
+            "loadingContent": "Laddar innehåll...",
+            "createArticle": "Skapa artikel",
+            "createPage": "Skapa sida",
+            "createQueue": "Skapa kö",
+            "createMenu": "Skapa meny",
+            "createGroup": "Skapa grupp",
+            "createRole": "Skapa roll",
+            "check": "Kontrollera",
+            "checkAvailability": "Kontrollera tillgänglighet",
+            "title": "Titel",
+            "description": "Beskrivning",
+            "body": "Brödtext",
+            "status": "Status",
+            "url": "URL",
+            "itemsToQueue": "Objekt att köa",
+            "items": "Objekt",
+            "file": "Fil",
+            "name": "Namn",
+            "category": "Kategori",
+            "latitude": "Latitud",
+            "longitude": "Longitud",
+            "location": "Position"
+        },
+        "messages": {
+            "invalidFields": "Det finns ogiltiga fält i formuläret",
+            "fieldPopulatedBy": "Detta fält autogenereras baserat på '::field'.",
+            "unsavedContent": "Det finns osparat innehåll. Är du säker på att du vill lämna denna sida?"
+        }
+    },
+    "actions": {
+        "cancel": "Avbryt",
+        "save": "Spara",
+        "create": "Skapa",
+        "no": "Nej",
+        "yes": "Ja",
+        "reset": "Återställ",
+        "clearSearch": "Rensa sökresultatet",
+        "backToHome": "Tillbaka till startsidan"
+    },
+    "status": {
+        "unpublished": "Opublicerat",
+        "published": "Publicerat"
+    },
+    "messages": {
+        "areYouSure": "Är du säker?",
+        "deleteElement": "Vill du radera ::element?",
+        "actionCantBeUndone": "Denna åtgärd kan inte ångras"
+    },
+    "toolbar": {
+        "createNewItem": "Skapa nytt objekt",
+        "filterList": "Filterlista"
+    }, 
+    "misc": {
+        "account": "Konto",
+        "groups": "Grupper",
+        "user": "Användare",
+        "dashboard": "Översiktspanel",
+        "signOut": "Logga ut",
+        "acl": "ACL",
+        "roles": "Roller",
+        "permissions": "Behörigheter",
+        "edit": "Redigera",
+        "update": "Uppdatera",
+        "updated_at": "Uppdaterat",
+        "created_at": "Skapat",
+        "nothingFound": "Inga objekt hittades",
+        "nothingAdded": "Inga objekt är tillagda",
+        "nothingSelected": "Inget har valts",
+        "nothing": "Ingen",
+        "alreadyAdded": "Detta objekt finns redan i listan",
+        "create": "Skapa",
+        "actions": "Åtgärder",
+        "articles": "Artiklar",
+        "pages": "Sidor",
+        "content": "Innehåll",
+        "documentbank": "Dokumentbank",
+        "queues": "Köer",
+        "queue": "Kö",
+        "type": "Typ",
+        "id": "ID",
+        "settings": "Inställningar",
+        "general": "Allmänt",
+        "error": "Fel",
+        "navigation": "Navigering",
+        "author": "Författare",
+        "date": "Datum",
+        "image": "Bild",
+        "logotype": "Logotyp",
+        "login": "Logga in"
+    }
+}

@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "packages": {
+    "@vocollege/theme": {
+      "signature": "6a7fbf5bfbc23cad9f80e034309748f2",
+      "file": true
+    },
+    "@vocollege/app": {
+      "signature": "e907c7e806f5265ad9a4c0ea4ad216bf",
+      "file": true
+    }
+  }
+}
