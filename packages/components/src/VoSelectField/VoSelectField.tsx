@@ -60,8 +60,10 @@ const VoSelectField: React.FC<VoSelectFieldProps> = (props) => {
         classes={{ root: classes.root, select: classes.select }}
       >
         {availableValues &&
-          availableValues.map((v: VoSelectFieldAvailableValue) => (
-            <MenuItem value={v.value}>{v.label}</MenuItem>
+          availableValues.map((v: VoSelectFieldAvailableValue, key: number) => (
+            <MenuItem key={key} value={v.value}>
+              {v.label}
+            </MenuItem>
           ))}
       </Select>
       {helperText && <FormHelperText>{helperText}</FormHelperText>}

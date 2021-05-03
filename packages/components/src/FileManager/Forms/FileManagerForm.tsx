@@ -14,6 +14,7 @@ import { fakeMutation } from "@vocollege/app";
 // import FileManagerDialog from "../Dialog";
 import EditDialog from "../../EditDialog";
 import FileUploader from "FileUploader";
+import VoSelectField, { VoSelectFieldAvailableValue } from "VoSelectField";
 import { FileManagerFormProps, FileManagerBreadcrumbLink } from "../global";
 import { I18n } from "@vocollege/app";
 import { getBucket } from "../FileManagerHelper";
@@ -35,10 +36,10 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
     fields,
     editElement,
   } = props;
-  const { handleSubmit, register, errors, setValue, formState } = useForm({
+  const { handleSubmit, register, setValue, formState } = useForm({
     mode: "onChange",
   });
-  const { isDirty } = formState;
+  const { isDirty, errors } = formState;
   // const { enqueueSnackbar } = useSnackbar();
   const [state, dispatch] = useReducer(reducer, initialState);
   // const [uploadProgress, setUploadProgress] = useState(0);
@@ -76,7 +77,10 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
       value: value,
     });
     typingTimer = window.setTimeout(async () => {
-      setValue(name, value, { shouldValidate: true, shouldDirty: true });
+      setValue(`${name}` as const, value, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }, 300);
   };
 
@@ -89,10 +93,34 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
         file: file,
       },
     });
-    setValue(`${name}size`, file.size, {
+    setValue(`${name + "size"}` as const, file.size, {
       shouldValidate: true,
       shouldDirty: true,
     });
+  };
+
+  const handleSelectChange = (
+    e: React.ChangeEvent<{
+      name?: string | undefined;
+      value: unknown;
+    }>
+  ) => {
+    const { name, value } = e.target;
+    if (!name) {
+      return;
+    }
+    dispatch({ key: name, value: value });
+    setValue(`${name}` as const, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const getSelectValue = (field: FormField) => {
+    if (Array.isArray(state[field.name])) {
+      return state[field.name][0] ? state[field.name][0].id : "";
+    }
+    return state[field.name];
   };
 
   const handleSave = async () => {
@@ -146,10 +174,19 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
     }
   };
 
+  const getAvailableValues = (
+    field: FormField
+  ): VoSelectFieldAvailableValue[] => {
+    if (field.params?.availableValues) {
+      return field.params?.availableValues();
+    }
+    return [];
+  };
+
   const getField = (field: FormField) => {
     switch (field.type) {
       case "text":
-        register(field.name, field?.validation);
+        register(`${field.name}` as const, field?.validation);
         return (
           <VoTextField
             name={field.name}
@@ -168,7 +205,7 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
           />
         );
       case "file_uploader":
-        register(`${field.name}size`, field?.validation);
+        register(`${field.name + "size"}` as const, field?.validation);
         return (
           <FileUploader
             onChange={(file) => handleFileChange(file, field.name)}
@@ -177,6 +214,23 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
               size: state[`${field.name}size`],
               type: state[`${field.name}type`],
             }}
+          />
+        );
+      case "select":
+        register(`${field.name}` as const, field?.validation);
+        return (
+          <VoSelectField
+            SelectProps={{
+              name: field.name,
+              value: getSelectValue(field),
+              onChange: (event) => handleSelectChange(event),
+            }}
+            availableValues={getAvailableValues(field)}
+            label={field.label}
+            fullWidth
+            required={field.required}
+            error={!!errors[field.name]}
+            helperText={errors[field.name] ? errors[field.name]?.message : ""}
           />
         );
       default:

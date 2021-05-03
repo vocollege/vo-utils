@@ -157,6 +157,10 @@
             "folderUpdated": "Mappen har uppdaterats",
             "fileCreated": "Filen har skapats",
             "fileUpdated": "Filen har uppdaterats"
+        },
+        "disks": {
+            "s3.vodocs_files": "Privat",
+            "s3.vofront_files": "Publikt"
         }
     },
     "auth": {

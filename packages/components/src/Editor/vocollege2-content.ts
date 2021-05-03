@@ -1,6 +1,7 @@
 const styles = `body {
   color: #646464;
   font-family: Lato, sans-serif;
+  font-size: 16px;
   margin: 0 auto;
   max-width: 784px;
   position: relative;
@@ -17,7 +18,7 @@ body .right {
   margin: 0 0 16px 16px;
 }
 body img {
-  border-radius: 40px;
+  border-radius: 16px;
   height: auto;
   max-width: 100%;
 }

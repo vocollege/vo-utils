@@ -3,8 +3,7 @@ import React from "react";
 // Custom.
 import { FileManagerFormProps } from "../global";
 import FileManagerForm from "./FileManagerForm";
-import { I18n } from "@vocollege/app";
-import { regexPatterns } from "@vocollege/app";
+import { I18n, regexPatterns } from "@vocollege/app";
 
 const initialState = {
   id: 0,
@@ -12,6 +11,13 @@ const initialState = {
   name: "",
   title: "",
   description: "",
+};
+
+const getAvailableDiskValues = () => {
+  return Object.keys(I18n.get.docs.disks).map((disk: string) => ({
+    label: I18n.get.docs.disks[disk],
+    value: disk,
+  }));
 };
 
 const FileManagerPortfolioForm: React.FC<FileManagerFormProps> = (props) => {
@@ -28,18 +34,35 @@ const FileManagerPortfolioForm: React.FC<FileManagerFormProps> = (props) => {
         {
           name: "disk",
           label: I18n.get.docs.label.diskName,
-          type: "text",
+          type: "select",
           required: true,
           grid: {
             xs: 12,
           },
           validation: {
             required: true,
-            // pattern: {
-            //   value: regexPatterns.cleanName,
-            // },
           },
+          params: {
+            availableValues: getAvailableDiskValues,
+          },
+          // onChange: handleCategoryChange,
         },
+
+        // {
+        //   name: "disk",
+        //   label: I18n.get.docs.label.diskName,
+        //   type: "text",
+        //   required: true,
+        //   grid: {
+        //     xs: 12,
+        //   },
+        //   validation: {
+        //     required: true,
+        //     // pattern: {
+        //     //   value: regexPatterns.cleanName,
+        //     // },
+        //   },
+        // },
         {
           name: "name",
           label: I18n.get.docs.label.portfolioName,

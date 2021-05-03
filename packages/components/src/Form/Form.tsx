@@ -153,7 +153,10 @@ const Form: React.FC<FormProps> = (props) => {
       onChange(newValue);
     }
     typingTimer = window.setTimeout(async () => {
-      setValue(name, newValue, { shouldValidate: true, shouldDirty: true });
+      setValue(`${name}` as const, newValue, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }, 300);
   };
 
@@ -172,7 +175,10 @@ const Form: React.FC<FormProps> = (props) => {
     if (onChange) {
       onChange(value);
     }
-    setValue(name, value, { shouldValidate: true, shouldDirty: true });
+    setValue(`${name}` as const, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   const handleCheckChange = (
@@ -185,7 +191,10 @@ const Form: React.FC<FormProps> = (props) => {
     if (onChange) {
       onChange(newValue);
     }
-    setValue(name, newValue, { shouldValidate: true, shouldDirty: true });
+    setValue(`${name}` as const, newValue, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   const handleEditorChange = (
@@ -199,7 +208,7 @@ const Form: React.FC<FormProps> = (props) => {
       onChange(content);
     }
     typingTimer = window.setTimeout(async () => {
-      setValue(field, content, { shouldDirty: true });
+      setValue(`${field}` as const, content, { shouldDirty: true });
     }, 300);
   };
 
@@ -226,7 +235,7 @@ const Form: React.FC<FormProps> = (props) => {
       onChange(parsedItems);
     }
     typingTimer = window.setTimeout(async () => {
-      setValue(field, items, { shouldDirty: true });
+      setValue(`${field}` as const, items, { shouldDirty: true });
     }, 300);
   };
 
@@ -245,7 +254,7 @@ const Form: React.FC<FormProps> = (props) => {
       onChange(items);
     }
     typingTimer = window.setTimeout(async () => {
-      setValue(field, items, { shouldDirty: true });
+      setValue(`${field}` as const, items, { shouldDirty: true });
     }, 300);
   };
 
@@ -264,14 +273,20 @@ const Form: React.FC<FormProps> = (props) => {
       onChange(value);
     }
     typingTimer = window.setTimeout(() => {
-      setValue(field, value, { shouldValidate: true, shouldDirty: true });
+      setValue(`${field}` as const, value, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }, 300);
   };
 
   const handleChangeUser = (field: string, item: EntityPickerItem) => {
     let value = `${item.id} - ${item.title}`;
     dispatch({ field: field, value: value });
-    setValue(field, value, { shouldValidate: true, shouldDirty: true });
+    setValue(`${field}` as const, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   const handleUserFieldReset = (
@@ -296,12 +311,18 @@ const Form: React.FC<FormProps> = (props) => {
     if (onChange) {
       onChange(value);
     }
-    setValue(field, value, { shouldValidate: true, shouldDirty: true });
+    setValue(`${field}` as const, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   const handleChangeTags = (field: string, items: TagsFieldItem[]) => {
     dispatch({ field: field, value: items });
-    setValue(field, items, { shouldValidate: true, shouldDirty: true });
+    setValue(`${field}` as const, items, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   const handleChangeFile = (
@@ -310,7 +331,10 @@ const Form: React.FC<FormProps> = (props) => {
     onChange: FormField["onChange"]
   ) => {
     dispatch({ field: field, value: files });
-    setValue(field, files, { shouldValidate: true, shouldDirty: true });
+    setValue(`${field}` as const, files, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     if (onChange) {
       onChange(files);
     }
@@ -318,7 +342,10 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleChangeLocation = (field: string, location: FormFieldLocation) => {
     dispatch({ field: field, value: location });
-    setValue(field, location, { shouldValidate: true, shouldDirty: true });
+    setValue(`${field}` as const, location, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   const getPageTitle = () => {
@@ -384,18 +411,19 @@ const Form: React.FC<FormProps> = (props) => {
           field.params?.dependency[fieldDependee].visibility;
       }
       if (visibility) {
-        register(field.name, field?.validation);
+        register(`${field.name}` as const, field?.validation);
       } else {
-        unregister(field.name);
+        unregister(`${field.name}` as const);
         return null;
       }
     } else {
-      register(field.name, field?.validation);
+      register(`${field.name}` as const, field?.validation);
     }
 
     if (field.render) {
       return field.render(state[field.name]);
     }
+    
     switch (field.type) {
       case "text":
       case "password":
@@ -580,10 +608,14 @@ const Form: React.FC<FormProps> = (props) => {
     error.forEach((v: any) => {
       if (v.extensions && v.extensions.validation) {
         for (let field in v.extensions.validation) {
-          setError(field, {
-            type: v.extensions.category,
-            message: v.extensions.validation[field].join(" | "),
-          });
+          setError(
+            `${field}` as const,
+            {
+              type: v.extensions.category,
+              message: v.extensions.validation[field].join(" | "),
+            },
+            { shouldFocus: true }
+          );
         }
       }
     });

@@ -10,6 +10,7 @@ import { I18n } from "@vocollege/app";
 import { FileManagerFolderElement } from "FileManager/global";
 import { FormFieldContentListItem } from "Form/global";
 import styles from "./vocollege2-content";
+import colors from "@vocollege/theme/dist/material/vocollege2-colors";
 // import { useStylesGlobal } from ;
 
 // import { useStyles, useStylesEditor } from "./styles";
@@ -63,6 +64,10 @@ const Editor: React.FC<EditorProps> = (props) => {
 
   const handleEntityPickerSelect = (item: FormFieldContentListItem) => {
     filePickerParams.callback(`/${item.urlAlias?.alias}`);
+    handleEntityPickerClose();
+  };
+
+  const handleEntityPickerClose = () => {
     setOpenEntityPicker(false);
     setFilePickerParams({});
   };
@@ -87,16 +92,16 @@ const Editor: React.FC<EditorProps> = (props) => {
         init={{
           branding: false,
           height: 500,
-          menubar: true,
           language: "sv_SE",
           content_style: styles,
           relative_urls: false,
+          menubar: false,
           plugins: ["lists link image media visualblocks code table paste"],
-          toolbar: `undo redo | code removeformat | styleselect | bold italic underline |
-                alignleft aligncenter alignright alignjustify |
-                bullist numlist outdent indent | image media link`,
-          block_formats:
-            "Heading 1=h2; Heading 2=h3; Heading 3=h4; Paragraph=p",
+          toolbar: `undo redo | removeformat | styleselect | bold italic underline strikethrough |
+                    forecolor backcolor | alignleft aligncenter alignright alignjustify |
+                    image media link | table | bullist numlist outdent indent | code`,
+          toolbar_mode: "sliding",
+          block_formats: "Heading 1=h2; Heading 2=h3; Heading 3=h4",
           style_formats_autohide: true,
           style_formats: [
             {
@@ -194,17 +199,20 @@ const Editor: React.FC<EditorProps> = (props) => {
               selector: "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img",
               classes: "full",
             },
-            bold: { inline: "span", classes: "bold" },
+            bold: { inline: "strong", classes: "bold" },
             italic: { inline: "span", classes: "italic" },
-            underline: { inline: "span", classes: "underline", exact: true },
-            strikethrough: { inline: "del" },
-            customformat: {
-              inline: "span",
-              styles: { color: "#00ff00", fontSize: "20px" },
-              attributes: { title: "My custom format" },
-              classes: "example1",
-            },
+            underline: { inline: "u", classes: "underline", exact: true },
+            strikethrough: { inline: "del", classes: "del" },
+            // customformat: {
+            //   inline: "span",
+            //   styles: { color: "#00ff00", fontSize: "20px" },
+            //   attributes: { title: "My custom format" },
+            //   classes: "example1",
+            // },
           },
+          color_map: colors(),
+          color_cols: 5,
+          custom_colors: false,
           visualblocks_default_state: true,
           // file_picker_types: "image",
           file_picker_callback: filePicker,
@@ -221,6 +229,7 @@ const Editor: React.FC<EditorProps> = (props) => {
       <EntityPickerDialog
         open={openEntityPicker}
         onSelect={handleEntityPickerSelect}
+        onClose={handleEntityPickerClose}
         types="page,article"
       />
     </>

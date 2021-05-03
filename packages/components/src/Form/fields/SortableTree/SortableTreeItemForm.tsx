@@ -40,18 +40,11 @@ const SortableTreeItemForm: React.FC<FormFieldSortableTreeItemFormProps> = (
   const titleInput = useRef(null);
   const customUrlInput = useRef(null);
 
-  const {
-    handleSubmit,
-    register,
-    errors,
-    setValue,
-    formState,
-    reset,
-  } = useForm({
+  const { handleSubmit, register, setValue, formState, reset } = useForm({
     mode: "onChange",
   });
 
-  const { isDirty, isValid } = formState;
+  const { isDirty, isValid, errors } = formState;
 
   // Methods.
 
@@ -86,7 +79,10 @@ const SortableTreeItemForm: React.FC<FormFieldSortableTreeItemFormProps> = (
     clearTimeout(typingTimer);
     dispatch({ field: name, value: value });
     typingTimer = window.setTimeout(async () => {
-      setValue(name, value, { shouldValidate: true, shouldDirty: true });
+      setValue(`${name}` as const, value, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }, 300);
   };
 
@@ -110,7 +106,10 @@ const SortableTreeItemForm: React.FC<FormFieldSortableTreeItemFormProps> = (
       field: name,
       value: item.urlAlias || null,
     });
-    setValue(name, item.urlAlias, { shouldValidate: true, shouldDirty: true });
+    setValue(`${name}` as const, item.urlAlias, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   const handleEntityFieldReset = (name: string) => {
@@ -118,7 +117,10 @@ const SortableTreeItemForm: React.FC<FormFieldSortableTreeItemFormProps> = (
       field: name,
       value: null,
     });
-    setValue(name, null, { shouldValidate: true, shouldDirty: true });
+    setValue(`${name}` as const, null, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   const handleSetCustomUrlChange = (

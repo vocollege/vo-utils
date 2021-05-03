@@ -35,7 +35,7 @@ const options = {
     // },
     primary: {
       ligther: "#BFDDEF",
-      kight: "#80BCDF",
+      light: "#80BCDF",
       main: "#0078BE",
       dark: "#005FAF",
       darker: "#004B96",
@@ -55,7 +55,7 @@ const options = {
       light: "#F0BFA0", // VO Secondary 2 50%
       main: "#E07E41", // VO Secondary 1
     },
-    success: { main: "#1e9141", contrastText: "#ffffff" },
+    success: { main: "#1E9141", contrastText: "#ffffff" },
     text: {
       primary: "#646464",
     },
