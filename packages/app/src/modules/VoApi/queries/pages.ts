@@ -5,6 +5,7 @@ export const GET_PAGE = gql`
     page(id: $id) {
       id
       title
+      short_title
       body
       status
       url
@@ -15,13 +16,22 @@ export const GET_PAGE = gql`
         id
         label
       }
-      image {
+      images {
         id
         title
         filename
         filesize
         filetype
         url
+      }
+      attachments {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
+        type
       }
     }
   }

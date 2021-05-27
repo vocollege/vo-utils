@@ -14,13 +14,22 @@ export const GET_ARTICLE = gql`
         id
         label
       }
-      image {
+      images {
         id
         title
         filename
         filesize
         filetype
         url
+      }
+      attachments {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
+        type
       }
       created_at
       updated_at

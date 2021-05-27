@@ -28,7 +28,7 @@ export const useStyles = makeStyles(
     selected: {
       color: VoTheme.palette.secondary.dark,
       backgroundColor: VoTheme.palette.background.paper,
-      borderRadius: VoTheme.shape.borderRadiusField,
+      borderRadius: VoTheme.shape.borderRadius,
       boxShadow: VoTheme.shadows[10],
       marginLeft: `-${VoTheme.spacing(1)}px`,
       marginBottom: -58,
@@ -81,7 +81,7 @@ export const useStyles = makeStyles(
       color: purple[500],
     },
     image: {
-      borderRadius: VoTheme.shape.borderRadiusField,
+      borderRadius: VoTheme.shape.borderRadius,
       height: "auto",
       marginBottom: VoTheme.spacing(1),
       maxHeight: VoTheme.spacing(7),

@@ -11,8 +11,7 @@ import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // Custom.
-import { VoDocs } from "@vocollege/app";
-import { I18n } from "@vocollege/app";
+import { VoDocs, I18n, downloadFile } from "@vocollege/app";
 import { reducer, initialState } from "./state";
 import FileManagerHeader from "./Header";
 import FileManagerGrid from "./Grid";
@@ -53,10 +52,8 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
   const confirm = useConfirm();
   const [path, setPath] = useState<FileManagerBreadcrumbLink[]>([]);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [
-    selectedElement,
-    setSelectedElement,
-  ] = useState<FileManagerFolderElement | null>(null);
+  const [selectedElement, setSelectedElement] =
+    useState<FileManagerFolderElement | null>(null);
 
   const handleSelectClick = (element: FileManagerFolderElement | null) => {
     if (!element) {
@@ -81,7 +78,7 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
     });
   };
 
-  const handleElementActionClick = (
+  const handleElementActionClick = async (
     action: FileManagerElementAction,
     element: FileManagerFolderElement
   ) => {
@@ -133,7 +130,8 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
 
         break;
       case "download":
-        VoDocs.downloadFile(element.id);
+        let url = await VoDocs.getTemporaryFileUrl(element.id);
+        downloadFile(url.data);
         break;
     }
   };

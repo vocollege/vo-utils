@@ -58,6 +58,7 @@ export const regexPatterns = {
   stringNonDigit: /^[^0-9]+$/,
   password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, // At least 8 characters, 1 uppercase, 1 lowercase and 1 digit.
   cleanName: /(^[A-Za-z]{1,})(\w?)+$/,
+  personalNumber: /^(\d{8})[-]\d{4}$/,
 };
 
 type errorObjectType = {
@@ -147,6 +148,32 @@ export const wrapPromise = (promise: any) => {
   };
 
   return { read };
+};
+
+export const downloadFile = (url: string) => {
+  try {
+    let elId = `file-${url}`;
+
+    // Ensure that an old element is not left in the DOM.
+    let el = document.getElementById(elId);
+    if (el !== null && el.parentNode) {
+      el.parentNode.removeChild(el);
+    }
+
+    let anchor = document.createElement("a");
+    anchor.id = elId;
+    anchor.href = url;
+    anchor.download = url;
+    document.body.appendChild(anchor);
+    anchor.click();
+    setTimeout(() => {
+      if (anchor.parentNode) {
+        anchor.parentNode.removeChild(anchor);
+      }
+    }, 500);
+  } catch (error) {
+    throw error;
+  }
 };
 
 // const makeSortString = (function () {

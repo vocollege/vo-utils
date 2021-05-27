@@ -25,7 +25,7 @@ export const useStyles = makeStyles(
       },
     },
     treeNode: {
-      borderRadius: VoTheme.shape.borderRadiusField,
+      borderRadius: VoTheme.shape.borderRadius,
       border: `3px dotted transparent`,
     },
     treeNodeChanged: {

@@ -12,15 +12,8 @@ import { useStyles } from "./styles";
 let typingTimer: number;
 
 const UrlField: React.FC<FormFieldUrlFieldProps> = (props) => {
-  const {
-    name,
-    label,
-    value,
-    overrideValue,
-    required,
-    onChange,
-    helperText,
-  } = props;
+  const { name, label, value, overrideValue, required, onChange, helperText } =
+    props;
   const classes = useStyles();
   const [fieldValue, setFieldValue] = useState("");
   const [fieldLocked, setFieldLocked] = useState(true);
@@ -60,7 +53,9 @@ const UrlField: React.FC<FormFieldUrlFieldProps> = (props) => {
   }, [overrideValue]);
 
   useEffect(() => {
-    // setFieldValue(createSlug2(value || ""));
+    if (value && value !== "") {
+      setFieldLocked(false);
+    }
     setFieldValue(value || "");
   }, [value]);
 

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_QUEUE = gql`
   query Queue($id: ID!) {
@@ -6,6 +6,14 @@ export const GET_QUEUE = gql`
       id
       title
       status
+      body
+      url
+      author
+      template
+      tags {
+        id
+        label
+      }
       items {
         ... on Article {
           id
@@ -13,6 +21,21 @@ export const GET_QUEUE = gql`
           type
         }
         ... on Page {
+          id
+          title
+          type
+        }
+        ... on Section {
+          id
+          title
+          type
+        }
+        ... on User {
+          id
+          name
+          type
+        }
+        ... on Event {
           id
           title
           type
@@ -63,6 +86,12 @@ export const GET_QUEUES = gql`
           ... on Page {
             id
           }
+          ... on User {
+            id
+          }
+          ... on Event {
+            id
+          }
         }
         created_at
         updated_at
@@ -70,5 +99,3 @@ export const GET_QUEUES = gql`
     }
   }
 `;
-
-

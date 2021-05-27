@@ -1,7 +1,11 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const SEARCH_CONTENT = gql`
-  query SearchContent($search: String!, $types: String, $primaryField: String) {
+  query SearchContent(
+    $search: String!
+    $types: [String]
+    $primaryField: String
+  ) {
     searchContent(search: $search, types: $types, primaryField: $primaryField) {
       id
       title

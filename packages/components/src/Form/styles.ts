@@ -6,6 +6,7 @@ import VoTheme from "@vocollege/theme";
 export const useStyles = makeStyles(
   createStyles({
     root: {
+      margin: "0 auto",
       paddingBottom: VoTheme.spacing(3),
     },
     toolbarButton: {
@@ -25,7 +26,7 @@ export const useStyles = makeStyles(
     },
     fieldRoot: {
       border: `1px dotted ${VoTheme.palette.grey[300]}`,
-      borderRadius: VoTheme.shape.borderRadiusField,
+      borderRadius: VoTheme.shape.borderRadius,
       padding: VoTheme.spacing(1),
       width: "100%",
     },

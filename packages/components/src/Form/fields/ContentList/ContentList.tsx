@@ -7,7 +7,6 @@ import IconButton from "@material-ui/core/IconButton";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import DeleteIcon from "@material-ui/icons/Delete";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
-// import { useSnackbar } from "notistack";
 import { toast } from "react-toastify";
 
 // Custom.
@@ -18,6 +17,8 @@ import {
 } from "../../global";
 import { useStyles } from "./styles";
 import EntityPicker from "../EntityPicker";
+import FileManagerPicker from "FileManager/Picker";
+import { FileManagerFolderElement } from "FileManager/global";
 
 const reorder = (
   list: any,
@@ -31,13 +32,21 @@ const reorder = (
 };
 
 const ContentList: React.FC<FormFieldContentListProps> = (props) => {
-  const { name, label, onChange, onReset, items, types } = props;
+  const {
+    name,
+    label,
+    onChange,
+    onReset,
+    items,
+    types,
+    multiple = true,
+    contentType = "entity",
+  } = props;
   const classes = useStyles();
   const [draggableItems, setDraggableItems] = useState<
     FormFieldContentListItem[] | undefined
   >([]);
   const [isChanged, setIsChanged] = useState(false);
-  // const { enqueueSnackbar } = useSnackbar();
 
   const onDragEnd = (result: any) => {
     if (!result.destination) {
@@ -71,15 +80,10 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     if (draggableItems) {
       result = [...draggableItems];
     }
-
     let i = result.findIndex(
       (v: FormFieldContentListItem) => v.id === item.id && v.type === item.type
     );
-
     if (i > -1 && !remove) {
-      // enqueueSnackbar(I18n.get.misc.alreadyAdded, {
-      //   variant: "error",
-      // });
       toast.error(I18n.get.misc.alreadyAdded);
       return;
     }
@@ -99,6 +103,8 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
 
   const getDetails = (item: FormFieldContentListItem) => {
     let type = getType(item);
+    let typeString =
+      type && I18n.get[type]?.label ? I18n.get[type]?.label : item.type;
     return (
       <>
         <span className={classes.rowItemDetailsLabel}>{I18n.get.misc.id}:</span>
@@ -106,15 +112,17 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
         <span className={classes.rowItemDetailsLabel}>
           {I18n.get.misc.type}:
         </span>
-        <span className={classes.rowItemDetailsValue}>
-          {type && I18n.get[type]?.label}
-        </span>
+        <span className={classes.rowItemDetailsValue}>{typeString}</span>
       </>
     );
   };
 
   const handleSelect = (item: FormFieldContentListItem) => {
     addItem(item);
+  };
+
+  const handleFileSelect = (items: FileManagerFolderElement[]) => {
+    addItem(items[0]);
   };
 
   // Effects.
@@ -125,11 +133,26 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
         items
           ?.filter((v: FormFieldContentListItem) => v)
           .map((v: FormFieldContentListItem) => {
-            return {
-              id: v.id,
-              title: v.title,
-              type: v.type,
-            };
+            switch (contentType) {
+              case "file":
+                return {
+                  id: v.id,
+                  title: v.title,
+                  type: v.type,
+                  filename: "filename" in v && v.filename,
+                  filesize: "filesize" in v && v.filesize,
+                  filetype: "filetype" in v && v.filetype,
+                  url: "url" in v && v.url,
+                };
+                break;
+
+              default:
+                return {
+                  id: v.id,
+                  title: v.title,
+                  type: v.type,
+                };
+            }
           })
       );
     }
@@ -162,17 +185,25 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
               {I18n.get.actions.reset}
             </Button>
           )}
-          <EntityPicker
-            className={classes.headButton}
-            dialog={{
-              onSelect: handleSelect,
-              types: types,
-              open: false,
-            }}
-          />
+          {contentType === "entity" && (
+            <EntityPicker
+              className={classes.headButton}
+              dialog={{
+                onSelect: handleSelect,
+                types: types,
+                open: false,
+              }}
+            />
+          )}
+          {contentType === "file" && (
+            <FileManagerPicker
+              className={classes.headButton}
+              onSelect={handleFileSelect}
+              filetypes={types}
+            />
+          )}
         </div>
       </div>
-
       {draggableItems?.length === 0 && (
         <Typography
           align="center"

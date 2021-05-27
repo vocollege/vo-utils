@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const CREATE_QUEUE = gql`
   mutation CreateQueue($input: UpdateQueueInput!) {
@@ -11,6 +11,10 @@ export const CREATE_QUEUE = gql`
           title
         }
         ... on Page {
+          id
+          title
+        }
+        ... on Section {
           id
           title
         }
@@ -31,6 +35,10 @@ export const UPDATE_QUEUE = gql`
           title
         }
         ... on Page {
+          id
+          title
+        }
+        ... on Section {
           id
           title
         }

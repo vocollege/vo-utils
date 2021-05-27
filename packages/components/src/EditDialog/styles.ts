@@ -1,36 +1,26 @@
-import {
-    createStyles,
-    Theme,
-    makeStyles,
-} from '@material-ui/core/styles';
+import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-
-    },
+    root: {},
     titleRoot: {
       alignItems: "center",
       display: "flex",
-      paddingRight: theme.spacing(2)
+      paddingRight: theme.spacing(2),
     },
     titleWrapper: {
       display: "flex",
       flex: 1,
-      flexDirection: "column"
+      flexDirection: "column",
     },
-    title: {
-    },
-    subtitle: {
-
-    },
+    title: {},
+    subtitle: {},
     paper: {
-      width: theme.spacing(60)
+      width: theme.spacing(60),
     },
-    contentRoot: {
-    },
+    contentRoot: {},
     actionsRoot: {
-      padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`
+      padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
     },
     // buttonConfirm: {
     //   position: "relative",
@@ -46,4 +36,3 @@ export const useStyles = makeStyles((theme: Theme) =>
     // }
   })
 );
-

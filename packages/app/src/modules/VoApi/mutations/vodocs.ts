@@ -87,6 +87,7 @@ export const CREATE_FILE = gql`
       filename
       filesize
       filetype
+      url
       created_at
       updated_at
     }
@@ -106,6 +107,7 @@ export const UPDATE_FILE = gql`
       filename
       filesize
       filetype
+      url
       created_at
       updated_at
     }

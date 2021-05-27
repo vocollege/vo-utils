@@ -2,7 +2,10 @@ import { ApolloClient, DocumentNode } from "@apollo/client";
 import { TreeItem } from "react-sortable-tree";
 
 // Custom.
-import { FileManagerFolderElement } from "FileManager/global";
+import {
+  FileManagerFolderElement,
+  FileManagerPortfolio,
+} from "FileManager/global";
 
 export interface TabPanelProps {
   children?: React.ReactNode;
@@ -36,6 +39,7 @@ export interface FormProps extends FormNakedProps {
   urlParams?: { [key: string]: any };
   createParam?: string;
   classes?: {
+    root?: string;
     paper?: string;
     paperRoot?: string;
     toolbar?: string;
@@ -61,7 +65,6 @@ export interface FormField {
   label: string;
   type:
     | "text"
-    | "password"
     | "select"
     | "editor"
     | "switch"
@@ -71,9 +74,12 @@ export interface FormField {
     | "url_field"
     | "user_field"
     | "date_field"
+    | "datetime_field"
+    | "time_field"
     | "tags_field"
     | "file_field"
     | "location";
+  inputType?: string;
   required?: boolean;
   overrideValue?: any;
   grid?: {
@@ -91,6 +97,7 @@ export interface FormField {
   };
   render?: (data: any) => JSX.Element;
   onChange?: (data: any) => void;
+  hidden?: boolean;
 }
 
 export type FormFieldGridBreakpointValues =
@@ -117,6 +124,7 @@ export interface FormOperations {
   create?: DocumentNode;
   update: DocumentNode;
   search?: DocumentNode;
+  getOnCreate?: DocumentNode;
 }
 
 export interface FormTabsProps {
@@ -150,13 +158,25 @@ export interface FormToolbarButton {
 export interface FormFieldContentListProps {
   name: string;
   label: string;
-  onChange?: (item: EntityPickerItem[]) => void;
+  onChange?: (items: FormFieldContentListItem[]) => void;
   onReset?: () => void;
   items?: [any];
-  types: string;
+  // types: string;
+  types: string[];
+  // filetypes?: string[];
+  multiple?: boolean;
+  contentType?: "entity" | "file";
 }
 
-export interface FormFieldContentListItem extends EntityPickerItem {
+export type FormFieldContentListItem =
+  | FormFieldContentListItemEntity
+  | FormFieldContentListItemFile;
+
+export interface FormFieldContentListItemEntity extends EntityPickerItem {
+  position?: number;
+}
+
+export interface FormFieldContentListItemFile extends FileManagerFolderElement {
   position?: number;
 }
 
@@ -166,7 +186,7 @@ export interface FormFieldSortableTreeProps {
   onChange?: (items: any[]) => void;
   onReset?: () => void;
   items?: FormFieldSortableTreeItem[];
-  types: string;
+  types: string[];
 }
 
 export interface FormFieldSortableTreeItem extends EntityPickerItem {
@@ -179,7 +199,7 @@ export interface FormFieldSortableTreeItem extends EntityPickerItem {
 export interface FormFieldSortableTreeItemFormProps {
   title?: string;
   open: boolean;
-  types: string;
+  types: string[];
   onChange?: (
     item: FormFieldSortableTreeItem,
     path: FormFieldNumberOrStringArray
@@ -204,7 +224,7 @@ export interface EntityPickerDialogProps {
   onSelect?: (item: EntityPickerItem) => void;
   onClose?: () => void;
   open: boolean;
-  types: string;
+  types: string[];
   primaryField?: string;
   addNew?: boolean;
 }
@@ -233,6 +253,7 @@ export interface EntityPickerItem {
   title: string;
   type: string;
   urlAlias?: FormFieldUrlAlias;
+  file?: FileManagerFolderElement | null;
 }
 
 export interface EntityFieldProps {
@@ -242,7 +263,7 @@ export interface EntityFieldProps {
   className?: string;
   onChange?: (item: EntityPickerItem) => void;
   onReset?: () => void;
-  types: string;
+  types: string[];
   primaryField?: string;
   required?: boolean;
 }
@@ -251,7 +272,7 @@ export interface TagsFieldProps {
   label?: string;
   value?: TagsFieldItem[];
   required?: boolean;
-  types: string;
+  types: string[];
   onChange?: (items: TagsFieldItem[]) => void;
   addNew?: boolean;
 }
@@ -269,6 +290,13 @@ export interface FileFieldProps {
   onChange?: (files: FileManagerFolderElement[]) => void;
   filetypes?: string[];
   multiple?: boolean;
+  directUpload?: boolean;
+  portfolio?: FileManagerPortfolio;
+  operations?: {
+    createFile?: DocumentNode;
+    updateFile?: DocumentNode;
+    deleteFile?: DocumentNode;
+  };
 }
 
 export interface FormFieldLocationProps {

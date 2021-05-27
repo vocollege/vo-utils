@@ -53,20 +53,18 @@ class Vapor {
     await instance.put(response.data.url, file, {
       cancelToken: cancelToken,
       headers: headers,
-      onUploadProgress: function (progressEvent: any) {
-        console.log("progressEvent.loaded", progressEvent.loaded);
-
-        // options.progress(progressEvent.loaded / progressEvent.total);
-
-        let percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        );
-        console.log(
-          "onUploadProgress called with",
-          arguments,
-          "Percent Completed:" + percentCompleted
-        );
-      },
+      // onUploadProgress: function (progressEvent: any) {
+      //   // console.log("progressEvent.loaded", progressEvent.loaded);
+      //   // options.progress(progressEvent.loaded / progressEvent.total);
+      //   // let percentCompleted = Math.round(
+      //   //   (progressEvent.loaded * 100) / progressEvent.total
+      //   // );
+      //   // console.log(
+      //   //   "onUploadProgress called with",
+      //   //   arguments,
+      //   //   "Percent Completed:" + percentCompleted
+      //   // );
+      // },
     });
 
     response.data.extension = file.name.split(".").pop();

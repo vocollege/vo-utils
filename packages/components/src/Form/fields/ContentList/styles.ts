@@ -7,7 +7,7 @@ export const useStyles = makeStyles(
   createStyles({
     root: {
       border: `1px dotted ${VoTheme.palette.grey[500]}`,
-      borderRadius: VoTheme.shape.borderRadiusField,
+      borderRadius: VoTheme.shape.borderRadius,
       padding: VoTheme.spacing(2),
       width: "100%",
     },
@@ -64,7 +64,7 @@ export const useStyles = makeStyles(
     },
     list: {
       border: "2px dashed transparent",
-      borderRadius: VoTheme.shape.borderRadiusField,
+      borderRadius: VoTheme.shape.borderRadius,
       margin: `0 -${VoTheme.spacing(1) + 2}px -${VoTheme.spacing(1)}px`,
       padding: `${VoTheme.spacing(2)}px ${VoTheme.spacing(1)}px 0`,
     },
@@ -74,7 +74,7 @@ export const useStyles = makeStyles(
     item: {
       backgroundColor: VoTheme.palette.grey[100],
       border: `1px solid ${VoTheme.palette.grey[200]}`,
-      borderRadius: VoTheme.shape.borderRadiusField,
+      borderRadius: VoTheme.shape.borderRadius,
       margin: `0 0 ${VoTheme.spacing(2)}px 0`,
       padding: VoTheme.spacing(1),
       userSelect: "none",

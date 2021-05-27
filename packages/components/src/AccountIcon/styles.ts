@@ -14,7 +14,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     loading: {},
     paper: {
-      borderRadius: theme.shape.borderRadiusField,
+      borderRadius: theme.shape.borderRadius,
     },
     loader: {
       left: "50%",

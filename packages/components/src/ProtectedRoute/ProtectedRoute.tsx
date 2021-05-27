@@ -28,7 +28,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     let visible = VoAuth.ability.can(action, subject);
     if (!visible) {
       toast.error(
-        I18n.trans(I18n.get.acl.errors.routeNotAllowed, { route: path })
+        I18n.trans(I18n.get.acl.errors.routeNotAllowed, { route: path }),
+        { autoClose: false }
       );
     }
     return visible;

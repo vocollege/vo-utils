@@ -247,6 +247,7 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
             onChange={(treeData) => setTreeData(treeData)}
             generateNodeProps={(data) => getNodeProps(data)}
             onMoveNode={handleOnMove}
+            isVirtualized={false}
           />
         )}
       </div>

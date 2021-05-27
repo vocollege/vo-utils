@@ -58,20 +58,20 @@ const regexPatterns = {
   username: /(^[a-z]{3,})([0-9]?)+$/,
   email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
   stringNonDigit: /^[^0-9]+$/,
-  password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/ // At least 8 characters, 1 uppercase, 1 lowercase and 1 digit.
-}
+  password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, // At least 8 characters, 1 uppercase, 1 lowercase and 1 digit.
+};
 
 type errorObjectType = {
   message: string;
   fields?: {
-    [key: string]: string
-  }
-}
+    [key: string]: string;
+  };
+};
 
 const getError = (error: any): errorObjectType => {
-  let message = '';
-  let fields: {[key: string]: string} = {};
-  if (typeof error === 'string') {
+  let message = "";
+  let fields: { [key: string]: string } = {};
+  if (typeof error === "string") {
     message = error;
   }
   if (error.message) {
@@ -79,17 +79,21 @@ const getError = (error: any): errorObjectType => {
   } else if (error.debugMessage) {
     message = error.debugMessage;
   }
-  if (error.graphQLErrors && error.graphQLErrors[0].extensions.category && error.graphQLErrors[0].extensions.category === 'validation') {
+  if (
+    error.graphQLErrors &&
+    error.graphQLErrors[0].extensions.category &&
+    error.graphQLErrors[0].extensions.category === "validation"
+  ) {
     fields = Object.assign({}, error.graphQLErrors[0].extensions.validation);
   }
   const result: errorObjectType = {
-    message
-  }
+    message,
+  };
   if (Object.keys(fields).length > 0) {
     result.fields = fields;
   }
   return result;
-}
+};
 
 // const formatError = (error: string | [any]) => {
 //   if (typeof error === "string") {
@@ -113,5 +117,5 @@ export {
   localStorage,
   encodeQueryData,
   regexPatterns,
-  getError
+  getError,
 };

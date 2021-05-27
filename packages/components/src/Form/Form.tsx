@@ -3,23 +3,27 @@ import React, { useState, useReducer, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+// import FormGroup from "@material-ui/core/FormGroup";
+// import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import Switch from "@material-ui/core/Switch";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-// import Dayjs from "dayjs";
+import Dayjs from "dayjs";
 import { useParams, useHistory } from "react-router-dom";
 import { Prompt } from "react-router";
 import { useLazyQuery, useMutation, ApolloError } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import clsx from "clsx";
 
 // Custom.
 import { VoAuth } from "@vocollege/app";
 import VoTextField from "VoTextField";
-import VoPickerField from "VoPickerField";
+import {
+  VoDatePickerField,
+  VoDateTimePickerField,
+  VoTimePickerField,
+} from "VoPickerField";
 import VoSelectField, { VoSelectFieldAvailableValue } from "VoSelectField";
 import ContentList from "./fields/ContentList";
 import SortableTree from "./fields/SortableTree";
@@ -27,6 +31,7 @@ import UrlField from "./fields/UrlField";
 import EntityField from "./fields/EntityField";
 import TagsField from "./fields/TagsField";
 import FileField from "./fields/FileField";
+import Switch from "Switch";
 import { reducer } from "./state";
 import { useStyles } from "./styles";
 import {
@@ -47,14 +52,13 @@ import Editor from "Editor";
 import { FileManagerFolderElement } from "FileManager/global";
 import { stylesLayout } from "@vocollege/theme";
 import { I18n } from "@vocollege/app";
-
 import { fakeMutation } from "@vocollege/app";
 import Location from "./fields/Location";
 
 // const useStylesCommon = makeStyles(() => stylesCommon);
 const useStylesLayout = makeStyles(() => stylesLayout);
 
-let typingTimer: number;
+let typingTimer: { [key: string]: number } = {};
 
 const Form: React.FC<FormProps> = (props) => {
   const {
@@ -86,8 +90,10 @@ const Form: React.FC<FormProps> = (props) => {
 
   const {
     handleSubmit,
+    // trigger,
     register,
-    unregister,
+    // unregister,
+    // clearErrors,
     setError,
     setValue,
     reset,
@@ -95,6 +101,7 @@ const Form: React.FC<FormProps> = (props) => {
     getValues,
   } = useForm({
     mode: "onChange",
+    // shouldUnregister: true,
   });
 
   const { isDirty, isValid, errors } = formState;
@@ -119,10 +126,33 @@ const Form: React.FC<FormProps> = (props) => {
       tab.fields
         // .filter((field: FormField) => field.name !== primaryField)
         .forEach((field: FormField) => {
+          // if (
+          //   ["datetime_filed", "date_field", "time_field"].indexOf(field.type) >
+          //   -1
+          // ) {
+          //   values[field.name] = Dayjs(state[field.name]).format(
+          //     getDefaultDateFormat(field)
+          //   );
+          // } else {
           values[field.name] = state[field.name];
+          // }
         });
     });
     return values;
+  };
+
+  const getDefaultDateFormat = (field: FormField) => {
+    if (field?.params?.format) {
+      return field?.params?.format;
+    }
+    switch (field.type) {
+      case "datetime_field":
+        return "YYYY-MM-DD HH:mm";
+      case "time_field":
+        return "HH:mm";
+      default:
+        return "YYYY-MM-DD";
+    }
   };
 
   const handleSave = () => {
@@ -147,12 +177,12 @@ const Form: React.FC<FormProps> = (props) => {
   ) => {
     const { name, value } = e.target;
     let newValue: any = value;
-    clearTimeout(typingTimer);
+    clearTimeout(typingTimer[name]);
     dispatch({ field: name, value: newValue });
     if (onChange) {
       onChange(newValue);
     }
-    typingTimer = window.setTimeout(async () => {
+    typingTimer[name] = window.setTimeout(async () => {
       setValue(`${name}` as const, newValue, {
         shouldValidate: true,
         shouldDirty: true,
@@ -183,13 +213,18 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleCheckChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    onChange: FormField["onChange"]
+    field: FormField
   ) => {
     const { name } = e.target;
-    let newValue = e.target.checked ? 1 : 0;
-    dispatch({ field: name, value: newValue });
-    if (onChange) {
-      onChange(newValue);
+    let newValue: boolean | number;
+    if (field?.params?.boolean) {
+      newValue = e.target.checked;
+    } else {
+      newValue = e.target.checked ? 1 : 0;
+    }
+    dispatch({ field: field.name, value: newValue });
+    if (field.onChange) {
+      field.onChange(newValue);
     }
     setValue(`${name}` as const, newValue, {
       shouldValidate: true,
@@ -202,12 +237,12 @@ const Form: React.FC<FormProps> = (props) => {
     field: string,
     onChange: FormField["onChange"]
   ) => {
-    clearTimeout(typingTimer);
+    clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: content });
     if (onChange) {
       onChange(content);
     }
-    typingTimer = window.setTimeout(async () => {
+    typingTimer[field] = window.setTimeout(async () => {
       setValue(`${field}` as const, content, { shouldDirty: true });
     }, 300);
   };
@@ -218,7 +253,7 @@ const Form: React.FC<FormProps> = (props) => {
     fieldParams: any,
     onChange: FormField["onChange"]
   ) => {
-    clearTimeout(typingTimer);
+    clearTimeout(typingTimer[field]);
     let parsedItems = items.map((v: FormFieldContentListItem) => {
       if (!fieldParams || !fieldParams.fields) {
         return v;
@@ -234,7 +269,7 @@ const Form: React.FC<FormProps> = (props) => {
     if (onChange) {
       onChange(parsedItems);
     }
-    typingTimer = window.setTimeout(async () => {
+    typingTimer[field] = window.setTimeout(async () => {
       setValue(`${field}` as const, items, { shouldDirty: true });
     }, 300);
   };
@@ -248,12 +283,12 @@ const Form: React.FC<FormProps> = (props) => {
     field: string,
     onChange: FormField["onChange"]
   ) => {
-    clearTimeout(typingTimer);
+    clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: items });
     if (onChange) {
       onChange(items);
     }
-    typingTimer = window.setTimeout(async () => {
+    typingTimer[field] = window.setTimeout(async () => {
       setValue(`${field}` as const, items, { shouldDirty: true });
     }, 300);
   };
@@ -267,12 +302,12 @@ const Form: React.FC<FormProps> = (props) => {
     value: string,
     onChange: FormField["onChange"]
   ) => {
-    clearTimeout(typingTimer);
+    clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: value });
     if (onChange) {
       onChange(value);
     }
-    typingTimer = window.setTimeout(() => {
+    typingTimer[field] = window.setTimeout(() => {
       setValue(`${field}` as const, value, {
         shouldValidate: true,
         shouldDirty: true,
@@ -304,9 +339,11 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeDate = (
     field: string,
     date: MaterialUiPickersDate,
-    onChange: FormField["onChange"]
+    onChange: FormField["onChange"],
+    format: string
   ) => {
-    let value = date?.format("YYYY-MM-DD");
+    let value = date?.format(format);
+    // let value = date;
     dispatch({ field: field, value: value });
     if (onChange) {
       onChange(value);
@@ -341,8 +378,10 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const handleChangeLocation = (field: string, location: FormFieldLocation) => {
-    dispatch({ field: field, value: location });
-    setValue(`${field}` as const, location, {
+    let value =
+      location.latitude !== "" && location.longitude !== "" ? location : "";
+    dispatch({ field: field, value: value });
+    setValue(`${field}` as const, value, {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -364,7 +403,7 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const getContentListItems = (items: any, fieldParams: any) => {
-    if (!fieldParams || !fieldParams.fields) {
+    if (!items || !fieldParams || !fieldParams.fields) {
       return items;
     }
     return items.map((v: any) => {
@@ -387,6 +426,9 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const getSelectValue = (field: FormField) => {
+    if (!state[field.name]) {
+      return "";
+    }
     if (Array.isArray(state[field.name])) {
       return state[field.name][0] ? state[field.name][0].id : "";
     }
@@ -394,6 +436,21 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const getField = (field: FormField) => {
+    let visible = true;
+    if (field.params?.dependency) {
+      for (let fieldDependee in field.params?.dependency) {
+        visible =
+          (state[fieldDependee] ===
+            field.params?.dependency[fieldDependee].value) ===
+          field.params?.dependency[fieldDependee].visibility;
+      }
+      if (!visible) {
+        return "";
+      }
+    }
+
+    register(`${field.name}` as const, field?.validation);
+
     if (field.validation && field.validation.match) {
       field.validation.validate = {
         matchesField: (value: string) => {
@@ -402,43 +459,28 @@ const Form: React.FC<FormProps> = (props) => {
         },
       };
     }
-    let visibility = true;
-    if (field.params?.dependency) {
-      for (let fieldDependee in field.params?.dependency) {
-        visibility =
-          (state[fieldDependee] ===
-            field.params?.dependency[fieldDependee].value) ===
-          field.params?.dependency[fieldDependee].visibility;
-      }
-      if (visibility) {
-        register(`${field.name}` as const, field?.validation);
-      } else {
-        unregister(`${field.name}` as const);
-        return null;
-      }
-    } else {
-      register(`${field.name}` as const, field?.validation);
-    }
 
     if (field.render) {
       return field.render(state[field.name]);
     }
-    
+
+    let format = "";
+
     switch (field.type) {
       case "text":
-      case "password":
         return (
           <VoTextField
             name={field.name}
             label={field.label}
-            value={state[field.name]}
+            value={state[field.name] || ""}
             onChange={(e) => handleChange(e, field.onChange)}
             variant="filled"
             fullWidth
-            type={field.type === "password" ? "password" : "text"}
+            type={field.inputType || "text"}
             required={field.required}
             error={!!errors[field.name]}
             helperText={errors[field.name] ? errors[field.name]?.message : ""}
+            hidden={field.hidden}
           />
         );
       case "select":
@@ -459,18 +501,16 @@ const Form: React.FC<FormProps> = (props) => {
         );
       case "switch":
         return (
-          <FormGroup row>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={state[field.name] === 1}
-                  onChange={(e) => handleCheckChange(e, field.onChange)}
-                  name={field.name}
-                />
-              }
-              label={field.label}
-            />
-          </FormGroup>
+          <Switch
+            checked={
+              !field?.params?.boolean
+                ? state[field.name] === 1
+                : state[field.name]
+            }
+            onChange={(e) => handleCheckChange(e, field)}
+            label={field.label}
+            name={field.name}
+          />
         );
       case "editor":
         return (
@@ -497,6 +537,8 @@ const Form: React.FC<FormProps> = (props) => {
             onReset={() => handleContentListReset(field.name)}
             items={getContentListItems(state[field.name], field.params)}
             types={field.params?.types}
+            contentType={field.params?.contentType}
+            multiple={field.params?.multiple}
           />
         );
 
@@ -553,15 +595,46 @@ const Form: React.FC<FormProps> = (props) => {
           />
         );
       case "date_field":
+        format = getDefaultDateFormat(field);
         return (
-          <VoPickerField
+          <VoDatePickerField
             name={field.name}
             label={field.label}
-            value={state[field.name]}
-            onChange={(date) =>
-              handleChangeDate(field.name, date, field.onChange)
+            value={Dayjs(state[field.name], format)}
+            onChange={(value) =>
+              handleChangeDate(field.name, value, field.onChange, format)
             }
-            format="YYYY-MM-DD"
+            format={format}
+            required={field?.required}
+            fullWidth
+          />
+        );
+      case "datetime_field":
+        format = getDefaultDateFormat(field);
+        return (
+          <VoDateTimePickerField
+            name={field.name}
+            label={field.label}
+            value={Dayjs(state[field.name], format)}
+            onChange={(value) =>
+              handleChangeDate(field.name, value, field.onChange, format)
+            }
+            format={format}
+            required={field?.required}
+            fullWidth
+          />
+        );
+      case "time_field":
+        format = getDefaultDateFormat(field);
+        return (
+          <VoTimePickerField
+            name={field.name}
+            label={field.label}
+            value={Dayjs(state[field.name], format)}
+            onChange={(value) =>
+              handleChangeDate(field.name, value, field.onChange, format)
+            }
+            format={format}
             required={field?.required}
             fullWidth
           />
@@ -588,6 +661,9 @@ const Form: React.FC<FormProps> = (props) => {
             }
             filetypes={field.params?.filetypes}
             multiple={field.params?.multiple}
+            directUpload={field.params?.directUpload}
+            portfolio={field.params?.portfolio}
+            operations={field.params?.operations}
           />
         );
       case "location":
@@ -633,7 +709,13 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleError = (error: any) => {
     setValidationError(error.graphQLErrors);
-    toast.error(error.message);
+    toast.error(error.message, { autoClose: 10000 });
+  };
+
+  const getOperation = () => {
+    return isCreateNew() && operations.getOnCreate
+      ? operations.getOnCreate
+      : operations.get;
   };
 
   // API
@@ -641,7 +723,7 @@ const Form: React.FC<FormProps> = (props) => {
   const [
     loadQuery,
     { error: queryError, data, called: queryCalled, loading: queryLoading },
-  ] = useLazyQuery(operations.get, {
+  ] = useLazyQuery(getOperation(), {
     client: client || undefined,
     fetchPolicy: "cache-and-network",
     errorPolicy: "all",
@@ -668,15 +750,30 @@ const Form: React.FC<FormProps> = (props) => {
   // useEffect
 
   useEffect(() => {
+    let callLoadQuery = !queryCalled;
     if (isCreateNew()) {
       reset(initialState);
-    } else if (!queryCalled) {
+      if (operations) {
+        callLoadQuery = typeof operations.getOnCreate !== "undefined" || false;
+      }
+    }
+    if (callLoadQuery) {
       loadQuery({
         variables: {
           ...variables,
         },
       });
     }
+
+    // if (isCreateNew()) {
+    //   reset(initialState);
+    // } else if (!queryCalled) {
+    //   loadQuery({
+    //     variables: {
+    //       ...variables,
+    //     },
+    //   });
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -693,10 +790,11 @@ const Form: React.FC<FormProps> = (props) => {
 
   useEffect(() => {
     if (data && data[operations.category]) {
+      let mergedData = { ...initialState, ...data[operations.category] };
       dispatch({
-        item: { ...data[operations.category] },
+        item: mergedData,
       });
-      reset(data[operations.category]);
+      reset(mergedData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -717,7 +815,7 @@ const Form: React.FC<FormProps> = (props) => {
   }, [queryLoading]);
 
   if (queryError) {
-    toast.error(queryError.message, { autoClose: false });
+    toast.error(queryError.message, { autoClose: 10000 });
   }
 
   return (
@@ -740,10 +838,15 @@ const Form: React.FC<FormProps> = (props) => {
         </div>
       )}
       {!queryLoading && !queryError && (
-        <form className={classes.root} noValidate autoComplete="off">
+        <form
+          className={clsx(classes.root, classesProp?.root)}
+          noValidate
+          autoComplete="off"
+        >
           {/* <div style={{ marginTop: 100 }}>{JSON.stringify(state)}</div> */}
           {/* <div style={{ marginTop: 100 }}>{JSON.stringify(getValues())}</div> */}
           {/* <div style={{ marginTop: 100 }}>{JSON.stringify(formState)}</div> */}
+          {/* <div style={{ marginTop: 100 }}>{JSON.stringify(errors)}</div> */}
           {!disableToolbar && (
             <FormToolbar
               title={getPageTitle()}

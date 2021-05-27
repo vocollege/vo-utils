@@ -13,7 +13,7 @@ import { useStyles as useStylesForm } from "../../styles";
 const reducer = (state: any, action: any) => {
   const { field, value } = action;
   if (!action.field) {
-    return action.value;
+    return { ...state, ...value };
   }
   return { ...state, [field]: value };
 };
@@ -21,6 +21,7 @@ const reducer = (state: any, action: any) => {
 const initialState = {
   latitude: "",
   longitude: "",
+  dirty: false,
 };
 
 const Location: React.FC<FormFieldLocationProps> = (props) => {
@@ -33,8 +34,9 @@ const Location: React.FC<FormFieldLocationProps> = (props) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    dispatch({ field: name, value: value });
-
+    dispatch({
+      value: { [name]: value, dirty: true },
+    });
     if (onChange) {
       let newState = { ...state };
       newState[name] = value;
@@ -43,7 +45,7 @@ const Location: React.FC<FormFieldLocationProps> = (props) => {
   };
 
   const isValid = () => {
-    if (required) {
+    if (required && state.dirty) {
       return state.latitude !== "" && state.longitude !== "";
     }
     return true;
@@ -52,9 +54,11 @@ const Location: React.FC<FormFieldLocationProps> = (props) => {
   // Effects.
 
   useEffect(() => {
-    dispatch({
-      value: { latitude: value?.latitude, longitude: value?.longitude },
-    });
+    if (value?.latitude && value?.longitude) {
+      dispatch({
+        value: { latitude: value.latitude, longitude: value.longitude },
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 

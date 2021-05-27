@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_SETTINGS = gql`
   query Settings {
@@ -6,8 +6,14 @@ export const GET_SETTINGS = gql`
       name
       category
       value
+      file {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
+      }
     }
   }
 `;
-
-

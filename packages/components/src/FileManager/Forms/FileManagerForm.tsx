@@ -1,6 +1,5 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useMutation, ApolloError } from "@apollo/client";
-// import { useSnackbar } from "notistack";
 import Grid from "@material-ui/core/Grid";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -35,31 +34,23 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
     client,
     fields,
     editElement,
+    hidePath,
   } = props;
   const { handleSubmit, register, setValue, formState } = useForm({
     mode: "onChange",
   });
   const { isDirty, errors } = formState;
-  // const { enqueueSnackbar } = useSnackbar();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [loading, setLoading] = useState(false);
   // const [uploadProgress, setUploadProgress] = useState(0);
 
   // Methods.
 
   const handleError = (error: ApolloError) => {
-    // enqueueSnackbar(error.message, {
-    //   variant: "error",
-    // });
-    toast.error(error.message);
+    toast.error(error.message, { autoClose: 10000 });
   };
 
   const handleCompleted = (data: any) => {
-    // enqueueSnackbar(
-    //   isCreateNew() ? messages?.itemCreated : messages?.itemUpdated,
-    //   {
-    //     variant: "success",
-    //   }
-    // );
     toast.success(
       isCreateNew() ? messages?.itemCreated : messages?.itemUpdated
     );
@@ -124,6 +115,7 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     const variables: { [key: string]: any } = {
       input: { ...state },
     };
@@ -146,10 +138,11 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
           // },
           bucket: bucket,
           baseURL: process.env.REACT_APP_API_BASE_URL,
-          headers: {
-            Authorization: "vanderlei",
-          },
+          // headers: {
+          //   Authorization: "",
+          // },
         });
+
         variables.input.tempFile = {
           bucket: response.bucket,
           key: response.key,
@@ -167,11 +160,9 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
         });
       }
     } catch (error) {
-      // enqueueSnackbar(error.message, {
-      //   variant: "error",
-      // });
-      toast.error(error.message);
+      toast.error(error.message, { autoClose: 10000 });
     }
+    setLoading(false);
   };
 
   const getAvailableValues = (
@@ -202,6 +193,7 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
             inputProps={{
               autoComplete: "off",
             }}
+            hidden={field.hidden}
           />
         );
       case "file_uploader":
@@ -334,10 +326,10 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
       open={open}
       title={getTitle()}
       subtitle={getSubtitle()}
-      contentText={getContentText()}
+      contentText={!hidePath ? getContentText() : null}
       onConfirm={handleSubmit(handleSave)}
       onCancel={onCancel}
-      loading={createLoading || updateLoading}
+      loading={loading || createLoading || updateLoading}
       saveDisabled={!isDirty}
     >
       <Grid container spacing={2}>

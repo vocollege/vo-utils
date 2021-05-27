@@ -1,13 +1,32 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_USER = gql`
   query User($id: ID!) {
     user(id: $id) {
       id
       name
-      email,
-      firstname,
-      lastname,
+      email
+      firstname
+      lastname
+      active
+      personal_number
+      address1
+      address2
+      zip
+      county
+      country
+      phone1
+      profession
+      status
+      description
+      images {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
+      }
       updated_at
       created_at
       groups {
@@ -55,9 +74,9 @@ export const GET_USERS = gql`
         id
         name
         email
+        active
+        status
       }
     }
   }
 `;
-
-

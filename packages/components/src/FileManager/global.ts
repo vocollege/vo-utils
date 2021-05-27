@@ -187,6 +187,7 @@ export interface FileManagerFormProps {
   editElement?: FileManagerFolderElement;
   fields?: FormField[];
   initialState?: any;
+  hidePath?: boolean;
 }
 
 export interface FileManagerFormOperations {
@@ -261,4 +262,10 @@ export interface FileManagerDialogProps {
   filetypes?: string[];
   multiple?: boolean;
   files?: FileManagerFolderElement[];
+}
+
+export interface FileManagerPickerProps {
+  className?: string;
+  onSelect?: (files: FileManagerFolderElement[]) => void;
+  filetypes?: string[];
 }

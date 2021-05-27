@@ -29,9 +29,7 @@ let typingTimer: number;
 const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
   const { onSelect, onClose, open, types, primaryField, addNew } = props;
   const classes = useStyles();
-  // const { enqueueSnackbar } = useSnackbar();
   const searchInput = useRef();
-  // const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<null | EntityPickerItem[]>(
     []
@@ -39,19 +37,14 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
 
   // Methods.
 
-  const [
-    searchItems,
-    { loading: searchLoading, data: searchData },
-  ] = useLazyQuery(SEARCH_CONTENT, {
-    fetchPolicy: "network-only",
-    errorPolicy: "all",
-    onError: (error) => {
-      // enqueueSnackbar(error.message, {
-      //   variant: "error",
-      // });
-      toast.error(error.message);
-    },
-  });
+  const [searchItems, { loading: searchLoading, data: searchData }] =
+    useLazyQuery(SEARCH_CONTENT, {
+      fetchPolicy: "network-only",
+      errorPolicy: "all",
+      onError: (error) => {
+        toast.error(error.message, { autoClose: false });
+      },
+    });
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -95,7 +88,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
     selectItem({
       id: getTemporaryId(),
       title: searchTerm,
-      type: types,
+      type: types.join(","),
     });
   };
 

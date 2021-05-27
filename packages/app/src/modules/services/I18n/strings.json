@@ -9,11 +9,20 @@
             "password": "Lösenord",
             "passwordCurrent": "Nuvarande lösenord",
             "passwordRepeat": "Upprepa lösenord",
-            "users": "Användare"
+            "users": "Användare",
+            "personalData": "Personuppgifter",
+            "personalNumber": "Personnr",
+            "address": "Adress",
+            "zip": "Postnummer",
+            "county": "Ort",
+            "country": "Land",
+            "phone": "Telefonnummer",
+            "professionalTitle": "Yrkestitel"
         },
         "messages": {
             "userSaved": "Användaren har uppdaterats",
-            "userDeleted": "Användaren har raderats"
+            "userDeleted": "Användaren har raderats",
+            "statusHelper": "Detta avgör om en användare syns utåt, exempelvis i köer."
         }
     },
     "acl": {
@@ -44,16 +53,77 @@
     },
     "page": {
         "label": "Sida",
+        "labels": {
+        },
         "messages": {
             "pageSaved": "Sidan har sparats",
             "pageDeleted": "Sidan har raderats"
+        },
+        "contentTypes": {
+            "page": "Sida",
+            "article": "Artikel",
+            "calendar": "Kalenderinlägg",
+            "front": "Sektion till startsidan"
         }
     },
     "queue": {
         "label": "Kö",
+        "labels": {
+            "cardTemplate": "Kortmall"
+        },
         "messages": {
             "queueSaved": "Kön har sparats",
             "queueDeleted": "Kön har raderats"
+        },
+        "templates": {
+            "standard": "Standard",
+            "contact": "Kontakt",
+            "event": "Händelse"
+        }
+    },
+    "section": {
+        "label": "Sektion",
+        "labels": {
+            "sections": "Sektioner",
+            "imageFull": "Fyll upp bilden",
+            "createSection": "Skapa sektion"
+        },
+        "messages": {
+            "sectionSaved": "Sektionen har sparats",
+            "sectionDeleted": "Sektionen har raderats"
+        },
+        "templates": {
+            "default_left": "Standard, vänster",
+            "default_right": "Standard, höger",
+            "blue_left": "Blå, vänster",
+            "blue_right": "Blå, höger",
+            "green_left": "Grön, vänster",
+            "green_right": "Grön, höger",
+        }
+    },
+    "event": {
+        "label": "Händelse",
+        "labels": {
+            "events": "Händelser",
+            "createEvent": "Skapa händelse",
+            "location": "Plats",
+            "calendar": "Kalender"
+        },
+        "messages": {
+            "eventSaved": "Händelsen har sparats",
+            "eventDeleted": "Händelsen har raderats"
+        }
+    },
+    "contactpage": {
+        "label": "Kontaktsida",
+        "labels": {
+            "contactPages": "Kontaktsidor",
+            "createContactPage": "Skapa kontaktsida",
+            "contacts": "Kontakter"
+        },
+        "messages": {
+            "contactPageSaved": "Kontaktsidan har sparats",
+            "contactPageDeleted": "Kontaktsidan har raderats"
         }
     },
     "menu": {
@@ -80,7 +150,7 @@
             "groupPermissions": "Gruppbehörigheter"
         },
         "errors": {
-            "invalidGroupName": "Ogiltigt gruppnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'nationellt', 'krnoberg'"
+            "invalidGroupName": "Ogiltigt gruppnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'nationellt', 'kronoberg', 'projekt2020'"
         },
         "messages": {
             "groupSaved": "Gruppen har sparats",
@@ -94,11 +164,16 @@
     },
     "settings": {
         "label": {
-            "newsSectionQueue": "Kö för nyhetssektion",
-            "puffSectionQueue": "Kö för puffsektion",
-            "infoSectionQueue": "Kö för infosektion",
+            "slideshowQueue": "Kö för bildspel",
+            "newsQueue": "Kö för artiklar",
+            "puffQueue": "Kö för puffar",
+            "sectionsQueue": "Kö för sektioner",
             "mainMenu": "Meny för huvudnavigering",
-            "headerMenu": "Meny på sidans huvud"
+            "headerMenu": "Meny på sidans huvud",
+            "footerPage": "Sidan vars innehåll kommer att visas på sidans fot",
+            "publicDefaultPortfolio": "Standardportfölj för lagring av diverse uppladade filer, t ex profilbilder",
+            "defaultUserAvatar": "Standard avatar för användare",
+            "defaultContentAvatar": "Standard avatar för diverse innehåll"
         },
         "messages": {
             "settingsSaved": "Inställningarna har sparats"
@@ -116,6 +191,9 @@
         "labels": {
             "tags": "Taggar"
         }
+    },
+    "portfolio": {
+        "label": "Portfölj"
     },
     "docs": {
         "label": {
@@ -176,7 +254,8 @@
             "invalidFirstname": "Ogiltigt förnamn",
             "invalidLastname": "Ogiltigt efternamn",
             "password": "Lösenordet måste vara minst 8 tecken, varav 1 versal, 1 gemen och 1 siffra",
-            "passwordNotMatch": "Lösenorden matchar inte"
+            "passwordNotMatch": "Lösenorden matchar inte",
+            "personalNumberInvalid": "Personnumret ska innehålla 12 siffror, med bindestreck."
         },
         "labels": {
             "createUser": "Skapa användare",
@@ -192,6 +271,7 @@
             "check": "Kontrollera",
             "checkAvailability": "Kontrollera tillgänglighet",
             "title": "Titel",
+            "shortTitle": "Kort titel",
             "description": "Beskrivning",
             "body": "Brödtext",
             "status": "Status",
@@ -203,8 +283,20 @@
             "category": "Kategori",
             "latitude": "Latitud",
             "longitude": "Longitud",
-            "location": "Position"
-        },
+            "location": "Position",
+            "contentType": "Innehållstyp",
+            "template": "Mall",
+            "start": "Start",
+            "end": "Slut",
+            "allday": "Hela dagen",
+            "time": "Tid",
+            "startdate": "Startdatum",
+            "starttime": "Starttid",
+            "enddate": "Slutdatum",
+            "endtime": "Sluttid",
+            "date": "Datum",
+            "active": "Aktiv"
+         },
         "messages": {
             "invalidFields": "Det finns ogiltiga fält i formuläret",
             "fieldPopulatedBy": "Detta fält autogenereras baserat på '::field'.",
@@ -219,7 +311,8 @@
         "yes": "Ja",
         "reset": "Återställ",
         "clearSearch": "Rensa sökresultatet",
-        "backToHome": "Tillbaka till startsidan"
+        "backToHome": "Tillbaka till startsidan",
+        "upload": "Ladda upp"
     },
     "status": {
         "unpublished": "Opublicerat",
@@ -228,7 +321,8 @@
     "messages": {
         "areYouSure": "Är du säker?",
         "deleteElement": "Vill du radera ::element?",
-        "actionCantBeUndone": "Denna åtgärd kan inte ångras"
+        "actionCantBeUndone": "Denna åtgärd kan inte ångras",
+        "sessionExpired": "Din session behöver förnyas och du omdirigeras till inloggningen. Var vänlig och logga in igen."
     },
     "toolbar": {
         "createNewItem": "Skapa nytt objekt",
@@ -257,6 +351,7 @@
         "articles": "Artiklar",
         "pages": "Sidor",
         "content": "Innehåll",
+        "extra": "Extra",
         "documentbank": "Dokumentbank",
         "queues": "Köer",
         "queue": "Kö",
@@ -270,6 +365,8 @@
         "date": "Datum",
         "image": "Bild",
         "logotype": "Logotyp",
-        "login": "Logga in"
+        "login": "Logga in",
+        "attachment": "Bilaga",
+        "attachments": "Bilagor"
     }
 }

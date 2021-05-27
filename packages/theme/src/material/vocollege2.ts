@@ -1,13 +1,19 @@
-import {
-  createMuiTheme,
-  responsiveFontSizes,
-  // Theme,
-  // ThemeOptions,
-} from "@material-ui/core/styles";
-// import { Shadows } from "@material-ui/core/styles/shadows";
-// import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
+import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
+
+interface CustomColors {
+  orangeLighter: string;
+  orangeLight: string;
+  orange: string;
+  wineRedLight: string;
+  wineRed: string;
+  lilaLight: string;
+  lila: string;
+}
 
 declare module "@material-ui/core/styles/createPalette" {
+  interface Palette {
+    custom: CustomColors;
+  }
   interface PaletteColor {
     lighter: string;
     darker: string;
@@ -17,7 +23,7 @@ declare module "@material-ui/core/styles/createPalette" {
 
 declare module "@material-ui/core/styles/shape" {
   interface Shape {
-    borderRadiusField: number;
+    borderRadiusMedium: number;
     borderRadiusBig: number;
     drawerWidth: number;
   }
@@ -64,10 +70,19 @@ const options = {
       300: "#B2B2B2",
       700: "#646464", // VO Secondary 4
     },
+    custom: {
+      orangeLighter: "#F7DFD0",
+      orangeLight: "#F0BFA0",
+      orange: "#E07E41",
+      wineRedLight: "#C89DAA",
+      wineRed: "#913C55",
+      lilaLight: "#CABBD9",
+      lila: "#9678B4",
+    },
   },
   shape: {
     borderRadius: 8,
-    borderRadiusField: 6,
+    borderRadiusMedium: 16,
     borderRadiusBig: 40,
     drawerWidth: 240,
   },
@@ -106,8 +121,8 @@ const options = {
     "0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)",
     "0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)",
     "0px 4px 5px -2px rgba(0,0,0,0.2),0px 7px 10px 1px rgba(0,0,0,0.14),0px 2px 16px 1px rgba(0,0,0,0.12)",
-    "0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)",
 
+    "0px 7px 18px -4px rgba(0,0,0,0.2)",
     "0px 10px 18px -10px rgba(0,0,0,0.2)",
     "0px 0px 18px 0px rgba(0,0,0,0.12)",
 

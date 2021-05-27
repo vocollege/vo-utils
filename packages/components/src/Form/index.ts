@@ -1,10 +1,11 @@
 import Form from "./Form";
 import FormNaked from "./FormNaked";
 import FormTabs from "./FormTabs";
+import FormViews from "./FormViews";
 import FormToolbar from "./FormToolbar";
 export * from "./Form";
 export default Form;
-export { FormNaked, FormTabs, FormToolbar };
+export { FormNaked, FormTabs, FormViews, FormToolbar };
 export * from "./global";
 export * from "./fields/ContentList";
 export * from "./fields/EntityField";

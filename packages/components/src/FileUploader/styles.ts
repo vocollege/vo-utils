@@ -8,7 +8,7 @@ export const useStyles = makeStyles(
     root: {
       alignItems: "center",
       border: `1px dotted ${VoTheme.palette.grey[500]}`,
-      borderRadius: VoTheme.shape.borderRadiusField,
+      borderRadius: VoTheme.shape.borderRadius,
       display: "flex",
       minHeight: VoTheme.spacing(13),
       padding: 10,

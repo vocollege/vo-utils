@@ -27,7 +27,7 @@ export const useStyles = makeStyles(
     },
     searchResultWrapper: {
       border: `1px solid ${VoTheme.palette.grey[200]}`,
-      borderRadius: VoTheme.shape.borderRadiusField,
+      borderRadius: VoTheme.shape.borderRadius,
       // marginTop: -2,
       marginTop: VoTheme.spacing(1),
       maxHeight: 180,
@@ -44,7 +44,7 @@ export const useStyles = makeStyles(
     },
 
     searchResultItem: {
-      // borderRadius: VoTheme.shape.borderRadiusField,
+      // borderRadius: VoTheme.shape.borderRadius,
       padding: `0 ${VoTheme.spacing(2)}px`,
     },
     // Double selectors to ensure that the style is applied, since

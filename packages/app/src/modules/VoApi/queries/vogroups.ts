@@ -27,7 +27,7 @@ export const GET_GROUP = gql`
         filetype
         url
       }
-      image {
+      images {
         id
         title
         filename
