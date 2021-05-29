@@ -16,7 +16,7 @@ const formats = () => ({
     classes: "alignfull",
   },
   bold: { inline: "strong", classes: "bold" },
-  italic: { inline: "span", classes: "italic" },
+  italic: { inline: "i", classes: "italic" },
   underline: { inline: "u", classes: "underline", exact: true },
   strikethrough: { inline: "del", classes: "del" },
   // customformat: {

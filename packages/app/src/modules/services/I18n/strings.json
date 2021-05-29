@@ -114,18 +114,6 @@
             "eventDeleted": "Händelsen har raderats"
         }
     },
-    "contactpage": {
-        "label": "Kontaktsida",
-        "labels": {
-            "contactPages": "Kontaktsidor",
-            "createContactPage": "Skapa kontaktsida",
-            "contacts": "Kontakter"
-        },
-        "messages": {
-            "contactPageSaved": "Kontaktsidan har sparats",
-            "contactPageDeleted": "Kontaktsidan har raderats"
-        }
-    },
     "menu": {
         "label": "Meny",
         "labels": {
@@ -147,7 +135,8 @@
         "labels": {
             "groups": "Grupper",
             "groupRoles": "Grupproller",
-            "groupPermissions": "Gruppbehörigheter"
+            "groupPermissions": "Gruppbehörigheter",
+            "contacts": "Kontaktpersoner"
         },
         "errors": {
             "invalidGroupName": "Ogiltigt gruppnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'nationellt', 'kronoberg', 'projekt2020'"
@@ -171,6 +160,7 @@
             "mainMenu": "Meny för huvudnavigering",
             "headerMenu": "Meny på sidans huvud",
             "footerPage": "Sidan vars innehåll kommer att visas på sidans fot",
+            "collegePage": "Sidan vars innehåll kommer att visas kartsidan",
             "publicDefaultPortfolio": "Standardportfölj för lagring av diverse uppladade filer, t ex profilbilder",
             "defaultUserAvatar": "Standard avatar för användare",
             "defaultContentAvatar": "Standard avatar för diverse innehåll"

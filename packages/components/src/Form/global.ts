@@ -239,6 +239,8 @@ export interface FormFieldUrlFieldProps {
   required?: boolean;
   onChange?: (value: string) => void;
   helperText?: string;
+  notNew?: boolean;
+  fieldLock?: boolean;
 }
 
 export interface FormFieldUrlAlias {

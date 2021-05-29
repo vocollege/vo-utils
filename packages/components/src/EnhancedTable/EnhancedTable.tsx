@@ -75,8 +75,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     },
     onError: (error) => {
       toast.error(error.message, {
-        autoClose: false,
-        position: toast.POSITION.BOTTOM_LEFT,
+        autoClose: 10000,
       });
     },
   });
@@ -85,6 +84,11 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     operations?.delete,
     {
       client: client || undefined,
+      onError: (error) => {
+        toast.error(error.message, {
+          autoClose: 10000,
+        });
+      },
       onCompleted: () => {
         loadData();
       },

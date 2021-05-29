@@ -569,6 +569,8 @@ const Form: React.FC<FormProps> = (props) => {
                 ? errors[field.name]?.message
                 : field?.params?.dependencyHelperText
             }
+            fieldLock={field.params?.fieldLock}
+            notNew={!isCreateNew}
           />
         );
       case "user_field":

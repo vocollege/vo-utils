@@ -50,6 +50,15 @@ export const GET_GROUP = gql`
   }
 `;
 
+export const GET_AVAILABLE_GROUPS = gql`
+  query Group($categories: [String]) {
+    allGroups(categories: $categories) {
+      id
+      title
+    }
+  }
+`;
+
 export const GET_GROUPS = gql`
   query Groups(
     $search: String

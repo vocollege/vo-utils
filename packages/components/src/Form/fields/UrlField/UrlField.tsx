@@ -12,11 +12,20 @@ import { useStyles } from "./styles";
 let typingTimer: number;
 
 const UrlField: React.FC<FormFieldUrlFieldProps> = (props) => {
-  const { name, label, value, overrideValue, required, onChange, helperText } =
-    props;
+  const {
+    name,
+    label,
+    value,
+    overrideValue,
+    required,
+    onChange,
+    helperText,
+    notNew,
+    fieldLock = true,
+  } = props;
   const classes = useStyles();
   const [fieldValue, setFieldValue] = useState("");
-  const [fieldLocked, setFieldLocked] = useState(true);
+  const [fieldLocked, setFieldLocked] = useState(fieldLock);
   const [firstLoad, setFirstLoad] = useState(true);
 
   // Methods.
@@ -53,11 +62,14 @@ const UrlField: React.FC<FormFieldUrlFieldProps> = (props) => {
   }, [overrideValue]);
 
   useEffect(() => {
-    if (value && value !== "") {
-      setFieldLocked(false);
-    }
     setFieldValue(value || "");
   }, [value]);
+
+  useEffect(() => {
+    if (fieldLock) {
+      setFieldLocked(!notNew);
+    }
+  }, [notNew]);
 
   return (
     <div className={classes.root}>

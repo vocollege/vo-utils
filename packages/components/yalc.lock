@@ -7,7 +7,7 @@
       "replaced": "^0.0.20"
     },
     "@vocollege/app": {
-      "signature": "538442fde589912c2654a57e1505ca17",
+      "signature": "15a0790df7a688a839702516e3731039",
       "file": true,
       "replaced": "^0.0.57"
     }
