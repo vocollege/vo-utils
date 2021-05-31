@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -17,9 +17,11 @@ const EntityField: React.FC<EntityFieldProps> = (props) => {
     onReset,
     types,
     primaryField,
+    fields,
     required,
   } = props;
   const classes = useStyles();
+  const [fieldValue, setFieldValue] = useState<any>("");
 
   // Methods.
 
@@ -30,17 +32,36 @@ const EntityField: React.FC<EntityFieldProps> = (props) => {
   };
 
   const resetField = () => {
+    setFieldValue("");
     if (onReset) {
       onReset();
     }
   };
+
+  // Effects.
+
+  useEffect(() => {
+    if (value) {
+      if (typeof value === "string") {
+        setFieldValue(value);
+      } else {
+        let titleField = "title";
+        let type = value.type.toLowerCase();
+        if (fields) {
+          titleField = fields[type].title;
+        }
+        let title = value[titleField] || value.title;
+        setFieldValue(`${value.id} - ${title} - ${type}`);
+      }
+    }
+  }, [value]);
 
   return (
     <div className={classes.root}>
       <VoTextField
         name={name}
         label={label}
-        value={value}
+        value={fieldValue}
         variant="filled"
         fullWidth
         type="text"

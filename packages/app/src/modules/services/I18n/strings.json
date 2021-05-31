@@ -74,11 +74,6 @@
         "messages": {
             "queueSaved": "Kön har sparats",
             "queueDeleted": "Kön har raderats"
-        },
-        "templates": {
-            "standard": "Standard",
-            "contact": "Kontakt",
-            "event": "Händelse"
         }
     },
     "section": {
@@ -113,6 +108,112 @@
             "eventSaved": "Händelsen har sparats",
             "eventDeleted": "Händelsen har raderats"
         }
+    },
+    "card": {
+        "label": "Kort",
+        "labels": {
+            "cards": "Kort",
+            "createCard": "Skapa kort"
+        },
+        "messages": {
+            "cardSaved": "Kortet har sparats",
+            "cardDeleted": "Kortet har raderats"
+        },
+        "templates": {
+            "standard": "Standard",
+            "contact": "Kontakt",
+            "event": "Händelse"
+        },
+        "fields": [
+                {
+                  "name": "images",
+                  "label": "Bilder"
+                },
+                {
+                  "name": "title",
+                  "label": "Titel"
+                },
+                {
+                  "name": "body",
+                  "label": "Brödtext"
+                },
+                {
+                  "name": "startDate",
+                  "label": "Startdatum"
+                },
+                {
+                  "name": "startTime",
+                  "label": "Starttid"
+                },
+                {
+                  "name": "endDate",
+                  "label": "Slutdatum"
+                },
+                {
+                  "name": "endTime",
+                  "label": "Sluttid"
+                },
+                {
+                  "name": "allday",
+                  "label": "Heldag"
+                },
+                {
+                    "name": "location",
+                    "label": "Plats"
+                },
+                {
+                  "name": "email",
+                  "label": "E-postadress"
+                },
+                {
+                  "name": "name",
+                  "label": "Användarnamn"
+                },
+                {
+                  "name": "firstname",
+                  "label": "Förnamn"
+                },
+                {
+                  "name": "lastname",
+                  "label": "Efternamn"
+                },
+                {
+                  "name": "address1",
+                  "label": "Adress 1"
+                },
+                {
+                  "name": "address1",
+                  "label": "Adress 1"
+                },
+                {
+                  "name": "address2",
+                  "label": "Adress 2"
+                },
+                {
+                  "name": "zip",
+                  "label": "Postnummer"
+                },
+                {
+                  "name": "county",
+                  "label": "Ort"
+                },
+                {
+                  "name": "country",
+                  "label": "Land"
+                },
+                {
+                  "name": "phone1",
+                  "label": "Telefonnr 1"
+                },
+                {
+                  "name": "phone2",
+                  "label": "Telefonnr 2"
+                },
+                {
+                  "name": "profession",
+                  "label": "Yrke"
+                }
+        ]
     },
     "menu": {
         "label": "Meny",
@@ -171,6 +272,7 @@
     },
     "entities": {
         "label": {
+            "entity": "Entitet",
             "search": "Sök",
             "searchContent": "Sök innehåll",
             "searchByTitle": "Sök efter innehållets titel"
@@ -285,7 +387,9 @@
             "enddate": "Slutdatum",
             "endtime": "Sluttid",
             "date": "Datum",
-            "active": "Aktiv"
+            "active": "Aktiv",
+            "fields": "Fält",
+            "field": "Fält"
          },
         "messages": {
             "invalidFields": "Det finns ogiltiga fält i formuläret",

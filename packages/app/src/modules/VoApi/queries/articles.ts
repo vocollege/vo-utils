@@ -8,7 +8,13 @@ export const GET_ARTICLE = gql`
       body
       status
       url
-      author
+      author {
+        ... on User {
+          id
+          name
+          type
+        }
+      }
       date
       tags {
         id
@@ -70,7 +76,13 @@ export const GET_ARTICLES = gql`
         id
         title
         status
-        author
+        author {
+          ... on User {
+            id
+            name
+            type
+          }
+        }
         date
         created_at
         updated_at

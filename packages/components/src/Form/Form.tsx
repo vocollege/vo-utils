@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import clsx from "clsx";
 
 // Custom.
-import { VoAuth } from "@vocollege/app";
+// import { VoAuth } from "@vocollege/app";
 import VoTextField from "VoTextField";
 import {
   VoDatePickerField,
@@ -54,6 +54,7 @@ import { stylesLayout } from "@vocollege/theme";
 import { I18n } from "@vocollege/app";
 import { fakeMutation } from "@vocollege/app";
 import Location from "./fields/Location";
+import Checkboxes from "./fields/Checkboxes";
 
 // const useStylesCommon = makeStyles(() => stylesCommon);
 const useStylesLayout = makeStyles(() => stylesLayout);
@@ -315,26 +316,29 @@ const Form: React.FC<FormProps> = (props) => {
     }, 300);
   };
 
-  const handleChangeUser = (field: string, item: EntityPickerItem) => {
-    let value = `${item.id} - ${item.title}`;
-    dispatch({ field: field, value: value });
-    setValue(`${field}` as const, value, {
+  const handleChangeEntity = (field: string, item: EntityPickerItem | null) => {
+    // let value =
+    //   typeof item === "string"
+    //     ? ""
+    //     : `${item.id} - ${item.title} - ${item.type.toLowerCase()}`;
+    dispatch({ field: field, value: item });
+    setValue(`${field}` as const, item, {
       shouldValidate: true,
       shouldDirty: true,
     });
   };
 
-  const handleUserFieldReset = (
-    field: string,
-    type: string,
-    defaultValue = true
-  ) => {
-    handleChangeUser(field, {
-      id: defaultValue ? VoAuth.currentUser.id : 0,
-      title: defaultValue ? VoAuth.currentUser.name : "",
-      type: type,
-    });
-  };
+  // const handleEntityFieldReset = (
+  //   field: string,
+  //   type: string,
+  //   defaultValue = true
+  // ) => {
+  //   handleChangeEntity(field, {
+  //     id: defaultValue ? VoAuth.currentUser.id : 0,
+  //     title: defaultValue ? VoAuth.currentUser.name : "",
+  //     type: type,
+  //   });
+  // };
 
   const handleChangeDate = (
     field: string,
@@ -385,6 +389,21 @@ const Form: React.FC<FormProps> = (props) => {
       shouldValidate: true,
       shouldDirty: true,
     });
+  };
+
+  const handleChangeCheckboxes = (
+    field: string,
+    values: String[],
+    onChange: FormField["onChange"]
+  ) => {
+    dispatch({ field: field, value: values });
+    setValue(`${field}` as const, values, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    if (onChange) {
+      onChange(values);
+    }
   };
 
   const getPageTitle = () => {
@@ -573,27 +592,29 @@ const Form: React.FC<FormProps> = (props) => {
             notNew={!isCreateNew}
           />
         );
-      case "user_field":
-        let defaultValue =
-          typeof field.params?.defaultValue !== "undefined"
-            ? field.params?.defaultValue
-            : true;
+      case "entity_field":
+        // let defaultValue =
+        //   typeof field.params?.defaultValue !== "undefined"
+        //     ? field.params?.defaultValue
+        //     : true;
         return (
           <EntityField
             name={field.name}
             label={field.label}
             value={state[field.name]}
-            onChange={(item) => handleChangeUser(field.name, item)}
-            onReset={() =>
-              handleUserFieldReset(
-                field.name,
-                field.params?.types,
-                defaultValue
-              )
-            }
+            onChange={(item) => handleChangeEntity(field.name, item)}
+            onReset={() => handleChangeEntity(field.name, null)}
+            // onReset={() =>
+            //   handleEntityFieldReset(
+            //     field.name,
+            //     field.params?.types,
+            //     defaultValue
+            //   )
+            // }
             required={field?.required}
             types={field.params?.types}
             primaryField={field.params?.primaryField || "id"}
+            fields={field.params?.fields}
           />
         );
       case "date_field":
@@ -675,6 +696,18 @@ const Form: React.FC<FormProps> = (props) => {
             value={state[field.name]}
             required={field?.required}
             onChange={(location) => handleChangeLocation(field.name, location)}
+          />
+        );
+      case "checkboxes":
+        return (
+          <Checkboxes
+            label={field.label}
+            values={state[field.name]}
+            availableValues={field.params?.availableValues}
+            required={field?.required}
+            onChange={(values) =>
+              handleChangeCheckboxes(field.name, values, field.onChange)
+            }
           />
         );
       default:

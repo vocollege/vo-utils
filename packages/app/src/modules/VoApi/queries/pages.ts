@@ -9,7 +9,13 @@ export const GET_PAGE = gql`
       body
       status
       url
-      author
+      author {
+        ... on User {
+          id
+          name
+          type
+        }
+      }
       created_at
       updated_at
       tags {
@@ -55,7 +61,13 @@ export const GET_PAGES = gql`
         title
         status
         url
-        author
+        author {
+          ... on User {
+            id
+            name
+            type
+          }
+        }
         created_at
         updated_at
       }

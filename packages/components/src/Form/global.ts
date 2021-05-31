@@ -72,13 +72,14 @@ export interface FormField {
     | "sortable_tree"
     | "file_uploader"
     | "url_field"
-    | "user_field"
+    | "entity_field"
     | "date_field"
     | "datetime_field"
     | "time_field"
     | "tags_field"
     | "file_field"
-    | "location";
+    | "location"
+    | "checkboxes";
   inputType?: string;
   required?: boolean;
   overrideValue?: any;
@@ -98,6 +99,7 @@ export interface FormField {
   render?: (data: any) => JSX.Element;
   onChange?: (data: any) => void;
   hidden?: boolean;
+  field?: React.ReactNode;
 }
 
 export type FormFieldGridBreakpointValues =
@@ -261,12 +263,14 @@ export interface EntityPickerItem {
 export interface EntityFieldProps {
   name?: string;
   label?: string;
-  value?: string;
+  value?: any;
+  // value?: string | EntityPickerItem;
   className?: string;
   onChange?: (item: EntityPickerItem) => void;
   onReset?: () => void;
   types: string[];
   primaryField?: string;
+  fields?: { [key: string]: any };
   required?: boolean;
 }
 

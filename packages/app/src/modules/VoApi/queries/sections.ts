@@ -7,7 +7,13 @@ export const GET_SECTION = gql`
       title
       body
       status
-      author
+      author {
+        ... on User {
+          id
+          name
+          type
+        }
+      }
       template
       image_full
       images {
@@ -41,7 +47,13 @@ export const GET_SECTIONS = gql`
         id
         title
         status
-        author
+        author {
+          ... on User {
+            id
+            name
+            type
+          }
+        }
         template
         created_at
         updated_at

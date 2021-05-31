@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 // Queries.
 export * from "./queries/articles";
 export * from "./queries/acl";
+export * from "./queries/cards";
 export * from "./queries/events";
 export * from "./queries/navigation";
 export * from "./queries/pages";
@@ -18,6 +19,7 @@ export * from "./queries/sections";
 export * from "./mutations/users";
 export * from "./mutations/acl";
 export * from "./mutations/articles";
+export * from "./mutations/cards";
 export * from "./mutations/events";
 export * from "./mutations/navigation";
 export * from "./mutations/pages";

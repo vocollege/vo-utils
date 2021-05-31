@@ -15,6 +15,7 @@ export const stylesGlobal = {
       fontSize: VoTheme.typography.fontSize,
       margin: `0 auto`,
       maxWidth: 784,
+      padding: theme.spacing(1),
     },
     ".vo-global__content": {
       color: VoTheme.palette.text.primary,
@@ -280,6 +281,20 @@ export const stylesGlobal = {
           fontSize: VoTheme.typography.pxToRem(28),
         },
       },
+      "& * + ul, & * + ol": {
+        marginTop: theme.spacing(3),
+      },
+      "& ul, & ol": {
+        listStylePosition: "inside",
+        marginLeft: 0,
+        paddingLeft: theme.spacing(1),
+        paddingTop: 0,
+      },
+      // "& .preamble, & h2, & h3, & h4": {
+      //   "& + ul, & + ol": {
+      //     marginTop: theme.spacing(3),
+      //   },
+      // },
       "& table": {
         borderCollapse: "collapse",
         borderWidth: 0,

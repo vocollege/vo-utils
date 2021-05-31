@@ -121,7 +121,7 @@ const Editor: React.FC<EditorProps> = (props) => {
         open={openEntityPicker}
         onSelect={handleEntityPickerSelect}
         onClose={handleEntityPickerClose}
-        types={["page", "article"]}
+        types={["page", "article", "event", "queue"]}
       />
     </>
   );

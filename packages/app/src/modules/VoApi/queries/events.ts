@@ -7,7 +7,13 @@ export const GET_EVENT = gql`
       title
       body
       status
-      author
+      author {
+        ... on User {
+          id
+          name
+          type
+        }
+      }
       allday
       start_date
       start_time
@@ -59,7 +65,13 @@ export const GET_EVENTS = gql`
         id
         title
         status
-        author
+        author {
+          ... on User {
+            id
+            name
+            type
+          }
+        }
         created_at
         updated_at
       }

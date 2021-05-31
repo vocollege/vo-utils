@@ -2,12 +2,12 @@
   "version": "v1",
   "packages": {
     "@vocollege/theme": {
-      "signature": "73c4dd33b1ea65278d306e9f2a5a134e",
+      "signature": "20c274ee7f7e0572666cff3acb8429e7",
       "file": true,
       "replaced": "^0.0.20"
     },
     "@vocollege/app": {
-      "signature": "15a0790df7a688a839702516e3731039",
+      "signature": "451ab7807b22b6529482ff08a1f8aa05",
       "file": true,
       "replaced": "^0.0.57"
     }

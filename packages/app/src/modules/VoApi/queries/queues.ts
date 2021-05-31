@@ -8,13 +8,24 @@ export const GET_QUEUE = gql`
       status
       body
       url
-      author
+      author {
+        ... on User {
+          id
+          name
+          type
+        }
+      }
       template
       tags {
         id
         label
       }
       items {
+        ... on Card {
+          id
+          title
+          type
+        }
         ... on Article {
           id
           title
@@ -79,7 +90,17 @@ export const GET_QUEUES = gql`
         id
         title
         status
+        author {
+          ... on User {
+            id
+            name
+            type
+          }
+        }
         items {
+          ... on Card {
+            id
+          }
           ... on Article {
             id
           }
