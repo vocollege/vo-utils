@@ -34,8 +34,8 @@ export interface FormProps extends FormNakedProps {
   pageTitleField: string;
   primaryField?: string;
   client?: ApolloClient<object>;
-  onComplete?: () => void;
-  onCancel?: () => void;
+  onComplete?: (state: any) => void;
+  onCancel?: (state: any) => void;
   urlParams?: { [key: string]: any };
   createParam?: string;
   classes?: {
@@ -43,6 +43,7 @@ export interface FormProps extends FormNakedProps {
     paper?: string;
     paperRoot?: string;
     toolbar?: string;
+    formTabs?: string;
   };
   disableToolbar?: boolean;
   onFormChange?: (formState: { isDirty: boolean; isValid: boolean }) => void;

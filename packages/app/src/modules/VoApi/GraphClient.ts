@@ -49,23 +49,28 @@ class GraphClient {
             switch (err.message) {
               case "Unauthenticated.":
                 return new Observable((observer) => {
-                  VoAuth.refreshToken().then((token: any) => {
-                    const oldHeaders = operation.getContext().headers;
-                    operation.setContext({
-                      headers: {
-                        ...oldHeaders,
-                        Authorization: token
-                          ? `${token.token_type} ${token.access_token}`
-                          : "",
-                      },
+                  VoAuth.refreshToken()
+                    .then((token: any) => {
+                      const oldHeaders = operation.getContext().headers;
+                      operation.setContext({
+                        headers: {
+                          ...oldHeaders,
+                          Authorization: token
+                            ? `${token.token_type} ${token.access_token}`
+                            : "",
+                        },
+                      });
+                      const subscriber = {
+                        next: observer.next.bind(observer),
+                        error: observer.error.bind(observer),
+                        complete: observer.complete.bind(observer),
+                      };
+                      forward(operation).subscribe(subscriber);
+                    })
+                    .catch((error: any) => {
+                      console.error(error);
+                      redirect();
                     });
-                    const subscriber = {
-                      next: observer.next.bind(observer),
-                      error: observer.error.bind(observer),
-                      complete: observer.complete.bind(observer),
-                    };
-                    forward(operation).subscribe(subscriber);
-                  });
                 });
             }
           }

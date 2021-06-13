@@ -8,6 +8,7 @@ export const GET_ARTICLE = gql`
       body
       status
       url
+      editUrl
       author {
         ... on User {
           id

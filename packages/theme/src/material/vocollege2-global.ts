@@ -161,7 +161,7 @@ export const stylesGlobal = {
         },
       },
       "& * + p, * + table": {
-        marginTop: VoTheme.spacing(3),
+        marginTop: VoTheme.spacing(2),
       },
       "& a, & a:visited": {
         color: VoTheme.palette.secondary.darker,
@@ -223,62 +223,62 @@ export const stylesGlobal = {
         marginBottom: 0,
         marginTop: 0,
         "& + p": {
-          marginTop: VoTheme.spacing(3),
+          marginTop: VoTheme.spacing(2),
         },
       },
       "& h2, h3, h4": {
         "& + h2, & + h3, & + h4": {
-          marginTop: theme.spacing(3),
+          marginTop: theme.spacing(2),
         },
       },
       "& *:not(h2):not(h3):not(h4)": {
         "& + h2, & + h3, & + h4": {
-          marginTop: VoTheme.spacing(6),
+          marginTop: VoTheme.spacing(4),
         },
       },
       "& h2": {
-        fontSize: VoTheme.typography.pxToRem(29),
+        fontSize: VoTheme.typography.pxToRem(27),
         fontWeight: VoTheme.typography.h2.fontWeight,
         letterSpacing: VoTheme.typography.h2.letterSpacing,
         lineHeight: VoTheme.typography.h2.lineHeight,
         [theme.breakpoints.up("sm")]: {
-          fontSize: VoTheme.typography.pxToRem(32),
+          fontSize: VoTheme.typography.pxToRem(30),
         },
         [theme.breakpoints.up("md")]: {
-          fontSize: VoTheme.typography.pxToRem(35),
+          fontSize: VoTheme.typography.pxToRem(33),
         },
         [theme.breakpoints.up("lg")]: {
-          fontSize: VoTheme.typography.pxToRem(38),
+          fontSize: VoTheme.typography.pxToRem(36),
         },
       },
       "& h3": {
-        fontSize: VoTheme.typography.pxToRem(24),
+        fontSize: VoTheme.typography.pxToRem(22),
         fontWeight: VoTheme.typography.h3.fontWeight,
         letterSpacing: VoTheme.typography.h3.letterSpacing,
         lineHeight: VoTheme.typography.h3.lineHeight,
         [theme.breakpoints.up("sm")]: {
-          fontSize: VoTheme.typography.pxToRem(27),
+          fontSize: VoTheme.typography.pxToRem(25),
         },
         [theme.breakpoints.up("md")]: {
-          fontSize: VoTheme.typography.pxToRem(30),
+          fontSize: VoTheme.typography.pxToRem(28),
         },
         [theme.breakpoints.up("lg")]: {
-          fontSize: VoTheme.typography.pxToRem(33),
+          fontSize: VoTheme.typography.pxToRem(31),
         },
       },
       "& h4": {
-        fontSize: VoTheme.typography.pxToRem(19),
+        fontSize: VoTheme.typography.pxToRem(17),
         fontWeight: VoTheme.typography.h4.fontWeight,
         letterSpacing: VoTheme.typography.h4.letterSpacing,
         lineHeight: VoTheme.typography.h4.lineHeight,
         [theme.breakpoints.up("sm")]: {
-          fontSize: VoTheme.typography.pxToRem(22),
+          fontSize: VoTheme.typography.pxToRem(20),
         },
         [theme.breakpoints.up("md")]: {
-          fontSize: VoTheme.typography.pxToRem(25),
+          fontSize: VoTheme.typography.pxToRem(23),
         },
         [theme.breakpoints.up("lg")]: {
-          fontSize: VoTheme.typography.pxToRem(28),
+          fontSize: VoTheme.typography.pxToRem(25),
         },
       },
       "& * + ul, & * + ol": {
@@ -320,6 +320,9 @@ export const stylesGlobal = {
             backgroundColor: VoTheme.palette.secondary.extra,
           },
         },
+      },
+      "& iframe": {
+        maxWidth: "100%",
       },
       // "& [class^='grid-'], & [class*=' grid-']": {
       //   alignItems: "center",

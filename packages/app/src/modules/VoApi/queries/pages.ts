@@ -9,6 +9,7 @@ export const GET_PAGE = gql`
       body
       status
       url
+      editUrl
       author {
         ... on User {
           id

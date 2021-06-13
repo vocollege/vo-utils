@@ -8,7 +8,9 @@ export const GET_CARD = gql`
       body
       status
       fields
+      settings
       template
+      editUrl
       author {
         ... on User {
           id

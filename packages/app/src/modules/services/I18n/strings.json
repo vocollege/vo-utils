@@ -58,12 +58,6 @@
         "messages": {
             "pageSaved": "Sidan har sparats",
             "pageDeleted": "Sidan har raderats"
-        },
-        "contentTypes": {
-            "page": "Sida",
-            "article": "Artikel",
-            "calendar": "Kalenderinlägg",
-            "front": "Sektion till startsidan"
         }
     },
     "queue": {
@@ -124,6 +118,16 @@
             "contact": "Kontakt",
             "event": "Händelse"
         },
+        "settings": [
+            {
+                "name": "clickableCard",
+                "label": "Klickbart kort"
+            },
+            {
+                "name": "collapseBody",
+                "label": "Komprimera brödtexten"
+            }
+        ],
         "fields": [
                 {
                   "name": "images",
@@ -138,19 +142,19 @@
                   "label": "Brödtext"
                 },
                 {
-                  "name": "startDate",
+                  "name": "start_date",
                   "label": "Startdatum"
                 },
                 {
-                  "name": "startTime",
+                  "name": "start_time",
                   "label": "Starttid"
                 },
                 {
-                  "name": "endDate",
+                  "name": "end_date",
                   "label": "Slutdatum"
                 },
                 {
-                  "name": "endTime",
+                  "name": "end_time",
                   "label": "Sluttid"
                 },
                 {
@@ -237,7 +241,7 @@
             "groups": "Grupper",
             "groupRoles": "Grupproller",
             "groupPermissions": "Gruppbehörigheter",
-            "contacts": "Kontaktpersoner"
+            "contacts": "Kontakter"
         },
         "errors": {
             "invalidGroupName": "Ogiltigt gruppnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'nationellt', 'kronoberg', 'projekt2020'"
@@ -260,6 +264,7 @@
             "sectionsQueue": "Kö för sektioner",
             "mainMenu": "Meny för huvudnavigering",
             "headerMenu": "Meny på sidans huvud",
+            "footerMenu": "Meny på sidans fot",
             "footerPage": "Sidan vars innehåll kommer att visas på sidans fot",
             "collegePage": "Sidan vars innehåll kommer att visas kartsidan",
             "publicDefaultPortfolio": "Standardportfölj för lagring av diverse uppladade filer, t ex profilbilder",
@@ -341,7 +346,7 @@
     "form": {
         "errors": {
             "required": "Obligatoriskt",
-            "invalidName": "Ogiltigt namn. Det får endast innehålla småbokstäver, minst 3, följd av en eller flera siffror, t ex: 'ann', 'admin10', 'ann1980', 'peter20'",
+            "invalidName": "Ogiltigt namn. Det får endast innehålla småbokstäver (minst 3), följd av en eller flera siffror, t ex: 'ann', 'olle.persson', 'ann1980', 'peter_ericsson'",
             "invalidEmail": "Ogiltig e-postadress",
             "invalidFirstname": "Ogiltigt förnamn",
             "invalidLastname": "Ogiltigt efternamn",
@@ -389,12 +394,15 @@
             "date": "Datum",
             "active": "Aktiv",
             "fields": "Fält",
-            "field": "Fält"
+            "field": "Fält",
+            "website": "Webbadress",
+            "certified": "Certifierat"
          },
         "messages": {
             "invalidFields": "Det finns ogiltiga fält i formuläret",
             "fieldPopulatedBy": "Detta fält autogenereras baserat på '::field'.",
-            "unsavedContent": "Det finns osparat innehåll. Är du säker på att du vill lämna denna sida?"
+            "unsavedContent": "Det finns osparat innehåll. Är du säker på att du vill lämna denna sida?",
+            "redirecting": "Omdirigerar..."
         }
     },
     "actions": {

@@ -121,6 +121,8 @@ class VoAuth extends VoBase {
           this.setSession(response.data);
         }
         return this.getToken();
+      } else {
+        throw new Error("Refresh token not found");
       }
     } catch (error) {
       this.resetSession();

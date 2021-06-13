@@ -38,7 +38,10 @@ const Location: React.FC<FormFieldLocationProps> = (props) => {
       value: { [name]: value, dirty: true },
     });
     if (onChange) {
-      let newState = { ...state };
+      let newState: { [key: string]: any } = {
+        latitude: state.latitude,
+        longitude: state.longitude,
+      };
       newState[name] = value;
       onChange(newState);
     }

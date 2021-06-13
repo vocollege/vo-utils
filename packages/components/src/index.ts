@@ -6,6 +6,7 @@ export { default as VoLogo } from "./VoLogo";
 export { default as VoButton } from "./VoButton";
 export * from "./VoSelectField";
 export { default as AccountIcon } from "./AccountIcon";
+export * from "./AccountIcon";
 export { default as EditDialog } from "./EditDialog";
 export * from "./EditDialog";
 export { default as Editor } from "./Editor";

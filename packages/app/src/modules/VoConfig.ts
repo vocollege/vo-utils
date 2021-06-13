@@ -23,6 +23,8 @@ class VoConfig {
     AUTH_BASE_URL: "",
     AUTH_ENDPOINT: "",
 
+    ADMIN_BASE_URL: "",
+
     DOCS_BASE_URL: "",
     DOCS_ENDPOINT: "",
     DOCS_GRAPHQL: "",

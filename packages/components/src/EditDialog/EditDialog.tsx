@@ -14,7 +14,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 
 // Custom.
 import { EditorDialogProps } from "./global";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { useStyles } from "./styles";
 import { stylesActions } from "@vocollege/theme";
 

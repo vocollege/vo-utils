@@ -55,6 +55,7 @@ import { I18n } from "@vocollege/app";
 import { fakeMutation } from "@vocollege/app";
 import Location from "./fields/Location";
 import Checkboxes from "./fields/Checkboxes";
+import * as Helpers from "@vocollege/app/dist/modules/VoHelpers";
 
 // const useStylesCommon = makeStyles(() => stylesCommon);
 const useStylesLayout = makeStyles(() => stylesLayout);
@@ -113,11 +114,32 @@ const Form: React.FC<FormProps> = (props) => {
     return params[primaryField || "id"] === createParam;
   };
 
+  const redirect = (params: { [key: string]: any } = {}) => {
+    // let redirectTo = Helpers.localStorage.get("redirectTo");
+    // if (redirectTo) {
+    //   let redirectToUrlObj = new URL(redirectTo);
+    //   let oldUrl = Helpers.localStorage.get("currentUrl");
+    //   if (
+    //     redirectToUrlObj.pathname.substr(1) === oldUrl &&
+    //     oldUrl !== state.url
+    //   ) {
+    //     redirectTo = `${redirectToUrlObj.origin}/${state.url}`;
+    //   }
+    //   window.location.href = redirectTo;
+    // } else if (paths?.back) {
+    //   history.push(paths.back, params);
+    // }
+
+    if (paths?.back) {
+      history.push(paths.back, params);
+    }
+  };
+
   const handleCancel = () => {
     if (onCancel) {
-      onCancel();
-    } else if (paths?.back) {
-      history.push(paths.back);
+      onCancel(state);
+    } else {
+      redirect();
     }
   };
 
@@ -347,7 +369,6 @@ const Form: React.FC<FormProps> = (props) => {
     format: string
   ) => {
     let value = date?.format(format);
-    // let value = date;
     dispatch({ field: field, value: value });
     if (onChange) {
       onChange(value);
@@ -589,7 +610,7 @@ const Form: React.FC<FormProps> = (props) => {
                 : field?.params?.dependencyHelperText
             }
             fieldLock={field.params?.fieldLock}
-            notNew={!isCreateNew}
+            notNew={!isCreateNew()}
           />
         );
       case "entity_field":
@@ -623,7 +644,7 @@ const Form: React.FC<FormProps> = (props) => {
           <VoDatePickerField
             name={field.name}
             label={field.label}
-            value={Dayjs(state[field.name], format)}
+            value={state[field.name] ? Dayjs(state[field.name], format) : null}
             onChange={(value) =>
               handleChangeDate(field.name, value, field.onChange, format)
             }
@@ -638,7 +659,7 @@ const Form: React.FC<FormProps> = (props) => {
           <VoDateTimePickerField
             name={field.name}
             label={field.label}
-            value={Dayjs(state[field.name], format)}
+            value={state[field.name] ? Dayjs(state[field.name], format) : null}
             onChange={(value) =>
               handleChangeDate(field.name, value, field.onChange, format)
             }
@@ -653,7 +674,7 @@ const Form: React.FC<FormProps> = (props) => {
           <VoTimePickerField
             name={field.name}
             label={field.label}
-            value={Dayjs(state[field.name], format)}
+            value={state[field.name] ? Dayjs(state[field.name], format) : null}
             onChange={(value) =>
               handleChangeDate(field.name, value, field.onChange, format)
             }
@@ -736,9 +757,9 @@ const Form: React.FC<FormProps> = (props) => {
     setFormSaved(true);
     toast.success(labels.saved);
     if (onComplete) {
-      onComplete();
-    } else if (paths?.back) {
-      history.push(paths.back, { refetch: true });
+      onComplete(state);
+    } else {
+      redirect({ refetch: true });
     }
   };
 
@@ -800,15 +821,13 @@ const Form: React.FC<FormProps> = (props) => {
       });
     }
 
-    // if (isCreateNew()) {
-    //   reset(initialState);
-    // } else if (!queryCalled) {
-    //   loadQuery({
-    //     variables: {
-    //       ...variables,
-    //     },
-    //   });
+    // Helpers.localStorage.remove("redirectTo");
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const redirectTo = urlParams.get("redirectTo");
+    // if (redirectTo) {
+    //   Helpers.localStorage.set("redirectTo", redirectTo);
     // }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -908,6 +927,7 @@ const Form: React.FC<FormProps> = (props) => {
                     tabs={tabs}
                     currentTab={currentTab}
                     setTab={setTab}
+                    className={classesProp?.formTabs}
                   ></FormTabs>
                 </Grid>
               )}

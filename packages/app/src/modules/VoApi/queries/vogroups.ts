@@ -9,6 +9,9 @@ export const GET_GROUP = gql`
       description
       body
       category
+      docs
+      website
+      certified
       status
       url
       created_at
@@ -27,20 +30,25 @@ export const GET_GROUP = gql`
         filetype
         url
       }
-      images {
-        id
-        title
-        filename
-        filesize
-        filetype
-        url
-      }
+      # images {
+      #   id
+      #   title
+      #   filename
+      #   filesize
+      #   filetype
+      #   url
+      # }
       users {
         id
         name
         email
         firstname
         lastname
+      }
+      contacts {
+        id
+        title
+        type
       }
     }
     allGroups(categories: $categories) {
