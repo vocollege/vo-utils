@@ -17,6 +17,7 @@ export const GET_PAGE = gql`
           type
         }
       }
+      template
       created_at
       updated_at
       tags {
@@ -69,6 +70,7 @@ export const GET_PAGES = gql`
             type
           }
         }
+        template
         created_at
         updated_at
       }

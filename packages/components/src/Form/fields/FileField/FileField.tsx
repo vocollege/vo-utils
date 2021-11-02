@@ -8,6 +8,7 @@ import { useConfirm } from "material-ui-confirm";
 import parse from "html-react-parser";
 import BackupIcon from "@material-ui/icons/Backup";
 import CloseIcon from "@material-ui/icons/Close";
+import clsx from "clsx";
 
 // Custom.
 
@@ -20,9 +21,11 @@ import { FileFieldProps } from "../../global";
 import { FileManagerFolderElement } from "FileManager/global";
 import { fakeMutation } from "@vocollege/app/dist/modules/VoApi/graphql";
 import { toast } from "react-toastify";
+import VoLoader from "../../../VoLoader";
 
 const FileField: React.FC<FileFieldProps> = (props) => {
   const {
+    title,
     label,
     value,
     required,
@@ -32,6 +35,8 @@ const FileField: React.FC<FileFieldProps> = (props) => {
     directUpload,
     portfolio,
     operations,
+    hideThumbnail,
+    simplified,
   } = props;
   const classes = useStyles();
   const classesForm = useStylesForm();
@@ -62,13 +67,12 @@ const FileField: React.FC<FileFieldProps> = (props) => {
     try {
       if (directUpload) {
         const result = await deleteFile();
-        console.log("result", result);
       }
       setFiles([]);
       if (onChange) {
         onChange([]);
       }
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error, { autoClose: 10000 });
     }
   };
@@ -101,9 +105,18 @@ const FileField: React.FC<FileFieldProps> = (props) => {
   }, [value]);
 
   return (
-    <div className={classesForm.fieldRoot}>
+    <div
+      className={clsx(classesForm.fieldRoot, classes.root, {
+        [classes.simplified]: simplified,
+      })}
+    >
+      {deleteFileLoading && (
+        <div className={classes.loaderWrapper}>
+          <VoLoader noOverlay className={classes.loader} />
+        </div>
+      )}
       <div className={classesForm.fieldHead}>
-        {label && (
+        {label && (files.length > 0 || !simplified) && (
           <Typography
             variant="subtitle1"
             component="label"
@@ -157,28 +170,37 @@ const FileField: React.FC<FileFieldProps> = (props) => {
         files.map((file: FileManagerFolderElement, i: number) => (
           <div key={i} className={classes.fileDetailsWrapper}>
             <div className={classes.fileDetails}>
-              <Typography variant="subtitle2">
-                <strong>{I18n.get.form.labels.title}:</strong> {file.title}
-              </Typography>
+              {!simplified && (
+                <Typography variant="subtitle2">
+                  <strong>{I18n.get.form.labels.title}:</strong> {file.title}
+                </Typography>
+              )}
               <Typography variant="subtitle2">
                 <strong>{I18n.get.docs.label.filename}:</strong> {file.filename}
               </Typography>
-              <Typography variant="subtitle2">
-                <strong>{I18n.get.docs.label.filetype}:</strong> {file.filetype}
-              </Typography>
+              {!simplified && (
+                <Typography variant="subtitle2">
+                  <strong>{I18n.get.docs.label.filetype}:</strong>{" "}
+                  {file.filetype}
+                </Typography>
+              )}
               <Typography variant="subtitle2">
                 <strong>{I18n.get.docs.label.filesize}:</strong>{" "}
                 {(file.filesize / 1000000).toFixed(2)} MB
               </Typography>
-              <Typography variant="subtitle2">
-                <strong>{I18n.get.misc.id}:</strong> {file.id}
-              </Typography>
+              {!simplified && (
+                <Typography variant="subtitle2">
+                  <strong>{I18n.get.misc.id}:</strong> {file.id}
+                </Typography>
+              )}
             </div>
-            <img
-              className={classes.fileThumbnail}
-              src={`${file.url}?d=100x100`}
-              alt={file.title}
-            />
+            {!hideThumbnail && !simplified && (
+              <img
+                className={classes.fileThumbnail}
+                src={`${file.url}?d=100x100`}
+                alt={file.title}
+              />
+            )}
           </div>
         ))}
       <FileManagerDialog
@@ -189,6 +211,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
         filetypes={filetypes}
       />
       <FileManagerFileFormDirectUpload
+        title={title}
         open={!!directUpload && dialogOpen}
         onCancel={() => setDialogOpen(false)}
         onChange={(element) => {

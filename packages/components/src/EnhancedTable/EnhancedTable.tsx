@@ -49,6 +49,9 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     primaryField,
     client,
     actionButtons = ["edit", "delete"],
+    renderActionButtons,
+    refetch,
+    labels,
   } = props;
 
   if (!operations.delete) {
@@ -57,9 +60,15 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
 
   const [
     loadData,
-    { data: queryData, loading: queryLoading, called: queryCalled },
+    {
+      data: queryData,
+      loading: queryLoading,
+      called: queryCalled,
+      refetch: refetchData,
+    },
   ] = useLazyQuery(operations.get, {
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
     client: client || undefined,
     variables: {
       page: state.page,
@@ -90,6 +99,9 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
         });
       },
       onCompleted: () => {
+        if (labels?.deleted) {
+          toast.success(labels.deleted);
+        }
         loadData();
       },
       //   update(cache, { data }) {
@@ -156,18 +168,6 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     });
   };
 
-  const handleEdit = (rowId: any) => {
-    if (editItem) {
-      editItem(rowId);
-    }
-  };
-
-  const handleOpen = (rowId: any) => {
-    if (openItem) {
-      openItem(rowId);
-    }
-  };
-
   const handleDelete = (rowId: any) => {
     let description = I18n.trans(I18n.get.messages.deleteElement, {
       element: `<b>${rowId}</b>`,
@@ -185,7 +185,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
 
   const getCellData = (column: EnhancedTableColumns, row: any) => {
     if (column.render) {
-      return column.render(row[column.field]);
+      return column.render(row);
     }
     return row[column.field];
   };
@@ -227,6 +227,12 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryData]);
 
+  useEffect(() => {
+    if (refetch && refetchData) {
+      refetchData();
+    }
+  }, [refetch]);
+
   return (
     <div className={clsx(classes.root, className)}>
       <Paper className={classes.paper} elevation={10}>
@@ -261,24 +267,21 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
                     ))}
                     {actionButtons && actionButtons.length > 0 && (
                       <TableCell className={classes.actionColumn}>
-                        {actionButtons.indexOf("open") > -1 && (
+                        {renderActionButtons && renderActionButtons(row)}
+                        {actionButtons.indexOf("open") > -1 && openItem && (
                           <IconButton
                             className={classes.actionButton}
                             aria-label="open"
-                            onClick={() =>
-                              handleOpen(row[primaryField || "id"])
-                            }
+                            onClick={() => openItem(row[primaryField || "id"])}
                           >
                             <OpenInBrowserIcon />
                           </IconButton>
                         )}
-                        {actionButtons.indexOf("edit") > -1 && (
+                        {actionButtons.indexOf("edit") > -1 && editItem && (
                           <IconButton
                             className={classes.actionButton}
                             aria-label="edit"
-                            onClick={() =>
-                              handleEdit(row[primaryField || "id"])
-                            }
+                            onClick={() => editItem(row[primaryField || "id"])}
                           >
                             <EditIcon />
                           </IconButton>
@@ -307,8 +310,10 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
           count={state.total}
           rowsPerPage={state.limit}
           page={state.page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          // onChangePage={handleChangePage}
+          // onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
     </div>

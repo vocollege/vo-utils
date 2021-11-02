@@ -1,2 +1,2 @@
-import ContentList from './ContentList';
-export default ContentList;
+export { default } from "./ContentList";
+export * from "./ContentList";

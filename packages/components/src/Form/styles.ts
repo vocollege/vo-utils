@@ -27,13 +27,18 @@ export const useStyles = makeStyles(
     fieldRoot: {
       border: `1px dotted ${VoTheme.palette.grey[300]}`,
       borderRadius: VoTheme.shape.borderRadius,
-      padding: VoTheme.spacing(1),
+      padding: `6px ${VoTheme.spacing(1)}px`,
       width: "100%",
     },
     fieldHead: {
       alignItems: "center",
       display: "flex",
+      flexFlow: "wrap",
+      justifyContent: "flex-end",
       minHeight: VoTheme.spacing(5),
+      "& > button:first-of-type:not(:first-child)": {
+        marginLeft: VoTheme.spacing(1),
+      },
     },
     fieldHeadLabel: {
       display: "block",
@@ -51,5 +56,14 @@ export const useStyles = makeStyles(
     fieldAddButton: {
       marginLeft: -36,
     },
+    gridContainer: {
+      "& $gridItem": {
+        "&$gridItemHidden": {
+          padding: 0,
+        },
+      },
+    },
+    gridItem: {},
+    gridItemHidden: {},
   })
 );

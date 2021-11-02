@@ -28,6 +28,10 @@ class VoConfig {
     DOCS_BASE_URL: "",
     DOCS_ENDPOINT: "",
     DOCS_GRAPHQL: "",
+    DOCS_PUBLIC_DISKS: "",
+    DOCS_PRIVATE_DISKS: "",
+    AWS_BUCKET_VOFRONT_FILES: "",
+    AWS_BUCKET_VODOCS_FILES: "",
 
     BASE_URL: "",
     AUTH: "",

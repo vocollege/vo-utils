@@ -30,7 +30,12 @@ export interface VoLogoProps {
 }
 
 const VoLogo: React.FC<VoLogoProps> = (props) => {
-  const { color = "normal", alt = "", src = null, srcWhite = null } = props;
+  const {
+    color = "normal",
+    alt = "VO-College",
+    src = null,
+    srcWhite = null,
+  } = props;
   const classes = useStyles();
   return (
     <div className={classes.root}>

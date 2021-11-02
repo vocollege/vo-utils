@@ -1,4 +1,5 @@
 import crypto from "crypto-js";
+import { GeneralObject } from "../global";
 
 export const base64Url = (string: crypto.lib.WordArray | String) => {
   return string
@@ -14,6 +15,7 @@ export const createRandomString = (num: number) => {
 
 export const localStorage = {
   set: (key: string, value: string) => {
+    if (typeof window === "undefined") return false;
     try {
       window.localStorage.setItem(key, value);
       return true;
@@ -23,6 +25,7 @@ export const localStorage = {
     }
   },
   get: (key: string) => {
+    if (typeof window === "undefined") return false;
     try {
       const item = window.localStorage.getItem(key);
       return item;
@@ -177,46 +180,129 @@ export const downloadFile = (url: string) => {
   }
 };
 
-// const makeSortString = (function () {
-//   var translate_re = /[öäåüÖÄÅÜ]/g;
-//   var translate: { [key: string]: any } = {
-//     å: "a",
-//     ä: "a",
-//     ö: "o",
-//     ü: "u",
-//     Å: "A",
-//     Ä: "A",
-//     Ö: "O",
-//     Ü: "U", // probably more to come
-//   };
-//   return function (s: any) {
-//     return s.replace(translate_re, function (match: any) {
-//       return translate[match];
-//     });
-//   };
-// })();
+export const orderByPosition = (a: any, b: any) => {
+  if (a.position < b.position) {
+    return -1;
+  }
+  if (a.position > b.position) {
+    return 1;
+  }
+  return 0;
+};
 
-// const formatError = (error: string | [any]) => {
-//   if (typeof error === "string") {
-//     return error;
-//   }
-//   if (error.length === 1) {
-//     return typeof error[0] === "object" ? error[0].message : error[0];
-//   }
-//   return (
-//     <ul>
-//       {error.map((v) => (
-//         <li>{typeof error[0] === "object" ? error[0].message : error[0]}</li>
-//       ))}
-//     </ul>
-//   );
-// };
+export const shortenText = (str: string, limit = 30, stripHtml = true) => {
+  let output = "";
+  if (stripHtml) {
+    output = str.replace(/(<([^>]+)>)/gi, "");
+  }
+  return output.substring(0, limit);
+};
 
-// export {
-//   base64Url,
-//   createRandomString,
-//   localStorage,
-//   encodeQueryData,
-//   regexPatterns,
-//   getError
+export const getImageContact = (item: any, width = 400, height = 400) => {
+  let entity = item.entity || item;
+  return entity.images && entity.images[0]
+    ? `${entity.images[0]?.url}?d=${width}x${height}`
+    : "/images/avatar-user.png";
+};
+
+export const getImage = (
+  item: any,
+  width: number,
+  height: number,
+  field = "images"
+) => {
+  let entity =
+    (item.images && item.images.length > 0) || !item.entity
+      ? item
+      : item.entity;
+  return entity[field] && entity[field][0]
+    ? `${entity[field][0]?.url}?d=${width}x${height}`
+    : "/images/avatar-content.png";
+};
+
+export const getImageDescription = (item: any, field = "images") => {
+  let entity =
+    (item.images && item.images.length > 0) || !item.entity
+      ? item
+      : item.entity;
+  return entity[field] && entity[field][0]?.description;
+};
+
+export const getContactName = (item: GeneralObject) => {
+  let name = [];
+  if (item.firstname) {
+    name.push(item.firstname);
+  }
+  if (item.lastname) {
+    name.push(item.lastname);
+  }
+  if (name.length === 0) {
+    name.push(item.name);
+  }
+  return name.join(" ");
+};
+
+export const parseState = (state: any, initialState: any) => {
+  let newState: GeneralObject = {};
+  for (const field in initialState) {
+    newState[field] = state[field];
+  }
+  return newState;
+};
+
+// This method is copied from
+// https://stackoverflow.com/questions/6393943/convert-javascript-string-in-dot-notation-into-an-object-reference
+export const changeObj = (obj: any, is: any, value: any): {} => {
+  if (typeof is == "string") return changeObj(obj, is.split("."), value);
+  else if (is.length == 1 && value !== undefined) return (obj[is[0]] = value);
+  else if (is.length == 0) return obj;
+  else return changeObj(obj[is[0]], is.slice(1), value);
+};
+
+export const reducer = (state: any, action: any) => {
+  const { key, values } = action;
+  if (!key) {
+    return { ...state, ...values };
+  }
+  if (key === "loading") {
+    let i = state.loading.indexOf(values);
+    let newValues = [...state.loading];
+    if (i > -1) {
+      newValues.splice(i, 1);
+    } else {
+      newValues.push(values);
+    }
+    return { ...state, loading: newValues };
+  }
+  if (key.indexOf(".") > -1) {
+    changeObj(state, key, values);
+    return { ...state };
+  }
+  return { ...state, [key]: values };
+};
+
+export const getGroupLogotype = (
+  group: GeneralObject,
+  logo = "logo2",
+  output: GeneralObject[] = []
+) => {
+  if (group && Array.isArray(group[logo]) && group[logo].length > 0) {
+    output.push.apply(output, group[logo]);
+  } else if (group && group.parentGroups) {
+    return group.parentGroups.forEach((v: any) => {
+      return getGroupLogotype(v, logo, output);
+    });
+  }
+  return null;
+};
+
+// export const makeId = (length = 10) => {
+//   let result = "";
+//   let characters =
+//     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+//   let charactersLength = characters.length;
+//   for (var i = 0; i < length; i++) {
+//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+//   }
+//   return result;
 // };

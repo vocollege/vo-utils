@@ -30,14 +30,22 @@ export const GET_GROUP = gql`
         filetype
         url
       }
-      # images {
-      #   id
-      #   title
-      #   filename
-      #   filesize
-      #   filetype
-      #   url
-      # }
+      logo2 {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
+      }
+      logo3 {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
+      }
       users {
         id
         name
@@ -63,6 +71,7 @@ export const GET_AVAILABLE_GROUPS = gql`
     allGroups(categories: $categories) {
       id
       title
+      category
     }
   }
 `;
@@ -84,6 +93,7 @@ export const GET_GROUPS = gql`
         id
         name
         title
+        category
         status
         created_at
         updated_at

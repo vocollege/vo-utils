@@ -1,5 +1,7 @@
 import { ApolloClient, DocumentNode } from "@apollo/client";
 import { useStyles } from "./styles";
+import { GeneralObject } from "@vocollege/app/dist/global";
+import React from "react";
 
 export interface EnhancedTableOperations {
   category: string;
@@ -10,7 +12,7 @@ export interface EnhancedTableOperations {
 export interface EnhancedTableColumns {
   title: string;
   field: string;
-  width?: number;
+  width?: number | string;
   render?: (cellData: any) => void;
 }
 
@@ -27,6 +29,11 @@ export interface EnhancedTableProps {
   primaryField?: string;
   client?: ApolloClient<object>;
   actionButtons?: string[];
+  renderActionButtons?: (row: any) => React.ReactElement;
+  refetch?: () => void;
+  labels?: {
+    deleted?: string;
+  };
 }
 
 export interface EnhancedTableHeadProps {
@@ -45,4 +52,9 @@ export interface EnhancedTableToolbarProps {
 
 export interface EnhancedTableStatusCellProps {
   data: any;
+}
+
+export interface EnhancedTableRolesProps {
+  data: any;
+  classesMap?: GeneralObject;
 }

@@ -3,7 +3,7 @@ import {
   FileManagerBreadcrumb,
   FileManagerPortfolio,
 } from "./global";
-import { I18n } from "@vocollege/app";
+import { I18n, VoConfig } from "@vocollege/app";
 
 export function getBreadcrumbs(
   baseUrl: string,
@@ -37,7 +37,8 @@ export function getBreadcrumbs(
 }
 
 export function isDiskPublic(portfolio: FileManagerPortfolio) {
-  let publicDisks = process.env.REACT_APP_DOCS_PUBLIC_DISKS?.split(",");
+  let publicDisks = VoConfig.get.DOCS_PUBLIC_DISKS?.split(",");
+  // let publicDisks = process.env.REACT_APP_DOCS_PUBLIC_DISKS?.split(",");
   return publicDisks && publicDisks.indexOf(portfolio.disk) > -1;
 }
 
@@ -46,5 +47,6 @@ export function getBucket(portfolio: FileManagerPortfolio) {
   if (!disk[1]) {
     return null;
   }
-  return process.env[`REACT_APP_AWS_BUCKET_${disk[1].toUpperCase()}`];
+  return VoConfig.get[`AWS_BUCKET_${disk[1].toUpperCase()}`];
+  // return process.env[`REACT_APP_AWS_BUCKET_${disk[1].toUpperCase()}`];
 }

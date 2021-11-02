@@ -46,7 +46,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       overflow: "hidden",
       textOverflow: "ellipsis",
       [theme.breakpoints.up("md")]: {
-        maxHeight: theme.spacing(10),
+        maxHeight: theme.spacing(12),
       },
     },
     // @TODO Add animation to the row and extract it to a central style.

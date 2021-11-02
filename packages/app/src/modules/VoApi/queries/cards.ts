@@ -35,6 +35,14 @@ export const GET_CARD = gql`
           type
         }
       }
+      images {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
+      }
       created_at
       updated_at
     }

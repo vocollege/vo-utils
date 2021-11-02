@@ -7,6 +7,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import clsx from "clsx";
 
 // Custom.
 import { stylesCommon } from "@vocollege/theme";
@@ -16,7 +17,16 @@ import { SimpleTableProps, SimpleTableColumn, SimpleTableRow } from "./global";
 const useStylesCommon = makeStyles(() => stylesCommon);
 
 const SimpleTable: React.FC<SimpleTableProps> = (props) => {
-  const { columns, rows, isLoading, elevation, className, labels } = props;
+  const {
+    columns,
+    rows,
+    isLoading,
+    elevation,
+    className,
+    labels,
+    stickyHead,
+    classes: classesProp,
+  } = props;
   const classes = useStyles();
   useStylesCommon();
 
@@ -60,15 +70,19 @@ const SimpleTable: React.FC<SimpleTableProps> = (props) => {
           <span>{labels?.nothingFound}</span>
         </div>
       )}
-      <TableContainer>
+      <TableContainer className={classes.tableContainer}>
         <Table
-          className={classes.table}
+          className={clsx(classes.table, classesProp?.table)}
           aria-labelledby="tableTitle"
           size="medium"
           aria-label="simple table"
         >
           {!isLoading && (
-            <TableHead>
+            <TableHead
+              className={clsx(classes.tableHead, classesProp?.head, {
+                [classes.sticky]: stickyHead,
+              })}
+            >
               <TableRow>
                 {columns.map((column: any, index: number) => {
                   return <TableCell key={index}>{column.title}</TableCell>;
@@ -76,11 +90,11 @@ const SimpleTable: React.FC<SimpleTableProps> = (props) => {
               </TableRow>
             </TableHead>
           )}
-          <TableBody>
+          <TableBody className={classesProp?.body}>
             {isLoading && getFakeRowLoading()}
             {!isLoading &&
               rows.map((row: any, index: number) => (
-                <TableRow key={index}>
+                <TableRow key={index} className={classes.tableRow}>
                   {columns.map((column: any, index: number) => (
                     <TableCell key={index}>
                       {getCellValue(column, row)}

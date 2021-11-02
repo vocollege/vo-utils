@@ -12,5 +12,14 @@ export const useStyles = makeStyles(
       borderRadius: VoTheme.shape.borderRadius,
       padding: "10px 12px",
     },
+    label: {
+      marginRight: 0,
+    },
+    small: {
+      padding: "7px 12px",
+    },
+    medium: {
+      padding: "10px 12px",
+    },
   })
 );

@@ -19,7 +19,8 @@ export interface FormProps extends FormNakedProps {
     loading?: string;
     create?: string;
     update?: string;
-    saved?: string;
+    created?: string;
+    updated?: string;
     deleted?: string;
     fieldRequired?: string;
   };
@@ -31,11 +32,11 @@ export interface FormProps extends FormNakedProps {
     back?: string;
   };
   initialState: any;
-  pageTitleField: string;
+  pageTitleField?: string;
   primaryField?: string;
   client?: ApolloClient<object>;
-  onComplete?: (state: any) => void;
-  onCancel?: (state: any) => void;
+  onComplete?: (data: any) => void;
+  onCancel?: (data: any) => void;
   urlParams?: { [key: string]: any };
   createParam?: string;
   classes?: {
@@ -48,6 +49,9 @@ export interface FormProps extends FormNakedProps {
   disableToolbar?: boolean;
   onFormChange?: (formState: { isDirty: boolean; isValid: boolean }) => void;
   onQueryLoading?: (loading: boolean) => void;
+  renderPageTitle?: (state: any) => string;
+  initialData?: any;
+  onDataChange?: (data: any) => void;
 }
 
 export interface FormNakedProps {
@@ -66,6 +70,7 @@ export interface FormField {
   label: string;
   type:
     | "text"
+    | "textarea"
     | "select"
     | "editor"
     | "switch"
@@ -80,7 +85,12 @@ export interface FormField {
     | "tags_field"
     | "file_field"
     | "location"
-    | "checkboxes";
+    | "checkboxes"
+    | "content"
+    | "transfer_list"
+    | "hidden"
+    | "empty"
+    | "custom";
   inputType?: string;
   required?: boolean;
   overrideValue?: any;
@@ -145,7 +155,7 @@ export interface FormViewsProps {
 export interface FormToolbarProps {
   title?: string | JSX.Element;
   onSave: () => void;
-  onCancel?: () => void;
+  onCancel?: FormProps["onCancel"];
   loading: boolean;
   options?: {
     saveButton?: FormToolbarButton;
@@ -164,11 +174,14 @@ export interface FormFieldContentListProps {
   onChange?: (items: FormFieldContentListItem[]) => void;
   onReset?: () => void;
   items?: [any];
+  required?: boolean;
   // types: string;
-  types: string[];
+  // types: string[];
   // filetypes?: string[];
   multiple?: boolean;
   contentType?: "entity" | "file";
+  dialog?: EntityPickerDialogProps;
+  renderItemTitle?: (item: FormFieldContentListItem) => string;
 }
 
 export type FormFieldContentListItem =
@@ -220,16 +233,20 @@ export interface EntityPickerItemFields {
 
 export interface EntityPickerProps {
   className?: string;
-  dialog: EntityPickerDialogProps;
+  dialog?: EntityPickerDialogProps;
 }
 
 export interface EntityPickerDialogProps {
   onSelect?: (item: EntityPickerItem) => void;
   onClose?: () => void;
-  open: boolean;
+  open?: boolean;
   types: string[];
   primaryField?: string;
   addNew?: boolean;
+  renderTitleField?: (item: any) => string;
+  query?: DocumentNode;
+  category?: string;
+  variables?: { [key: string]: any };
 }
 
 export interface FormFieldUrlFieldProps {
@@ -269,19 +286,23 @@ export interface EntityFieldProps {
   className?: string;
   onChange?: (item: EntityPickerItem) => void;
   onReset?: () => void;
-  types: string[];
+  createCallback?: () => EntityPickerItem;
+  createCallbackLabel?: string;
+  // types: string[];
   primaryField?: string;
   fields?: { [key: string]: any };
   required?: boolean;
+  renderFieldValue?: (item: EntityPickerItem) => void;
+  dialog: EntityPickerDialogProps;
+  overrideValue?: EntityPickerItem;
 }
 
 export interface TagsFieldProps {
   label?: string;
   value?: TagsFieldItem[];
   required?: boolean;
-  types: string[];
   onChange?: (items: TagsFieldItem[]) => void;
-  addNew?: boolean;
+  dialog?: EntityPickerDialogProps;
 }
 
 export interface TagsFieldItem {
@@ -291,6 +312,7 @@ export interface TagsFieldItem {
 }
 
 export interface FileFieldProps {
+  title?: string;
   label?: string;
   value?: FileManagerFolderElement[];
   required?: boolean;
@@ -304,6 +326,8 @@ export interface FileFieldProps {
     updateFile?: DocumentNode;
     deleteFile?: DocumentNode;
   };
+  hideThumbnail?: boolean;
+  simplified?: boolean;
 }
 
 export interface FormFieldLocationProps {
@@ -317,4 +341,16 @@ export interface FormFieldLocation {
   id?: string;
   latitude?: string;
   longitude?: string;
+}
+
+export interface FormFieldTransferListProps {
+  name?: string;
+  label?: string;
+  sourceLabel?: string;
+  targetLabel?: string;
+  source?: FormFieldContentListItem[];
+  target?: FormFieldContentListItem[];
+  renderItemTitle?: (item: FormFieldContentListItem) => string;
+  renderItemDetails?: (item: FormFieldContentListItem) => string;
+  onChange?: (items: FormFieldContentListItem[]) => void;
 }

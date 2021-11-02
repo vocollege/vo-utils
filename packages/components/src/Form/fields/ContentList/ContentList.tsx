@@ -20,7 +20,7 @@ import EntityPicker from "../EntityPicker";
 import FileManagerPicker from "FileManager/Picker";
 import { FileManagerFolderElement } from "FileManager/global";
 
-const reorder = (
+export const reorder = (
   list: any,
   startIndex: any,
   endIndex: any
@@ -38,9 +38,14 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     onChange,
     onReset,
     items,
-    types,
+    required,
+    // types,
     multiple = true,
     contentType = "entity",
+    dialog = {
+      types: [],
+    },
+    renderItemTitle,
   } = props;
   const classes = useStyles();
   const [draggableItems, setDraggableItems] = useState<
@@ -109,10 +114,14 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
       <>
         <span className={classes.rowItemDetailsLabel}>{I18n.get.misc.id}:</span>
         <span className={classes.rowItemDetailsValue}>{item.id}</span>
-        <span className={classes.rowItemDetailsLabel}>
-          {I18n.get.misc.type}:
-        </span>
-        <span className={classes.rowItemDetailsValue}>{typeString}</span>
+        {typeString && typeString !== "" && (
+          <>
+            <span className={classes.rowItemDetailsLabel}>
+              {I18n.get.misc.type}:
+            </span>
+            <span className={classes.rowItemDetailsValue}>{typeString}</span>
+          </>
+        )}
       </>
     );
   };
@@ -125,6 +134,10 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     addItem(items[0]);
   };
 
+  const getTitle = (item: FormFieldContentListItem) => {
+    return renderItemTitle ? renderItemTitle(item) : item.title;
+  };
+
   // Effects.
 
   useEffect(() => {
@@ -133,26 +146,26 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
         items
           ?.filter((v: FormFieldContentListItem) => v)
           .map((v: FormFieldContentListItem) => {
-            switch (contentType) {
-              case "file":
-                return {
-                  id: v.id,
-                  title: v.title,
-                  type: v.type,
-                  filename: "filename" in v && v.filename,
-                  filesize: "filesize" in v && v.filesize,
-                  filetype: "filetype" in v && v.filetype,
-                  url: "url" in v && v.url,
-                };
-                break;
-
-              default:
-                return {
-                  id: v.id,
-                  title: v.title,
-                  type: v.type,
-                };
-            }
+            return v;
+            // switch (contentType) {
+            //   case "file":
+            //     return {
+            //       id: v.id,
+            //       title: v.title,
+            //       type: v.type,
+            //       filename: "filename" in v && v.filename,
+            //       filesize: "filesize" in v && v.filesize,
+            //       filetype: "filetype" in v && v.filetype,
+            //       url: "url" in v && v.url,
+            //     };
+            //     break;
+            //   default:
+            //     return {
+            //       id: v.id,
+            //       title: v.title,
+            //       type: v.type,
+            //     };
+            // }
           })
       );
     }
@@ -169,9 +182,16 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
             className={classes.headLabel}
           >
             {label}
+            {required && (
+              <span
+                aria-hidden="true"
+                className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+              >
+                *
+              </span>
+            )}
           </Typography>
         )}
-
         <div className={classes.headActions}>
           {isChanged && (
             <Button
@@ -189,8 +209,8 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
             <EntityPicker
               className={classes.headButton}
               dialog={{
+                ...dialog,
                 onSelect: handleSelect,
-                types: types,
                 open: false,
               }}
             />
@@ -199,7 +219,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
             <FileManagerPicker
               className={classes.headButton}
               onSelect={handleFileSelect}
-              filetypes={types}
+              filetypes={dialog.types}
             />
           )}
         </div>
@@ -253,7 +273,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
                                   classes.textNoWrap
                                 )}
                               >
-                                {item.title}
+                                {getTitle(item)}
                               </Typography>
                               <div
                                 className={clsx(

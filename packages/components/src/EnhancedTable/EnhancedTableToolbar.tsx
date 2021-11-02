@@ -33,13 +33,16 @@ export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           </IconButton>
         </Tooltip>
       </> */}
-      <FloatingButton
-        label=""
-        className="vo-global__actions-floating-button"
-        onClick={addItem ? () => addItem() : () => {}}
-      >
-        <AddIcon />
-      </FloatingButton>
+
+      {addItem && (
+        <FloatingButton
+          label=""
+          className="vo-global__actions-floating-button"
+          onClick={addItem ? () => addItem() : () => {}}
+        >
+          <AddIcon />
+        </FloatingButton>
+      )}
 
       {/* <Fab
         className="vo-global__actions-button-add-content"

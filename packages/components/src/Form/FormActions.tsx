@@ -5,7 +5,7 @@ import PublishIcon from "@material-ui/icons/Publish";
 import SaveIcon from "@material-ui/icons/Save";
 import CloseIcon from "@material-ui/icons/Close";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from "@material-ui/core/styles";
 import Fade from "@material-ui/core/Fade";
 
 // Custom
@@ -38,9 +38,10 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: "column",
       position: "fixed",
       right: theme.spacing(2),
-      "& > .MuiSpeedDial-root:not(:last-child), > .MuiButtonBase-root:not(:last-child)": {
-        marginBottom: 0,
-      },
+      "& > .MuiSpeedDial-root:not(:last-child), > .MuiButtonBase-root:not(:last-child)":
+        {
+          marginBottom: 0,
+        },
     },
     fabProgress: {
       position: "absolute",
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: 1,
     },
     fabOverlay: {
-      backgroundColor: fade(theme.palette.background.paper, 0.8),
+      backgroundColor: alpha(theme.palette.background.paper, 0.8),
       position: "fixed",
       top: 0,
       right: 0,

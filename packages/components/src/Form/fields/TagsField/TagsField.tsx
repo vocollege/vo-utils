@@ -12,7 +12,13 @@ import { createSlug2 } from "@vocollege/app";
 const TagsField: React.FC<TagsFieldProps> = (props) => {
   const classes = useStyles();
   const classesForm = useStylesForm();
-  const { label, value, required, types, onChange, addNew } = props;
+  const {
+    label,
+    value,
+    required,
+    onChange,
+    dialog = { open: false, types: [] },
+  } = props;
   const [itemsData, setItemsData] = React.useState<TagsFieldItem[]>([]);
 
   // Methods.
@@ -70,15 +76,16 @@ const TagsField: React.FC<TagsFieldProps> = (props) => {
           <EntityPicker
             className={classesForm.fieldHeadButton}
             dialog={{
+              ...dialog,
               onSelect: (item) =>
                 handleSelect({
                   id: item.id,
                   label: item.title,
                   slug: createSlug2(item.title),
                 }),
-              types: types,
-              addNew: addNew,
-              open: false,
+              // types: types,
+              // addNew: addNew,
+              // open: false,
             }}
           />
         </div>

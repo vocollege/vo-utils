@@ -9,5 +9,5 @@ export { VoApi, VoApp, VoAuth, VoRouter, VoConfig, VoDocs };
 export * from "./modules/VoApi";
 export * from "./modules/VoHelpers";
 export * from "./modules/Services";
-export * from "./types";
+export * from "./global";
 export default VoApp;

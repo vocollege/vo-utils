@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Editor as TinyMCEEditor } from "@tinymce/tinymce-react";
-import { Editor as TinyMCEEditorClass } from "tinymce";
+import { Editor as TinyMCEEditorClass, RawEditorSettings } from "tinymce";
 import { jssPreset } from "@material-ui/core/styles";
 import jss from "jss";
 
@@ -20,6 +20,10 @@ import linkClassList from "./settings/linkClassList";
 interface EditorProps {
   value: string;
   onChange: (content: string) => void;
+  editorSettings?: RawEditorSettings & {
+    selector?: undefined;
+    target?: undefined;
+  };
 }
 
 // Create a stylesheet from stylesGlobal.
@@ -27,7 +31,7 @@ jss.setup(jssPreset());
 const stylesGlobalSheet = jss.createStyleSheet(stylesGlobal);
 
 const Editor: React.FC<EditorProps> = (props) => {
-  const { value, onChange } = props;
+  const { value, onChange, editorSettings = {} } = props;
   // const [editorInstance, setEditorInstance] = useState<TinyMCEEditor | null>(
   //   null
   // );
@@ -75,8 +79,6 @@ const Editor: React.FC<EditorProps> = (props) => {
     setFilePickerParams({});
   };
 
-  // Effects.
-
   return (
     <>
       <TinyMCEEditor
@@ -107,6 +109,9 @@ const Editor: React.FC<EditorProps> = (props) => {
           visualblocks_default_state: true,
           // file_picker_types: "image",
           file_picker_callback: filePicker,
+          // valid_elements: "strong/b,italic/i,p,br",
+          valid_elements: "*[*]",
+          ...editorSettings,
         }}
         onEditorChange={handleEditorChange}
       />

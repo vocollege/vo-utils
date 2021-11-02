@@ -17,11 +17,16 @@ export const useStyles = makeStyles((theme: Theme) =>
     subtitle: {},
     paper: {
       width: theme.spacing(60),
+      "&$loading": {
+        background: "none",
+        boxShadow: "none",
+      },
     },
     contentRoot: {},
     actionsRoot: {
       padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
     },
+    loading: {},
     // buttonConfirm: {
     //   position: "relative",
     // },

@@ -19,6 +19,7 @@ import clsx from "clsx";
 // Custom.
 // import { VoAuth } from "@vocollege/app";
 import VoTextField from "VoTextField";
+import VoTextArea from "VoTextArea";
 import {
   VoDatePickerField,
   VoDateTimePickerField,
@@ -55,6 +56,7 @@ import { I18n } from "@vocollege/app";
 import { fakeMutation } from "@vocollege/app";
 import Location from "./fields/Location";
 import Checkboxes from "./fields/Checkboxes";
+import TransferList from "./fields/TransferList";
 import * as Helpers from "@vocollege/app/dist/modules/VoHelpers";
 
 // const useStylesCommon = makeStyles(() => stylesCommon);
@@ -81,6 +83,9 @@ const Form: React.FC<FormProps> = (props) => {
     disableToolbar,
     onFormChange,
     onQueryLoading,
+    renderPageTitle,
+    initialData,
+    onDataChange,
   } = props;
   const classes = useStyles();
   useStylesLayout();
@@ -143,22 +148,27 @@ const Form: React.FC<FormProps> = (props) => {
     }
   };
 
-  const getInputValues = () => {
+  const getInputValues = (customCategory: null | string = null) => {
     const values: { [key: string]: any } = {};
     tabs.forEach((tab: FormTabProps) => {
       tab.fields
-        // .filter((field: FormField) => field.name !== primaryField)
+        .filter((field: FormField) => {
+          if (customCategory) {
+            return field.name.indexOf(`${customCategory}.`) > -1;
+          }
+          return field.name.indexOf(".") === -1;
+        })
         .forEach((field: FormField) => {
-          // if (
-          //   ["datetime_filed", "date_field", "time_field"].indexOf(field.type) >
-          //   -1
-          // ) {
-          //   values[field.name] = Dayjs(state[field.name]).format(
-          //     getDefaultDateFormat(field)
-          //   );
-          // } else {
-          values[field.name] = state[field.name];
-          // }
+          let fieldName = field.name;
+          if (field.name.indexOf(".") > -1) {
+            let fieldParts = field.name.split(".");
+            fieldName = fieldParts[1];
+          }
+          let value = state[field.name];
+          if (state[field.name] && field.type === "entity_field") {
+            value = { id: state[field.name].id };
+          }
+          values[fieldName] = value;
         });
     });
     return values;
@@ -182,6 +192,17 @@ const Form: React.FC<FormProps> = (props) => {
     const variables: { [key: string]: any } = {
       input: getInputValues(),
     };
+
+    // Find custom data categories.
+    let customCategoryFields = Object.keys(state).filter(
+      (field: string) => field.indexOf(".") > -1
+    );
+    if (customCategoryFields.length > 0) {
+      customCategoryFields.map((field: string) => {
+        let fieldParts = field.split(".");
+        variables[fieldParts[0]] = getInputValues(fieldParts[0]);
+      });
+    }
     if (!isCreateNew()) {
       variables[primaryField || "id"] = state[primaryField || "id"];
       update({
@@ -266,7 +287,10 @@ const Form: React.FC<FormProps> = (props) => {
       onChange(content);
     }
     typingTimer[field] = window.setTimeout(async () => {
-      setValue(`${field}` as const, content, { shouldDirty: true });
+      setValue(`${field}` as const, content, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }, 300);
   };
 
@@ -277,23 +301,31 @@ const Form: React.FC<FormProps> = (props) => {
     onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[field]);
-    let parsedItems = items.map((v: FormFieldContentListItem) => {
-      if (!fieldParams || !fieldParams.fields) {
-        return v;
-      }
-      let titleField = fieldParams.fields[v.type.toLowerCase()]?.title;
-      return {
-        id: v.id,
-        [titleField]: v.title,
-        type: v.type,
-      };
-    });
-    dispatch({ field: field, value: parsedItems });
+    // let parsedItems = items.map((v: FormFieldContentListItem) => {
+    //   if (!fieldParams || !fieldParams.fields) {
+    //     return v;
+    //   }
+    //   let titleField = fieldParams.fields[v.type.toLowerCase()]?.title;
+    //   return {
+    //     id: v.id,
+    //     [titleField]: v.title,
+    //     type: v.type,
+    //     entity: v,
+    //   };
+    // });
+    // dispatch({ field: field, value: parsedItems });
+    // if (onChange) {
+    //   onChange(parsedItems);
+    // }
+    dispatch({ field: field, value: items });
     if (onChange) {
-      onChange(parsedItems);
+      onChange(items);
     }
     typingTimer[field] = window.setTimeout(async () => {
-      setValue(`${field}` as const, items, { shouldDirty: true });
+      setValue(`${field}` as const, items, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }, 300);
   };
 
@@ -338,7 +370,11 @@ const Form: React.FC<FormProps> = (props) => {
     }, 300);
   };
 
-  const handleChangeEntity = (field: string, item: EntityPickerItem | null) => {
+  const handleChangeEntity = (
+    field: string,
+    item: EntityPickerItem | null,
+    onChange: FormField["onChange"] | null
+  ) => {
     // let value =
     //   typeof item === "string"
     //     ? ""
@@ -348,6 +384,9 @@ const Form: React.FC<FormProps> = (props) => {
       shouldValidate: true,
       shouldDirty: true,
     });
+    if (onChange) {
+      onChange(item);
+    }
   };
 
   // const handleEntityFieldReset = (
@@ -428,33 +467,37 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const getPageTitle = () => {
-    if (isCreateNew()) {
+    if (renderPageTitle) {
+      return renderPageTitle(state);
+    } else if (isCreateNew()) {
       return labels.create;
     } else if (!data) {
       return labels.loading;
-    } else {
+    } else if (pageTitleField) {
       return (
         <>
           {data[operations.category][pageTitleField]} (
           {data[operations.category][primaryField || "id"]})
         </>
       );
+    } else {
+      return "";
     }
   };
 
-  const getContentListItems = (items: any, fieldParams: any) => {
-    if (!items || !fieldParams || !fieldParams.fields) {
-      return items;
-    }
-    return items.map((v: any) => {
-      let titleField = fieldParams.fields[v.type.toLowerCase()]?.title;
-      return {
-        id: v.id,
-        title: v[titleField] ? v[titleField] : v.title,
-        type: v.type,
-      };
-    });
-  };
+  // const getContentListItems = (items: any, fieldParams: any) => {
+  //   if (!items || !fieldParams || !fieldParams.fields) {
+  //     return items;
+  //   }
+  //   return items.map((v: any) => {
+  //     let titleField = fieldParams.fields[v.type.toLowerCase()]?.title;
+  //     return {
+  //       id: v.id,
+  //       title: v[titleField] ? v[titleField] : v.title,
+  //       type: v.type,
+  //     };
+  //   });
+  // };
 
   const getAvailableValues = (
     field: FormField
@@ -466,7 +509,7 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const getSelectValue = (field: FormField) => {
-    if (!state[field.name]) {
+    if (!state[field.name] && state[field.name] !== 0) {
       return "";
     }
     if (Array.isArray(state[field.name])) {
@@ -479,10 +522,20 @@ const Form: React.FC<FormProps> = (props) => {
     let visible = true;
     if (field.params?.dependency) {
       for (let fieldDependee in field.params?.dependency) {
-        visible =
-          (state[fieldDependee] ===
-            field.params?.dependency[fieldDependee].value) ===
-          field.params?.dependency[fieldDependee].visibility;
+        let dependencyValue = field.params?.dependency[fieldDependee].value;
+        if (Array.isArray(dependencyValue)) {
+          visible =
+            field.params?.dependency[fieldDependee].value.indexOf(
+              state[fieldDependee]
+            ) >
+              -1 ===
+            field.params?.dependency[fieldDependee].visibility;
+        } else {
+          visible =
+            (state[fieldDependee] ===
+              field.params?.dependency[fieldDependee].value) ===
+            field.params?.dependency[fieldDependee].visibility;
+        }
       }
       if (!visible) {
         return "";
@@ -519,8 +572,31 @@ const Form: React.FC<FormProps> = (props) => {
             type={field.inputType || "text"}
             required={field.required}
             error={!!errors[field.name]}
-            helperText={errors[field.name] ? errors[field.name]?.message : ""}
+            helperText={
+              errors[field.name]
+                ? errors[field.name]?.message
+                : field?.params?.helperText || ""
+            }
             hidden={field.hidden}
+            inputProps={field?.params && field?.params?.inputProps}
+          />
+        );
+      case "textarea":
+        return (
+          <VoTextArea
+            name={field.name}
+            placeholder={field.label}
+            value={state[field.name] || ""}
+            onChange={(e) => handleChange(e, field.onChange)}
+            required={field.required}
+            // error={!!errors[field.name]}
+            // helperText={
+            //   errors[field.name]
+            //     ? errors[field.name]?.message
+            //     : field?.params?.helperText || ""
+            // }
+            hidden={field.hidden}
+            // inputProps={field?.params && field?.params?.inputProps}
           />
         );
       case "select":
@@ -536,7 +612,11 @@ const Form: React.FC<FormProps> = (props) => {
             fullWidth
             required={field.required}
             error={!!errors[field.name]}
-            helperText={errors[field.name] ? errors[field.name]?.message : ""}
+            helperText={
+              errors[field.name]
+                ? errors[field.name]?.message
+                : field?.params?.helperText || ""
+            }
           />
         );
       case "switch":
@@ -559,6 +639,7 @@ const Form: React.FC<FormProps> = (props) => {
             onChange={(content: any) =>
               handleEditorChange(content, field.name, field.onChange)
             }
+            editorSettings={field.params?.editorSettings}
           />
         );
       case "content_list":
@@ -575,10 +656,14 @@ const Form: React.FC<FormProps> = (props) => {
               )
             }
             onReset={() => handleContentListReset(field.name)}
-            items={getContentListItems(state[field.name], field.params)}
-            types={field.params?.types}
+            // items={getContentListItems(state[field.name], field.params)}
+            items={state[field.name]}
+            // types={field.params?.types}
             contentType={field.params?.contentType}
             multiple={field.params?.multiple}
+            renderItemTitle={field.params?.renderItemTitle}
+            dialog={field.params?.dialog}
+            required={field?.required}
           />
         );
 
@@ -623,8 +708,10 @@ const Form: React.FC<FormProps> = (props) => {
             name={field.name}
             label={field.label}
             value={state[field.name]}
-            onChange={(item) => handleChangeEntity(field.name, item)}
-            onReset={() => handleChangeEntity(field.name, null)}
+            onChange={(item) =>
+              handleChangeEntity(field.name, item, field.onChange)
+            }
+            onReset={() => handleChangeEntity(field.name, null, null)}
             // onReset={() =>
             //   handleEntityFieldReset(
             //     field.name,
@@ -633,9 +720,12 @@ const Form: React.FC<FormProps> = (props) => {
             //   )
             // }
             required={field?.required}
-            types={field.params?.types}
-            primaryField={field.params?.primaryField || "id"}
             fields={field.params?.fields}
+            dialog={field.params?.dialog}
+            renderFieldValue={field.params?.renderFieldValue}
+            createCallback={field.params?.createCallback}
+            createCallbackLabel={field.params?.createCallbackLabel}
+            overrideValue={field.overrideValue}
           />
         );
       case "date_field":
@@ -690,8 +780,7 @@ const Form: React.FC<FormProps> = (props) => {
             value={state[field.name]}
             onChange={(items) => handleChangeTags(field.name, items)}
             required={field?.required}
-            types={field.params?.types}
-            addNew={field.params?.addNew}
+            dialog={field.params?.dialog}
           />
         );
       case "file_field":
@@ -731,8 +820,38 @@ const Form: React.FC<FormProps> = (props) => {
             }
           />
         );
+
+      case "transfer_list":
+        return (
+          <TransferList
+            name={field.name}
+            label={field.label}
+            sourceLabel={field.params?.sourceLabel}
+            targetLabel={field.params?.targetLabel}
+            source={field.params?.getSource(data) || []}
+            target={state[field.name]}
+            renderItemTitle={field.params?.renderItemTitle}
+            renderItemDetails={field.params?.renderItemDetails}
+            onChange={(items: FormFieldContentListItem[]) =>
+              handleContentListChange(
+                items,
+                field.name,
+                field.params,
+                field.onChange
+              )
+            }
+          />
+        );
+
+      case "hidden":
+        return (
+          <input type="hidden" name={field.name} value={state[field.name]} />
+        );
+      case "empty":
+        return <span></span>;
+
       default:
-        return <div>DEFAULT</div>;
+        return <div></div>;
     }
   };
 
@@ -753,11 +872,19 @@ const Form: React.FC<FormProps> = (props) => {
     });
   };
 
-  const handleCompleted = (data: any) => {
+  const getToastAutoCloseTime = (message: string) => {
+    let time = Math.round(message.length / 6) * 1000;
+    if (time > 20000) {
+      return 20000;
+    }
+    return time > 4000 ? time : 4000;
+  };
+
+  const handleCompleted = (data: any, message = "") => {
     setFormSaved(true);
-    toast.success(labels.saved);
+    toast.success(message, { autoClose: getToastAutoCloseTime(message) });
     if (onComplete) {
-      onComplete(state);
+      onComplete(data);
     } else {
       redirect({ refetch: true });
     }
@@ -765,13 +892,38 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleError = (error: any) => {
     setValidationError(error.graphQLErrors);
-    toast.error(error.message, { autoClose: 10000 });
+    toast.error(error.message, {
+      autoClose: getToastAutoCloseTime(error.message),
+    });
   };
 
   const getOperation = () => {
     return isCreateNew() && operations.getOnCreate
       ? operations.getOnCreate
       : operations.get;
+  };
+
+  const setData = (data: any) => {
+    let mergedData: { [key: string]: any } = {};
+    Object.keys(initialState).map((field: any) => {
+      if (field.indexOf(".") > -1) {
+        let fieldParts = field.split(".");
+        if (fieldParts.length === 3) {
+          mergedData[field] = data[fieldParts[0]][fieldParts[1]][fieldParts[2]];
+        } else {
+          mergedData[field] = data[fieldParts[0]][fieldParts[1]];
+        }
+      } else {
+        mergedData[field] = data[operations.category][field];
+      }
+    });
+    dispatch({
+      item: mergedData,
+    });
+    reset(mergedData);
+    if (onDataChange) {
+      onDataChange(mergedData);
+    }
   };
 
   // API
@@ -782,6 +934,7 @@ const Form: React.FC<FormProps> = (props) => {
   ] = useLazyQuery(getOperation(), {
     client: client || undefined,
     fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
     errorPolicy: "all",
     variables: {
       [primaryField || "id"]: params[primaryField || "id"],
@@ -793,15 +946,18 @@ const Form: React.FC<FormProps> = (props) => {
     {
       client: client || undefined,
       onError: handleError,
-      onCompleted: handleCompleted,
+      onCompleted: (data: any) => handleCompleted(data, labels.created),
     }
   );
 
-  const [update, { loading: updateLoading }] = useMutation(operations.update, {
-    client: client || undefined,
-    onError: handleError,
-    onCompleted: handleCompleted,
-  });
+  const [update, { loading: updateLoading }] = useMutation(
+    operations.update || fakeMutation,
+    {
+      client: client || undefined,
+      onError: handleError,
+      onCompleted: (data: any) => handleCompleted(data, labels.updated),
+    }
+  );
 
   // useEffect
 
@@ -814,20 +970,16 @@ const Form: React.FC<FormProps> = (props) => {
       }
     }
     if (callLoadQuery) {
-      loadQuery({
-        variables: {
-          ...variables,
-        },
-      });
+      if (initialData) {
+        setData(initialData);
+      } else {
+        loadQuery({
+          variables: {
+            ...variables,
+          },
+        });
+      }
     }
-
-    // Helpers.localStorage.remove("redirectTo");
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const redirectTo = urlParams.get("redirectTo");
-    // if (redirectTo) {
-    //   Helpers.localStorage.set("redirectTo", redirectTo);
-    // }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -844,11 +996,22 @@ const Form: React.FC<FormProps> = (props) => {
 
   useEffect(() => {
     if (data && data[operations.category]) {
-      let mergedData = { ...initialState, ...data[operations.category] };
-      dispatch({
-        item: mergedData,
-      });
-      reset(mergedData);
+      setData(data);
+      // setData(data[operations.category]);
+
+      // let mergedData: { [key: string]: any } = {};
+      // Object.keys(initialState).map((field: any) => {
+      //   if (field.indexOf(".") > -1) {
+      //     let fieldParts = field.split(".");
+      //     mergedData[field] = data[fieldParts[0]][fieldParts[1]];
+      //   } else {
+      //     mergedData[field] = data[operations.category][field];
+      //   }
+      // });
+      // dispatch({
+      //   item: mergedData,
+      // });
+      // reset(mergedData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -869,7 +1032,9 @@ const Form: React.FC<FormProps> = (props) => {
   }, [queryLoading]);
 
   if (queryError) {
-    toast.error(queryError.message, { autoClose: 10000 });
+    toast.error(queryError.message, {
+      autoClose: getToastAutoCloseTime(queryError.message),
+    });
   }
 
   return (
@@ -896,11 +1061,18 @@ const Form: React.FC<FormProps> = (props) => {
           className={clsx(classes.root, classesProp?.root)}
           noValidate
           autoComplete="off"
+          encType="multipart/form-data"
         >
-          {/* <div style={{ marginTop: 100 }}>{JSON.stringify(state)}</div> */}
-          {/* <div style={{ marginTop: 100 }}>{JSON.stringify(getValues())}</div> */}
-          {/* <div style={{ marginTop: 100 }}>{JSON.stringify(formState)}</div> */}
-          {/* <div style={{ marginTop: 100 }}>{JSON.stringify(errors)}</div> */}
+          {/*<div style={{ marginTop: 100 }}>{JSON.stringify(state)}</div>
+          <div style={{ marginTop: 100 }}>{JSON.stringify(getValues())}</div>
+          <div style={{ marginTop: 100 }}>{JSON.stringify(formState)}</div>
+          <div style={{ marginTop: 100 }}>{JSON.stringify(errors)}</div> */}
+          <input
+            autoComplete="false"
+            name="hidden"
+            type="text"
+            style={{ display: "none" }}
+          />
           {!disableToolbar && (
             <FormToolbar
               title={getPageTitle()}
@@ -936,13 +1108,25 @@ const Form: React.FC<FormProps> = (props) => {
                   {tabs.map((tab: FormTabProps, index: number) => {
                     return (
                       <Box key={index}>
-                        <Grid container spacing={3}>
+                        <Grid
+                          container
+                          spacing={3}
+                          className={classes.gridContainer}
+                        >
                           {tab.fields.map(
                             (field: FormField, fieldIndex: number) => {
                               let fieldElement = getField(field);
                               return (
                                 fieldElement && (
-                                  <Grid key={fieldIndex} item {...field.grid}>
+                                  <Grid
+                                    key={fieldIndex}
+                                    className={clsx(classes.gridItem, {
+                                      [classes.gridItemHidden]:
+                                        field.type === "hidden",
+                                    })}
+                                    item
+                                    {...field.grid}
+                                  >
                                     {fieldElement}
                                   </Grid>
                                 )

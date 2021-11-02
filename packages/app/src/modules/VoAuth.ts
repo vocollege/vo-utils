@@ -7,7 +7,7 @@ import VoBase from "./VoBase";
 import VoApi from "./VoApi";
 import VoRouter from "./VoRouter";
 import VoConfig from "./VoConfig";
-import { VoTokenType } from "../types";
+import { VoTokenType } from "../global";
 
 class VoAuth extends VoBase {
   state: string;

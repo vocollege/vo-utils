@@ -10,7 +10,7 @@ import { I18n } from "@vocollege/app";
 import EntityPickerDialog from "./EntityPickerDialog";
 
 const EntityPicker: React.FC<EntityPickerProps> = (props) => {
-  const { className, dialog } = props;
+  const { className, dialog = { open: false, types: [] } } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 

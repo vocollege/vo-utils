@@ -1,4 +1,4 @@
-import { fade, createStyles } from "@material-ui/core/styles";
+import { alpha, createStyles } from "@material-ui/core/styles";
 
 import VoTheme from "../index";
 
@@ -17,10 +17,10 @@ export const stylesReddit = createStyles({
     },
     "&$focused": {
       backgroundColor: VoTheme.palette.background.paper,
-      boxShadow: `${fade(VoTheme.palette.primary.main, 0.25)} 0 0 0 2px`,
+      boxShadow: `${alpha(VoTheme.palette.primary.main, 0.25)} 0 0 0 2px`,
       borderColor: VoTheme.palette.primary.main,
       "&$error": {
-        boxShadow: `${fade(VoTheme.palette.error.dark, 0.25)} 0 0 0 2px`,
+        boxShadow: `${alpha(VoTheme.palette.error.dark, 0.25)} 0 0 0 2px`,
         borderColor: VoTheme.palette.error.dark,
       },
     },

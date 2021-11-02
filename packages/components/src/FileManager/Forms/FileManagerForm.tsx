@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { useMutation, ApolloError } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import Grid from "@material-ui/core/Grid";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -15,7 +15,7 @@ import EditDialog from "../../EditDialog";
 import FileUploader from "FileUploader";
 import VoSelectField, { VoSelectFieldAvailableValue } from "VoSelectField";
 import { FileManagerFormProps, FileManagerBreadcrumbLink } from "../global";
-import { I18n } from "@vocollege/app";
+import { I18n, VoConfig } from "@vocollege/app";
 import { getBucket } from "../FileManagerHelper";
 
 let typingTimer: number;
@@ -46,8 +46,8 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
 
   // Methods.
 
-  const handleError = (error: ApolloError) => {
-    toast.error(error.message, { autoClose: 10000 });
+  const handleError = (error: any) => {
+    toast.error(error?.message, { autoClose: 10000 });
   };
 
   const handleCompleted = (data: any) => {
@@ -128,6 +128,7 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
     // Delete values handled outside "input".
     delete variables.input.id;
     delete variables.input.file;
+
     let bucket = portfolio ? getBucket(portfolio) : "";
 
     try {
@@ -137,7 +138,8 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
           //   setUploadProgress(Math.round(progress * 100));
           // },
           bucket: bucket,
-          baseURL: process.env.REACT_APP_API_BASE_URL,
+          baseURL: VoConfig.get.API_BASE_URL,
+          // baseURL: process.env.REACT_APP_API_BASE_URL,
           // headers: {
           //   Authorization: "",
           // },
@@ -159,7 +161,7 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
           variables: variables,
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.message, { autoClose: 10000 });
     }
     setLoading(false);

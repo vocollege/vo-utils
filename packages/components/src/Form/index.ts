@@ -14,4 +14,5 @@ export * from "./fields/FileField";
 export * from "./fields/Location";
 export * from "./fields/SortableTree";
 export * from "./fields/TagsField";
+export * from "./fields/TransferList";
 export * from "./fields/UrlField";

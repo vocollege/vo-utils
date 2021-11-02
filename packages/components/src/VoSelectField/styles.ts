@@ -2,7 +2,7 @@ import {
   createStyles,
   Theme,
   makeStyles,
-  fade,
+  alpha,
 } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
@@ -24,7 +24,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         borderColor: theme.palette.error.dark,
       },
       "& $select:focus": {
-        boxShadow: `${fade(theme.palette.error.dark, 0.25)} 0 0 0 2px`,
+        boxShadow: `${alpha(theme.palette.error.dark, 0.25)} 0 0 0 2px`,
         borderColor: theme.palette.error.dark,
       },
     },
@@ -44,7 +44,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       "&:focus": {
         backgroundColor: "#fff",
         borderRadius: theme.spacing(1),
-        boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
+        boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
         borderColor: theme.palette.primary.main,
       },
     },

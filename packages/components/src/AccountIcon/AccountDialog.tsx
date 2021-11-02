@@ -383,7 +383,8 @@ const AccountDialog: React.FC<AccountDialogProps> = (props) => {
         labels={{
           loading: I18n.get.form.labels.loadingContent,
           create: I18n.get.form.labels.createUser,
-          saved: I18n.get.user.messages.userSaved,
+          created: I18n.get.user.messages.userCreated,
+          updated: I18n.get.user.messages.userUpdated,
           deleted: I18n.get.user.messages.userDeleted,
           fieldRequired: I18n.get.form.errors.required,
         }}

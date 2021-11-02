@@ -1,4 +1,4 @@
-import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
+import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
 
 interface CustomColors {
   orangeLighter: string;
@@ -40,7 +40,8 @@ const options = {
     //   default: "#fafafa",
     // },
     primary: {
-      ligther: "#BFDDEF",
+      lighter: "#E6F0F7",
+      // lighter: "#BFDDEF",
       light: "#80BCDF",
       main: "#0078BE",
       dark: "#005FAF",
@@ -125,10 +126,10 @@ const options = {
     "0px 7px 18px -4px rgba(0,0,0,0.2)",
     "0px 10px 18px -10px rgba(0,0,0,0.2)",
     "0px 0px 18px 0px rgba(0,0,0,0.12)",
+    "0px 8px 9px -5px rgb(0, 0, 0, 0.2), 0px 10px 18px -10px rgb(0, 0, 0, 0.2)",
+    "0px 8px 9px -5px rgb(0, 0, 0, 0.2) inset, 0px 10px 18px -10px rgb(0, 0, 0, 0.2) inset",
+    "0px -14px 18px -10px rgba(0,0,0,0.12)",
 
-    "0px 6px 7px -4px rgba(0,0,0,0.2),0px 11px 15px 1px rgba(0,0,0,0.14),0px 4px 20px 3px rgba(0,0,0,0.12)",
-    "0px 7px 8px -4px rgba(0,0,0,0.2),0px 12px 17px 2px rgba(0,0,0,0.14),0px 5px 22px 4px rgba(0,0,0,0.12)",
-    "0px 7px 8px -4px rgba(0,0,0,0.2),0px 13px 19px 2px rgba(0,0,0,0.14),0px 5px 24px 4px rgba(0,0,0,0.12)",
     "0px 7px 9px -4px rgba(0,0,0,0.2),0px 14px 21px 2px rgba(0,0,0,0.14),0px 5px 26px 4px rgba(0,0,0,0.12)",
     "0px 8px 9px -5px rgba(0,0,0,0.2),0px 15px 22px 2px rgba(0,0,0,0.14),0px 6px 28px 5px rgba(0,0,0,0.12)",
     "0px 8px 10px -5px rgba(0,0,0,0.2),0px 16px 24px 2px rgba(0,0,0,0.14),0px 6px 30px 5px rgba(0,0,0,0.12)",
@@ -146,6 +147,6 @@ const options = {
 // @note For some reason "options" gets a Typescript error when defining custom shadows,
 // saying that the source value contains fewer elements than required.
 // @ts-ignore
-let theme = createMuiTheme(options);
+let theme = createTheme(options);
 theme = responsiveFontSizes(theme);
 export default theme;

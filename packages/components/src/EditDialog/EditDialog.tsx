@@ -59,24 +59,31 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
     }
   };
 
-  const showActions = () => {
-    return typeof disableActions === "undefined" || !disableActions;
-  };
+  // const showActions = () => {
+  //   return typeof disableActions === "undefined" || !disableActions;
+  // };
 
-  const showCloseButton = () => {
-    return typeof disableCloseButton === "undefined" || !disableCloseButton;
-  };
+  // const showCloseButton = () => {
+  //   return typeof disableCloseButton === "undefined" || !disableCloseButton;
+  // };
 
   const showDialogTitle = () => {
-    return title || subtitle || showCloseButton();
+    return !loading && (title || subtitle || !disableCloseButton);
   };
 
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
-      classes={{ paper: clsx(classes.paper, className) }}
-      disableBackdropClick={loading}
+      onClose={(event, reason) => {
+        if (loading && reason === "backdropClick") {
+          return;
+        }
+        handleClose();
+      }}
+      classes={{
+        paper: clsx(classes.paper, { [classes.loading]: loading }, className),
+      }}
+      // disableBackdropClick={loading}
     >
       {showDialogTitle() && (
         <DialogTitle disableTypography classes={{ root: classes.titleRoot }}>
@@ -92,7 +99,7 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
               </Typography>
             )}
           </div>
-          {showCloseButton() && (
+          {!disableCloseButton && (
             <IconButton aria-label="close" onClick={handleClose}>
               <CloseIcon />
             </IconButton>
@@ -100,12 +107,16 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
         </DialogTitle>
       )}
       <DialogContent
-        classes={{ root: clsx(classes.contentRoot, classesProp?.contentRoot) }}
+        classes={{
+          root: clsx(classes.contentRoot, classesProp?.contentRoot),
+        }}
       >
-        {contentText && <DialogContentText>{contentText}</DialogContentText>}
+        {contentText && !loading && (
+          <DialogContentText>{contentText}</DialogContentText>
+        )}
         {children}
       </DialogContent>
-      {showActions() && (
+      {!disableActions && !loading && (
         <DialogActions classes={{ root: classes.actionsRoot }}>
           <Button onClick={handleClose} color="secondary" disabled={loading}>
             {I18n.get.actions.cancel}

@@ -1,21 +1,19 @@
 // import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
-import theme from "./vocollege2";
-
+import { alpha } from "@material-ui/core/styles";
 import VoTheme from "./vocollege2";
 
 // Note that we can't use Material UI createStyles() here, since we
 // use this style on Editor.tsx, converting it to style string with
-// jss.createStyleSheet() which is not TypeScript compatible the
+// jss.createStyleSheet() which is not TypeScript compatible with the
 // returned type from createStyles()
-export const stylesGlobal = {
+export const stylesGlobal: any = {
   "@global": {
     "body.vo-global__content": {
       fontFamily: "Lato, sans-serif",
       fontSize: VoTheme.typography.fontSize,
       margin: `0 auto`,
       maxWidth: 784,
-      padding: theme.spacing(1),
+      padding: VoTheme.spacing(1),
     },
     ".vo-global__content": {
       color: VoTheme.palette.text.primary,
@@ -39,7 +37,7 @@ export const stylesGlobal = {
       "& .left": {
         float: "left",
         margin: `0 ${VoTheme.spacing(2)}px ${VoTheme.spacing(2)}px 0`,
-        [theme.breakpoints.down("sm")]: {
+        [VoTheme.breakpoints.down("sm")]: {
           float: "none",
           margin: `${VoTheme.spacing(2)}px auto`,
         },
@@ -47,7 +45,7 @@ export const stylesGlobal = {
       "& .right": {
         float: "right",
         margin: `0 0 ${VoTheme.spacing(2)}px ${VoTheme.spacing(2)}px`,
-        [theme.breakpoints.down("sm")]: {
+        [VoTheme.breakpoints.down("sm")]: {
           float: "none",
           margin: `${VoTheme.spacing(2)}px auto`,
         },
@@ -63,7 +61,7 @@ export const stylesGlobal = {
         flexWrap: "wrap",
         padding: 0,
         "& > *": {
-          padding: theme.spacing(1),
+          padding: VoTheme.spacing(1),
         },
         "&.left": {
           float: "none",
@@ -81,7 +79,7 @@ export const stylesGlobal = {
         },
       },
       "& * + .grid": {
-        marginTop: `${theme.spacing(3)}px !important`,
+        marginTop: `${VoTheme.spacing(3)}px !important`,
       },
       "& img": {
         borderRadius: VoTheme.shape.borderRadius * 2,
@@ -147,9 +145,9 @@ export const stylesGlobal = {
         },
       },
       "& hr": {
-        borderTop: `1px solid ${theme.palette.secondary.light}`,
-        marginBottom: theme.spacing(4),
-        marginTop: theme.spacing(4),
+        borderTop: `1px solid ${VoTheme.palette.secondary.light}`,
+        marginBottom: VoTheme.spacing(4),
+        marginTop: VoTheme.spacing(4),
       },
       "& p": {
         fontSize: VoTheme.typography.body1.fontSize,
@@ -171,49 +169,49 @@ export const stylesGlobal = {
           textDecoration: "underline",
         },
         "&.VoButton": {
-          borderRadius: theme.spacing(5),
+          borderRadius: VoTheme.spacing(5),
           boxShadow: "none",
-          // boxShadow: theme.shadows[2],
+          // boxShadow: VoTheme.shadows[2],
           display: "inline-block",
-          fontSize: theme.typography.button.fontSize,
+          fontSize: VoTheme.typography.button.fontSize,
           padding: "8px 22px",
           margin: 5,
-          minWidth: theme.spacing(8),
+          minWidth: VoTheme.spacing(8),
           textAlign: "center",
           textTransform: "uppercase",
           "&:hover": {
             boxShadow: "none",
-            // boxShadow: theme.shadows[4],
+            // boxShadow: VoTheme.shadows[4],
             textDecoration: "none",
           },
         },
         "&.VoButton-green": {
-          background: `linear-gradient(0deg, ${theme.palette.secondary.dark} 0%, ${theme.palette.secondary.main} 100%)`,
-          color: theme.palette.secondary.contrastText,
+          background: `linear-gradient(0deg, ${VoTheme.palette.secondary.dark} 0%, ${VoTheme.palette.secondary.main} 100%)`,
+          color: VoTheme.palette.secondary.contrastText,
           "&:hover": {
-            background: `linear-gradient(0deg, ${theme.palette.secondary.dark} 0%, ${theme.palette.secondary.main} 80%)`,
+            background: `linear-gradient(0deg, ${VoTheme.palette.secondary.dark} 0%, ${VoTheme.palette.secondary.main} 80%)`,
           },
           "&.VoButton-outlined": {
             background: "none",
-            border: `2px solid ${theme.palette.secondary.main}`,
-            color: theme.palette.secondary.main,
+            border: `2px solid ${VoTheme.palette.secondary.main}`,
+            color: VoTheme.palette.secondary.main,
             "&:hover": {
-              backgroundColor: fade(theme.palette.secondary.main, 0.04),
+              backgroundColor: alpha(VoTheme.palette.secondary.main, 0.04),
             },
           },
         },
         "&.VoButton-blue": {
-          background: `linear-gradient(0deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
-          color: theme.palette.primary.contrastText,
+          background: `linear-gradient(0deg, ${VoTheme.palette.primary.dark} 0%, ${VoTheme.palette.primary.main} 100%)`,
+          color: VoTheme.palette.primary.contrastText,
           "&:hover": {
-            background: `linear-gradient(0deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 80%)`,
+            background: `linear-gradient(0deg, ${VoTheme.palette.primary.dark} 0%, ${VoTheme.palette.primary.main} 80%)`,
           },
           "&.VoButton-outlined": {
             background: "none",
-            border: `2px solid ${theme.palette.primary.main}`,
-            color: theme.palette.primary.main,
+            border: `2px solid ${VoTheme.palette.primary.main}`,
+            color: VoTheme.palette.primary.main,
             "&:hover": {
-              backgroundColor: fade(theme.palette.primary.main, 0.04),
+              backgroundColor: alpha(VoTheme.palette.primary.main, 0.04),
             },
           },
         },
@@ -228,7 +226,7 @@ export const stylesGlobal = {
       },
       "& h2, h3, h4": {
         "& + h2, & + h3, & + h4": {
-          marginTop: theme.spacing(2),
+          marginTop: VoTheme.spacing(2),
         },
       },
       "& *:not(h2):not(h3):not(h4)": {
@@ -241,13 +239,13 @@ export const stylesGlobal = {
         fontWeight: VoTheme.typography.h2.fontWeight,
         letterSpacing: VoTheme.typography.h2.letterSpacing,
         lineHeight: VoTheme.typography.h2.lineHeight,
-        [theme.breakpoints.up("sm")]: {
+        [VoTheme.breakpoints.up("sm")]: {
           fontSize: VoTheme.typography.pxToRem(30),
         },
-        [theme.breakpoints.up("md")]: {
+        [VoTheme.breakpoints.up("md")]: {
           fontSize: VoTheme.typography.pxToRem(33),
         },
-        [theme.breakpoints.up("lg")]: {
+        [VoTheme.breakpoints.up("lg")]: {
           fontSize: VoTheme.typography.pxToRem(36),
         },
       },
@@ -256,13 +254,13 @@ export const stylesGlobal = {
         fontWeight: VoTheme.typography.h3.fontWeight,
         letterSpacing: VoTheme.typography.h3.letterSpacing,
         lineHeight: VoTheme.typography.h3.lineHeight,
-        [theme.breakpoints.up("sm")]: {
+        [VoTheme.breakpoints.up("sm")]: {
           fontSize: VoTheme.typography.pxToRem(25),
         },
-        [theme.breakpoints.up("md")]: {
+        [VoTheme.breakpoints.up("md")]: {
           fontSize: VoTheme.typography.pxToRem(28),
         },
-        [theme.breakpoints.up("lg")]: {
+        [VoTheme.breakpoints.up("lg")]: {
           fontSize: VoTheme.typography.pxToRem(31),
         },
       },
@@ -271,33 +269,34 @@ export const stylesGlobal = {
         fontWeight: VoTheme.typography.h4.fontWeight,
         letterSpacing: VoTheme.typography.h4.letterSpacing,
         lineHeight: VoTheme.typography.h4.lineHeight,
-        [theme.breakpoints.up("sm")]: {
+        [VoTheme.breakpoints.up("sm")]: {
           fontSize: VoTheme.typography.pxToRem(20),
         },
-        [theme.breakpoints.up("md")]: {
+        [VoTheme.breakpoints.up("md")]: {
           fontSize: VoTheme.typography.pxToRem(23),
         },
-        [theme.breakpoints.up("lg")]: {
+        [VoTheme.breakpoints.up("lg")]: {
           fontSize: VoTheme.typography.pxToRem(25),
         },
       },
       "& * + ul, & * + ol": {
-        marginTop: theme.spacing(3),
+        marginTop: VoTheme.spacing(3),
       },
       "& ul, & ol": {
         listStylePosition: "inside",
         marginLeft: 0,
-        paddingLeft: theme.spacing(1),
+        paddingLeft: VoTheme.spacing(1),
         paddingTop: 0,
       },
       // "& .preamble, & h2, & h3, & h4": {
       //   "& + ul, & + ol": {
-      //     marginTop: theme.spacing(3),
+      //     marginTop: VoTheme.spacing(3),
       //   },
       // },
       "& table": {
         borderCollapse: "collapse",
         borderWidth: 0,
+        maxWidth: "100%",
         // "& tr": {
         //   // "&:nth-child(odd)": {
         //   //   backgroundColor: VoTheme.palette.secondary.extra,
@@ -307,7 +306,7 @@ export const stylesGlobal = {
         //   // },
         // },
         "& td, & th": {
-          borderColor: theme.palette.secondary.light,
+          borderColor: VoTheme.palette.secondary.light,
           padding: VoTheme.spacing(2),
         },
         "&.table-hover": {
@@ -390,7 +389,7 @@ export const stylesGlobal = {
       // },
     },
     ".vo-global__modal": {
-      backgroundColor: fade(VoTheme.palette.primary.main, 0.98),
+      backgroundColor: alpha(VoTheme.palette.primary.main, 0.98),
       bottom: 0,
       color: VoTheme.palette.primary.contrastText,
       left: 0,
@@ -398,6 +397,29 @@ export const stylesGlobal = {
       right: 0,
       top: 0,
       zIndex: VoTheme.zIndex.drawer,
+    },
+    ".vo-global__hide-scrollbars": {
+      msOverflowStyle: "none", // for Internet Explorer, Edge
+      scrollbarWidth: "none", // for Firefox
+      "&::-webkit-scrollbar": {
+        display: "none", // for Chrome, Safari, and Opera
+      },
+    },
+    ".vo-global__mask-overflow": {
+      maskImage:
+        "-webkit-gradient(linear,80% top,right top,from(#000),to(transparent))",
+      "& > *:last-child": {
+        marginRight: VoTheme.spacing(3),
+      },
+    },
+    ".vo-global__image-description": {
+      color: VoTheme.palette.common.white,
+      fontStyle: "italic",
+      overflow: "hidden",
+      padding: VoTheme.spacing(0.5),
+      textOverflow: "ellipsis",
+      textShadow: `0 0 4px ${VoTheme.palette.common.black}`,
+      whiteSpace: "nowrap",
     },
   },
 };

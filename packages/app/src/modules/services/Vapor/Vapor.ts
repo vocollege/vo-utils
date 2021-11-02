@@ -20,7 +20,8 @@ class Vapor {
    */
   async store(file: any, options: { [key: string]: any } = {}) {
     const response = await axios.post(
-      "/vapor/signed-storage-url",
+      // "/vapor/signed-storage-url",
+      "/api/v1/vapor/signed-storage-url",
       {
         bucket: options.bucket || "",
         content_type: options.contentType || file.type,

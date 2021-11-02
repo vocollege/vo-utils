@@ -12,7 +12,6 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import AddIcon from "@material-ui/icons/Add";
-// import { useSnackbar } from "notistack";
 import { toast } from "react-toastify";
 
 // Custom.
@@ -27,7 +26,18 @@ import { I18n } from "@vocollege/app";
 let typingTimer: number;
 
 const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
-  const { onSelect, onClose, open, types, primaryField, addNew } = props;
+  const {
+    onSelect,
+    onClose,
+    open = false,
+    types,
+    primaryField,
+    addNew,
+    renderTitleField,
+    query,
+    category = "searchContent",
+    variables = {},
+  } = props;
   const classes = useStyles();
   const searchInput = useRef();
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,7 +48,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
   // Methods.
 
   const [searchItems, { loading: searchLoading, data: searchData }] =
-    useLazyQuery(SEARCH_CONTENT, {
+    useLazyQuery(query || SEARCH_CONTENT, {
       fetchPolicy: "network-only",
       errorPolicy: "all",
       onError: (error) => {
@@ -53,12 +63,16 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
     if (value && value !== "" && value.length > 2) {
       clearTimeout(typingTimer);
       typingTimer = window.setTimeout(async () => {
-        let variables: { [key: string]: any } = { search: value, types: types };
+        let newVariables: { [key: string]: any } = {
+          ...variables,
+          search: value,
+          types: types,
+        };
         if (primaryField) {
-          variables.primaryField = primaryField;
+          newVariables.primaryField = primaryField;
         }
         searchItems({
-          variables,
+          variables: newVariables,
         });
       }, 300);
     }
@@ -70,16 +84,22 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
 
   const getDetails = (item: EntityPickerItem) => {
     let type = getType(item);
+    let typeString =
+      type && I18n.get[type]?.label ? I18n.get[type]?.label : item.type;
     return (
       <>
         <span className={classes.rowItemDetailsLabel}>{I18n.get.misc.id}:</span>
         <span className={classes.rowItemDetailsValue}>{item.id}</span>
-        <span className={classes.rowItemDetailsLabel}>
-          {I18n.get.misc.type}:
-        </span>
-        <span className={classes.rowItemDetailsValue}>
-          {type && I18n.get[type]?.label}
-        </span>
+        {typeString && typeString !== "" && (
+          <>
+            <span className={classes.rowItemDetailsLabel}>
+              {I18n.get.misc.type}:
+            </span>
+            <span className={classes.rowItemDetailsValue}>
+              {type && I18n.get[type]?.label}
+            </span>
+          </>
+        )}
       </>
     );
   };
@@ -117,11 +137,18 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
     }
   };
 
+  const getTitle = (item: any) => {
+    if (renderTitleField) {
+      return renderTitleField(item);
+    }
+    return item.title || "";
+  };
+
   // Effects.
 
   useEffect(() => {
-    if (searchData && searchData.searchContent) {
-      setSearchResults(searchData.searchContent);
+    if (searchData && searchData[category]) {
+      setSearchResults(searchData[category]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchData]);
@@ -227,7 +254,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
                           classes.textNoWrap
                         )}
                       >
-                        {item.title}
+                        {getTitle(item)}
                       </Typography>
                     }
                     secondary={getDetails(item)}

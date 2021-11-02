@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
+import Button, { ButtonProps } from "@material-ui/core/Button";
 import PersonIcon from "@material-ui/icons/Person";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import clsx from "clsx";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
+// import useMediaQuery from "@material-ui/core/useMediaQuery";
+// import { useTheme } from "@material-ui/core/styles";
 
 // Custom.
 import VoAuth from "@vocollege/app/dist/modules/VoAuth";
@@ -20,21 +20,29 @@ import Session, { CallParams } from "./Session";
 
 export interface AccountIconProps {
   className?: string;
+  classes?: AccountIconClassesProps;
   externalSession?: boolean;
   onChange?: (data: CallParams) => void;
   onlyImage?: boolean;
   noButtonLabel?: boolean;
   callParams?: CallParams;
+  buttonProps?: ButtonProps;
+}
+
+export interface AccountIconClassesProps {
+  button?: string;
 }
 
 const AccountIcon: React.FC<AccountIconProps> = (props) => {
   const {
     className,
+    classes: classesProp,
     externalSession,
     onChange,
     onlyImage = false,
     noButtonLabel,
     callParams: callParamsProp,
+    buttonProps,
   } = props;
   const classes = useStyles();
   const [firstLoad, setFirstLoad] = useState(true);
@@ -155,7 +163,7 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
           value: userData,
         });
       } catch (error) {
-        console.log("useEffect() error", error);
+        console.error("useEffect() error", error);
       }
     }
   };
@@ -189,11 +197,20 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
     }
   }, [callParamsProp]);
 
+  useEffect(() => {
+    if (user) {
+      document.body.classList.add("vo-global__authenticated");
+    } else {
+      document.body.classList.remove("vo-global__authenticated");
+    }
+  }, [user]);
+
   return (
     <div
       className={clsx(classes.root, className, {
         [classes.loading]: loading,
         [classes.onlyImage]: (onlyImage && userImage) || noButtonLabel,
+        "vo-global__authenticated": user,
       })}
     >
       {externalSession && (
@@ -214,8 +231,9 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
         variant={getButtonVariant()}
         startIcon={getUserImage()}
         onClick={user ? handleAccountMenuOpen : handleLogin}
-        className={classes.button}
+        className={clsx(classes.button, classesProp?.button)}
         title={user && user.name}
+        {...buttonProps}
       >
         {(!onlyImage || !userImage) && !noButtonLabel && !firstLoad && (
           <span className={classes.buttonText}>

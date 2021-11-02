@@ -19,4 +19,10 @@ export interface SimpleTableProps {
   labels?: {
     nothingFound?: string;
   };
+  stickyHead?: boolean;
+  classes?: {
+    table?: string;
+    head?: string;
+    body?: string;
+  };
 }

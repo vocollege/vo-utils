@@ -8,6 +8,7 @@ export const GET_QUEUE = gql`
       status
       body
       url
+      columns
       author {
         ... on User {
           id
@@ -15,7 +16,6 @@ export const GET_QUEUE = gql`
           type
         }
       }
-      template
       tags {
         id
         label
@@ -51,6 +51,15 @@ export const GET_QUEUE = gql`
           title
           type
         }
+      }
+      attachments {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
+        type
       }
       created_at
       updated_at

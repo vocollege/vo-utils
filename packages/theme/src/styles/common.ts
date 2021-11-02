@@ -48,8 +48,19 @@ export const stylesCommon = createStyles({
         minHeight: VoTheme.spacing(7) + 4,
       },
     },
+    ".vo-global__content-toolbar--no-drawer": {
+      left: 0,
+    },
+    ".vo-global__content-toolbar--bottom": {
+      bottom: 0,
+      top: "auto",
+    },
     ".vo-global__content-with-toolbar": {
       marginTop: VoTheme.spacing(10) + 4,
+      padding: VoTheme.spacing(4),
+    },
+    ".vo-global__content-with-toolbar--bottom": {
+      marginBottom: VoTheme.spacing(10) + 4,
       padding: VoTheme.spacing(4),
     },
     ".vo-global__content-bottom-area": {

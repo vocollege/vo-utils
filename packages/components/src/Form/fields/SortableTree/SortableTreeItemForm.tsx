@@ -241,7 +241,7 @@ const SortableTreeItemForm: React.FC<FormFieldSortableTreeItemFormProps> = (
               }
               onChange={(item) => handleEntityFieldChange("urlAlias", item)}
               onReset={() => handleEntityFieldReset("urlAlias")}
-              types={types}
+              dialog={{ open: false, types }}
             />
           </Grid>
         )}
