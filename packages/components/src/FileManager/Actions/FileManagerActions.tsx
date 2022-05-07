@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import SpeedDial from "@material-ui/lab/SpeedDial";
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
-import BackupIcon from "@material-ui/icons/Backup";
-import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
-import BusinessCenterIcon from "@material-ui/icons/BusinessCenter";
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import BackupIcon from "@mui/icons-material/Backup";
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
+import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import clsx from "clsx";
 
 // Custom.

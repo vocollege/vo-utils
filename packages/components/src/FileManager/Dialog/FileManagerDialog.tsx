@@ -34,6 +34,7 @@ const FileManagerDialog: React.FC<FileManagerDialogProps> = (props) => {
     multiple,
     open,
     files = [],
+    client,
   } = props;
   const classes = useStyles();
   const [portfolioId, setPortfolioId] = useState<null | string>(null);
@@ -129,6 +130,7 @@ const FileManagerDialog: React.FC<FileManagerDialogProps> = (props) => {
           deleteFile: DELETE_FILE,
         }}
         filetypes={filetypes}
+        client={client}
       />
     </EditDialog>
   );

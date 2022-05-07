@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Typography from "@material-ui/core/Typography";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
+import Typography from "@mui/material/Typography";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox, { CheckboxProps } from "@mui/material/Checkbox";
 
 // Custom.
 import { useStyles } from "./styles";
-import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
 export interface CheckboxesProps {
   label?: string;
@@ -14,6 +14,7 @@ export interface CheckboxesProps {
   availableValues: CheckboxesAvailableValue[];
   required?: boolean;
   onChange?: (values: String[]) => void;
+  row?: boolean;
 }
 
 export interface CheckboxesAvailableValue {
@@ -22,7 +23,7 @@ export interface CheckboxesAvailableValue {
 }
 
 const Checkboxes: React.FC<CheckboxesProps> = (props) => {
-  const { label, values, availableValues, required, onChange } = props;
+  const { label, values, availableValues, required, onChange, row } = props;
   const [state, setState] = useState<String[]>([]);
   const classes = useStyles();
 
@@ -61,7 +62,7 @@ const Checkboxes: React.FC<CheckboxesProps> = (props) => {
   }
 
   return (
-    <FormGroup row className={classes.root}>
+    <FormGroup row={row} className={classes.root}>
       {label && (
         <Typography
           variant="subtitle1"
@@ -79,7 +80,6 @@ const Checkboxes: React.FC<CheckboxesProps> = (props) => {
           )}
         </Typography>
       )}
-
       {availableValues &&
         availableValues.map((v: CheckboxesAvailableValue, i: number) => (
           <FormControlLabel
@@ -91,7 +91,11 @@ const Checkboxes: React.FC<CheckboxesProps> = (props) => {
                 name={v.name}
               />
             }
-            label={v.label}
+            label={
+              <Typography variant="subtitle1" component="span">
+                {v.label}
+              </Typography>
+            }
           />
         ))}
     </FormGroup>

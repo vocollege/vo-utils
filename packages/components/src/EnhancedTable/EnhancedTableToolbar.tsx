@@ -1,12 +1,13 @@
 import React from "react";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-// import Tooltip from "@material-ui/core/Tooltip";
-// import FilterListIcon from "@material-ui/icons/FilterList";
-// import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/Add";
-// import Fab from "@material-ui/core/Fab";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+// import Tooltip from "@mui/material/Tooltip";
+// import FilterListIcon from "@mui/icons-material/FilterList";
+// import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
+// import Fab from "@mui/material/Fab";
+import makeStyles from "@mui/styles/makeStyles";
+import clsx from "clsx";
 
 // Custom.
 import { useToolbarStyles } from "./styles";
@@ -22,10 +23,12 @@ export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { title, addItem } = props;
 
   return (
-    <Toolbar className={classes.root}>
-      <Typography className={classes.title} variant="h6" component="div">
-        {title}
-      </Typography>
+    <Toolbar className={clsx(classes.root, { [classes.noTitle]: !title })}>
+      {title && (
+        <Typography className={classes.title} variant="h6" component="div">
+          {title}
+        </Typography>
+      )}
       {/* <>
         <Tooltip title={I18n.get.toolbar.filterList}>
           <IconButton aria-label={I18n.get.toolbar.filterList}>

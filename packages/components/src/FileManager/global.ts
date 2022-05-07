@@ -1,6 +1,6 @@
 import React from "react";
 import { DocumentNode, ApolloClient } from "@apollo/client";
-import { SvgIconProps } from "@material-ui/core";
+import { SvgIconProps } from "@mui/material";
 import { FormField } from "Form/global";
 
 export interface FileManagerProps {
@@ -14,7 +14,7 @@ export interface FileManagerProps {
   baseUrl?: string;
   // path?: string;
   folderId?: null | string;
-  client?: ApolloClient<any> | null;
+  client?: ApolloClient<object> | null;
   operations: FileManagerOperations;
   onDoubleClick?: (element: FileManagerFolderElement) => void;
   onBreadcrumbClick?: (value: string, type: string) => void;
@@ -85,7 +85,11 @@ export interface FileManagerElementProps {
   selected?: boolean | null;
 }
 
-export type FileManagerElementAction = "edit" | "delete" | "download";
+export type FileManagerElementAction =
+  | "edit"
+  | "delete"
+  | "download"
+  | "copy_url";
 
 export interface FileManagerPortfolio {
   __typename?: string;
@@ -207,7 +211,7 @@ export interface FileManagerPortfolioFormProps {
   onCancel?: () => void;
   operations?: FileManagerFormOperations;
   open?: boolean;
-  client?: ApolloClient<any> | null;
+  client?: ApolloClient<object> | null;
   editElement?: FileManagerFolderElement;
 }
 
@@ -262,6 +266,7 @@ export interface FileManagerDialogProps {
   filetypes?: string[];
   multiple?: boolean;
   files?: FileManagerFolderElement[];
+  client?: ApolloClient<object> | null;
 }
 
 export interface FileManagerPickerProps {

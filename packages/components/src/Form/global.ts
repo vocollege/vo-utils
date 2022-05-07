@@ -1,5 +1,7 @@
 import { ApolloClient, DocumentNode } from "@apollo/client";
-import { TreeItem } from "react-sortable-tree";
+import { TreeItem } from "@nosferatu500/react-sortable-tree";
+import { FilledTextFieldProps } from "@mui/material/TextField";
+import { ButtonProps } from "@mui/material/Button";
 
 // Custom.
 import {
@@ -45,13 +47,16 @@ export interface FormProps extends FormNakedProps {
     paperRoot?: string;
     toolbar?: string;
     formTabs?: string;
+    formWrapper?: string;
   };
   disableToolbar?: boolean;
   onFormChange?: (formState: { isDirty: boolean; isValid: boolean }) => void;
   onQueryLoading?: (loading: boolean) => void;
   renderPageTitle?: (state: any) => string;
   initialData?: any;
-  onDataChange?: (data: any) => void;
+  onDataChange?: (data: any, fetchedData: any) => void;
+  loadQueryOnParamsChange?: boolean;
+  toolbarProps?: FormToolbarProps;
 }
 
 export interface FormNakedProps {
@@ -60,7 +65,7 @@ export interface FormNakedProps {
 
 export interface FormTabProps {
   key: string;
-  label: string;
+  label: React.ReactNode;
   fields: FormField[];
   children?: React.ReactNode;
 }
@@ -107,8 +112,8 @@ export interface FormField {
   params?: {
     [key: string]: any;
   };
-  render?: (data: any) => JSX.Element;
-  onChange?: (data: any) => void;
+  render?: (fieldValue: any, data?: any) => JSX.Element;
+  onChange?: (value: any, data: any) => void;
   hidden?: boolean;
   field?: React.ReactNode;
 }
@@ -154,9 +159,9 @@ export interface FormViewsProps {
 
 export interface FormToolbarProps {
   title?: string | JSX.Element;
-  onSave: () => void;
+  onSave?: () => void;
   onCancel?: FormProps["onCancel"];
-  loading: boolean;
+  loading?: boolean;
   options?: {
     saveButton?: FormToolbarButton;
     cancelButton?: FormToolbarButton;
@@ -166,6 +171,7 @@ export interface FormToolbarProps {
 
 export interface FormToolbarButton {
   disabled?: boolean;
+  hideLabel?: boolean;
 }
 
 export interface FormFieldContentListProps {
@@ -173,7 +179,7 @@ export interface FormFieldContentListProps {
   label: string;
   onChange?: (items: FormFieldContentListItem[]) => void;
   onReset?: () => void;
-  items?: [any];
+  items?: any[];
   required?: boolean;
   // types: string;
   // types: string[];
@@ -182,6 +188,17 @@ export interface FormFieldContentListProps {
   contentType?: "entity" | "file";
   dialog?: EntityPickerDialogProps;
   renderItemTitle?: (item: FormFieldContentListItem) => string;
+  createCallback?: () => EntityPickerItem;
+  createCallbackLabel?: string;
+  overrideValue?: EntityPickerItem[];
+  renderActionButtons?: (item: FormFieldContentListItem) => React.ReactElement;
+  hideType?: boolean;
+  renderExtraDetails?: (item: FormFieldContentListItem) => React.ReactElement;
+}
+
+export interface FormFieldContentListCustomAction {
+  title?: string;
+  callback?: (action: string, item: FormFieldContentListItem) => void;
 }
 
 export type FormFieldContentListItem =
@@ -202,7 +219,8 @@ export interface FormFieldSortableTreeProps {
   onChange?: (items: any[]) => void;
   onReset?: () => void;
   items?: FormFieldSortableTreeItem[];
-  types: string[];
+  // types: string[];
+  dialog?: EntityPickerDialogProps;
 }
 
 export interface FormFieldSortableTreeItem extends EntityPickerItem {
@@ -215,7 +233,7 @@ export interface FormFieldSortableTreeItem extends EntityPickerItem {
 export interface FormFieldSortableTreeItemFormProps {
   title?: string;
   open: boolean;
-  types: string[];
+  // types: string[];
   onChange?: (
     item: FormFieldSortableTreeItem,
     path: FormFieldNumberOrStringArray
@@ -223,6 +241,7 @@ export interface FormFieldSortableTreeItemFormProps {
   onCancel?: () => void;
   item?: TreeItem | null;
   itemPath?: FormFieldNumberOrStringArray | null;
+  dialog?: EntityPickerDialogProps;
 }
 
 export type FormFieldNumberOrStringArray = Array<string | number>;
@@ -234,6 +253,9 @@ export interface EntityPickerItemFields {
 export interface EntityPickerProps {
   className?: string;
   dialog?: EntityPickerDialogProps;
+  disableButtonLabel?: boolean;
+  buttonLabel?: React.ReactElement;
+  buttonColor?: ButtonProps["color"];
 }
 
 export interface EntityPickerDialogProps {
@@ -289,12 +311,13 @@ export interface EntityFieldProps {
   createCallback?: () => EntityPickerItem;
   createCallbackLabel?: string;
   // types: string[];
-  primaryField?: string;
+  // primaryField?: string;
   fields?: { [key: string]: any };
   required?: boolean;
   renderFieldValue?: (item: EntityPickerItem) => void;
   dialog: EntityPickerDialogProps;
   overrideValue?: EntityPickerItem;
+  textfieldProps?: FilledTextFieldProps;
 }
 
 export interface TagsFieldProps {
@@ -328,6 +351,7 @@ export interface FileFieldProps {
   };
   hideThumbnail?: boolean;
   simplified?: boolean;
+  client?: ApolloClient<object> | null;
 }
 
 export interface FormFieldLocationProps {

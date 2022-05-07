@@ -15,9 +15,13 @@ class VoConfig {
   // }
 
   config: VoConfigType = {
+    APP_VERSION: "",
+
     API_BASE_URL: "",
     API_ENDPOINT: "",
     API_GRAPHQL: "",
+    API_SUBSCRIPTIONS_BASE_URL: "",
+    API_GRAPHQL_SUBSCRIPTIONS: "",
 
     AUTH_CLIENT_ID: "",
     AUTH_BASE_URL: "",
@@ -45,6 +49,8 @@ class VoConfig {
     AUTH_STORAGE_ACCESS_TOKEN: "voapp_accesstoken",
     AUTH_STORAGE_TOKEN_TYPE: "voapp_tokentype",
     AUTH_STORAGE_EXPIRES_IN: "voapp_expiresin",
+
+    CURRENT_GROUP: "vo_group",
   };
 
   setConfig(config: VoConfigType) {

@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
+import ButtonBase from "@mui/material/ButtonBase";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 
 // Icons.
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 // Custom.
 import { FileManagerElementProps, FileManagerElementAction } from "../global";
 import { useStyles } from "./styles";
 import FileManagerIcon from "./FileManagerIcon";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 let doubleClick = false;
 
@@ -69,12 +71,17 @@ export default function FileManagerElement(props: FileManagerElementProps) {
   const getActions = () => {
     const actions: FileManagerElementAction[] = ["edit", "delete"];
     if (element.__typename === "File") {
+      actions.unshift("copy_url");
       actions.unshift("download");
     }
     return actions;
   };
 
-  const handleAction = (action: FileManagerElementAction) => {
+  const handleAction = (
+    action: FileManagerElementAction,
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
     if (onAction) {
       onAction(action, element);
     }
@@ -114,16 +121,29 @@ export default function FileManagerElement(props: FileManagerElementProps) {
                 aria-label="download"
                 color="inherit"
                 size="small"
-                onClick={() => handleAction("download")}
+                onClick={(event) => handleAction("download", event)}
+                title={I18n.get.actions.download}
               >
                 <CloudDownloadIcon />
+              </IconButton>
+            )}
+            {actions.indexOf("copy_url") > -1 && (
+              <IconButton
+                aria-label="copy url"
+                color="inherit"
+                size="small"
+                onClick={(event) => handleAction("copy_url", event)}
+                title={I18n.get.actions.copyLink}
+              >
+                <ContentCopyIcon />
               </IconButton>
             )}
             <IconButton
               aria-label="edit"
               color="inherit"
               size="small"
-              onClick={() => handleAction("edit")}
+              onClick={(event) => handleAction("edit", event)}
+              title={I18n.get.actions.edit}
             >
               <EditIcon />
             </IconButton>
@@ -132,7 +152,8 @@ export default function FileManagerElement(props: FileManagerElementProps) {
               aria-label="delete"
               color="inherit"
               size="small"
-              onClick={() => handleAction("delete")}
+              onClick={(event) => handleAction("delete", event)}
+              title={I18n.get.actions.delete}
             >
               <DeleteIcon />
             </IconButton>

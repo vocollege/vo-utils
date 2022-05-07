@@ -1,4 +1,15 @@
-import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+
+import { Theme } from "@mui/material/styles";
+
+// declare module "@mui/styles/defaultTheme" {
+//   // eslint-disable-next-line @typescript-eslint/no-empty-interface (remove this line if you don't have the rule enabled)
+//   interface DefaultTheme extends Theme {}
+// }
+
+// declare module "@mui/styles" {
+//   interface DefaultTheme extends Theme {}
+// }
 
 interface CustomColors {
   orangeLighter: string;
@@ -10,7 +21,7 @@ interface CustomColors {
   lila: string;
 }
 
-declare module "@material-ui/core/styles/createPalette" {
+declare module "@mui/material/styles/createPalette" {
   interface Palette {
     custom: CustomColors;
   }
@@ -21,11 +32,12 @@ declare module "@material-ui/core/styles/createPalette" {
   }
 }
 
-declare module "@material-ui/core/styles/shape" {
+declare module "@mui/system/createTheme/shape" {
   interface Shape {
     borderRadiusMedium: number;
     borderRadiusBig: number;
     drawerWidth: number;
+    drawerWidthMobile: number;
   }
 }
 
@@ -86,6 +98,7 @@ const options = {
     borderRadiusMedium: 16,
     borderRadiusBig: 40,
     drawerWidth: 240,
+    drawerWidthMobile: 64,
   },
   typography: {
     htmlFontSize: 18,

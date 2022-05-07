@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const CREATE_GROUP = gql`
   mutation CreateGroup($input: UpdateGroupInput!) {
@@ -36,11 +36,11 @@ export const DELETE_GROUP = gql`
 
 export const UPDATE_GROUPS_PERMISSION = gql`
   mutation UpdateGroupsPermission($id: ID!, $roles: [ID!]) {
-    updateGroupsPermission(id: $id, roles: { sync: $roles } ) {
+    updateGroupsPermission(id: $id, roles: { sync: $roles }) {
       id
       subject
       name
-      label,
+      label
       roles {
         id
       }
@@ -53,7 +53,7 @@ export const CREATE_GROUPS_ROLE = gql`
     createGroupsRole(input: $input) {
       id
       name
-      label,
+      label
     }
   }
 `;
@@ -63,7 +63,7 @@ export const UPDATE_GROUPS_ROLE = gql`
     updateGroupsRole(id: $id, input: $input) {
       id
       name
-      label,
+      label
     }
   }
 `;
@@ -73,7 +73,7 @@ export const DELETE_GROUPS_ROLE = gql`
     deleteGroupsRole(id: $id) {
       id
       name
-      label,
+      label
     }
   }
 `;

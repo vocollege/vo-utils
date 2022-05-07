@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "react-router-dom";
 
 // Custom.
@@ -72,13 +72,13 @@ export default function FileManagerBreadcrumbs(
                   onClick={(event: React.SyntheticEvent) =>
                     handleClick(event, v?.path)
                   }
-                >
+                  underline="hover">
                   {v.title}
                 </Link>
               );
             } else {
               return (
-                <Link key={i} component={RouterLink} to={v.path || ""}>
+                <Link key={i} component={RouterLink} to={v.path || ""} underline="hover">
                   {v.title}
                 </Link>
               );

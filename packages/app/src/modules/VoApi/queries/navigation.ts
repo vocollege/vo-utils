@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_MENU = gql`
   query Menu($name: String!) {
@@ -27,7 +27,7 @@ export const GET_MENUS = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetMenusOrderByOrderByClause]
+    $orderBy: [GetMenusOrderByClause]
   ) {
     menus(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
       paginatorInfo {
@@ -63,7 +63,7 @@ export const GET_MENU_LINKS = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetMenusOrderByOrderByClause]
+    $orderBy: [GetMenusOrderByClause]
   ) {
     menuLinks(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
       paginatorInfo {
@@ -79,4 +79,3 @@ export const GET_MENU_LINKS = gql`
     }
   }
 `;
-

@@ -35,7 +35,7 @@ export const GET_SECTIONS = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetSectionsOrderByOrderByClause]
+    $orderBy: [GetSectionsOrderByClause]
   ) {
     sections(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
       paginatorInfo {

@@ -1,4 +1,5 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -12,14 +13,14 @@ export const useStyles = makeStyles((theme: Theme) =>
       position: "fixed",
 
       zIndex: theme.zIndex.modal,
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         maxWidth: "100%",
         right: theme.spacing(4),
       },
     },
     title: {},
     message: {
-      margin: `${theme.spacing(2)}px 0`,
+      margin: `${theme.spacing(2)} 0`,
     },
     actions: {
       alignItems: "flex-end",

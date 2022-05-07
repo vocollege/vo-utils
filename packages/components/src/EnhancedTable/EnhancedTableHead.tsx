@@ -1,8 +1,8 @@
 import React from "react";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import TableCell from "@mui/material/TableCell";
 
 // Custom.
 import { EnhancedTableHeadProps, EnhancedTableColumns } from "./global";
@@ -27,6 +27,7 @@ export default function EnhancedTableHead(props: EnhancedTableHeadProps) {
           <TableCell
             key={index}
             style={{
+              maxWidth: column.width || "100%",
               width: column.width || "auto",
             }}
           >

@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer, useRef } from "react";
 import { useForm } from "react-hook-form";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 // Custom.
 import EditDialog from "../../../EditDialog";
 import {
@@ -35,7 +35,16 @@ let typingTimer: number;
 const SortableTreeItemForm: React.FC<FormFieldSortableTreeItemFormProps> = (
   props
 ) => {
-  const { title, open, types, onChange, onCancel, item, itemPath } = props;
+  const {
+    title,
+    open,
+    // types,
+    onChange,
+    onCancel,
+    item,
+    itemPath,
+    dialog = { types: [] },
+  } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
   const titleInput = useRef(null);
   const customUrlInput = useRef(null);
@@ -241,7 +250,7 @@ const SortableTreeItemForm: React.FC<FormFieldSortableTreeItemFormProps> = (
               }
               onChange={(item) => handleEntityFieldChange("urlAlias", item)}
               onReset={() => handleEntityFieldReset("urlAlias")}
-              dialog={{ open: false, types }}
+              dialog={{ ...dialog, open: false }}
             />
           </Grid>
         )}

@@ -1,10 +1,10 @@
 import React from "react";
 import clsx from "clsx";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 
 // Icons.
-import UpdateIcon from "@material-ui/icons/Update";
-import AddBoxIcon from "@material-ui/icons/AddBox";
+import UpdateIcon from "@mui/icons-material/Update";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 
 // Custom.
 import { FileManagerBottomAreaProps } from "../global";
@@ -12,8 +12,8 @@ import { useStyles } from "./styles";
 import FileManagerIcon from "../Element/FileManagerIcon";
 import { I18n } from "@vocollege/app";
 
-const FileManagerBottomArea: React.FC<FileManagerBottomAreaProps> = React.forwardRef(
-  (props, ref: React.Ref<HTMLDivElement>) => {
+const FileManagerBottomArea: React.FC<FileManagerBottomAreaProps> =
+  React.forwardRef((props, ref: React.Ref<HTMLDivElement>) => {
     const { className, selectedElement } = props;
     const classes = useStyles();
     return (
@@ -87,7 +87,6 @@ const FileManagerBottomArea: React.FC<FileManagerBottomAreaProps> = React.forwar
         )}
       </div>
     );
-  }
-);
+  });
 
 export default FileManagerBottomArea;

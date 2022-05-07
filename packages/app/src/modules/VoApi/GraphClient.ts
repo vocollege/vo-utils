@@ -5,12 +5,17 @@ import {
   InMemoryCache,
   Observable,
   from,
+  split,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { createUploadLink } from "apollo-upload-client";
-
+// import { getMainDefinition } from "@apollo/client/utilities";
+// import { WebSocketLink } from "@apollo/client/link/ws";
 import VoAuth from "../VoAuth";
 import VoRouter from "../VoRouter";
+// import ws from "ws";
+import VoGroups from "../VoGroups";
+import VoApp from "../VoApp";
 
 async function redirect() {
   await VoAuth.logout();
@@ -28,6 +33,31 @@ class GraphClient {
       // Create a Apollo Link capable of file uploads.
       httpLink = createUploadLink({ uri: url });
     }
+
+    // const wsLink = new WebSocketLink({
+    //   uri: wsUrl,
+    //   options: {
+    //     reconnect: true,
+    //   },
+    //   // webSocketImpl: ws,
+    // });
+
+    // The split function takes three parameters:
+    //
+    // * A function that's called for each operation to execute
+    // * The Link to use for an operation if the function returns a "truthy" value
+    // * The Link to use for an operation if the function returns a "falsy" value
+    // const splitLink = split(
+    //   ({ query }) => {
+    //     const definition = getMainDefinition(query);
+    //     return (
+    //       definition.kind === "OperationDefinition" &&
+    //       definition.operation === "subscription"
+    //     );
+    //   },
+    //   wsLink,
+    //   httpLink
+    // );
 
     // Get other Apollo Links.
     // const links = this.getGraphClientLinks(getToken, refreshToken);
@@ -79,9 +109,9 @@ class GraphClient {
 
           // @TODO Handle network error, e.g. through @apollo/client/link/retry
 
-          if ("statusCode" in networkError && networkError.statusCode === 403) {
-            redirect();
-          }
+          // if ("statusCode" in networkError && networkError.statusCode === 403) {
+          //   redirect();
+          // }
         }
       }
     );
@@ -89,14 +119,17 @@ class GraphClient {
     // Create authLink that ensures that all calls include
     // the access token.
     const authLink = new ApolloLink((operation, forward) => {
+      VoApp.checkVersion();
       const token = VoAuth.getToken();
       const currentHeaders = operation.getContext().headers;
+      const currentGroup = VoGroups.getCurrent();
       operation.setContext(() => ({
         ...currentHeaders,
         headers: {
           Authorization: token
             ? `${token.token_type} ${token.access_token}`
             : "",
+          VoGroup: currentGroup ? currentGroup.id : "",
         },
       }));
       return forward(operation);
@@ -107,6 +140,21 @@ class GraphClient {
       authLink,
     };
   }
+
+  // static createGraphSubscriptionClient(url: string) {
+  //   const wsLink = new WebSocketLink({
+  //     uri: url,
+  //     options: {
+  //       reconnect: true,
+  //     },
+  //     // webSocketImpl: ws,
+  //   });
+  //   const links = this.getGraphClientLinks();
+  //   return new ApolloClient({
+  //     cache: new InMemoryCache(),
+  //     link: from([links.errorLink, links.authLink, wsLink]),
+  //   });
+  // }
 }
 
 export default GraphClient;

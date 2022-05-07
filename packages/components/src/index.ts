@@ -25,3 +25,5 @@ export { default as ProtectedRoute } from "./ProtectedRoute";
 export { default as SimpleTable } from "./SimpleTable";
 export * from "./SimpleTable";
 export { default as VoTextArea } from "./VoTextArea";
+export * from "./Acl";
+export { default as VoHelp } from "./VoHelp";

@@ -20,6 +20,14 @@ export const GET_QUEUE = gql`
         id
         label
       }
+      images {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
+      }
       items {
         ... on Card {
           id
@@ -87,7 +95,7 @@ export const GET_QUEUES = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetQueuesOrderByOrderByClause]
+    $orderBy: [GetQueuesOrderByClause]
   ) {
     queues(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
       paginatorInfo {

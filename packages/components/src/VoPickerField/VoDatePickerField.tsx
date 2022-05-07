@@ -1,29 +1,30 @@
 import React from "react";
-import { DatePicker, DatePickerProps } from "@material-ui/pickers";
-import { OutlinedInputProps } from "@material-ui/core/OutlinedInput";
+import MobileDatePicker, {
+  MobileDatePickerProps,
+} from "@mui/lab/MobileDatePicker";
+import { OutlinedInputProps } from "@mui/material/OutlinedInput";
 import DayjsUtils from "@date-io/dayjs"; // This has to be imported to make TypeScript compilation work.
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 
 // Custom.
 import { stylesReddit } from "@vocollege/theme";
+import VoTextField from "../VoTextField";
 
 const useStylesReddit = makeStyles(() => stylesReddit);
 
-const VoDatePickerField: React.FC<DatePickerProps> = (props) => {
+const VoDatePickerField: React.FC<MobileDatePickerProps> = (props) => {
   const classes = useStylesReddit();
-
-  const getInputProps = () => {
-    if (props.inputVariant && props.inputVariant !== "filled") {
-      return {};
-    }
-    return { classes, disableUnderline: true };
-  };
-
   return (
-    <DatePicker
-      inputVariant="filled"
-      InputProps={getInputProps() as Partial<OutlinedInputProps>}
+    <MobileDatePicker
+      InputProps={
+        {
+          classes,
+          disableUnderline: true,
+          size: "small",
+        } as Partial<OutlinedInputProps>
+      }
       {...props}
+      // renderInput={(params) => <VoTextField {...params} variant="filled" />}
     />
   );
 };

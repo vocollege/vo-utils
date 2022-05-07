@@ -11,6 +11,7 @@ export const GET_GROUP = gql`
       category
       docs
       website
+      educator_category
       certified
       status
       url
@@ -52,11 +53,28 @@ export const GET_GROUP = gql`
         email
         firstname
         lastname
+        type
+        groupRoles {
+          id
+          label
+          type
+        }
       }
       contacts {
         id
         title
         type
+      }
+      vopage
+      front_title
+      front_body
+      images {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
       }
     }
     allGroups(categories: $categories) {
@@ -81,7 +99,7 @@ export const GET_GROUPS = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetGroupsOrderByOrderByClause]
+    $orderBy: [GetGroupsOrderByClause]
   ) {
     groups(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
       paginatorInfo {
@@ -95,6 +113,7 @@ export const GET_GROUPS = gql`
         title
         category
         status
+        vopage
         created_at
         updated_at
       }

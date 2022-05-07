@@ -1,11 +1,8 @@
-import {
-    createStyles,
-    Theme,
-    makeStyles,
-} from '@material-ui/core/styles';
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
-  createStyles({    
+  createStyles({
     // nothingFound: {
     //   alignItems: "center",
     //   display: "flex",
@@ -17,35 +14,32 @@ export const useStyles = makeStyles((theme: Theme) =>
       "&$rowHover:hover": {
         backgroundColor: theme.palette.grey[100],
         "& $actions": {
-          opacity: 1
-        }
-      }
+          opacity: 1,
+        },
+      },
     },
     rowHover: {
       cursor: "pointer",
-      transition: "background-color 200ms ease"
+      transition: "background-color 200ms ease",
     },
     type: {
-      width: 100
+      width: 100,
     },
     actions: {
       display: "flex",
       opacity: 0,
-      transition: "opacity 200ms ease"
+      transition: "opacity 200ms ease",
     },
 
     "@global": {
       ".vo-global__file-manager-column-date": {
         fontSize: theme.typography.caption.fontSize,
-        width: 125
+        width: 125,
       },
       ".vo-global__file-manager-column-description": {
         fontSize: theme.typography.caption.fontSize,
-        width: 200
-      }
-    }
-
-    
+        width: 200,
+      },
+    },
   })
 );
-

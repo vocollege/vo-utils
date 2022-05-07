@@ -1,7 +1,8 @@
 import React from "react";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import MuiSwitch from "@material-ui/core/Switch";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Typography from "@mui/material/Typography";
+import MuiSwitch from "@mui/material/Switch";
 import clsx from "clsx";
 
 // Custom.
@@ -14,20 +15,41 @@ export interface SwitchProps {
   name?: string;
   boolean?: false;
   size?: "small" | "medium";
+  disabled?: boolean;
+  helperText?: string;
 }
 
 const Switch: React.FC<SwitchProps> = (props) => {
-  const { checked, onChange, label, name, boolean, size = "medium" } = props;
+  const {
+    checked,
+    onChange,
+    label,
+    name,
+    boolean,
+    size = "medium",
+    disabled = false,
+    helperText,
+  } = props;
   const classes = useStyles();
   return (
     <FormGroup row className={clsx(classes.root, classes[size])}>
       <FormControlLabel
         control={
-          <MuiSwitch checked={checked} onChange={onChange} name={name} />
+          <MuiSwitch
+            disabled={disabled}
+            checked={checked}
+            onChange={onChange}
+            name={name}
+          />
         }
-        label={label}
+        label={label || ""}
         className={classes.label}
       />
+      {helperText && (
+        <Typography component="p" variant="caption">
+          {helperText}
+        </Typography>
+      )}
     </FormGroup>
   );
 };

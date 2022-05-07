@@ -1,12 +1,23 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+      "&$noBackdrop": {
+        // bottom: "auto",
+        // left: "auto",
+        // right: "auto",
+        // top: "auto",
+      },
+    },
     titleRoot: {
       alignItems: "center",
       display: "flex",
       paddingRight: theme.spacing(2),
+      "&$draggable": {
+        cursor: "move",
+      },
     },
     titleWrapper: {
       display: "flex",
@@ -22,9 +33,13 @@ export const useStyles = makeStyles((theme: Theme) =>
         boxShadow: "none",
       },
     },
-    contentRoot: {},
+    contentRoot: {
+      "&$loading": {
+        opacity: 0,
+      },
+    },
     actionsRoot: {
-      padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
+      padding: `${theme.spacing(2)} ${theme.spacing(3)}`,
     },
     loading: {},
     // buttonConfirm: {
@@ -39,5 +54,15 @@ export const useStyles = makeStyles((theme: Theme) =>
     // buttonCreateLoading: {
     //   position: "absolute"
     // }
+    draggable: {},
+    noBackdrop: {},
+    extraActions: {
+      alignItems: "center",
+      display: "flex",
+      justifyContent: "flex-end",
+      "&:not(:last-child)": {
+        marginRight: theme.spacing(1),
+      },
+    },
   })
 );

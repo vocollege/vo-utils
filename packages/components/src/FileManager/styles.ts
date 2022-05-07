@@ -1,15 +1,16 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       // border: "1px solid red",
-      // height: `calc(100% - ${theme.spacing(8)}px)`
+      // height: `calc(100% - ${theme.spacing(8)})`
       // marginTop: theme.spacing(17),
       display: "flex",
       flex: 1,
       flexDirection: "column",
-      // padding: `0 0 ${theme.spacing(4)}px`,
+      // padding: `0 0 ${theme.spacing(4)}`,
     },
     loaderWrapper: {
       alignItems: "center",
@@ -28,7 +29,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     toolbar: {
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[10],
-      margin: `0 -${theme.spacing(3)}px`,
+      margin: `0 -${theme.spacing(3)}`,
       position: "sticky",
       top: theme.spacing(8),
       zIndex: theme.zIndex.appBar,
@@ -39,7 +40,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
       boxShadow: theme.shadows[10],
       display: "flex",
-      margin: `0 -${theme.spacing(3)}px -${theme.spacing(7)}px`,
+      margin: `0 -${theme.spacing(3)} -${theme.spacing(7)}`,
       maxHeight: theme.spacing(15),
       padding: theme.spacing(3),
       position: "sticky",

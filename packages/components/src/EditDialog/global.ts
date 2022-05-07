@@ -1,4 +1,8 @@
+import React from "react";
+import { DialogProps } from "@mui/material/Dialog";
+
 export interface EditorDialogProps {
+  children?: React.ReactNode;
   open: boolean;
   title?: string;
   subtitle?: string;
@@ -13,4 +17,8 @@ export interface EditorDialogProps {
   };
   disableActions?: boolean;
   disableCloseButton?: boolean;
+  draggable?: boolean;
+  dialogProps?: DialogProps;
+  extraActions?: React.ReactNode;
+  confirmButtonLabel?: string;
 }

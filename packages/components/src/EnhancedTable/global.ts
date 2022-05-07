@@ -17,11 +17,11 @@ export interface EnhancedTableColumns {
 }
 
 export interface EnhancedTableProps {
-  title: string;
+  title?: string;
   columns: EnhancedTableColumns[];
   addItem?: () => void;
-  editItem?: (id: any) => void;
-  openItem?: (id: any) => void;
+  editItem?: (id: any, row?: any) => void;
+  openItem?: (id: any, row?: any) => void;
   operations: EnhancedTableOperations;
   className?: string;
   order?: string;
@@ -34,6 +34,12 @@ export interface EnhancedTableProps {
   labels?: {
     deleted?: string;
   };
+  classes?: {
+    paper?: string;
+    table?: string;
+  };
+  queryVariables?: GeneralObject;
+  onDelete?: (data: any) => void;
 }
 
 export interface EnhancedTableHeadProps {
@@ -46,7 +52,7 @@ export interface EnhancedTableHeadProps {
 }
 
 export interface EnhancedTableToolbarProps {
-  title: string;
+  title?: string;
   addItem?: () => void;
 }
 
@@ -57,4 +63,12 @@ export interface EnhancedTableStatusCellProps {
 export interface EnhancedTableRolesProps {
   data: any;
   classesMap?: GeneralObject;
+}
+
+export interface EnhancedTableUserActiveProps {
+  data: any;
+}
+
+export interface EnhancedTableApplicationsStatusProps {
+  data: any;
 }

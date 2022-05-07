@@ -1,6 +1,9 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
-export const useStyles = makeStyles((theme: Theme) =>
+// Custom.
+import VoTheme from "@vocollege/theme";
+
+export const useStyles = makeStyles(() =>
   createStyles({
     root: {},
     label: {
@@ -13,43 +16,43 @@ export const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flex: 1,
       flexDirection: "column",
-      marginTop: theme.spacing(2),
+      marginTop: VoTheme.spacing(2),
       "&:last-child": {
-        marginLeft: theme.spacing(2),
+        marginLeft: VoTheme.spacing(2),
       },
     },
     listLabel: {
       display: "block",
-      marginBottom: theme.spacing(1),
+      marginBottom: VoTheme.spacing(1),
     },
     listContent: {
-      border: `1px dotted ${theme.palette.grey[300]}`,
-      borderRadius: theme.shape.borderRadius,
+      border: `1px dotted ${VoTheme.palette.grey[300]}`,
+      borderRadius: VoTheme.shape.borderRadius,
       flex: 1,
-      padding: theme.spacing(2),
+      padding: VoTheme.spacing(2),
     },
     listContentDragging: {
-      border: `1px dashed ${theme.palette.primary.main}`,
+      border: `1px dashed ${VoTheme.palette.primary.main}`,
     },
     item: {
-      backgroundColor: theme.palette.grey[100],
-      border: `1px solid ${theme.palette.grey[200]}`,
-      borderRadius: theme.shape.borderRadius,
-      margin: `0 0 ${theme.spacing(2)}px 0`,
-      minHeight: theme.spacing(6.5),
-      padding: theme.spacing(1),
+      backgroundColor: VoTheme.palette.grey[100],
+      border: `1px solid ${VoTheme.palette.grey[200]}`,
+      borderRadius: VoTheme.shape.borderRadius,
+      margin: `0 0 ${VoTheme.spacing(2)} 0`,
+      minHeight: VoTheme.spacing(6.5),
+      padding: VoTheme.spacing(1),
       userSelect: "none",
       "&:last-child": {
         marginBottom: 0,
       },
       "&$itemDragging, &$itemSelected": {
-        backgroundColor: theme.palette.primary.main,
-        borderColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
+        backgroundColor: VoTheme.palette.primary.main,
+        borderColor: VoTheme.palette.primary.main,
+        color: VoTheme.palette.primary.contrastText,
       },
     },
     itemDragging: {
-      boxShadow: theme.shadows[20],
+      boxShadow: VoTheme.shadows[20],
     },
     itemSelected: {},
     row: {
@@ -60,23 +63,23 @@ export const useStyles = makeStyles((theme: Theme) =>
     rowDragArea: {
       alignItems: "center",
       display: "flex",
-      marginRight: theme.spacing(1),
+      marginRight: VoTheme.spacing(1),
     },
     rowTitle: {
       flex: 1,
       minWidth: 0,
     },
     rowActions: {
-      marginLeft: theme.spacing(1),
+      marginLeft: VoTheme.spacing(1),
     },
     rowItemTitle: {},
     rowItemDetails: {},
     rowItemDetailsLabel: {
-      fontWeight: theme.typography.fontWeightBold,
-      marginRight: theme.spacing(1),
+      fontWeight: VoTheme.typography.fontWeightBold,
+      marginRight: VoTheme.spacing(1),
     },
     rowItemDetailsValue: {
-      marginRight: theme.spacing(2),
+      marginRight: VoTheme.spacing(2),
     },
     textNoWrap: {
       overflow: "hidden",

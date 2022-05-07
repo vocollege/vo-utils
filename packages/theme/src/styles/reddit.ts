@@ -1,14 +1,13 @@
-import { alpha, createStyles } from "@material-ui/core/styles";
+import { alpha } from "@mui/material/styles";
+import { createStyles } from "@mui/styles";
 
 import VoTheme from "../index";
 
 export const stylesReddit = createStyles({
   root: {
-    // border: "1px solid #e2e2e1",
     border: `1px solid ${VoTheme.palette.grey[300]}`,
     overflow: "hidden",
     borderRadius: VoTheme.spacing(1),
-    // backgroundColor: "#fcfcfb",
     backgroundColor: VoTheme.palette.grey[100],
     outline: "none",
     transition: VoTheme.transitions.create(["border-color", "box-shadow"]),

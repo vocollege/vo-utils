@@ -1,9 +1,9 @@
 // Vendors.
 import React, { useState } from "react";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import makeStyles from "@mui/styles/makeStyles";
 
 // Custom.
 import { stylesCommon } from "@vocollege/theme";

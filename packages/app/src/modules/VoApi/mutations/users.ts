@@ -40,6 +40,11 @@ export const UPDATE_USER = gql`
         label
         type
       }
+      groupRoles {
+        id
+        label
+        type
+      }
     }
   }
 `;

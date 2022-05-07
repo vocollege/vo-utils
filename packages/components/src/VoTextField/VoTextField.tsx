@@ -1,7 +1,7 @@
 import React from "react";
-import TextField, { FilledTextFieldProps } from "@material-ui/core/TextField";
-import { OutlinedInputProps } from "@material-ui/core/OutlinedInput";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import TextField, { FilledTextFieldProps } from "@mui/material/TextField";
+import { OutlinedInputProps } from "@mui/material/OutlinedInput";
+import makeStyles from "@mui/styles/makeStyles";
 
 // Custom.
 import { stylesReddit } from "@vocollege/theme";

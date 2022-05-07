@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 
 // Custom.
 import { useStyles } from "./styles";
@@ -19,7 +19,7 @@ const MenuButton: React.FC<MenuButtonProps> = (props) => {
       aria-label="main menu"
       className={clsx(classes.root, { [classes.opened]: open })}
       onClick={onClick}
-    >
+      size="large">
       <span className={clsx(classes.bar, classes.bar1)}></span>
       <span className={clsx(classes.bar, classes.bar2)}></span>
       <span className={clsx(classes.bar, classes.bar3)}></span>

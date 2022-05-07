@@ -1,20 +1,22 @@
 // Vendors.
 import React, { useState, useReducer, useEffect } from "react";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-// import FormGroup from "@material-ui/core/FormGroup";
-// import FormControlLabel from "@material-ui/core/FormControlLabel";
-// import Switch from "@material-ui/core/Switch";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+// import FormGroup from "@mui/material/FormGroup";
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import Switch from "@mui/material/Switch";
+import makeStyles from "@mui/styles/makeStyles";
+// import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+// import { MaterialUiPickersDate } from "@mui/lab/DatePicker";
 import Dayjs from "dayjs";
-import { useParams, useHistory } from "react-router-dom";
-import { Prompt } from "react-router";
+import { useParams, useNavigate } from "react-router-dom";
+// import { Prompt } from "react-router-dom";
 import { useLazyQuery, useMutation, ApolloError } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import clsx from "clsx";
+// import TextField from "@mui/material/TextField";
 
 // Custom.
 // import { VoAuth } from "@vocollege/app";
@@ -52,12 +54,12 @@ import ErrorBox from "ErrorBox";
 import Editor from "Editor";
 import { FileManagerFolderElement } from "FileManager/global";
 import { stylesLayout } from "@vocollege/theme";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { fakeMutation } from "@vocollege/app";
 import Location from "./fields/Location";
 import Checkboxes from "./fields/Checkboxes";
 import TransferList from "./fields/TransferList";
-import * as Helpers from "@vocollege/app/dist/modules/VoHelpers";
+// import * as Helpers from "@vocollege/app/dist/modules/VoHelpers";
 
 // const useStylesCommon = makeStyles(() => stylesCommon);
 const useStylesLayout = makeStyles(() => stylesLayout);
@@ -86,12 +88,14 @@ const Form: React.FC<FormProps> = (props) => {
     renderPageTitle,
     initialData,
     onDataChange,
+    loadQueryOnParamsChange = false,
+    toolbarProps,
   } = props;
   const classes = useStyles();
   useStylesLayout();
   const params = urlParams || useParams<any>();
   const [currentTab, setTab] = useState(0);
-  const history = useHistory();
+  // const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [formSaved, setFormSaved] = useState(false);
 
@@ -99,7 +103,7 @@ const Form: React.FC<FormProps> = (props) => {
     handleSubmit,
     // trigger,
     register,
-    // unregister,
+    unregister,
     // clearErrors,
     setError,
     setValue,
@@ -136,7 +140,8 @@ const Form: React.FC<FormProps> = (props) => {
     // }
 
     if (paths?.back) {
-      history.push(paths.back, params);
+      // navigate(paths.back, params);
+      window.location.href = paths.back;
     }
   };
 
@@ -166,7 +171,10 @@ const Form: React.FC<FormProps> = (props) => {
           }
           let value = state[field.name];
           if (state[field.name] && field.type === "entity_field") {
-            value = { id: state[field.name].id };
+            value = {
+              id: state[field.name].id,
+              type: state[field.name].type || "",
+            };
           }
           values[fieldName] = value;
         });
@@ -215,6 +223,24 @@ const Form: React.FC<FormProps> = (props) => {
     }
   };
 
+  const handleChangeCustomField = (
+    name: string,
+    value: any,
+    onChange: FormField["onChange"]
+  ) => {
+    clearTimeout(typingTimer[name]);
+    dispatch({ field: name, value });
+    if (onChange) {
+      onChange(value, data);
+    }
+    typingTimer[name] = window.setTimeout(async () => {
+      setValue(`${name}` as const, value, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }, 300);
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     onChange: FormField["onChange"]
@@ -224,7 +250,7 @@ const Form: React.FC<FormProps> = (props) => {
     clearTimeout(typingTimer[name]);
     dispatch({ field: name, value: newValue });
     if (onChange) {
-      onChange(newValue);
+      onChange(newValue, data);
     }
     typingTimer[name] = window.setTimeout(async () => {
       setValue(`${name}` as const, newValue, {
@@ -234,20 +260,14 @@ const Form: React.FC<FormProps> = (props) => {
     }, 300);
   };
 
-  const handleSelectChange = (
-    e: React.ChangeEvent<{
-      name?: string | undefined;
-      value: unknown;
-    }>,
-    onChange: FormField["onChange"]
-  ) => {
+  const handleSelectChange = (e: any, onChange: FormField["onChange"]) => {
     const { name, value } = e.target;
     if (!name) {
       return;
     }
     dispatch({ field: name, value: value });
     if (onChange) {
-      onChange(value);
+      onChange(value, data);
     }
     setValue(`${name}` as const, value, {
       shouldValidate: true,
@@ -268,7 +288,7 @@ const Form: React.FC<FormProps> = (props) => {
     }
     dispatch({ field: field.name, value: newValue });
     if (field.onChange) {
-      field.onChange(newValue);
+      field.onChange(newValue, data);
     }
     setValue(`${name}` as const, newValue, {
       shouldValidate: true,
@@ -284,7 +304,7 @@ const Form: React.FC<FormProps> = (props) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: content });
     if (onChange) {
-      onChange(content);
+      onChange(content, data);
     }
     typingTimer[field] = window.setTimeout(async () => {
       setValue(`${field}` as const, content, {
@@ -317,9 +337,10 @@ const Form: React.FC<FormProps> = (props) => {
     // if (onChange) {
     //   onChange(parsedItems);
     // }
+
     dispatch({ field: field, value: items });
     if (onChange) {
-      onChange(items);
+      onChange(items, data);
     }
     typingTimer[field] = window.setTimeout(async () => {
       setValue(`${field}` as const, items, {
@@ -341,7 +362,7 @@ const Form: React.FC<FormProps> = (props) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: items });
     if (onChange) {
-      onChange(items);
+      onChange(items, data);
     }
     typingTimer[field] = window.setTimeout(async () => {
       setValue(`${field}` as const, items, { shouldDirty: true });
@@ -360,7 +381,7 @@ const Form: React.FC<FormProps> = (props) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: value });
     if (onChange) {
-      onChange(value);
+      onChange(value, data);
     }
     typingTimer[field] = window.setTimeout(() => {
       setValue(`${field}` as const, value, {
@@ -385,7 +406,7 @@ const Form: React.FC<FormProps> = (props) => {
       shouldDirty: true,
     });
     if (onChange) {
-      onChange(item);
+      onChange(item, data);
     }
   };
 
@@ -403,14 +424,15 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleChangeDate = (
     field: string,
-    date: MaterialUiPickersDate,
+    date: any,
     onChange: FormField["onChange"],
     format: string
   ) => {
-    let value = date?.format(format);
+    // let value = date?.format(format);
+    let value = Dayjs(date, format).format(format);
     dispatch({ field: field, value: value });
     if (onChange) {
-      onChange(value);
+      onChange(value, data);
     }
     setValue(`${field}` as const, value, {
       shouldValidate: true,
@@ -437,7 +459,7 @@ const Form: React.FC<FormProps> = (props) => {
       shouldDirty: true,
     });
     if (onChange) {
-      onChange(files);
+      onChange(files, data);
     }
   };
 
@@ -462,7 +484,7 @@ const Form: React.FC<FormProps> = (props) => {
       shouldDirty: true,
     });
     if (onChange) {
-      onChange(values);
+      onChange(values, data);
     }
   };
 
@@ -508,7 +530,10 @@ const Form: React.FC<FormProps> = (props) => {
     return [];
   };
 
-  const getSelectValue = (field: FormField) => {
+  const getSelectValue = (field: FormField, multiple?: boolean) => {
+    if (multiple) {
+      return state[field.name] || [];
+    }
     if (!state[field.name] && state[field.name] !== 0) {
       return "";
     }
@@ -554,7 +579,14 @@ const Form: React.FC<FormProps> = (props) => {
     }
 
     if (field.render) {
-      return field.render(state[field.name]);
+      if (field?.overrideValue) {
+        handleChangeCustomField(
+          field.name,
+          field.overrideValue,
+          field.onChange
+        );
+      }
+      return field.render(state[field.name], data);
     }
 
     let format = "";
@@ -585,7 +617,8 @@ const Form: React.FC<FormProps> = (props) => {
         return (
           <VoTextArea
             name={field.name}
-            placeholder={field.label}
+            label={field.label}
+            // placeholder={field.label}
             value={state[field.name] || ""}
             onChange={(e) => handleChange(e, field.onChange)}
             required={field.required}
@@ -597,6 +630,7 @@ const Form: React.FC<FormProps> = (props) => {
             // }
             hidden={field.hidden}
             // inputProps={field?.params && field?.params?.inputProps}
+            {...field?.params}
           />
         );
       case "select":
@@ -604,8 +638,11 @@ const Form: React.FC<FormProps> = (props) => {
           <VoSelectField
             SelectProps={{
               name: field.name,
-              value: getSelectValue(field),
+              value: getSelectValue(field, field.params?.multiple),
               onChange: (event) => handleSelectChange(event, field.onChange),
+              disabled: field.params?.disabled,
+              multiple: field.params?.multiple,
+              renderValue: field.params?.renderValue,
             }}
             availableValues={getAvailableValues(field)}
             label={field.label}
@@ -630,6 +667,8 @@ const Form: React.FC<FormProps> = (props) => {
             onChange={(e) => handleCheckChange(e, field)}
             label={field.label}
             name={field.name}
+            disabled={field.params?.disabled}
+            helperText={field?.params?.helperText || ""}
           />
         );
       case "editor":
@@ -640,6 +679,8 @@ const Form: React.FC<FormProps> = (props) => {
               handleEditorChange(content, field.name, field.onChange)
             }
             editorSettings={field.params?.editorSettings}
+            label={field.label}
+            disabled={field.params?.disabled}
           />
         );
       case "content_list":
@@ -664,6 +705,12 @@ const Form: React.FC<FormProps> = (props) => {
             renderItemTitle={field.params?.renderItemTitle}
             dialog={field.params?.dialog}
             required={field?.required}
+            createCallback={field.params?.createCallback}
+            createCallbackLabel={field.params?.createCallbackLabel}
+            overrideValue={field?.overrideValue}
+            renderActionButtons={field.params?.renderActionButtons}
+            hideType={field.params?.hideType}
+            renderExtraDetails={field.params?.renderExtraDetails}
           />
         );
 
@@ -677,7 +724,7 @@ const Form: React.FC<FormProps> = (props) => {
             }
             onReset={() => handleSortableTreeChangeReset(field.name)}
             items={state[field.name]}
-            types={field.params?.types}
+            dialog={field.params?.dialog}
           />
         );
 
@@ -711,7 +758,7 @@ const Form: React.FC<FormProps> = (props) => {
             onChange={(item) =>
               handleChangeEntity(field.name, item, field.onChange)
             }
-            onReset={() => handleChangeEntity(field.name, null, null)}
+            onReset={() => handleChangeEntity(field.name, null, field.onChange)}
             // onReset={() =>
             //   handleEntityFieldReset(
             //     field.name,
@@ -732,45 +779,81 @@ const Form: React.FC<FormProps> = (props) => {
         format = getDefaultDateFormat(field);
         return (
           <VoDatePickerField
-            name={field.name}
+            renderInput={(params) => (
+              <VoTextField
+                name={field.name}
+                required={field?.required}
+                fullWidth
+                {...params}
+                variant="filled"
+                helperText={
+                  errors[field.name]
+                    ? errors[field.name]?.message
+                    : field?.params?.helperText || ""
+                }
+              />
+            )}
             label={field.label}
             value={state[field.name] ? Dayjs(state[field.name], format) : null}
             onChange={(value) =>
               handleChangeDate(field.name, value, field.onChange, format)
             }
-            format={format}
-            required={field?.required}
-            fullWidth
+            inputFormat={format}
+            mask={field?.params?.mask}
           />
         );
       case "datetime_field":
         format = getDefaultDateFormat(field);
         return (
           <VoDateTimePickerField
-            name={field.name}
+            renderInput={(params) => (
+              <VoTextField
+                name={field.name}
+                required={field?.required}
+                fullWidth
+                {...params}
+                variant="filled"
+                helperText={
+                  errors[field.name]
+                    ? errors[field.name]?.message
+                    : field?.params?.helperText || ""
+                }
+              />
+            )}
             label={field.label}
             value={state[field.name] ? Dayjs(state[field.name], format) : null}
             onChange={(value) =>
               handleChangeDate(field.name, value, field.onChange, format)
             }
-            format={format}
-            required={field?.required}
-            fullWidth
+            inputFormat={format}
+            mask={field?.params?.mask}
           />
         );
       case "time_field":
         format = getDefaultDateFormat(field);
         return (
           <VoTimePickerField
-            name={field.name}
+            renderInput={(params) => (
+              <VoTextField
+                name={field.name}
+                required={field?.required}
+                fullWidth
+                {...params}
+                variant="filled"
+                helperText={
+                  errors[field.name]
+                    ? errors[field.name]?.message
+                    : field?.params?.helperText || ""
+                }
+              />
+            )}
             label={field.label}
             value={state[field.name] ? Dayjs(state[field.name], format) : null}
             onChange={(value) =>
               handleChangeDate(field.name, value, field.onChange, format)
             }
-            format={format}
-            required={field?.required}
-            fullWidth
+            inputFormat={format}
+            mask={field?.params?.mask}
           />
         );
       case "tags_field":
@@ -797,6 +880,7 @@ const Form: React.FC<FormProps> = (props) => {
             directUpload={field.params?.directUpload}
             portfolio={field.params?.portfolio}
             operations={field.params?.operations}
+            client={client}
           />
         );
       case "location":
@@ -818,6 +902,7 @@ const Form: React.FC<FormProps> = (props) => {
             onChange={(values) =>
               handleChangeCheckboxes(field.name, values, field.onChange)
             }
+            row={field.params?.row}
           />
         );
 
@@ -848,7 +933,7 @@ const Form: React.FC<FormProps> = (props) => {
           <input type="hidden" name={field.name} value={state[field.name]} />
         );
       case "empty":
-        return <span></span>;
+        return "";
 
       default:
         return <div></div>;
@@ -856,6 +941,9 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const setValidationError = (error: ApolloError["graphQLErrors"]) => {
+    if (!error) {
+      return;
+    }
     error.forEach((v: any) => {
       if (v.extensions && v.extensions.validation) {
         for (let field in v.extensions.validation) {
@@ -891,6 +979,7 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const handleError = (error: any) => {
+    console.error("error", error);
     setValidationError(error.graphQLErrors);
     toast.error(error.message, {
       autoClose: getToastAutoCloseTime(error.message),
@@ -920,25 +1009,44 @@ const Form: React.FC<FormProps> = (props) => {
     dispatch({
       item: mergedData,
     });
-    reset(mergedData);
+    reset(mergedData, { keepIsValid: true });
     if (onDataChange) {
-      onDataChange(mergedData);
+      onDataChange(mergedData, data);
     }
+  };
+
+  const getVariables = () => {
+    let queryVariables = {
+      [primaryField || "id"]: params[primaryField || "id"],
+    };
+    if (variables) {
+      queryVariables = {
+        ...queryVariables,
+        ...variables,
+      };
+    }
+    return queryVariables;
   };
 
   // API
 
   const [
     loadQuery,
-    { error: queryError, data, called: queryCalled, loading: queryLoading },
+    {
+      error: queryError,
+      data,
+      called: queryCalled,
+      loading: queryLoading,
+      // refetch,
+    },
   ] = useLazyQuery(getOperation(), {
     client: client || undefined,
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-first",
     errorPolicy: "all",
-    variables: {
-      [primaryField || "id"]: params[primaryField || "id"],
-    },
+    // variables: {
+    //   [primaryField || "id"]: params[primaryField || "id"],
+    // },
   });
 
   const [create, { loading: createLoading }] = useMutation(
@@ -959,7 +1067,7 @@ const Form: React.FC<FormProps> = (props) => {
     }
   );
 
-  // useEffect
+  // Effects.
 
   useEffect(() => {
     let callLoadQuery = !queryCalled;
@@ -974,11 +1082,11 @@ const Form: React.FC<FormProps> = (props) => {
         setData(initialData);
       } else {
         loadQuery({
-          variables: {
-            ...variables,
-          },
+          variables: getVariables(),
         });
       }
+    } else if (initialData) {
+      setData(initialData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -1031,6 +1139,15 @@ const Form: React.FC<FormProps> = (props) => {
     }
   }, [queryLoading]);
 
+  useEffect(() => {
+    // if (loadQueryOnParamsChange && !queryCalled && !isCreateNew()) {
+    if (loadQueryOnParamsChange && !isCreateNew()) {
+      loadQuery({
+        variables: getVariables(),
+      });
+    }
+  }, [params]);
+
   if (queryError) {
     toast.error(queryError.message, {
       autoClose: getToastAutoCloseTime(queryError.message),
@@ -1038,7 +1155,7 @@ const Form: React.FC<FormProps> = (props) => {
   }
 
   return (
-    <div>
+    <div className={clsx(classesProp?.formWrapper)}>
       {/* <Prompt
         when={isDirty && !formSaved}
         message={I18n.get.form.messages.unsavedContent}
@@ -1063,7 +1180,7 @@ const Form: React.FC<FormProps> = (props) => {
           autoComplete="off"
           encType="multipart/form-data"
         >
-          {/*<div style={{ marginTop: 100 }}>{JSON.stringify(state)}</div>
+          {/* <div style={{ marginTop: 100 }}>{JSON.stringify(state)}</div>
           <div style={{ marginTop: 100 }}>{JSON.stringify(getValues())}</div>
           <div style={{ marginTop: 100 }}>{JSON.stringify(formState)}</div>
           <div style={{ marginTop: 100 }}>{JSON.stringify(errors)}</div> */}
@@ -1075,6 +1192,7 @@ const Form: React.FC<FormProps> = (props) => {
           />
           {!disableToolbar && (
             <FormToolbar
+              {...toolbarProps}
               title={getPageTitle()}
               onSave={handleSubmit(handleSave)}
               onCancel={handleCancel}
@@ -1082,7 +1200,9 @@ const Form: React.FC<FormProps> = (props) => {
               options={{
                 saveButton: {
                   disabled: !isDirty || !isValid,
+                  ...toolbarProps?.options?.saveButton,
                 },
+                ...toolbarProps?.options,
               }}
               className={classesProp?.toolbar}
             />
@@ -1116,6 +1236,9 @@ const Form: React.FC<FormProps> = (props) => {
                           {tab.fields.map(
                             (field: FormField, fieldIndex: number) => {
                               let fieldElement = getField(field);
+                              if (fieldElement === "") {
+                                return "";
+                              }
                               return (
                                 fieldElement && (
                                   <Grid

@@ -1,4 +1,4 @@
-import { createStyles } from "@material-ui/core/styles";
+import { createStyles } from "@mui/styles";
 
 // Custom.
 import VoTheme from "../index";

@@ -1,4 +1,4 @@
-import { createStyles, makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 // Custom.
 import VoTheme from "@vocollege/theme";
@@ -11,7 +11,9 @@ export const useStyles = makeStyles(() =>
       padding: "10px 12px",
     },
     label: {
+      display: "block",
       flexBasis: "100%",
+      marginBottom: VoTheme.spacing(0.5),
     },
   })
 );

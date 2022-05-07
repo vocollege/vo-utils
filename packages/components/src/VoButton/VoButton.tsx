@@ -1,5 +1,5 @@
 import React from "react";
-import Button, { ButtonProps } from "@material-ui/core/Button";
+import Button, { ButtonProps } from "@mui/material/Button";
 
 // Custom.
 import { useStyles } from "./styles";

@@ -1,8 +1,5 @@
-import {
-    createStyles,
-    Theme,
-    makeStyles,
-} from '@material-ui/core/styles';
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,11 +17,10 @@ export const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       display: "flex",
       flex: 1,
-      paddingTop: theme.spacing(2)
+      paddingTop: theme.spacing(2),
     },
     message: {
       wordBreak: "break-all",
-    }
+    },
   })
 );
-

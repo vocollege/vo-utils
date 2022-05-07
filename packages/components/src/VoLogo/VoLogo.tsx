@@ -1,10 +1,8 @@
 import React from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Fade from "@material-ui/core/Fade";
-
-// Custom.
-// import Logo from "./images/vocollege.svg";
-// import LogoWhite from "./images/vocollege_white.svg";
+import { styled } from "@mui/material/styles";
+import { Theme } from "@mui/material/styles";
+import { makeStyles, createStyles } from "@mui//styles";
+import Fade from "@mui/material/Fade";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,6 +35,7 @@ const VoLogo: React.FC<VoLogoProps> = (props) => {
     srcWhite = null,
   } = props;
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       {src && <img className={classes.logo} src={src} alt={alt} />}

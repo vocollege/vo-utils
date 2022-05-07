@@ -1,17 +1,17 @@
 import React from "react";
-import Badge from "@material-ui/core/Badge";
+import Badge from "@mui/material/Badge";
 import clsx from "clsx";
 
 // Icons.
-import BusinessCenterIcon from "@material-ui/icons/BusinessCenter";
-import FolderIcon from "@material-ui/icons/Folder";
-import DocumentIcon from "@material-ui/icons/Description";
-import ImageIcon from "@material-ui/icons/Image";
-import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import GridOnIcon from "@material-ui/icons/GridOn";
-import PublicIcon from "@material-ui/icons/Public";
-import LocalMoviesIcon from "@material-ui/icons/LocalMovies";
+import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+import FolderIcon from "@mui/icons-material/Folder";
+import DocumentIcon from "@mui/icons-material/Description";
+import ImageIcon from "@mui/icons-material/Image";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import GridOnIcon from "@mui/icons-material/GridOn";
+import PublicIcon from "@mui/icons-material/Public";
+import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
 
 // Custom.
 import { FileManagerIconProps } from "../global";

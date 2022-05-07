@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import FindInPageIcon from "@material-ui/icons/FindInPage";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
 import { useMutation } from "@apollo/client";
 import { useConfirm } from "material-ui-confirm";
 import parse from "html-react-parser";
-import BackupIcon from "@material-ui/icons/Backup";
-import CloseIcon from "@material-ui/icons/Close";
+import BackupIcon from "@mui/icons-material/Backup";
+import CloseIcon from "@mui/icons-material/Close";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import clsx from "clsx";
 
 // Custom.
@@ -16,12 +17,15 @@ import FileManagerFileFormDirectUpload from "FileManager/Forms/FileManagerFileFo
 import FileManagerDialog from "FileManager/Dialog";
 import { useStyles } from "./styles";
 import { useStyles as useStylesForm } from "../../styles";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { FileFieldProps } from "../../global";
 import { FileManagerFolderElement } from "FileManager/global";
 import { fakeMutation } from "@vocollege/app/dist/modules/VoApi/graphql";
 import { toast } from "react-toastify";
 import VoLoader from "../../../VoLoader";
+import { downloadFile } from "@vocollege/app/dist/modules/VoHelpers";
+import VoDocs from "@vocollege/app/dist/modules/VoDocs";
+import VoApi from "@vocollege/app/dist/modules/VoApi";
 
 const FileField: React.FC<FileFieldProps> = (props) => {
   const {
@@ -37,6 +41,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
     operations,
     hideThumbnail,
     simplified,
+    client,
   } = props;
   const classes = useStyles();
   const classesForm = useStylesForm();
@@ -45,7 +50,10 @@ const FileField: React.FC<FileFieldProps> = (props) => {
   const confirm = useConfirm();
 
   const [deleteFileMutation, { loading: deleteFileLoading }] = useMutation(
-    operations?.deleteFile || fakeMutation
+    operations?.deleteFile || fakeMutation,
+    {
+      client: client || undefined,
+    }
   );
 
   // Methods.
@@ -80,7 +88,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
   const deleteFile = async () => {
     let description =
       I18n.trans(I18n.get.messages.deleteElement, {
-        element: `${label} <b>"${files[0].filename}"</b>`,
+        element: `${label?.toLocaleLowerCase()} <b>"${files[0].filename}"</b>`,
       }) +
       " " +
       `<br /><i>${I18n.get.messages.actionCantBeUndone}</i>`;
@@ -94,6 +102,11 @@ const FileField: React.FC<FileFieldProps> = (props) => {
         variables,
       });
     });
+  };
+
+  const handleDownloadFile = async (fileId: string) => {
+    let url = await VoDocs.getTemporaryFileUrl(fileId);
+    downloadFile(url.data);
   };
 
   // Effects.
@@ -133,6 +146,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
             )}
           </Typography>
         )}
+
         {files.length > 0 && (
           <IconButton
             aria-label="close"
@@ -168,40 +182,53 @@ const FileField: React.FC<FileFieldProps> = (props) => {
       </div>
       {files.length > 0 &&
         files.map((file: FileManagerFolderElement, i: number) => (
-          <div key={i} className={classes.fileDetailsWrapper}>
-            <div className={classes.fileDetails}>
-              {!simplified && (
+          <React.Fragment key={i}>
+            <div className={classes.fileDetailsWrapper}>
+              <div className={classes.fileDetails}>
+                {!simplified && (
+                  <Typography variant="subtitle2">
+                    <strong>{I18n.get.form.labels.title}:</strong> {file.title}
+                  </Typography>
+                )}
                 <Typography variant="subtitle2">
-                  <strong>{I18n.get.form.labels.title}:</strong> {file.title}
+                  <strong>{I18n.get.docs.label.filename}:</strong>{" "}
+                  {file.filename}
                 </Typography>
-              )}
-              <Typography variant="subtitle2">
-                <strong>{I18n.get.docs.label.filename}:</strong> {file.filename}
-              </Typography>
-              {!simplified && (
+                {!simplified && (
+                  <Typography variant="subtitle2">
+                    <strong>{I18n.get.docs.label.filetype}:</strong>{" "}
+                    {file.filetype}
+                  </Typography>
+                )}
                 <Typography variant="subtitle2">
-                  <strong>{I18n.get.docs.label.filetype}:</strong>{" "}
-                  {file.filetype}
+                  <strong>{I18n.get.docs.label.filesize}:</strong>{" "}
+                  {(file.filesize / 1000000).toFixed(2)} MB
                 </Typography>
-              )}
-              <Typography variant="subtitle2">
-                <strong>{I18n.get.docs.label.filesize}:</strong>{" "}
-                {(file.filesize / 1000000).toFixed(2)} MB
-              </Typography>
-              {!simplified && (
-                <Typography variant="subtitle2">
-                  <strong>{I18n.get.misc.id}:</strong> {file.id}
-                </Typography>
+                {!simplified && (
+                  <Typography variant="subtitle2">
+                    <strong>{I18n.get.misc.id}:</strong> {file.id}
+                  </Typography>
+                )}
+              </div>
+              {!hideThumbnail && !simplified && (
+                <img
+                  className={classes.fileThumbnail}
+                  src={`${file.url}?d=100x100`}
+                  alt={file.title}
+                />
               )}
             </div>
-            {!hideThumbnail && !simplified && (
-              <img
-                className={classes.fileThumbnail}
-                src={`${file.url}?d=100x100`}
-                alt={file.title}
-              />
-            )}
-          </div>
+            <div className={classes.actions}>
+              <IconButton
+                aria-label="download"
+                color="success"
+                size="small"
+                onClick={() => handleDownloadFile(file.id)}
+              >
+                <CloudDownloadIcon />
+              </IconButton>
+            </div>
+          </React.Fragment>
         ))}
       <FileManagerDialog
         open={!directUpload && dialogOpen}
@@ -209,6 +236,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
         onChange={handleChange}
         onCancel={() => setDialogOpen(false)}
         filetypes={filetypes}
+        client={client}
       />
       <FileManagerFileFormDirectUpload
         title={title}
@@ -223,6 +251,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
           update: operations?.updateFile,
         }}
         portfolio={portfolio}
+        client={client}
       />
     </div>
   );

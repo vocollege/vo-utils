@@ -1,6 +1,7 @@
 import React from "react";
-import { Alert, AlertTitle, AlertProps } from "@material-ui/lab";
-import Button from "@material-ui/core/Button";
+import { Alert, AlertTitle } from '@mui/material';
+import { AlertProps } from '@mui/lab';
+import Button from "@mui/material/Button";
 import { Link as RouterLink } from "react-router-dom";
 
 // Custom.

@@ -1,10 +1,12 @@
 import React from "react";
-import Select, { SelectProps } from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
+import Select, { SelectProps } from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
 import clsx from "clsx";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
 
 // Custom.
 import { useStyles } from "./styles";
@@ -32,6 +34,17 @@ export interface VoSelectFieldAvailableValue {
   value: string;
 }
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
 const VoSelectField: React.FC<VoSelectFieldProps> = (props) => {
   const {
     availableValues,
@@ -54,15 +67,29 @@ const VoSelectField: React.FC<VoSelectFieldProps> = (props) => {
         [classes.error]: error,
       })}
     >
-      {label && <InputLabel>{label}</InputLabel>}
+      {label && (
+        <InputLabel required={SelectProps.required}>{label}</InputLabel>
+      )}
       <Select
         {...SelectProps}
-        classes={{ root: classes.root, select: classes.select }}
+        classes={{
+          // root: classes.root,
+          select: classes.select,
+        }}
+        MenuProps={MenuProps}
       >
         {availableValues &&
           availableValues.map((v: VoSelectFieldAvailableValue, key: number) => (
             <MenuItem key={key} value={v.value}>
-              {v.label}
+              {SelectProps && SelectProps.multiple && (
+                <Checkbox
+                  checked={
+                    Array.isArray(SelectProps?.value) &&
+                    SelectProps.value.indexOf(v.value) > -1
+                  }
+                />
+              )}
+              <ListItemText primary={v.label} />
             </MenuItem>
           ))}
       </Select>

@@ -1,16 +1,13 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 // Custom.
 import VoTheme from "@vocollege/theme";
 
-export const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
       position: "relative",
-      // "&:hover $actions": {
-      //   backgroundColor: VoTheme.palette.common.white,
-      // },
     },
     fieldWrapper: {
       flex: 1,
@@ -23,25 +20,20 @@ export const useStyles = makeStyles((theme: Theme) =>
         borderBottomRightRadius: 0,
       },
     },
-    // fieldInputElement: {
-    //   borderTopRightRadius: 0,
-    //   borderBottomRightRadius: 0,
-    //   borderRight: "none",
-    // },
     fieldInput: {
+      backgroundColor: VoTheme.palette.common.white,
       paddingRight: VoTheme.spacing(8),
     },
     actions: {
       alignItems: "center",
-      // backgroundColor: VoTheme.palette.grey[100],
-      // backgroundColor: "rgba(0, 0, 0, 0.12)",
-      borderRadius: `0 ${VoTheme.spacing(1)}px ${VoTheme.spacing(1)}px 0`,
+      backgroundColor: VoTheme.palette.common.white,
+      borderRadius: `0 ${VoTheme.spacing(1)} ${VoTheme.spacing(1)} 0`,
       border: `1px solid ${VoTheme.palette.grey[300]}`,
       borderLeft: "none",
       display: "flex",
       padding: `10px 12px`,
       "& > *": {
-        marginRight: theme.spacing(1),
+        marginRight: VoTheme.spacing(1),
         "&:last-child": {
           marginRight: 0,
         },
@@ -56,7 +48,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     // },
     resetButton: {
       position: "absolute",
-      right: theme.spacing(1),
+      right: VoTheme.spacing(1),
       top: 5,
     },
   })

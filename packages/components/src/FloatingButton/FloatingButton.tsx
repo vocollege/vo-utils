@@ -1,14 +1,14 @@
 import React from "react";
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
-import Fab from "@material-ui/core/Fab";
+import Fab from "@mui/material/Fab";
 import clsx from "clsx";
-import Tooltip from "@material-ui/core/Tooltip";
-import SpeedDial, { SpeedDialProps } from "@material-ui/lab/SpeedDial";
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
+import Tooltip from "@mui/material/Tooltip";
+import SpeedDial, { SpeedDialProps } from "@mui/material/SpeedDial";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
 
 // Custom.
 // import VoTheme from "@vocollege/theme";
+import { useStyles } from "./styles";
 
 interface FloatingButtonType {
   className?: string;
@@ -16,7 +16,7 @@ interface FloatingButtonType {
   color?: "primary" | "secondary" | "error" | "warning" | "info" | "success";
   actions?: FloatingButtonSpeedDialAction[];
   //   children: React.ReactElement;
-  children: any;
+  children: React.ReactNode;
   actionsDirection?: SpeedDialProps["direction"];
   float?: "left" | "right";
   tooltipPlacement?: "top" | "right" | "bottom" | "left";
@@ -29,62 +29,6 @@ interface FloatingButtonSpeedDialAction {
   label: string;
   icon: React.ReactElement;
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    primary: {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.primary.contrastText,
-      "&:hover": {
-        backgroundColor: theme.palette.primary.dark,
-      },
-    },
-    secondary: {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.secondary.contrastText,
-      "&:hover": {
-        backgroundColor: theme.palette.secondary.dark,
-      },
-    },
-    error: {
-      backgroundColor: theme.palette.error.main,
-      color: theme.palette.error.contrastText,
-      "&:hover": {
-        backgroundColor: theme.palette.error.dark,
-      },
-    },
-    warning: {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.secondary.contrastText,
-      "&:hover": {
-        backgroundColor: theme.palette.secondary.dark,
-      },
-    },
-    info: {
-      backgroundColor: theme.palette.info.main,
-      color: theme.palette.info.contrastText,
-      "&:hover": {
-        backgroundColor: theme.palette.info.dark,
-      },
-    },
-    success: {
-      backgroundColor: theme.palette.success.main,
-      color: theme.palette.success.contrastText,
-      "&:hover": {
-        backgroundColor: theme.palette.success.dark,
-      },
-    },
-    margin: {
-      margin: theme.spacing(2),
-    },
-    pullLeft: {
-      float: "left",
-    },
-    pullRight: {
-      float: "right",
-    },
-  })
-);
 
 const FloatingButton: React.FC<FloatingButtonType> = (props) => {
   const {
@@ -99,8 +43,8 @@ const FloatingButton: React.FC<FloatingButtonType> = (props) => {
     fabProps,
     onClick,
   } = props;
-  const classes = useStyles();
 
+  const classes = useStyles();
   const buttonColor: FloatingButtonType["color"] = color || "primary";
   const actionItems: FloatingButtonType["actions"] = actions || [];
 
@@ -124,8 +68,18 @@ const FloatingButton: React.FC<FloatingButtonType> = (props) => {
     onClick(action);
   };
 
+  const getIcon = (index: number) => {
+    const arrayChildren = React.Children.toArray(children);
+    return arrayChildren[index];
+    // if (children) {
+    //   return React.Children[0];
+    //   // return React.isValidElement(children[0]) ? children[0] : <></>;
+    // }
+    // return <></>;
+  };
+
   return (
-    <>
+    <div>
       {actionItems.length === 0 && (
         <Tooltip title={label} placement={tooltipPlacement || "left"}>
           <span>
@@ -149,12 +103,12 @@ const FloatingButton: React.FC<FloatingButtonType> = (props) => {
         <SpeedDial
           ariaLabel={label}
           className={clsx(classes.margin, className)}
-          icon={<SpeedDialIcon icon={children[0]} openIcon={children[1]} />}
+          icon={<SpeedDialIcon icon={getIcon(0)} openIcon={getIcon(1)} />}
           onClose={handleClose}
           onOpen={handleOpen}
           open={open}
           direction={actionsDirection}
-          FabProps={{ className: classes[buttonColor], ...fabProps }}
+          FabProps={{ className: buttonColor, ...fabProps }}
         >
           {actionItems.map((action: FloatingButtonSpeedDialAction) => (
             <SpeedDialAction
@@ -168,7 +122,7 @@ const FloatingButton: React.FC<FloatingButtonType> = (props) => {
           ))}
         </SpeedDial>
       )}
-    </>
+    </div>
   );
 };
 

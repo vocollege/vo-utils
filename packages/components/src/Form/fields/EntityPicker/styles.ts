@@ -1,4 +1,4 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 // Custom.
 import VoTheme from "@vocollege/theme";
@@ -35,24 +35,24 @@ export const useStyles = makeStyles(
       position: "relative",
     },
     searchResult: {
-      // margin: `0 -${theme.spacing(3)}px`,
+      // margin: `0 -${theme.spacing(3)}`,
       overflow: "hidden",
       padding: 0,
       position: "relative",
-      // width: `calc(100% - ${theme.spacing(2)}px)`,
+      // width: `calc(100% - ${theme.spacing(2)})`,
       zIndex: 0,
     },
 
     searchResultItem: {
       // borderRadius: VoTheme.shape.borderRadius,
-      padding: `0 ${VoTheme.spacing(2)}px`,
+      padding: `0 ${VoTheme.spacing(2)}`,
     },
     // Double selectors to ensure that the style is applied, since
     // .MuiLinearProgress is created after this on site using this
     // library and Material UI Progress at the same time.
     searchResultLoaderRoot: {
       "&$searchResultLoader": {
-        bottom: VoTheme.spacing(1) / 2,
+        bottom: parseInt(`${VoTheme.spacing(1)}`) / 2,
         left: VoTheme.spacing(1),
         position: "absolute",
         right: VoTheme.spacing(1),

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import FindInPageIcon from "@material-ui/icons/FindInPage";
+import Button from "@mui/material/Button";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
 import clsx from "clsx";
 
 // Custom.

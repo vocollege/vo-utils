@@ -1,17 +1,19 @@
 import React, { useReducer, useState, useEffect } from "react";
 import clsx from "clsx";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Slide from "@material-ui/core/Slide";
-import Toolbar from "@material-ui/core/Toolbar";
+import CircularProgress from "@mui/material/CircularProgress";
+import Slide from "@mui/material/Slide";
+import Toolbar from "@mui/material/Toolbar";
 // import { useSnackbar } from "notistack";
 import { useConfirm } from "material-ui-confirm";
 import parse from "html-react-parser";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // Custom.
-import { VoDocs, I18n, downloadFile } from "@vocollege/app";
+import { downloadFile } from "@vocollege/app/dist/modules/VoHelpers";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
+import VoDocs from "@vocollege/app/dist/modules/VoDocs";
 import { reducer, initialState } from "./state";
 import FileManagerHeader from "./Header";
 import FileManagerGrid from "./Grid";
@@ -32,6 +34,7 @@ import {
 } from "./Forms";
 import { useStyles } from "./styles";
 import { fakeMutation } from "@vocollege/app";
+import VoLoader from "../VoLoader";
 
 const FileManager: React.FC<FileManagerProps> = (props) => {
   const {
@@ -47,13 +50,14 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
     filetypes,
   } = props;
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   // const { enqueueSnackbar } = useSnackbar();
   const confirm = useConfirm();
   const [path, setPath] = useState<FileManagerBreadcrumbLink[]>([]);
   const [state, dispatch] = useReducer(reducer, initialState);
   const [selectedElement, setSelectedElement] =
     useState<FileManagerFolderElement | null>(null);
+  const [retrieving, setRetrieving] = useState(null);
 
   const handleSelectClick = (element: FileManagerFolderElement | null) => {
     if (!element) {
@@ -82,6 +86,7 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
     action: FileManagerElementAction,
     element: FileManagerFolderElement
   ) => {
+    let url = null;
     switch (action) {
       case "edit":
         dispatch({
@@ -127,11 +132,20 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
             refetch();
           }
         });
-
         break;
       case "download":
-        let url = await VoDocs.getTemporaryFileUrl(element.id);
+        setRetrieving(I18n.get.docs.label.downloading);
+        url = await VoDocs.getTemporaryFileUrl(element.id);
         downloadFile(url.data);
+        setRetrieving(null);
+        break;
+      case "copy_url":
+        setRetrieving(I18n.get.docs.label.retrievingLink);
+        let response = await VoDocs.getTemporaryFileUrl(element.id);
+        url = response.data.split("?");
+        window.navigator.clipboard.writeText(url[0]);
+        toast.success(I18n.get.docs.messages.linkCopiedToClipboard);
+        setRetrieving(null);
         break;
     }
   };
@@ -143,7 +157,7 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
     if (onDoubleClick) {
       onDoubleClick(element);
     } else if (element.__typename !== "File") {
-      history.push(url);
+      navigate(url);
     }
   };
 
@@ -302,6 +316,7 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
           />
         </Toolbar>
       </Slide>
+      {retrieving && <VoLoader title={retrieving} />}
       {isLoading() && (
         <div className={classes.loaderWrapper}>
           <CircularProgress color="primary" />

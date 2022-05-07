@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import AddIcon from "@material-ui/icons/Add";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
 
 // Custom.
 import VoTextField from "VoTextField";
 import { EntityFieldProps, EntityPickerItem } from "Form/global";
 import EntityPicker from "../EntityPicker";
 import { useStyles } from "./styles";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 const EntityField: React.FC<EntityFieldProps> = (props) => {
   const {
@@ -26,6 +27,7 @@ const EntityField: React.FC<EntityFieldProps> = (props) => {
     renderFieldValue,
     dialog,
     overrideValue,
+    textfieldProps,
   } = props;
   const classes = useStyles();
   const [fieldValue, setFieldValue] = useState<any>("");
@@ -89,6 +91,7 @@ const EntityField: React.FC<EntityFieldProps> = (props) => {
     <div className={classes.root}>
       <div className={classes.fieldWrapper}>
         <VoTextField
+          {...textfieldProps}
           name={name}
           label={label}
           value={fieldValue}
@@ -105,6 +108,7 @@ const EntityField: React.FC<EntityFieldProps> = (props) => {
             className={classes.resetButton}
             aria-label="clear entity field"
             onClick={() => resetField()}
+            size="large"
           >
             <CloseIcon />
           </IconButton>
@@ -114,12 +118,12 @@ const EntityField: React.FC<EntityFieldProps> = (props) => {
         {createCallback && (
           <Button
             variant="contained"
-            color="secondary"
+            color="success"
             startIcon={<AddIcon />}
             onClick={() => createCallback()}
             size="small"
           >
-            {createCallbackLabel}
+            {createCallbackLabel || I18n.get.actions.create}
           </Button>
         )}
         <EntityPicker

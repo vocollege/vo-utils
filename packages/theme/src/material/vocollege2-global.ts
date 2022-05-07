@@ -1,5 +1,4 @@
-// import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
-import { alpha } from "@material-ui/core/styles";
+import { alpha } from "@mui/material/styles";
 import VoTheme from "./vocollege2";
 
 // Note that we can't use Material UI createStyles() here, since we
@@ -8,6 +7,9 @@ import VoTheme from "./vocollege2";
 // returned type from createStyles()
 export const stylesGlobal: any = {
   "@global": {
+    ".grecaptcha-badge": {
+      visibility: "hidden",
+    },
     "body.vo-global__content": {
       fontFamily: "Lato, sans-serif",
       fontSize: VoTheme.typography.fontSize,
@@ -37,7 +39,7 @@ export const stylesGlobal: any = {
       "& .left": {
         float: "left",
         margin: `0 ${VoTheme.spacing(2)}px ${VoTheme.spacing(2)}px 0`,
-        [VoTheme.breakpoints.down("sm")]: {
+        [VoTheme.breakpoints.down("md")]: {
           float: "none",
           margin: `${VoTheme.spacing(2)}px auto`,
         },
@@ -45,7 +47,7 @@ export const stylesGlobal: any = {
       "& .right": {
         float: "right",
         margin: `0 0 ${VoTheme.spacing(2)}px ${VoTheme.spacing(2)}px`,
-        [VoTheme.breakpoints.down("sm")]: {
+        [VoTheme.breakpoints.down("md")]: {
           float: "none",
           margin: `${VoTheme.spacing(2)}px auto`,
         },
@@ -82,7 +84,7 @@ export const stylesGlobal: any = {
         marginTop: `${VoTheme.spacing(3)}px !important`,
       },
       "& img": {
-        borderRadius: VoTheme.shape.borderRadius * 2,
+        borderRadius: parseInt(`${VoTheme.shape.borderRadius}`) * 2,
         display: "block",
         height: "auto",
         maxWidth: "100%",
@@ -226,7 +228,7 @@ export const stylesGlobal: any = {
       },
       "& h2, h3, h4": {
         "& + h2, & + h3, & + h4": {
-          marginTop: VoTheme.spacing(2),
+          marginTop: VoTheme.spacing(3),
         },
       },
       "& *:not(h2):not(h3):not(h4)": {
@@ -283,9 +285,10 @@ export const stylesGlobal: any = {
         marginTop: VoTheme.spacing(3),
       },
       "& ul, & ol": {
-        listStylePosition: "inside",
+        fontSize: VoTheme.typography.body1.fontSize,
+        listStylePosition: "outside",
         marginLeft: 0,
-        paddingLeft: VoTheme.spacing(1),
+        paddingLeft: VoTheme.spacing(5),
         paddingTop: 0,
       },
       // "& .preamble, & h2, & h3, & h4": {

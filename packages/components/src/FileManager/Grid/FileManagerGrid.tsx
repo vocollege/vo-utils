@@ -1,7 +1,7 @@
 import React from "react";
-import Box from "@material-ui/core/Box";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import Box from "@mui/material/Box";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import makeStyles from "@mui/styles/makeStyles";
 
 // Custom.
 import { FileManagerGridProps, FileManagerFolderElement } from "../global";

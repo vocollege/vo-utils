@@ -1,4 +1,5 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,10 +22,10 @@ export const useStyles = makeStyles((theme: Theme) =>
     selectedElementDescription: {
       borderTop: `1px solid ${theme.palette.divider}`,
       lineHeight: theme.typography.body2.lineHeight,
-      marginTop: theme.spacing(1) / 2,
+      marginTop: parseInt(`${theme.spacing(1)}`) / 2,
       maxHeight: theme.spacing(6),
       overflowY: "auto",
-      paddingTop: theme.spacing(1) / 2,
+      paddingTop: parseInt(`${theme.spacing(1)}`) / 2,
     },
     selectedElementDetails: {
       flex: 1,
@@ -32,7 +33,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     selectedElementDates: {
       alignItems: "flex-end",
       display: "flex",
-      flex: `0 0 ${theme.spacing(28)}px`,
+      flex: `0 0 ${theme.spacing(28)}`,
       flexDirection: "column",
     },
     icon: {

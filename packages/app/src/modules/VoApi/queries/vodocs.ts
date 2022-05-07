@@ -20,7 +20,7 @@ export const GET_PORTFOLIOS = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetPortfoliosOrderByOrderByClause]
+    $orderBy: [GetPortfoliosOrderByClause]
   ) {
     portfolios(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
       # paginatorInfo {
@@ -49,7 +49,7 @@ export const GET_FOLDER_ELEMENTS = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetFolderElementsOrderByOrderByClause]
+    $orderBy: [GetFolderElementsOrderByClause]
     $filetypes: [String]
   ) {
     folderElements(

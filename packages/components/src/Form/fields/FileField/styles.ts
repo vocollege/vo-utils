@@ -1,35 +1,34 @@
-import {
-  createStyles,
-  Theme,
-  makeStyles,
-  alpha,
-} from "@material-ui/core/styles";
+import { Theme, alpha } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
-export const useStyles = makeStyles((theme: Theme) =>
+// Custom.
+import VoTheme from "@vocollege/theme";
+
+export const useStyles = makeStyles(() =>
   createStyles({
     root: {
       position: "relative",
     },
     clearButton: {
-      marginRight: theme.spacing(1),
+      marginRight: VoTheme.spacing(1),
     },
     fileDetailsWrapper: {
       alignItems: "center",
       display: "flex",
-      marginTop: theme.spacing(2),
+      marginTop: VoTheme.spacing(2),
     },
     fileDetails: {
       flex: 1,
-      paddingLeft: theme.spacing(1),
-      paddingRight: theme.spacing(1),
+      paddingLeft: VoTheme.spacing(1),
+      paddingRight: VoTheme.spacing(1),
     },
     fileThumbnail: {
-      borderRadius: theme.shape.borderRadius,
-      boxShadow: theme.shadows[9],
+      borderRadius: VoTheme.shape.borderRadius,
+      boxShadow: VoTheme.shadows[9],
       display: "block",
       height: "auto",
-      marginLeft: theme.spacing(2),
-      maxWidth: theme.spacing(22),
+      marginLeft: VoTheme.spacing(2),
+      maxWidth: VoTheme.spacing(22),
     },
     simplified: {
       "& $fileDetailsWrapper": {
@@ -38,7 +37,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     loaderWrapper: {
       alignItems: "center",
-      backgroundColor: alpha(theme.palette.common.white, 0.5),
+      backgroundColor: alpha(VoTheme.palette.common.white, 0.5),
       bottom: 0,
       display: "flex",
       justifyContent: "center",
@@ -50,6 +49,11 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     loader: {
       zIndex: 2,
+    },
+    actions: {
+      display: "flex",
+      justifyContent: "flex-end",
+      padding: `0 ${VoTheme.spacing(1)}`,
     },
   })
 );

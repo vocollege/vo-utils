@@ -34,6 +34,11 @@ export const GET_CARD = gql`
           title
           type
         }
+        ... on Queue {
+          id
+          title
+          type
+        }
       }
       images {
         id
@@ -54,7 +59,7 @@ export const GET_CARDS = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetCardsOrderByOrderByClause]
+    $orderBy: [GetCardsOrderByClause]
   ) {
     cards(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
       paginatorInfo {

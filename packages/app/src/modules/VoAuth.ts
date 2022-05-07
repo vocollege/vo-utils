@@ -8,6 +8,7 @@ import VoApi from "./VoApi";
 import VoRouter from "./VoRouter";
 import VoConfig from "./VoConfig";
 import { VoTokenType } from "../global";
+import VoGroups from "./VoGroups";
 
 class VoAuth extends VoBase {
   state: string;
@@ -15,6 +16,7 @@ class VoAuth extends VoBase {
   challenge: string;
   user: any = null;
   ability: AnyMongoAbility;
+  globalAbility: AnyMongoAbility;
 
   constructor(key: string) {
     super(key);
@@ -22,6 +24,7 @@ class VoAuth extends VoBase {
     this.verifier = "";
     this.challenge = "";
     this.ability = new Ability();
+    this.globalAbility = new Ability();
   }
 
   get getAppLoginUrl() {
@@ -45,25 +48,29 @@ class VoAuth extends VoBase {
       const code = urlParams.get("code");
       const state = urlParams.get("state");
       const initiatedAuth = this.getInitiatedAuth();
-      if (code && state && state === initiatedAuth.state) {
-        let params = {
-          grant_type: "authorization_code",
-          client_id: VoConfig.get.AUTH_CLIENT_ID,
-          redirect_uri: this.getAuthUrl,
-          code_verifier: initiatedAuth.verifier,
-          code,
-        };
-        const url = this.getUrl + "/token";
-        const response = await axios.post(url, params);
-        let state = VoConfig.get.AUTH_STORAGE_STATE || "";
-        Helpers.localStorage.remove(state);
-        let verifier = VoConfig.get.AUTH_STORAGE_VERIFIER || "";
-        Helpers.localStorage.remove(verifier);
-        this.setSession(response.data);
-        await this.loadUser(true);
-        resolve(true);
-      } else {
-        reject("Authorization failed");
+      try {
+        if (code && state && state === initiatedAuth.state) {
+          let params = {
+            grant_type: "authorization_code",
+            client_id: VoConfig.get.AUTH_CLIENT_ID,
+            redirect_uri: this.getAuthUrl,
+            code_verifier: initiatedAuth.verifier,
+            code,
+          };
+          const url = this.getUrl + "/token";
+          const response = await axios.post(url, params);
+          let state = VoConfig.get.AUTH_STORAGE_STATE || "";
+          Helpers.localStorage.remove(state);
+          let verifier = VoConfig.get.AUTH_STORAGE_VERIFIER || "";
+          Helpers.localStorage.remove(verifier);
+          this.setSession(response.data);
+          await this.loadUser(true);
+          resolve(true);
+        } else {
+          reject("Authorization failed");
+        }
+      } catch (error) {
+        reject(error);
       }
     });
   }
@@ -92,6 +99,10 @@ class VoAuth extends VoBase {
     Helpers.localStorage.set(expiresInKey, expires_in);
     axios.defaults.headers.common["Authorization"] =
       token_type + " " + access_token;
+    let currentGroup = VoGroups.getCurrent();
+    axios.defaults.headers.common["VoGroup"] = currentGroup
+      ? currentGroup.id
+      : "";
   }
   resetSession() {
     let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
@@ -136,12 +147,7 @@ class VoAuth extends VoBase {
       if (token) {
         try {
           this.setSession(token);
-
-          // const response = await VoApi.getUser();
-          // this.user = response.data.data;
-          // this.ability.update(this.user.permissions);
           await this.loadUser(forceLoad);
-
           resolve(this.user);
         } catch (error) {
           reject(error);
@@ -162,6 +168,9 @@ class VoAuth extends VoBase {
           const response = await VoApi.getUser();
           this.user = response.data.data;
           this.ability.update(this.user.permissions);
+          if (VoGroups.getCurrent()) {
+            this.globalAbility.update(this.user.globalPermissions);
+          }
         }
         resolve(this.user);
       } catch (error) {

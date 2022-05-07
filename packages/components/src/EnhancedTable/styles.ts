@@ -1,9 +1,5 @@
-import {
-  createStyles,
-  lighten,
-  Theme,
-  makeStyles,
-} from "@material-ui/core/styles";
+import { lighten, Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,9 +59,12 @@ export const useToolbarStyles = makeStyles((theme: Theme) =>
     root: {
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(1),
+      "&$noTitle": {
+        minHeight: 0,
+      },
     },
     highlight:
-      theme.palette.type === "light"
+      theme.palette.mode === "light"
         ? {
             color: theme.palette.secondary.main,
             backgroundColor: lighten(theme.palette.secondary.light, 0.85),
@@ -77,6 +76,7 @@ export const useToolbarStyles = makeStyles((theme: Theme) =>
     title: {
       flex: "1 1 100%",
     },
+    noTitle: {},
     // addButton: {
     //   bottom: theme.spacing(2),
     //   position: "fixed",

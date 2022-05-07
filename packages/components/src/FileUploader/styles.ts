@@ -1,4 +1,5 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 // Custom.
 import VoTheme from "@vocollege/theme";

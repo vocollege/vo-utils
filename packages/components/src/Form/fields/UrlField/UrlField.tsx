@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import LockIcon from "@material-ui/icons/Lock";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
+import IconButton from "@mui/material/IconButton";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 // Custom.
 import { createSlug2 } from "@vocollege/app";
@@ -93,7 +93,7 @@ const UrlField: React.FC<FormFieldUrlFieldProps> = (props) => {
         className={classes.editButton}
         aria-label="edit url value"
         onClick={() => setFieldLocked(!fieldLocked)}
-      >
+        size="large">
         {fieldLocked && <LockIcon />}
         {!fieldLocked && <LockOpenIcon />}
       </IconButton>

@@ -1,14 +1,9 @@
-import {
-    createStyles,
-    Theme,
-    makeStyles,
-} from '@material-ui/core/styles';
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-
-    },
+    root: {},
     // dialogTitleRoot: {
     //   alignItems: "center",
     //   display: "flex",
@@ -23,9 +18,9 @@ export const useStyles = makeStyles((theme: Theme) =>
     // dialogContentRoot: {
     // },
     // dialogActionsRoot: {
-    //   padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`
+    //   padding: `${theme.spacing(2)} ${theme.spacing(3)}`
     // },
-    
+
     // buttonCreate: {
     //   position: "relative",
     //   loading: {
@@ -37,4 +32,3 @@ export const useStyles = makeStyles((theme: Theme) =>
     // buttonCreateLabel: {}
   })
 );
-

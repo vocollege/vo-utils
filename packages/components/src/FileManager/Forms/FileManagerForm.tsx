@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { useMutation } from "@apollo/client";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -15,7 +15,9 @@ import EditDialog from "../../EditDialog";
 import FileUploader from "FileUploader";
 import VoSelectField, { VoSelectFieldAvailableValue } from "VoSelectField";
 import { FileManagerFormProps, FileManagerBreadcrumbLink } from "../global";
-import { I18n, VoConfig } from "@vocollege/app";
+import VoApi from "@vocollege/app/dist/modules/VoApi";
+import VoConfig from "@vocollege/app/dist/modules/VoConfig";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { getBucket } from "../FileManagerHelper";
 
 let typingTimer: number;
@@ -90,12 +92,7 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
     });
   };
 
-  const handleSelectChange = (
-    e: React.ChangeEvent<{
-      name?: string | undefined;
-      value: unknown;
-    }>
-  ) => {
+  const handleSelectChange = (e: any) => {
     const { name, value } = e.target;
     if (!name) {
       return;

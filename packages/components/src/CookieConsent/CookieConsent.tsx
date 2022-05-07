@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { styled } from "@mui/material/styles";
 import Cookies from "js-cookie";
-import Slide from "@material-ui/core/Slide";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import Slide from "@mui/material/Slide";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 // Custom.
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
-import { useStyles } from "./styles";
 import VoButton from "../VoButton";
+import { useStyles } from "./styles";
 
 export interface CookieConsentProps {
   className?: string;

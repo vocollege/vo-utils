@@ -50,7 +50,7 @@ export const GET_PAGES = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetPagesOrderByOrderByClause]
+    $orderBy: [GetPagesOrderByClause]
   ) {
     pages(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
       paginatorInfo {

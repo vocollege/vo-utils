@@ -11,10 +11,10 @@ import {
   // PreDragActions,
 } from "react-beautiful-dnd";
 import clsx from "clsx";
-import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
-// import DeleteIcon from "@material-ui/icons/Delete";
-import Typography from "@material-ui/core/Typography";
-// import IconButton from "@material-ui/core/IconButton";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+// import DeleteIcon from "@mui/icons-material/Delete";
+import Typography from "@mui/material/Typography";
+// import IconButton from "@mui/material/IconButton";
 
 // Custom.
 import { useStyles } from "./styles";

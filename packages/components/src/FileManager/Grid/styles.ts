@@ -1,10 +1,11 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flex: 1,
-      padding: `0 ${theme.spacing(3)}px ${theme.spacing(7)}px`,
+      padding: `0 ${theme.spacing(3)} ${theme.spacing(7)}`,
     },
     elementWrapper: {
       display: "inline-block",

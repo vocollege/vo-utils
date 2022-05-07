@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import clsx from "clsx";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Dialog from "@material-ui/core/Dialog";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import AddIcon from "@material-ui/icons/Add";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import LinearProgress from "@mui/material/LinearProgress";
+import Dialog from "@mui/material/Dialog";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
 
 // Custom.
@@ -21,7 +21,7 @@ import { useStyles } from "./styles";
 import { EntityPickerDialogProps, EntityPickerItem } from "Form/global";
 import { getTemporaryId } from "@vocollege/app";
 import VoTextField from "VoTextField";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 let typingTimer: number;
 
@@ -79,7 +79,8 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
   };
 
   const getType = (item: EntityPickerItem) => {
-    return item.type?.toLowerCase();
+    // return item.type?.toLowerCase();
+    return item.type?.charAt(0).toLowerCase() + item.type?.slice(1);
   };
 
   const getDetails = (item: EntityPickerItem) => {
@@ -147,8 +148,16 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
   // Effects.
 
   useEffect(() => {
-    if (searchData && searchData[category]) {
-      setSearchResults(searchData[category]);
+    if (searchData) {
+      let data = category
+        .split(".")
+        .reduce((o: any, i) => o && o[i], searchData);
+      if (data) {
+        console.log("searchData", searchData);
+        console.log("data", data);
+
+        setSearchResults(data);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchData]);
@@ -171,14 +180,15 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
       onClose={onClose}
       classes={{ paper: classes.dialogPaper }}
     >
-      <DialogTitle
-        disableTypography
-        classes={{ root: classes.dialogTitleRoot }}
-      >
-        <Typography variant="h6" className={classes.dialogTitle}>
+      <DialogTitle classes={{ root: classes.dialogTitleRoot }}>
+        <Typography
+          variant="h6"
+          component="div"
+          className={classes.dialogTitle}
+        >
           {I18n.get.entities.label.search}
         </Typography>
-        <IconButton aria-label="close" onClick={onClose}>
+        <IconButton aria-label="close" onClick={onClose} size="large">
           <CloseIcon />
         </IconButton>
       </DialogTitle>
@@ -211,6 +221,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
               className={classes.addButton}
               aria-label="clear search field"
               onClick={() => addNewItem()}
+              size="large"
             >
               <AddIcon />
             </IconButton>
@@ -220,6 +231,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
               className={classes.clearButton}
               aria-label="clear search field"
               onClick={() => clearSearch()}
+              size="large"
             >
               <CloseIcon />
             </IconButton>

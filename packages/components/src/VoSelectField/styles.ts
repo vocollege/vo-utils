@@ -1,9 +1,5 @@
-import {
-  createStyles,
-  Theme,
-  makeStyles,
-  alpha,
-} from "@material-ui/core/styles";
+import { Theme, alpha } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,7 +16,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
     },
     error: {
-      "& $root": {
+      // "& $root": {
+      "& $select": {
         borderColor: theme.palette.error.dark,
       },
       "& $select:focus": {
@@ -28,19 +25,28 @@ export const useStyles = makeStyles((theme: Theme) =>
         borderColor: theme.palette.error.dark,
       },
     },
-    root: {
+    // root: {
+    //   border: "1px solid #e2e2e1",
+    //   overflow: "hidden",
+    //   borderRadius: theme.spacing(1),
+    //   backgroundColor: "#fcfcfb",
+    //   outline: "none",
+    //   transition: theme.transitions.create(["border-color", "box-shadow"]),
+    //   "&:hover": {
+    //     backgroundColor: "#ffffff",
+    //   },
+    // },
+    select: {
       border: "1px solid #e2e2e1",
       overflow: "hidden",
       borderRadius: theme.spacing(1),
       backgroundColor: "#fcfcfb",
       outline: "none",
       transition: theme.transitions.create(["border-color", "box-shadow"]),
-
       "&:hover": {
         backgroundColor: "#ffffff",
       },
-    },
-    select: {
+
       "&:focus": {
         backgroundColor: "#fff",
         borderRadius: theme.spacing(1),

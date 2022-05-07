@@ -3,21 +3,21 @@ import clsx from "clsx";
 import SortableTreeLib, {
   removeNodeAtPath,
   getTreeFromFlatData,
-  ExtendedNodeData,
+  // ExtendedNodeData,
   TreeItem,
   changeNodeAtPath,
   getFlatDataFromTree,
   NodeData,
   FullTree,
-  OnMovePreviousAndNextLocation,
-} from "react-sortable-tree";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
-import RotateLeftIcon from "@material-ui/icons/RotateLeft";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+  // OnMovePreviousAndNextLocation,
+} from "@nosferatu500/react-sortable-tree";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import makeStyles from "@mui/styles/makeStyles";
 
 // Custom.
 import {
@@ -29,7 +29,7 @@ import {
 import { useStyles } from "./styles";
 import { stylesActions } from "@vocollege/theme";
 import FloatingButton from "FloatingButton";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import SortableTreeItemForm from "./SortableTreeItemForm";
 import { stylesCommon } from "@vocollege/theme";
 import { getTemporaryId } from "@vocollege/app";
@@ -65,7 +65,15 @@ const getSubtitle = (item: any) => {
 };
 
 const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
-  const { items, types, onChange, onReset } = props;
+  const {
+    items,
+    // types,
+    onChange,
+    onReset,
+    dialog = {
+      types: [],
+    },
+  } = props;
   const classes = useStyles();
   useStylesActions();
   useStylesCommon();
@@ -75,9 +83,8 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
   >(null);
   const [isChanged, setIsChanged] = useState(false);
   const [treeData, setTreeData] = useState<any>([]);
-  const [openSortableTreeItemForm, setOpenSortableTreeItemForm] = useState(
-    false
-  );
+  const [openSortableTreeItemForm, setOpenSortableTreeItemForm] =
+    useState(false);
 
   // Methods.
 
@@ -114,7 +121,8 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
     setOpenSortableTreeItemForm(true);
   };
 
-  const removeItem = (path: FormFieldNumberOrStringArray) => {
+  // const removeItem = (path: FormFieldNumberOrStringArray) => {
+  const removeItem = (path: number[]) => {
     let newTreeData = removeNodeAtPath({
       treeData,
       path,
@@ -140,7 +148,8 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
     if (newItem.id !== "0") {
       newTreeData = changeNodeAtPath({
         treeData,
-        path: path || [],
+        // path: path || [],
+        path: path && typeof path === "number" ? path : [],
         getNodeKey,
         newNode: { ...newItem },
       });
@@ -155,7 +164,8 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
   };
 
   const handleOnMove = (
-    data: NodeData & FullTree & OnMovePreviousAndNextLocation
+    // data: NodeData & FullTree & OnMovePreviousAndNextLocation
+    data: any
   ) => {
     data.node.parent_id = data?.nextParentNode?.id;
     let newTreeData = changeNodeAtPath({
@@ -174,7 +184,8 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
     }
   };
 
-  const getNodeProps = (data: ExtendedNodeData) => {
+  // const getNodeProps = (data: ExtendedNodeData) => {
+  const getNodeProps = (data: any) => {
     const { path, node } = data;
     return {
       buttons: [
@@ -215,7 +226,7 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
           })),
           getKey: (node: any) => node.id, // resolve a node's key
           getParentKey: (node: any) => node.parent_id, // resolve a node's parent's key
-          rootKey: 0, // The value of the parent key when there is no parent (i.e., at root level)
+          rootKey: "0", // The value of the parent key when there is no parent (i.e., at root level)
         })
       );
     }
@@ -247,7 +258,7 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
             onChange={(treeData) => setTreeData(treeData)}
             generateNodeProps={(data) => getNodeProps(data)}
             onMoveNode={handleOnMove}
-            isVirtualized={false}
+            // isVirtualized={false}
           />
         )}
       </div>
@@ -260,11 +271,12 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
       </FloatingButton>
       <SortableTreeItemForm
         open={openSortableTreeItemForm}
-        types={types}
+        // types={types}
         onChange={handleItemFormChange}
         onCancel={() => setOpenSortableTreeItemForm(false)}
         item={item}
         itemPath={itemPath}
+        dialog={dialog}
       />
     </div>
   );

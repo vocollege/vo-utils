@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 // Custom.
 import { I18n } from "@vocollege/app";
@@ -70,7 +70,12 @@ const FileUploader: React.FC<FileUploaderProps> = (props) => {
           </div>
         )}
       </div>
-      <Button variant="contained" component="label" size="small">
+      <Button
+        variant="contained"
+        component="label"
+        size="small"
+        color="secondary"
+      >
         {I18n.get.docs.label.selectFile}
         <input type="file" hidden onChange={changeHandler} />
       </Button>

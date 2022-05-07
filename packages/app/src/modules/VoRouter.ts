@@ -24,6 +24,7 @@ class VoRouter {
     return params[arg];
   }
   isCurrentRouterProtected() {
+    if (typeof window === "undefined") return false;
     const currentPath = this.getPath(window.location.pathname, 0);
     // const routes = VoConfig.getConfigByKey('routes');
     const routes = this.getRoutes();

@@ -65,7 +65,7 @@ export const GET_ARTICLES = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetArticlesOrderByOrderByClause]
+    $orderBy: [GetArticlesOrderByClause]
   ) {
     articles(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
       paginatorInfo {

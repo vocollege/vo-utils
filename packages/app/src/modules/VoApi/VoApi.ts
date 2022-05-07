@@ -13,18 +13,36 @@ import { onError } from "@apollo/client/link/error";
 // Custom.
 import GraphClient from "./GraphClient";
 import VoBase from "../VoBase";
-import VoAuth from "../VoAuth";
+// import VoAuth from "../VoAuth";
 import VoConfig from "../VoConfig";
 
 class VoApi extends VoBase {
   graphqlClient: any;
+  graphqlSubscriptionClient: any;
 
   init() {
-    this.graphqlClient = GraphClient.createGraphClient(this.getGraphqlUrl);
+    this.graphqlClient = GraphClient.createGraphClient(
+      this.getGraphqlUrl,
+      false
+    );
   }
+
+  // initSubscriptions() {
+  //   this.graphqlSubscriptionClient = GraphClient.createGraphSubscriptionClient(
+  //     this.getGraphqlSubscriptionUrl
+  //   );
+  // }
 
   get getGraphqlUrl() {
     return VoConfig.get.API_BASE_URL + "" + VoConfig.get.API_GRAPHQL;
+  }
+
+  get getGraphqlSubscriptionUrl() {
+    return (
+      VoConfig.get.API_SUBSCRIPTIONS_BASE_URL +
+      "" +
+      VoConfig.get.API_GRAPHQL_SUBSCRIPTIONS
+    );
   }
 
   async getUser() {

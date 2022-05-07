@@ -46,7 +46,7 @@ export const GET_EVENTS = gql`
     $end_date: Date
     $page: Int
     $limit: Int
-    $orderBy: [GetEventsOrderByOrderByClause]
+    $orderBy: [GetEventsOrderByClause]
   ) {
     events(
       search: $search

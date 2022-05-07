@@ -1,12 +1,15 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
-export const useStyles = makeStyles((theme: Theme) =>
+// Custom.
+import VoTheme from "@vocollege/theme";
+
+export const useStyles = makeStyles(() =>
   createStyles({
     root: {
       position: "relative",
     },
     fieldInput: {
-      paddingRight: theme.spacing(7),
+      paddingRight: VoTheme.spacing(7),
     },
     editButton: {
       position: "absolute",

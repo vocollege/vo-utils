@@ -1,18 +1,21 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
-export const useStyles = makeStyles((theme: Theme) =>
+// Custom.
+import VoTheme from "@vocollege/theme";
+
+export const useStyles = makeStyles(() =>
   createStyles({
     root: {},
     items: {
       display: "flex",
       flexWrap: "wrap",
-      marginTop: theme.spacing(2),
+      marginTop: VoTheme.spacing(2),
     },
     item: {
-      margin: theme.spacing(1 / 2),
+      margin: VoTheme.spacing(1 / 2),
     },
     chipOutlinedSecondary: {
-      color: theme.palette.secondary.dark,
+      color: VoTheme.palette.secondary.dark,
     },
   })
 );

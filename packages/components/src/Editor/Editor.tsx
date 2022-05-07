@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Editor as TinyMCEEditor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditorClass, RawEditorSettings } from "tinymce";
-import { jssPreset } from "@material-ui/core/styles";
+import { jssPreset } from "@mui/styles";
 import jss from "jss";
+import Typography from "@mui/material/Typography";
 
 // Custom.
 
@@ -16,6 +17,7 @@ import colors from "@vocollege/theme/dist/material/vocollege2-colors";
 import styleFormats from "./settings/styleFormats";
 import formats from "./settings/formats";
 import linkClassList from "./settings/linkClassList";
+import { useStyles } from "./styles";
 
 interface EditorProps {
   value: string;
@@ -24,6 +26,8 @@ interface EditorProps {
     selector?: undefined;
     target?: undefined;
   };
+  label?: string;
+  disabled?: boolean;
 }
 
 // Create a stylesheet from stylesGlobal.
@@ -31,7 +35,8 @@ jss.setup(jssPreset());
 const stylesGlobalSheet = jss.createStyleSheet(stylesGlobal);
 
 const Editor: React.FC<EditorProps> = (props) => {
-  const { value, onChange, editorSettings = {} } = props;
+  const { value, onChange, editorSettings = {}, label, disabled } = props;
+  const classes = useStyles();
   // const [editorInstance, setEditorInstance] = useState<TinyMCEEditor | null>(
   //   null
   // );
@@ -62,7 +67,7 @@ const Editor: React.FC<EditorProps> = (props) => {
   };
 
   const handleFileManagerChange = (elements: FileManagerFolderElement[]) => {
-    filePickerParams.callback(`${elements[0].url}?d=1000x1000&fit=inside`, {
+    filePickerParams.callback(`${elements[0].url}?d=784x407&fit=inside`, {
       alt: elements[0].title,
     });
     setOpenFileManager(false);
@@ -81,6 +86,17 @@ const Editor: React.FC<EditorProps> = (props) => {
 
   return (
     <>
+      {label && (
+        <div className={classes.labelWrapper}>
+          <Typography
+            variant="subtitle1"
+            component="label"
+            className={classes.label}
+          >
+            {label}
+          </Typography>
+        </div>
+      )}
       <TinyMCEEditor
         // ref={(editor) => setEditorInstance(editor)}
         value={value}
@@ -111,9 +127,11 @@ const Editor: React.FC<EditorProps> = (props) => {
           file_picker_callback: filePicker,
           // valid_elements: "strong/b,italic/i,p,br",
           valid_elements: "*[*]",
+          image_title: true,
           ...editorSettings,
         }}
         onEditorChange={handleEditorChange}
+        disabled={disabled}
       />
       <FileManagerDialog
         open={openFileManager}

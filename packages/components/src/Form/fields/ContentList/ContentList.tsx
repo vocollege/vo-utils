@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import clsx from "clsx";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
-import DeleteIcon from "@material-ui/icons/Delete";
-import RotateLeftIcon from "@material-ui/icons/RotateLeft";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import DeleteIcon from "@mui/icons-material/Delete";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import { toast } from "react-toastify";
+import AddIcon from "@mui/icons-material/Add";
 
 // Custom.
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import {
   FormFieldContentListProps,
   FormFieldContentListItem,
@@ -46,6 +47,12 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
       types: [],
     },
     renderItemTitle,
+    createCallback,
+    createCallbackLabel,
+    overrideValue,
+    renderActionButtons,
+    hideType,
+    renderExtraDetails,
   } = props;
   const classes = useStyles();
   const [draggableItems, setDraggableItems] = useState<
@@ -135,7 +142,15 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
   };
 
   const getTitle = (item: FormFieldContentListItem) => {
-    return renderItemTitle ? renderItemTitle(item) : item.title;
+    if (renderItemTitle) {
+      return renderItemTitle(item);
+    }
+    let title = [];
+    if (hideType) {
+      title.push(item.id);
+    }
+    title.push(item.title);
+    return title.join(" | ");
   };
 
   // Effects.
@@ -172,6 +187,17 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
+  useEffect(() => {
+    if (overrideValue) {
+      let items = overrideValue
+        ?.filter((v: FormFieldContentListItem) => v)
+        .map((v: FormFieldContentListItem) => v);
+      setDraggableItems(items);
+      callOnChange(items);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [overrideValue]);
+
   return (
     <div id={`contentlist-${name}`} className={classes.root}>
       <div className={classes.head}>
@@ -205,6 +231,19 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
               {I18n.get.actions.reset}
             </Button>
           )}
+
+          {createCallback && (
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<AddIcon />}
+              onClick={() => createCallback()}
+              size="small"
+            >
+              {createCallbackLabel || I18n.get.actions.create}
+            </Button>
+          )}
+
           {contentType === "entity" && (
             <EntityPicker
               className={classes.headButton}
@@ -275,20 +314,31 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
                               >
                                 {getTitle(item)}
                               </Typography>
-                              <div
-                                className={clsx(
-                                  classes.rowItemDetails,
-                                  classes.textNoWrap
-                                )}
-                              >
-                                {getDetails(item)}
-                              </div>
+                              {!hideType && (
+                                <div
+                                  className={clsx(
+                                    classes.rowItemDetails,
+                                    classes.textNoWrap
+                                  )}
+                                >
+                                  {getDetails(item)}
+                                </div>
+                              )}
+                              {renderExtraDetails && (
+                                <div
+                                  className={clsx(classes.rowItemExtraDetails)}
+                                >
+                                  {renderExtraDetails(item)}
+                                </div>
+                              )}
                             </div>
                             <div className={classes.rowActions}>
+                              {renderActionButtons && renderActionButtons(item)}
                               <IconButton
                                 color="inherit"
                                 aria-label="delete"
                                 onClick={() => addItem(item, true)}
+                                size="large"
                               >
                                 <DeleteIcon />
                               </IconButton>

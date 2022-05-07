@@ -1,31 +1,61 @@
 import React from "react";
-import TextField, { FilledTextFieldProps } from "@material-ui/core/TextField";
+import Typography from "@mui/material/Typography";
 import TextareaAutosize, {
   TextareaAutosizeProps,
-} from "@material-ui/core/TextareaAutosize";
-import { OutlinedInputProps } from "@material-ui/core/OutlinedInput";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+} from "@mui/material/TextareaAutosize";
+import { OutlinedInputProps } from "@mui/material/OutlinedInput";
+import createStyles from "@mui/styles/createStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import clsx from "clsx";
 
 // Custom.
 import { stylesReddit } from "@vocollege/theme";
 import { useStyles } from "./styles";
 
-const useStylesReddit = makeStyles(() => stylesReddit);
+export interface VoTextAreaProps extends TextareaAutosizeProps {
+  label?: string;
+  error?: boolean;
+  helperText?: string;
+}
 
-const VoTextArea: React.FC<TextareaAutosizeProps> = React.forwardRef(
-  (props, ref) => {
-    const classesReddit = useStylesReddit();
-    const classes = useStyles();
-    return (
+const useStylesReddit = makeStyles(() => createStyles(stylesReddit));
+
+const VoTextArea: React.FC<VoTextAreaProps> = React.forwardRef((props, ref) => {
+  const { label, error, helperText, required, ...rest } = props;
+  const classesReddit = useStylesReddit();
+  const classes = useStyles();
+  return (
+    <>
+      {label && (
+        <div className={clsx(classes.labelWrapper, { [classes.error]: error })}>
+          <Typography
+            variant="subtitle1"
+            component="label"
+            className={clsx(classes.label, { [classes.error]: error })}
+          >
+            {label}
+            {required && (
+              <span
+                aria-hidden="true"
+                className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+              >
+                *
+              </span>
+            )}
+          </Typography>
+        </div>
+      )}
       <TextareaAutosize
         ref={ref}
-        className={clsx(classes.root, classesReddit.root)}
+        className={clsx(classes.root, classesReddit.root, {
+          [classes.hasLabel]: label,
+          [classes.error]: error,
+        })}
         maxRows={4}
-        {...props}
+        {...rest}
       />
-    );
-  }
-);
+    </>
+  );
+});
 
 export default VoTextArea;

@@ -1,27 +1,27 @@
 import React, { useEffect, useReducer } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
 import { useMutation, useLazyQuery, gql } from "@apollo/client";
 import { useConfirm } from "material-ui-confirm";
 import parse from "html-react-parser";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import OpenInBrowserIcon from "@material-ui/icons/OpenInBrowser";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
 import clsx from "clsx";
 import { toast } from "react-toastify";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 
 // Custom.
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
 import { useStyles } from "./styles";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { reducer, initialState } from "./state";
 import { EnhancedTableProps, EnhancedTableColumns } from "./global";
 import { stylesCommon } from "@vocollege/theme";
@@ -52,6 +52,9 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     renderActionButtons,
     refetch,
     labels,
+    classes: classesProp,
+    queryVariables,
+    onDelete,
   } = props;
 
   if (!operations.delete) {
@@ -81,6 +84,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
           order: state.order,
         },
       ],
+      ...queryVariables,
     },
     onError: (error) => {
       toast.error(error.message, {
@@ -98,11 +102,12 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
           autoClose: 10000,
         });
       },
-      onCompleted: () => {
+      onCompleted: (data: any) => {
         if (labels?.deleted) {
           toast.success(labels.deleted);
         }
         loadData();
+        onDelete && onDelete(data);
       },
       //   update(cache, { data }) {
       //     const existingItems: any = cache.readQuery({ query: operations.get });
@@ -235,11 +240,11 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
 
   return (
     <div className={clsx(classes.root, className)}>
-      <Paper className={classes.paper} elevation={10}>
+      <Paper className={clsx(classes.paper, classesProp?.paper)} elevation={10}>
         <EnhancedTableToolbar addItem={addItem} title={title} />
         <TableContainer>
           <Table
-            className={classes.table}
+            className={clsx(classes.table, classesProp?.table)}
             aria-labelledby="tableTitle"
             size="medium"
             aria-label="enhanced table"
@@ -257,7 +262,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
               {!queryLoading &&
                 !deleteLoading &&
                 state.data.map((row: any, index: number) => (
-                  <TableRow key={index}>
+                  <TableRow key={index} hover>
                     {columns.map((column: any, index: number) => (
                       <TableCell key={index}>
                         <span className={classes.cellContent}>
@@ -272,7 +277,10 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
                           <IconButton
                             className={classes.actionButton}
                             aria-label="open"
-                            onClick={() => openItem(row[primaryField || "id"])}
+                            onClick={() =>
+                              openItem(row[primaryField || "id"], row)
+                            }
+                            size="large"
                           >
                             <OpenInBrowserIcon />
                           </IconButton>
@@ -281,7 +289,10 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
                           <IconButton
                             className={classes.actionButton}
                             aria-label="edit"
-                            onClick={() => editItem(row[primaryField || "id"])}
+                            onClick={() =>
+                              editItem(row[primaryField || "id"], row)
+                            }
+                            size="large"
                           >
                             <EditIcon />
                           </IconButton>
@@ -293,6 +304,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
                             onClick={() =>
                               handleDelete(row[primaryField || "id"])
                             }
+                            size="large"
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -305,7 +317,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 20, 40]}
+          rowsPerPageOptions={[5, 10, 20, 50, 100]}
           component="div"
           count={state.total}
           rowsPerPage={state.limit}

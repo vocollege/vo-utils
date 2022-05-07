@@ -1,26 +1,29 @@
-import React from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Typography from "@material-ui/core/Typography";
-import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
+import React, { useEffect, useState } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
+import CloseIcon from "@mui/icons-material/Close";
+import Paper, { PaperProps } from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
+import Draggable from "react-draggable";
 
 // Custom.
 import { EditorDialogProps } from "./global";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { useStyles } from "./styles";
 import { stylesActions } from "@vocollege/theme";
+import VoLoader from "../VoLoader";
 
 const useStylesActions = makeStyles(() => stylesActions);
 
-const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
+const EditDialog: React.FC<EditorDialogProps> = (props) => {
   const {
     children,
     open,
@@ -35,9 +38,14 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
     classes: classesProp,
     disableActions,
     disableCloseButton,
+    draggable,
+    dialogProps,
+    extraActions,
+    confirmButtonLabel,
   } = props;
   const classes = useStyles();
   useStylesActions();
+  const [elementId, setElementId] = useState<number | null>(null);
 
   // Method.
 
@@ -71,6 +79,25 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
     return !loading && (title || subtitle || !disableCloseButton);
   };
 
+  const DraggablePaper = (props: PaperProps) => {
+    return (
+      <Draggable
+        handle={`#draggable-dialog-title-${elementId}`}
+        cancel={'[class*="MuiDialogContent-root"]'}
+      >
+        <Paper {...props} />
+      </Draggable>
+    );
+  };
+
+  // Effects.
+
+  useEffect(() => {
+    if (!elementId) {
+      setElementId(Math.floor(Math.random() * 1000));
+    }
+  }, []);
+
   return (
     <Dialog
       open={open}
@@ -83,11 +110,22 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
       classes={{
         paper: clsx(classes.paper, { [classes.loading]: loading }, className),
       }}
-      // disableBackdropClick={loading}
+      className={clsx(classes.root, {
+        [classes.noBackdrop]: dialogProps?.hideBackdrop,
+      })}
+      PaperComponent={draggable ? DraggablePaper : Paper}
+      {...dialogProps}
     >
       {showDialogTitle() && (
-        <DialogTitle disableTypography classes={{ root: classes.titleRoot }}>
-          <div className={classes.titleWrapper}>
+        <DialogTitle
+          classes={{
+            root: clsx(classes.titleRoot, { [classes.draggable]: draggable }),
+          }}
+        >
+          <div
+            className={classes.titleWrapper}
+            id={`draggable-dialog-title-${elementId}`}
+          >
             {title && (
               <Typography variant="h6" className={classes.title}>
                 {title}
@@ -99,8 +137,11 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
               </Typography>
             )}
           </div>
+          {extraActions && (
+            <div className={classes.extraActions}>{extraActions}</div>
+          )}
           {!disableCloseButton && (
-            <IconButton aria-label="close" onClick={handleClose}>
+            <IconButton aria-label="close" onClick={handleClose} size="large">
               <CloseIcon />
             </IconButton>
           )}
@@ -108,7 +149,11 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
       )}
       <DialogContent
         classes={{
-          root: clsx(classes.contentRoot, classesProp?.contentRoot),
+          root: clsx(
+            classes.contentRoot,
+            { [classes.loading]: loading },
+            classesProp?.contentRoot
+          ),
         }}
       >
         {contentText && !loading && (
@@ -116,6 +161,7 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
         )}
         {children}
       </DialogContent>
+      {loading && <VoLoader />}
       {!disableActions && !loading && (
         <DialogActions classes={{ root: classes.actionsRoot }}>
           <Button onClick={handleClose} color="secondary" disabled={loading}>
@@ -132,7 +178,7 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
             disableFocusRipple={loading}
           >
             <span className="vo-global__actions-button-confirm-label">
-              {I18n.get.actions.save}
+              {confirmButtonLabel || I18n.get.actions.save}
             </span>
             {loading && (
               <CircularProgress
@@ -148,4 +194,4 @@ const FileManagerDialog: React.FC<EditorDialogProps> = (props) => {
   );
 };
 
-export default FileManagerDialog;
+export default EditDialog;

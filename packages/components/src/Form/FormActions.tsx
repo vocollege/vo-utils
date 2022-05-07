@@ -1,33 +1,17 @@
 import React from "react";
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
-import SaveAltIcon from "@material-ui/icons/SaveAlt";
-import PublishIcon from "@material-ui/icons/Publish";
-import SaveIcon from "@material-ui/icons/Save";
-import CloseIcon from "@material-ui/icons/Close";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { alpha } from "@material-ui/core/styles";
-import Fade from "@material-ui/core/Fade";
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
+import SaveAltIcon from "@mui/icons-material/SaveAlt";
+import PublishIcon from "@mui/icons-material/Publish";
+import SaveIcon from "@mui/icons-material/Save";
+import CloseIcon from "@mui/icons-material/Close";
+import CircularProgress from "@mui/material/CircularProgress";
+import { alpha } from "@mui/material/styles";
+import Fade from "@mui/material/Fade";
 
 // Custom
 import FloatingButton from "FloatingButton";
 import { I18n } from "@vocollege/app";
-
-interface SaveButtonType {
-  type: "simple" | "advanced";
-  disabled: boolean;
-}
-interface CancelButtonType {
-  disabled?: boolean;
-}
-interface FormActionsType {
-  onSave: any;
-  onCancel: any;
-  loading: boolean;
-  options: {
-    saveButton: SaveButtonType;
-    cancelButton?: CancelButtonType;
-  };
-}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,6 +43,23 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
+interface SaveButtonType {
+  type: "simple" | "advanced";
+  disabled: boolean;
+}
+interface CancelButtonType {
+  disabled?: boolean;
+}
+interface FormActionsType {
+  onSave: any;
+  onCancel: any;
+  loading: boolean;
+  options: {
+    saveButton: SaveButtonType;
+    cancelButton?: CancelButtonType;
+  };
+}
 
 const actions = [
   { icon: <SaveAltIcon />, name: "save", label: "Spara" },

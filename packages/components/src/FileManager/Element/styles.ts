@@ -1,14 +1,17 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 // Colors.
-import brown from "@material-ui/core/colors/brown";
-import blue from "@material-ui/core/colors/blue";
-import green from "@material-ui/core/colors/green";
-import grey from "@material-ui/core/colors/grey";
-import purple from "@material-ui/core/colors/purple";
-import red from "@material-ui/core/colors/red";
-import yellow from "@material-ui/core/colors/yellow";
-import blueGrey from "@material-ui/core/colors/blueGrey";
+import {
+  brown,
+  blue,
+  green,
+  grey,
+  purple,
+  red,
+  yellow,
+  blueGrey,
+} from "@mui/material/colors";
 
 // Custom.
 import VoTheme from "@vocollege/theme";
@@ -30,10 +33,10 @@ export const useStyles = makeStyles(
       backgroundColor: VoTheme.palette.background.paper,
       borderRadius: VoTheme.shape.borderRadius,
       boxShadow: VoTheme.shadows[10],
-      marginLeft: `-${VoTheme.spacing(1)}px`,
+      marginLeft: `-${VoTheme.spacing(1)}`,
       marginBottom: -58,
-      marginTop: `-${VoTheme.spacing(1)}px`,
-      minWidth: `calc(100% + ${VoTheme.spacing(2)}px)`,
+      marginTop: `-${VoTheme.spacing(1)}`,
+      minWidth: `calc(100% + ${VoTheme.spacing(2)})`,
       paddingTop: VoTheme.spacing(2),
       zIndex: VoTheme.zIndex.speedDial,
     },
@@ -58,6 +61,9 @@ export const useStyles = makeStyles(
       // border: `0 solid ${VoTheme.palette.divider}`,
       // borderBottomWidth: 1,
       // borderTopWidth: 1,
+      alignItems: "center",
+      display: "flex",
+      justifyContent: "center",
     },
     badge: {
       // boxShadow: VoTheme.shadows[10],

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
 
 // Custom.
 import { TagsFieldProps, TagsFieldItem } from "../../global";
@@ -98,7 +98,7 @@ const TagsField: React.FC<TagsFieldProps> = (props) => {
               className={classes.item}
               label={item.label}
               color="secondary"
-              variant={isNew(item) ? "default" : "outlined"}
+              variant={isNew(item) ? "filled" : "outlined"}
               onDelete={() => handleDelete(item)}
               classes={{ outlinedSecondary: classes.chipOutlinedSecondary }}
             />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, RouteProps, Redirect } from "react-router-dom";
+import { Route, RouteProps, Navigate } from "react-router-dom";
 // import { useSnackbar } from "notistack";
 import { toast } from "react-toastify";
 
@@ -20,8 +20,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   path,
   ...rest
 }) => {
-  // const { enqueueSnackbar } = useSnackbar();
-
   // Methods.
 
   const isVisible = () => {
@@ -35,23 +33,29 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return visible;
   };
 
-  return (
-    <Route
-      path={path}
-      {...rest}
-      render={(props) => {
-        return isVisible() ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: VoConfig.get.HOME,
-              state: { from: props.location },
-            }}
-          />
-        );
-      }}
-    />
+  return isVisible() ? (
+    <Component {...rest} />
+  ) : (
+    <Navigate to={VoConfig.get.HOME} />
   );
+
+  //   return (
+  //     <Route
+  //       path={path || ""}
+  //       {...rest}
+  //       render={(props) => {
+  //         return isVisible() ? (
+  //           <Component {...props} />
+  //         ) : (
+  //           <Redirect
+  //             to={{
+  //               pathname: VoConfig.get.HOME,
+  //               state: { from: props.location },
+  //             }}
+  //           />
+  //         );
+  //       }}
+  //     />
+  //   );
 };
 export default ProtectedRoute;

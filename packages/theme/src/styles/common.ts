@@ -1,4 +1,4 @@
-import { createStyles } from "@material-ui/core/styles";
+import { createStyles } from "@mui/styles";
 
 // Custom.
 import VoTheme from "../index";
@@ -45,7 +45,7 @@ export const stylesCommon = createStyles({
       top: VoTheme.spacing(8),
       zIndex: VoTheme.zIndex.appBar,
       [VoTheme.breakpoints.up("md")]: {
-        minHeight: VoTheme.spacing(7) + 4,
+        minHeight: parseInt(`${VoTheme.spacing(7)}`) + 4,
       },
     },
     ".vo-global__content-toolbar--no-drawer": {
@@ -56,11 +56,11 @@ export const stylesCommon = createStyles({
       top: "auto",
     },
     ".vo-global__content-with-toolbar": {
-      marginTop: VoTheme.spacing(10) + 4,
+      marginTop: parseInt(`${VoTheme.spacing(10)}`) + 4,
       padding: VoTheme.spacing(4),
     },
     ".vo-global__content-with-toolbar--bottom": {
-      marginBottom: VoTheme.spacing(10) + 4,
+      marginBottom: parseInt(`${VoTheme.spacing(10)}`) + 4,
       padding: VoTheme.spacing(4),
     },
     ".vo-global__content-bottom-area": {

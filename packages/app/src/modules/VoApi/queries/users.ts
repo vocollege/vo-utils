@@ -12,13 +12,16 @@ export const GET_USER = gql`
       personal_number
       address1
       address2
-      zip
-      county
+      postalcode
+      town
       country
       phone1
       profession
       status
+      gdpr
       description
+      updated_at
+      created_at
       images {
         id
         title
@@ -27,16 +30,19 @@ export const GET_USER = gql`
         filetype
         url
       }
-      updated_at
-      created_at
-      groups {
-        id
-        title
-        type
-      }
       roles {
         id
         label
+        type
+      }
+      groupRoles {
+        id
+        label
+        type
+      }
+      groups {
+        id
+        title
         type
       }
     }
@@ -62,7 +68,7 @@ export const GET_USERS = gql`
     $search: String
     $page: Int
     $limit: Int
-    $orderBy: [GetUsersOrderByOrderByClause]
+    $orderBy: [GetUsersOrderByClause]
   ) {
     users(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
       paginatorInfo {
@@ -76,6 +82,66 @@ export const GET_USERS = gql`
         email
         active
         status
+        updated_at
+        created_at
+        roles {
+          id
+          label
+          type
+        }
+        groupRoles {
+          id
+          label
+          type
+        }
+        groups {
+          id
+          name
+          title
+        }
+        validig {
+          id
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ACCOUNT = gql`
+  query Account($id: ID!) {
+    user(id: $id) {
+      id
+      name
+      email
+      firstname
+      lastname
+      active
+      personal_number
+      address1
+      address2
+      postalcode
+      town
+      country
+      phone1
+      profession
+      status
+      description
+      workplace
+      gdpr
+      images {
+        id
+        title
+        filename
+        filesize
+        filetype
+        url
+      }
+    }
+    userSettings {
+      publicDefaultPortfolio {
+        id
+        name
+        disk
       }
     }
   }

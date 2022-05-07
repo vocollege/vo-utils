@@ -1,10 +1,13 @@
 import { gql } from "@apollo/client";
 
 // Queries.
+export * from "./queries/applications";
 export * from "./queries/articles";
 export * from "./queries/acl";
+export * from "./queries/books";
 export * from "./queries/cards";
 export * from "./queries/events";
+export * from "./queries/help";
 export * from "./queries/navigation";
 export * from "./queries/pages";
 export * from "./queries/queues";
@@ -18,7 +21,9 @@ export * from "./queries/sections";
 // Mutations.
 export * from "./mutations/users";
 export * from "./mutations/acl";
+export * from "./mutations/applications";
 export * from "./mutations/articles";
+export * from "./mutations/books";
 export * from "./mutations/cards";
 export * from "./mutations/events";
 export * from "./mutations/navigation";

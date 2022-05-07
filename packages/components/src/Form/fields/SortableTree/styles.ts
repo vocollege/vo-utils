@@ -1,4 +1,4 @@
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 // Custom.
 import VoTheme from "@vocollege/theme";
@@ -21,7 +21,7 @@ export const useStyles = makeStyles(
         height: 600,
       },
       [VoTheme.breakpoints.up("lg")]: {
-        height: `calc(100vh - ${VoTheme.spacing(32)}px)`,
+        height: `calc(100vh - ${VoTheme.spacing(32)})`,
       },
     },
     treeNode: {

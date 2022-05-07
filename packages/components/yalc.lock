@@ -1,15 +1,15 @@
 {
   "version": "v1",
   "packages": {
-    "@vocollege/theme": {
-      "signature": "4066f2279f1cf6aa14c2dc4d29140dfe",
-      "file": true,
-      "replaced": "^0.0.20"
-    },
     "@vocollege/app": {
-      "signature": "73fa17eb3908a56957d3486ef04e9daf",
+      "signature": "3c5cfc790c60b326ea98125b6790117f",
       "file": true,
       "replaced": "^0.0.57"
+    },
+    "@vocollege/theme": {
+      "signature": "1800baa739a458bb4a23a6b6062f8674",
+      "file": true,
+      "replaced": "^0.0.20"
     }
   }
 }
