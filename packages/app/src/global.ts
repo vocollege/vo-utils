@@ -4,7 +4,7 @@ export type AuthStorageConfigType = {
   REFRESH_TOKEN: string;
   ACCESS_TOKEN: string;
   TOKEN_TYPE: string;
-  EXPIRES_IN: string;
+  // EXPIRES_IN: string;
 };
 export type AuthConfigType = {
   BASE_URL: string;
@@ -31,10 +31,10 @@ export type VoAppType = {
   api: any;
 };
 export type VoTokenType = {
-  token_type: string;
+  // token_type: string;
   access_token: string;
   refresh_token: string;
-  expires_in: string;
+  // expires_in: string;
 };
 
 export interface GeneralObject {

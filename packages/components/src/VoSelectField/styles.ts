@@ -41,17 +41,23 @@ export const useStyles = makeStyles((theme: Theme) =>
       overflow: "hidden",
       borderRadius: theme.spacing(1),
       backgroundColor: "#fcfcfb",
+      // minHeight: "34px",
       outline: "none",
+      // paddingBottom: "2px",
+      // paddingTop: "17px",
       transition: theme.transitions.create(["border-color", "box-shadow"]),
       "&:hover": {
         backgroundColor: "#ffffff",
       },
-
       "&:focus": {
         backgroundColor: "#fff",
         borderRadius: theme.spacing(1),
         boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
         borderColor: theme.palette.primary.main,
+      },
+      "& .MuiListItemText-root": {
+        marginBottom: 0,
+        marginTop: 0,
       },
     },
   })

@@ -1,5 +1,7 @@
+import Cookies from "js-cookie";
+
+// Custom.
 import VoConfig from "./VoConfig";
-import VoAuth from "./VoAuth";
 
 type RoutesType = {
   [key: string]: any;
@@ -48,16 +50,19 @@ class VoRouter {
     const webUrl = [];
     if (VoConfig.get.AUTH_BASE_URL) {
       webUrl.push(VoConfig.get.AUTH_BASE_URL + "/logout");
-      if (VoConfig.get.BASE_URL) {
-        webUrl.push(`?redirect=${VoConfig.get.BASE_URL}`);
+      let redirectTo = Cookies.get("voapp_redirectTo") || VoConfig.get.BASE_URL;
+      if (redirectTo) {
+        webUrl.push(`?redirect=${redirectTo}`);
       }
+      // if (VoConfig.get.BASE_URL) {
+      //   webUrl.push(`?redirect=${VoConfig.get.BASE_URL}`);
+      // }
     }
     if (webUrl.length > 0) {
       window.location.href = webUrl.join("");
     }
   }
   redirectToHome() {
-    // window.location.href = VoConfig.getConfigByKey('app').HOME;
     window.location.href = VoConfig.get.HOME || "";
   }
   pathIsActive(to: string): boolean {

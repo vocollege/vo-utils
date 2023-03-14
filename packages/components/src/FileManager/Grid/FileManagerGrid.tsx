@@ -6,7 +6,7 @@ import makeStyles from "@mui/styles/makeStyles";
 // Custom.
 import { FileManagerGridProps, FileManagerFolderElement } from "../global";
 import FileManagerElement from "../Element";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { useStyles } from "./styles";
 import { stylesCommon } from "@vocollege/theme";
 

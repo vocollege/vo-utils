@@ -4,17 +4,17 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 
 // Custom.
-import SimpleTable from "SimpleTable";
+import SimpleTable from "@/SimpleTable";
 import {
   GET_ACL,
   UPDATE_PERMISSIONS,
 } from "@vocollege/app/dist/modules/VoApi/graphql";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { reducer, initialState } from "./state";
-import VoLoader from "VoLoader";
+import VoLoader from "@/VoLoader";
 import { useStyles } from "./styles";
 import { PermissionsProps, PermissionType, RoleType } from "./global";
-import FormToolbar from "Form/FormToolbar";
+import FormToolbar from "@/Form/FormToolbar";
 
 const Permissions: React.FC<PermissionsProps> = (props) => {
   const { operations, categories, title, classes: classesProp } = props;

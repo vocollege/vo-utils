@@ -68,6 +68,7 @@ export const useStyles = makeStyles(
     badge: {
       // boxShadow: VoTheme.shadows[10],
       border: `1px solid ${VoTheme.palette.background.paper}`,
+      flexWrap: "nowrap",
       paddingBottom: 2,
       textTransform: "uppercase",
     },
@@ -82,6 +83,7 @@ export const useStyles = makeStyles(
     },
     imageBadgeWithIcon: {
       backgroundColor: "transparent !important",
+      borderColor: "transparent !important",
     },
     imageIcon: {
       color: purple[500],

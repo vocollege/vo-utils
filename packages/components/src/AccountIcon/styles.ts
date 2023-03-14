@@ -29,8 +29,8 @@ export const useStyles = makeStyles((theme: Theme) =>
     userImage: {
       borderRadius: "100%",
       display: "inline-block",
-      height: 30,
-      width: 30,
+      height: 28,
+      width: 28,
     },
     button: {},
     buttonText: {},

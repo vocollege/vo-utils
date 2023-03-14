@@ -18,4 +18,5 @@ export const initialState = {
     currentPage: 0,
     hasMorePages: false,
   },
+  filters: [],
 };

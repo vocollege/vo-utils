@@ -43,6 +43,12 @@ export const GET_BOOK_FIELDS = gql`
       label
       type
     }
+    groupRoles {
+      id
+      name
+      label
+      type
+    }
   }
 `;
 
@@ -60,6 +66,12 @@ export const GET_BOOKS_FIELDS = gql`
       }
     }
     roles {
+      id
+      name
+      label
+      type
+    }
+    groupRoles {
       id
       name
       label

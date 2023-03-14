@@ -1,946 +1,1016 @@
 {
-    "user": {
-        "label": "Användare",
-        "labels": {
-            "name": "Användarnamn",
-            "email": "E-post",
-            "firstname": "Förnamn",
-            "lastname": "Efternamn",
-            "password": "Lösenord",
-            "passwordCurrent": "Nuvarande lösenord",
-            "passwordRepeat": "Upprepa lösenord",
-            "users": "Användare",
-            "personalData": "Personuppgifter",
-            "personalNumber": "Personnr (YYYYMMDD-xxxx)",
-            "address": "Adress",
-            "zip": "Postnummer",
-            "postalcode": "Postnummer",
-            "county": "Ort",
-            "town": "Ort",
-            "country": "Land",
-            "phone": "Telefonnummer",
-            "invoiceAddress": "Fakturaadress",
-            "reference": "Referens",
-            "electronicReference": "Elektronisk referens",
-            "professionalTitle": "Yrkestitel",
-            "notifyUser": "Notifiera användaren om att kontot har skapats",
-            "gdpr": "Jag samtycker till att VO-College lagrar mina personuppgifter",
-            "gdprIsRequired": "Du behöver godkänna att vi hanterar dina personuppgifter"
-        },
-        "messages": {
-            "userCreated": "Användaren har skapats.",
-            "userUpdated": "Användaren har uppdaterats",
-            "accountUpdated": "Kontot har uppdaterats",
-            "userDeleted": "Användaren har raderats",
-            "statusHelper": "Detta avgör om en användare syns utåt, exempelvis i köer.",
-            "readMoreDataPolicy": "Läs mer i vår dataskyddspolicy"
-        }
-    },
-    "acl": {
-        "label": "ACL",
-        "labels": {
-            "name": "Namn",
-            "label": "Etikett"
-        },
-        "messages": {
-            "roleSaved": "Rollen har sparats",
-            "roleDeleted": "Rollen har raderats",
-            "permissionSaved": "Behörigheterna har sparats"
-        },
-        "errors": {
-            "invalidName": "Ogiltigt namn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'redaktör', 'Styrgrupp_20'",
-            "routeNotAllowed": "Du har inte behörighet till '::route'"
-        }
-    },
-    "role": {
-        "label": "Roll"
-    },
-    "article": {
-        "label": "Artikel",
-        "messages": {
-            "articleSaved": "Artikeln har sparats",
-            "articleDeleted": "Artikeln har raderats"
-        }
-    },
-    "page": {
-        "label": "Sida",
-        "labels": {
-            "pages": "Sidor",
-            "createPage": "Skapa sida"
-        },
-        "messages": {
-            "pageSaved": "Sidan har sparats",
-            "pageDeleted": "Sidan har raderats"
-        },
-        "templates": {
-            "standard": "Standard",
-            "bigImage": "Stor bild"
-        }
-    },
-    "queue": {
-        "label": "Kö",
-        "messages": {
-            "queueSaved": "Kön har sparats",
-            "queueDeleted": "Kön har raderats"
-        },
-        "columns": {
-            "0": "Ingen begränsning",
-            "1": "1 kolumn",
-            "2": "2 kolumner",
-            "3": "3 kolumner",
-            "4": "4 kolumner"
-        }
-    },
-    "section": {
-        "label": "Sektion",
-        "labels": {
-            "sections": "Sektioner",
-            "imageFull": "Fyll upp bilden",
-            "createSection": "Skapa sektion"
-        },
-        "messages": {
-            "sectionSaved": "Sektionen har sparats",
-            "sectionDeleted": "Sektionen har raderats"
-        },
-        "templates": {
-            "default_left": "Standard, vänster",
-            "default_right": "Standard, höger",
-            "blue_left": "Blå, vänster",
-            "blue_right": "Blå, höger",
-            "green_left": "Grön, vänster",
-            "green_right": "Grön, höger",
-        }
-    },
-    "event": {
-        "label": "Händelse",
-        "labels": {
-            "events": "Händelser",
-            "createEvent": "Skapa händelse",
-            "location": "Plats",
-            "calendar": "Kalender"
-        },
-        "messages": {
-            "eventSaved": "Händelsen har sparats",
-            "eventDeleted": "Händelsen har raderats"
-        }
-    },
-    "book": {
-        "label": "Boksida",
-        "labels": {
-            "books": "Boksidor",
-            "bookPages": "Boksidor",
-            "parent": "Ovanliggande bok",
-            "createBook": "Skapa boksida",
-            "grantAccess": "Ge följande typ av användare tillgång till denna boksida",
-            "access": "Åtkomst"
-        },
-        "messages": {
-            "bookSaved": "Boksidan har sparats",
-            "bookDeleted": "Boksidan har raderats"
-        },
-        "templates": {
-            "standard": "Standard",
-            "bigImage": "Stor bild"
-        },
-        "accessValues": [
-            {
-                "name": "guest",
-                "label": "Ej inloggad"
-            },
-            {
-                "name": "authenticated",
-                "label": "Inloggad"
-            }
-        ]
-    },
-    "help": {
-        "labels": {
-            "relatedContent": "Relaterat innehåll",
-            "help": "Hjälp",
-            "previousSection": "Föregående avsnitt",
-            "start": "Startsida",
-            "close": "Stäng hjälpen"
-        }
-    },
-    "card": {
-        "label": "Kort",
-        "labels": {
-            "cards": "Kort",
-            "createCard": "Skapa kort"
-        },
-        "messages": {
-            "cardSaved": "Kortet har sparats",
-            "cardDeleted": "Kortet har raderats"
-        },
-        "templates": {
-            "standard": "Standard",
-            "contact": "Kontakt",
-            "event": "Händelse"
-        },
-        "settings": [
-            {
-                "name": "clickableCard",
-                "label": "Klickbart kort"
-            },
-            {
-                "name": "collapseBody",
-                "label": "Komprimera brödtexten"
-            }
-        ],
-        "fields": [
-                {
-                  "name": "images",
-                  "label": "Bilder"
-                },
-                {
-                  "name": "logo",
-                  "label": "Logotyp"
-                },
-                {
-                  "name": "title",
-                  "label": "Titel"
-                },
-                {
-                  "name": "body",
-                  "label": "Brödtext"
-                },
-                {
-                  "name": "start_date",
-                  "label": "Startdatum"
-                },
-                {
-                  "name": "start_time",
-                  "label": "Starttid"
-                },
-                {
-                  "name": "end_date",
-                  "label": "Slutdatum"
-                },
-                {
-                  "name": "end_time",
-                  "label": "Sluttid"
-                },
-                {
-                  "name": "allday",
-                  "label": "Heldag"
-                },
-                {
-                    "name": "location",
-                    "label": "Plats"
-                },
-                {
-                  "name": "email",
-                  "label": "E-postadress"
-                },
-                {
-                  "name": "name",
-                  "label": "Användarnamn"
-                },
-                {
-                  "name": "firstname",
-                  "label": "Förnamn"
-                },
-                {
-                  "name": "lastname",
-                  "label": "Efternamn"
-                },
-                {
-                  "name": "address1",
-                  "label": "Adress 1"
-                },
-                {
-                  "name": "address1",
-                  "label": "Adress 1"
-                },
-                {
-                  "name": "address2",
-                  "label": "Adress 2"
-                },
-                {
-                  "name": "postalcode",
-                  "label": "Postnummer"
-                },
-                {
-                  "name": "town",
-                  "label": "Ort"
-                },
-                {
-                  "name": "country",
-                  "label": "Land"
-                },
-                {
-                  "name": "phone1",
-                  "label": "Telefonnr 1"
-                },
-                {
-                  "name": "phone2",
-                  "label": "Telefonnr 2"
-                },
-                {
-                  "name": "profession",
-                  "label": "Yrke"
-                }
-        ]
-    },
-    "menu": {
-        "label": "Meny",
-        "labels": {
-            "menus": "Menyer",
-            "links": "Länkar",
-            "createLink": "Skapa länk",
-            "updateLink": "Uppdatera länk",
-            "menuLinkTitle": "Menylänkens titel",
-            "customUrl": "Valfri URL",
-            "setCustomUrl": "Sätt valfri webbadress (URL)"
-        },
-        "messages": {
-            "menuSaved": "Menyn har sparats",
-            "menuDeleted": "Menyn har raderats"
-        }
-    },
-    "group": {
-        "label": "Grupp",
-        "labels": {
-            "groups": "Grupper",
-            "groupRoles": "Grupproller",
-            "groupPermissions": "Gruppbehörigheter",
-            "contacts": "Kontakter",
-            "groupAffiliation": "Grupptillhörighet",
-            "educatorCategory": "Typ av utbildare",
-            "currentGroup": "Aktuell grupp",
-            "noGroup": "Ingen grupp är vald",
-            "startPage": "Startsida",
-            "vopagesStatus": "Aktivera VoSida för denna grupp",
-            "vopage": "VoSida"
-        },
-        "errors": {
-            "invalidGroupName": "Ogiltigt gruppnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck/bindestreck är tillåtet. Ex: 'nationellt', 'kronoberg', 'projekt2020', 'orebro-lan"
-        },
-        "messages": {
-            "groupSaved": "Gruppen har sparats",
-            "groupDeleted": "Gruppen har raderats",
-            "vopagesStatus": "Detta innebär att denna grupp kommer att vara åtkomplig via 'gruppnamn.vo-college.se', t ex 'kronoberg.vo-college.se'.",
-            "frontPageIntro": "Startsidan för denna grupp när den är aktiv som en VoSida."
-        },
-        "categories": {
-            "region": "Regionalt college",
-            "local": "Lokalt college",
-            "educator": "Utbildare",
-            "other": "Annat"
-        },
-        "educatorCategories": {
-            "gym_vo": "Gymnasium VO",
-            "gym_bf": "Gymnasium BF",
-            "vux_vo": "Vux VO",
-            "vux_bf": "Vux BF",
-            "folkhogskola": "Folkhögskola",
-            "yrkeshogskola": "Yrkeshögskola",
-            "other": "Annan utbildning"
-        }
-    },
-    "settings": {
-        "label": {
-            "slideshowQueue": "Kö för bildspel",
-            "newsQueue": "Kö för artiklar",
-            "puffQueue": "Kö för puffar",
-            "sectionsQueue": "Kö för sektioner",
-            "mainMenu": "Meny för huvudnavigering",
-            "headerMenu": "Meny på sidans huvud",
-            "footerMenu": "Meny på sidans fot",
-            "footerPage": "Sidan vars innehåll kommer att visas på sidans fot",
-            "collegePage": "Sidan vars innehåll kommer att visas kartsidan",
-            "publicDefaultPortfolio": "Standardportfölj för lagring av diverse uppladade filer, t ex profilbilder",
-            "validigDefaultPortfolio": "Standardportfölj för lagring av Validig-filer",
-            "defaultUserAvatar": "Standard avatar för användare",
-            "defaultContentAvatar": "Standard avatar för diverse innehåll",
-            "vocertDefaultHelpBook": "Standard bok med hjälpinnehåll"
-        },
-        "messages": {
-            "settingsSaved": "Inställningarna har sparats"
-        }
-    },
-    "entities": {
-        "label": {
-            "entity": "Entitet",
-            "search": "Sök",
-            "searchContent": "Sök innehåll",
-            "searchByTitle": "Sök efter innehållets titel"
-        }
-    },
-    "tag": {
-        "label": "Tagg",
-        "labels": {
-            "tags": "Taggar"
-        }
-    },
-    "portfolio": {
-        "label": "Portfölj"
-    },
-    "docs": {
-        "label": {
-            "portfolio": "Portfölj",
-            "portfolios": "Portföljer",
-            "thePortfolio": "Portföljen",
-            "folder": "Mapp",
-            "theFolder": "Mappen",
-            "file": "Fil",
-            "theFile": "Filen",
-            "fileTitle": "Filens titel",
-            "fileDescription": "Filens beskrivning",
-            "createPortfolio": "Skapa portfölj",
-            "updatePortfolio": "Redigera portfölj",
-            "createFolder": "Skapa mapp",
-            "updateFolder": "Redigera mapp",
-            "createFile": "Skapa fil",
-            "updateFile": "Redigera fil",
-            "path": "Sökväg",
-            "selectFile": "Välj fil",
-            "portfolioName": "Portföljens namn",
-            "filename": "Filnamn",
-            "filesize": "Filstorlek",
-            "filetype": "Filtyp",
-            "diskName": "Disknamn",
-            "public": "Publikt",
-            "uploadImage": "Ladda upp bild",
-            "downloading": "Laddar ner...",
-            "retrievingLink": "Hämtar länk..."
-        },
-        "errors": {
-            "invalidPortfolioName": "Ogiltigt portföljnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'konferens', 'konferens2020', 'Nationellt_2018_Foto'"
-        },
-        "helperText": {
-            "name": "Detta värde används internt i systemet.",
-            "title": "Titel används här i gränssnittet för att identifierra din portfölj."
-        },
-        "messages": {
-            "portfolioCreated": "Portföljen har skapats",
-            "portfolioUpdated": "Portföljen har uppdaterats",
-            "folderCreated": "Mappen har skapats",
-            "folderUpdated": "Mappen har uppdaterats",
-            "fileCreated": "Filen har skapats",
-            "fileUpdated": "Filen har uppdaterats",
-            "linkCopiedToClipboard": "Länken har kopierats till urklippet"
-        },
-        "disks": {
-            "s3.vodocs_files": "Privat",
-            "s3.vofront_files": "Publikt"
-        }
-    },
-    "auth": {
-        "actions": {
-            "clickToSingIn": "Klicka här för att logga in"
-        }
-    },
-    "form": {
-        "errors": {
-            "required": "Obligatoriskt",
-            "invalidName": "Ogiltigt namn. Det får endast innehålla småbokstäver (minst 3), följd av en eller flera siffror, t ex: 'ann', 'olle.persson', 'ann1980', 'peter_ericsson'",
-            "invalidEmail": "Ogiltig e-postadress",
-            "invalidFirstname": "Ogiltigt förnamn",
-            "invalidLastname": "Ogiltigt efternamn",
-            "password": "Lösenordet måste vara minst 8 tecken, varav 1 versal, 1 gemen och 1 siffra",
-            "passwordNotMatch": "Lösenorden matchar inte",
-            "personalNumberInvalid": "Personnumret ska innehålla 12 siffror, med bindestreck.",
-            "orgnrInvalid": "Organisationsnumret ska innehålla 10 siffror, med bindestreck.",
-            "fillAllRequired": "Fyll i alla obligatoriska fält"
-        },
-        "labels": {
-            "createUser": "Skapa användare",
-            "updateUser": "Uppdatera användare:",
-            "searchField": "Sök…",
-            "loadingContent": "Laddar innehåll...",
-            "createArticle": "Skapa artikel",
-            "createPage": "Skapa sida",
-            "createQueue": "Skapa kö",
-            "createMenu": "Skapa meny",
-            "createGroup": "Skapa grupp",
-            "createRole": "Skapa roll",
-            "check": "Kontrollera",
-            "checkAvailability": "Kontrollera tillgänglighet",
-            "title": "Titel",
-            "shortTitle": "Kort titel",
-            "description": "Beskrivning",
-            "body": "Brödtext",
-            "status": "Status",
-            "url": "URL",
-            "itemsToQueue": "Objekt att köa",
-            "items": "Objekt",
-            "file": "Fil",
-            "name": "Namn",
-            "category": "Kategori",
-            "categories": "Kategorier",
-            "latitude": "Latitud",
-            "longitude": "Longitud",
-            "location": "Position",
-            "contentType": "Innehållstyp",
-            "template": "Mall",
-            "start": "Start",
-            "end": "Slut",
-            "allday": "Hela dagen",
-            "time": "Tid",
-            "startdate": "Startdatum",
-            "starttime": "Starttid",
-            "enddate": "Slutdatum",
-            "endtime": "Sluttid",
-            "date": "Datum",
-            "active": "Aktiv",
-            "fields": "Fält",
-            "field": "Fält",
-            "website": "Webbadress",
-            "certified": "Certifierat",
-            "highestNumberOfColumns": "Högsta antal kolumner",
-            "adminTitle": "Administrativ titel",
-            "comments": "Kommentarer",
-            "internalComments": "Interna kommentarer",
-            "group": "Grupp",
-            "responsible": "Ansvarig",
-            "contact": "Kontakt",
-            "orgnr": "Org.nr.",
-            "workplace": "Arbetsplats",
-            "employer": "Arbetsgivare",
-            "organisation": "Organisation"
-         },
-        "messages": {
-            "invalidFields": "Det finns ogiltiga fält i formuläret",
-            "fieldPopulatedBy": "Detta fält autogenereras baserat på '::field'.",
-            "unsavedContent": "Det finns osparat innehåll. Är du säker på att du vill lämna denna sida?",
-            "redirecting": "Omdirigerar...",
-            "personalNumberWhenPossible": "Personnumer är ej obligatoriskt men bör ifyllas när detta är möjligt.",
-            "currentPassword": "Om du vill ändra lösenordet så måste nuvarande anges här."
-        }
-    },
-    "application": {
-        "label": "Ansökan",
-        "labels": {
-            "applications": "Ansökningar",
-            "createApplication": "Skapa ansökan",
-            "description": "Beskriv vilken roll du har och i vilken utbildare/organisation. Här kan du även skriva annan relevant information för din ansökan.",
-            "otherRelevantInformation": "Annan relevant information för din ansökan",
-            "roles": "Vilken roll har du?",
-            "describeRole": "Beskriv din roll",
-            "apps": "Vilka tjänster vill du få tillgång till?",
-            "pageTitle": "Ansök om ett användarkonto",
-            "sendApplication": "Skicka in ansökan",
-            "certItems": "Vilka delar av Diplom/intyg önskar du att få tillgång till?"
-        },
-        "messages": {
-            "applicationSaved": "Ansökan har sparats",
-            "applicationDeleted": "Ansökan har raderats",
-            "applicationHasBeenSent": "Ansökan har skickats in. Du får ett meddelande från oss när din ansökan har behandlats och du har tilldelats ett konto."
-        },
-        "categories": {
-            "account_application": "Kontoansökan"
-        },
-        "roles": [
-            {
-                "name": "teacher",
-                "label": "Lärare"
-            },
-            {
-                "name": "principal",
-                "label": "Rektor"
-            },
-            {
-                "name": "school_administrator",
-                "label": "Skoladministratör"
-            },
-            {
-                "name": "regional_processledare",
-                "label": "Regional processledare"
-            },
-            {
-                "name": "lokal_processledare",
-                "label": "Lokal processledare"
-            },
-            {
-                "name": "language_representative_educator",
-                "label": "Språkombudsutbildare"
-            },
-            {
-                "name": "syv",
-                "label": "SYV"
-            },
-            {
-                "name": "other",
-                "label": "Annat"
-            }
-        ],
-        "apps": [
-            {
-                "name": "cert",
-                "label": "Diplom/intyg"
-            },
-            {
-                "name": "pages",
-                "label": "VO-Sidor"
-            }
-        ],
-        "certItems": [
-            {
-                "name": "diploma",
-                "label": "Diplom"
-            },
-            {
-                "name": "certificate",
-                "label": "Intyg"
-            },
-            {
-                "name": "diploma_care_assistant",
-                "label": "Diplom för vårdbiträde"
-            },
-            {
-                "name": "diploma_language_representative",
-                "label": "Diplom, språkombud"
-            },
-            {
-                "name": "tutor_certificate",
-                "label": "Intyg, handledarintyg"
-            }
-        ]
-
-    },
-    "actions": {
-        "cancel": "Avbryt",
-        "save": "Spara",
-        "create": "Skapa",
-        "edit": "Redigera",
-        "no": "Nej",
-        "yes": "Ja",
-        "reset": "Återställ",
-        "clearSearch": "Rensa sökresultatet",
-        "backToHome": "Tillbaka till startsidan",
-        "upload": "Ladda upp",
-        "acceptCookies": "Acceptera kakor",
-        "showAll": "Visa alla",
-        "show": "Visa",
-        "open": "Öppna",
-        "clear": "Rensa",
-        "delete": "Radera",
-        "download": "Ladda ner",
-        "copyLink": "Kopiera länk"
-    },
-    "status": {
-        "unpublished": "Opublicerat",
-        "published": "Publicerat",
-        "open": "Öppet",
-        "closed": "Stängt",
-        "inProgress": "Under behandling"
+  "user": {
+    "label": "Användare",
+    "labels": {
+      "name": "Användarnamn",
+      "email": "E-post",
+      "firstname": "Förnamn",
+      "lastname": "Efternamn",
+      "password": "Lösenord",
+      "passwordCurrent": "Nuvarande lösenord",
+      "passwordRepeat": "Upprepa lösenord",
+      "users": "Användare",
+      "personalData": "Personuppgifter",
+      "personalNumber": "Personnr (YYYYMMDD-xxxx)",
+      "address": "Adress",
+      "zip": "Postnummer",
+      "postalcode": "Postnummer",
+      "county": "Ort",
+      "town": "Ort",
+      "country": "Land",
+      "phone": "Telefonnummer",
+      "invoiceAddress": "Fakturaadress",
+      "reference": "Referens",
+      "electronicReference": "Elektronisk referens",
+      "professionalTitle": "Yrkestitel",
+      "notifyUser": "Notifiera användaren om att kontot har skapats",
+      "gdpr": "Jag samtycker till att VO-College lagrar mina personuppgifter",
+      "gdprIsRequired": "Du behöver godkänna att vi hanterar dina personuppgifter"
     },
     "messages": {
-        "areYouSure": "Är du säker?",
-        "deleteElement": "Vill du radera ::element?",
-        "actionCantBeUndone": "Denna åtgärd kan inte ångras",
-        "sessionExpired": "Din session behöver förnyas och du omdirigeras till inloggningen. Var vänlig och logga in igen.",
-        "cookiesTitle": "Vi använder kakor (cookies)",
-        "cookiesMessage": "Vi använder nödvändiga kakor för att webbplatsen ska fungera på ett bra sätt för dig. Vi använder också kakor för webbanalys så vi kan förbättra vår webbplats.",
-        "accessDenied": "Åtkomst nekad",
-        "invalidCaptcha": "Robotkontrollen (Recaptcha) har misslyckats. Var vänlig och försök igen. Om problemet kvarstår ta gärna kontakt med kansliet på info@vo-college.se",
-        "newVersionAvailable": "En ny version av denna applikation är tillgänglig och sidan kommer att laddas om..."
-    },
-    "toolbar": {
-        "createNewItem": "Skapa nytt objekt",
-        "filterList": "Filterlista"
-    }, 
-    "misc": {
-        "account": "Konto",
-        "groups": "Grupper",
-        "user": "Användare",
-        "dashboard": "Översiktspanel",
-        "signOut": "Logga ut",
-        "acl": "ACL",
-        "roles": "Roller",
-        "permissions": "Behörigheter",
-        "edit": "Redigera",
-        "update": "Uppdatera",
-        "updated_at": "Uppdaterat",
-        "created_at": "Skapat",
-        "nothingFound": "Inga objekt hittades",
-        "nothingAdded": "Inga objekt är tillagda",
-        "nothingSelected": "Inget har valts",
-        "nothing": "Ingen",
-        "alreadyAdded": "Detta objekt finns redan i listan",
-        "create": "Skapa",
-        "actions": "Åtgärder",
-        "articles": "Artiklar",
-        "pages": "Sidor",
-        "content": "Innehåll",
-        "extra": "Extra",
-        "documentbank": "Dokumentbank",
-        "queues": "Köer",
-        "queue": "Kö",
-        "type": "Typ",
-        "id": "ID",
-        "settings": "Inställningar",
-        "general": "Allmänt",
-        "error": "Fel",
-        "navigation": "Navigering",
-        "author": "Författare",
-        "date": "Datum",
-        "image": "Bild",
-        "logo": "Logo",
-        "logotype": "Logotyp",
-        "logotypes": "Logotyper",
-        "login": "Logga in",
-        "attachment": "Bilaga",
-        "attachments": "Bilagor",
-        "miscellaneous": "Diverse",
-        "other": "Övrigt",
-        "preview": "Förhandsgranskning",
-        "rendering": "Renderar",
-        "download": "Ladda ner",
-        "notes": "Anteckningar",
-        "notVoCollege": "Ej VO-College",
-        "year": "År",
-        "text": "Text",
-        "college": "VO-College",
-        "protected": "Skyddat",
-        "optional": "Valfritt",
-        "start": "Start",
-        "active": "Aktiv",
-        "inactive": "Inaktiv",
-        "myAccount": "Mitt konto",
-        "managing": "Hanterar"
-    },
-    "diploma": {
-        "label": "Diplom",
-        "labels": {
-            "diplomas": "Diplom",
-            "createDiploma": "Skapa diplom",
-            "createMultipleDiploma": "Skapa multiple diplom",
-            "diplomaType": "Diplomtyp",
-            "president": "Ordförande (valfritt)",
-            "principal": "Rektor",
-            "credits": "Godkända poäng",
-            "education": "Utbildning",
-            "degree": "Examensbenämning",
-            "chooseAnEducator": "Välj en utbildare"
-        },
-        "messages": {
-            "intro": "För elever som uppfyller kraven på diplom. Yrkesexamen 2250 poäng och utvalda kurser eller yrkespaket i vård- och omsorgsutbildning eller barn- och fritidsutbildning mot funktionshinder 1500 poäng.",
-            "diplomaSaved": "Diplomet har sparats",
-            "diplomaDeleted": "Diplomet har raderats",
-            "saveBeforePrint": "Spara innan du skriver ut så att ett unikt id genereras och läggs in i dokumentet"
-        },
-        "diplomaTypes": {
-            "ung": "Ungdomsutbildning",
-            "vuxen": "Vuxenutbildning",
-            "yh": "YH-utbildning"
-        },
-        "education": {
-            "vardOchOmsorg": "Vård- och omsorgutbildning",
-            "barnFritid": "Barn- och fritidsutbildning med social inriktning"
-        },
-        "helpTexts": {
-            "creditsUng": "Antal godkända gymnasiepoäng, 2250 poäng",
-            "creditsVuxen": "Antalet godkända gymnasiepoäng, minst 1500 poäng",
-            "creditsYh": "Skriv antalet godkända poäng från yrkeshögskolan"
-        },
-        "template": {
-            "title": "Diplom",
-            "text": "För godkänd utbildning i lokalt certifierat Vård- och omsorgscollege",
-            "place": "Lokalt Vård- och omsorgscollege i ::college",
-            "president": "Ordförande i lokal styrgrupp",
-            "principal": "Rektor (eller motsvarande inom vuxenutbildningen)",
-            "certifiedSince": "::educator är certifierat sedan ::date",
-            "ungCredits": "::credits gymnasiepoäng",
-            "vuxenCredits": "::credits poäng",
-            "yhCredits": "::credits YH-poäng"
-        }
-    },
-    "certificate": {
-        "label": "Intyg",
-        "labels": {
-            "certificates": "Intyg",
-            "createCertificate": "Skapa intyg"
-        },
-        "messages": {
-            "intro": "För elever som har läst delar av en utbildning i ett VO-College men inte uppfyller kraven för diplom.",
-            "certificateSaved": "Intyget har sparats",
-            "certificateDeleted": "Intygt har raderats"
-        },
-        "template": {
-            "title": "Intyg",
-            "subtitle": "Kurser i vård- och omsorgsutbildning",
-            "text1": "Intyget avser de delar av vård- och omsorgsutbildningen som är lästa inom Vård- och omsorgscollege och där eleven har godkända betyg",
-            "text2": "Har läst delar av vård- och omsorgsutbildningen inom ett Vård- och omsorgscollege och är godkänd i ::credits gymnasiepoäng",
-            "principal": "Rektor eller motsvarande",
-            "certifiedSince": "::college är certifierat sedan ::date"
-        }
-    },
-    "tutorCertificate": {
-        "label": "Handledarintyg",
-        "labels": {
-            "tutorCertificates": "Handledarintyg",
-            "createTutorCertificate": "Skapa handledarintyg",
-            "steps": "Steg"
-        },
-        "messages": {
-            "intro": "Intyg för handledarutbildning steg 1, 2, 1 & 2 och steg 3.",
-            "tutorCertificateSaved": "Handledarintyget har sparats",
-            "tutorCertificateDeleted": "Handledarintyget har raderats"
-        },
-        "template": {
-            "title": "Intyg",
-            "subtitle": "Handledarutbildning steg ::step",
-            "textStep1a": "För genomförd handledarutbildning inom vård och omsorg - steg 1.",
-            "textStep1b": "Kursen ger behörighet att handleda elever på reguljär utbildning (apl), praktikanter samt nyanställda.",
-            "textStep2a": "För genomförd handledarutbildning inom vård och omsorg - steg 2.",
-            "textStep2b": "Kursen ger behörighet att arbeta som valideringshandledare och handledare för Yrkeshögskolestuderande (YH). Steg 1 och 2 tillsammans motsvarar kursen Vårdpedagogik och handledning samt VO-College struktur för handledarutbildning.",
-            "textStep3a": "För genomförd handledarutbildning inom vård och omsorg - steg 3.",
-            "textStep3b": "Kursen ger behörighet att arbeta som handledare för handledare.",
-            "textStep1Step2": "För genomförd handledarutbildning inom vård och omsorg - steg 1 och 2. Kursen ger behörighet att handleda elever på reguljär utbildning (apl), praktikanter och nyanställda samt att arbeta som valideringshandledare och handledare för Yrkeshögskolestuderande (YH). Steg 1 och 2 tillsammans motsvarar kursen Vårdpedagogik och handledning samt VO-College struktur för handledarutbildning.",
-            "responsible": "Utbildningsansvarig",
-            "region": "Regionalt Vård- och omsorgscollege ::region",
-            "and": "och"
-        }
-    },
-    "tutorAwardCertificate": {
-        "label": "Certifikat för Årets handledare",
-        "labels": {
-            "tutorAwardCertificates": "Certifikat för Årets handledare",
-            "createTutorAwardCertificate": "Skapa certifikat för Årets handledare",
-            "president": "Ordförande"
-        },
-        "messages": {
-            "intro": "För handledare som utnämnts till den lokala eller regionala utmärkelsen Årets handledare.",
-            "tutorAwardCertificateSaved": "Certifikatet har sparats",
-            "tutorAwardCertificateDeleted": "Certifikatet har raderats"
-        },
-        "template": {
-            "title": "Årets handledare",
-            "subtitle": "Vård- och omsorgscollege",
-            "has": "har utsett",
-            "tutorOfTheYear": "till Årets handledare ::year",
-            "presidentAt": "Ordförande för Vård- och omsorgscollege ::college",
-            "certifiedCollaboration": "Certifierad samverkan mellan utbildning och arbetsliv"
-        }
-    },
-    "careAssistantDiploma": {
-        "label": "Diplom för vårdbiträde",
-        "labels": {
-            "careAssistantDiplomas": "Diplom för vårdbiträde",
-            "createCareAssistantDiploma": "Skapa diplom för vårdbiträde"
-        },
-        "messages": {
-            "intro": "För elever som har slutfört yrkespaketet till vårdbiträde 800 poäng.",
-            "careAssistantDiplomaSaved": "Diplomet har sparats",
-            "careAssistantDiplomaDeleted": "Diplomet har raderats"
-        },
-        "template": {
-            "principal": "Rektor eller motsvarande",
-            "title": "Diplom",
-            "subtitle": "Vårdbiträde",
-            "text": "För godkänd utbildning till vårdbiträde enligt Vård- och omsorgscollege och Skolverkets yrkespaket på ::credits gymnasiepoäng",
-            "place": "Lokalt Vård- och omsorgscollege ::college"
-        }
-    },
-    "languageRepresentativeDiploma": {
-        "label": "Diplom för språkombud",
-        "labels": {
-            "languageRepresentativeDiplomas": "Diplom för språkombud",
-            "createLanguageRepresentativeDiploma": "Skapa diplom för språkombud",
-            "place": "Region/Ort",
-            "educator1": "Utbildare 1",
-            "educator2": "Utbildare 2"
-        },
-        "messages": {
-            "intro": "För diplom till de som genomgått utbildning till språkombud.",
-            "languageRepresentativeDiplomaSaved": "Diplomet för språkombud har sparats",
-            "languageRepresentativeDiplomaDeleted": "Diplomet för språkombud har raderats"
-        },
-        "fieldsHelpers": {
-            "place": "Region/Ort behöver anges manuellt om 'Ej VO-College' är valt"
-        },
-        "template": {
-            "title": "Diplom",
-            "subtitle": "Tilldelas",
-            "signature": "Underskrift",
-            "educator": "Utbildare"
-        }
-    },
-    "languageRepresentativeEducatorDiploma": {
-        "label": "Diplom för språkombudsutbildare",
-        "labels": {
-            "languageRepresentativeEducatorDiplomas": "Diplom för språkombudsutbildare",
-            "createLanguageRepresentativeEducatorDiploma": "Skapa diplom för språkombudsutbildare",
-            "leader": "Kursledare",
-            "leader1": "Kursledare 1",
-            "leader2": "Kursledare 2",
-            "place": "Region/Ort"
-        },
-        "messages": {
-            "intro": "För diplom till de som utbildats till att utbilda språkombud (Nationell hantering).",
-            "languageRepresentativeEducatorDiplomaSaved": "Diplomet för språkombudsutbildare har sparats",
-            "languageRepresentativeEducatorDiplomaDeleted": "Diplomet för språkombudsutbildare har raderats",
-        },
-        "template": {
-            "leader": "Kursledare"
-        }
-    },
-    "collegeCertificate": {
-        "label": "Certifikat för VO-College",
-        "labels": {
-            "collegeCertificates": "Certifikat för VO-College",
-            "createCollegeCertificate": "Skapa certifikat för College",
-            "from": "Från",
-            "to": "Till"
-        },
-        "messages": {
-            "intro": "Certifikat för nybildade och återcertifierade VO-College (Nationell hantering).",
-            "collegeCertificateSaved": "Certifikatet har sparats",
-            "collegeCertificateDeleted": "Certifikatet har raderats"
-        },
-        "template": {
-            "title": "Certifikat",
-            "subtitle": "Vård- och omsorgscollege",
-            "text": "har uppfyllt gällande kvalitetskriterier för",
-            "text2": "::type Vård- och omsorgscollege och är certifierad",
-            "region": "regionalt",
-            "local": "lokalt"
-        }
-    },
-    "courseMoment": {
-        "label": "Kurstillfälle",
-        "labels": {
-            "courseMoments": "Kurstillfällen",
-            "createCoruseMoment": "Skapa kurstillfälle",
-            "orderer": "Beställare",
-            "collegeBelonging": "Vilket VO-College tillhör du som utbildare?",
-            "ordererCollege": "På uppdrag av",
-            "describeTheOrderer": "Beskriv vem som är uppdragsgivare, till exempel äldreboende, hemtjänst..."
-        },
-        "messages": {
-            "intro": "",
-            "courseMomentSaved": "Kurstillfället har sparats",
-            "courseMomentDeleted": "Kurstillfället har raderats"
-        }
-    },
-    "participant": {
-        "label": "Deltagare",
-        "labels": {
-            "participants": "Deltagare",
-            "createParticipant": "Skapa deltagare",
-            "participantsInCourseMoment": "Deltagare i ::courseMoment",
-            "employer": "Namn på arbetsgivare"
-        },
-        "messages": {
-            "participantSaved": "Deltagaren har sparats",
-            "participantDeleted": "Deltagaren har raderats"
-        },
-        "workplaces": {
-            "aldreboende": "Äldreboende",
-            "hemtjanst": "Hemtjänst",
-            "hemvard": "Hemvård",
-            "lss": "LSS",
-            "psykiatri": "Psykiatri",
-            "sjukhus": "Sjukhus",
-            "vardcentral": "Vårdcentral",
-            "annat": "Annat"
-        },
-        "employers": {
-            "kommun": "Kommun",
-            "region": "Region",
-            "privat": "privat"
-        }
+      "userCreated": "Användaren har skapats.",
+      "userUpdated": "Användaren har uppdaterats",
+      "accountUpdated": "Kontot har uppdaterats",
+      "userDeleted": "Användaren har raderats",
+      "statusHelper": "Detta avgör om en användare syns utåt, exempelvis i köer.",
+      "readMoreDataPolicy": "Läs mer i vår dataskyddspolicy"
     }
+  },
+  "acl": {
+    "label": "ACL",
+    "labels": {
+      "name": "Namn",
+      "label": "Etikett"
+    },
+    "messages": {
+      "roleSaved": "Rollen har sparats",
+      "roleDeleted": "Rollen har raderats",
+      "permissionSaved": "Behörigheterna har sparats"
+    },
+    "errors": {
+      "invalidName": "Ogiltigt namn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'redaktör', 'Styrgrupp_20'",
+      "routeNotAllowed": "Du har inte behörighet till '::route'"
+    }
+  },
+  "role": {
+    "label": "Roll"
+  },
+  "article": {
+    "label": "Artikel",
+    "messages": {
+      "articleSaved": "Artikeln har sparats",
+      "articleDeleted": "Artikeln har raderats"
+    }
+  },
+  "page": {
+    "label": "Sida",
+    "labels": {
+      "pages": "Sidor",
+      "createPage": "Skapa sida"
+    },
+    "messages": {
+      "pageSaved": "Sidan har sparats",
+      "pageDeleted": "Sidan har raderats"
+    },
+    "templates": {
+      "standard": "Standard",
+      "bigImage": "Stor bild"
+    }
+  },
+  "queue": {
+    "label": "Kö",
+    "messages": {
+      "queueSaved": "Kön har sparats",
+      "queueDeleted": "Kön har raderats"
+    },
+    "columns": {
+      "0": "Ingen begränsning",
+      "1": "1 kolumn",
+      "2": "2 kolumner",
+      "3": "3 kolumner",
+      "4": "4 kolumner"
+    }
+  },
+  "section": {
+    "label": "Sektion",
+    "labels": {
+      "sections": "Sektioner",
+      "imageFull": "Fyll upp bilden",
+      "createSection": "Skapa sektion"
+    },
+    "messages": {
+      "sectionSaved": "Sektionen har sparats",
+      "sectionDeleted": "Sektionen har raderats"
+    },
+    "templates": {
+      "default_left": "Standard, vänster",
+      "default_right": "Standard, höger",
+      "blue_left": "Blå, vänster",
+      "blue_right": "Blå, höger",
+      "green_left": "Grön, vänster",
+      "green_right": "Grön, höger"
+    }
+  },
+  "event": {
+    "label": "Händelse",
+    "labels": {
+      "events": "Händelser",
+      "createEvent": "Skapa händelse",
+      "location": "Plats",
+      "calendar": "Kalender",
+      "allday": "Heldag"
+    },
+    "messages": {
+      "eventSaved": "Händelsen har sparats",
+      "eventDeleted": "Händelsen har raderats"
+    }
+  },
+  "book": {
+    "label": "Boksida",
+    "labels": {
+      "books": "Boksidor",
+      "bookPages": "Boksidor",
+      "parent": "Ovanliggande bok",
+      "createBook": "Skapa boksida",
+      "grantAccess": "Ge följande typ av användare tillgång till denna boksida",
+      "access": "Åtkomst"
+    },
+    "messages": {
+      "bookSaved": "Boksidan har sparats",
+      "bookDeleted": "Boksidan har raderats"
+    },
+    "templates": {
+      "standard": "Standard",
+      "bigImage": "Stor bild"
+    },
+    "accessValues": [
+      {
+        "name": "guest",
+        "label": "Ej inloggad"
+      },
+      {
+        "name": "authenticated",
+        "label": "Inloggad"
+      }
+    ]
+  },
+  "help": {
+    "labels": {
+      "relatedContent": "Relaterat innehåll",
+      "help": "Hjälp",
+      "previousSection": "Föregående avsnitt",
+      "start": "Startsida",
+      "close": "Stäng hjälpen"
+    }
+  },
+  "card": {
+    "label": "Kort",
+    "labels": {
+      "cards": "Kort",
+      "createCard": "Skapa kort"
+    },
+    "messages": {
+      "cardSaved": "Kortet har sparats",
+      "cardDeleted": "Kortet har raderats"
+    },
+    "templates": {
+      "standard": "Standard",
+      "contact": "Kontakt",
+      "event": "Händelse"
+    },
+    "settings": [
+      {
+        "name": "clickableCard",
+        "label": "Klickbart kort"
+      },
+      {
+        "name": "collapseBody",
+        "label": "Komprimera brödtexten"
+      }
+    ],
+    "fields": [
+      {
+        "name": "images",
+        "label": "Bilder"
+      },
+      {
+        "name": "logo",
+        "label": "Logotyp"
+      },
+      {
+        "name": "title",
+        "label": "Titel"
+      },
+      {
+        "name": "body",
+        "label": "Brödtext"
+      },
+      {
+        "name": "start_date",
+        "label": "Startdatum"
+      },
+      {
+        "name": "start_time",
+        "label": "Starttid"
+      },
+      {
+        "name": "end_date",
+        "label": "Slutdatum"
+      },
+      {
+        "name": "end_time",
+        "label": "Sluttid"
+      },
+      {
+        "name": "allday",
+        "label": "Heldag"
+      },
+      {
+        "name": "location",
+        "label": "Plats"
+      },
+      {
+        "name": "email",
+        "label": "E-postadress"
+      },
+      {
+        "name": "name",
+        "label": "Användarnamn"
+      },
+      {
+        "name": "firstname",
+        "label": "Förnamn"
+      },
+      {
+        "name": "lastname",
+        "label": "Efternamn"
+      },
+      {
+        "name": "address1",
+        "label": "Adress 1"
+      },
+      {
+        "name": "address2",
+        "label": "Adress 2"
+      },
+      {
+        "name": "postalcode",
+        "label": "Postnummer"
+      },
+      {
+        "name": "town",
+        "label": "Ort"
+      },
+      {
+        "name": "country",
+        "label": "Land"
+      },
+      {
+        "name": "phone1",
+        "label": "Telefonnr 1"
+      },
+      {
+        "name": "phone2",
+        "label": "Telefonnr 2"
+      },
+      {
+        "name": "profession",
+        "label": "Yrke"
+      }
+    ]
+  },
+  "menu": {
+    "label": "Meny",
+    "labels": {
+      "menus": "Menyer",
+      "links": "Länkar",
+      "createLink": "Skapa länk",
+      "updateLink": "Uppdatera länk",
+      "menuLinkTitle": "Menylänkens titel",
+      "customUrl": "Valfri URL",
+      "setCustomUrl": "Sätt valfri webbadress (URL)"
+    },
+    "messages": {
+      "menuSaved": "Menyn har sparats",
+      "menuDeleted": "Menyn har raderats"
+    }
+  },
+  "group": {
+    "label": "Grupp",
+    "labels": {
+      "groups": "Grupper",
+      "groupRoles": "Grupproller",
+      "groupPermissions": "Gruppbehörigheter",
+      "contacts": "Kontakter",
+      "groupAffiliation": "Grupptillhörighet",
+      "educatorCategory": "Typ av utbildare",
+      "currentGroup": "Aktuell grupp",
+      "noGroup": "Ingen grupp är vald",
+      "startPage": "Startsida",
+      "vopagesStatus": "Aktivera VoSida för denna grupp",
+      "vopage": "VoSida"
+    },
+    "errors": {
+      "invalidGroupName": "Ogiltigt gruppnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck/bindestreck är tillåtet. Ex: 'nationellt', 'kronoberg', 'projekt2020', 'orebro-lan"
+    },
+    "messages": {
+      "groupSaved": "Gruppen har sparats",
+      "groupDeleted": "Gruppen har raderats",
+      "vopagesStatus": "Detta innebär att denna grupp kommer att vara åtkomplig via 'gruppnamn.vo-college.se', t ex 'kronoberg.vo-college.se'.",
+      "frontPageIntro": "Startsidan för denna grupp när den är aktiv som en VoSida.",
+      "userAlreadyExistsGetInTouch": "Om användaren du försöker skapa redan finns i huvuddatabasen, då behöver du kontakta kansliet så den användaren kan läggas till på nuvarande VoSida.",
+      "userComesFromCentralDatabase": "Användarna nedan kommer från VO-Colleges centrala databas. Om du raderar en användare här så kommer den även att raderas centralt."
+    },
+    "categories": {
+      "region": "Regionalt college",
+      "local": "Lokalt college",
+      "educator": "Utbildare",
+      "employer": "Arbetsgivare",
+      "other": "Annat"
+    },
+    "educatorCategories": {
+      "gym_vo": "Gymnasium VO",
+      "gym_bf": "Gymnasium BF",
+      "vux_vo": "Vux VO",
+      "vux_bf": "Vux BF",
+      "folkhogskola": "Folkhögskola",
+      "yrkeshogskola": "Yrkeshögskola",
+      "other": "Annan utbildning"
+    }
+  },
+  "settings": {
+    "label": {
+      "slideshowQueue": "Kö för bildspel",
+      "newsQueue": "Kö för artiklar",
+      "puffQueue": "Kö för puffar",
+      "sectionsQueue": "Kö för sektioner",
+      "mainMenu": "Meny för huvudnavigering",
+      "headerMenu": "Meny på sidans huvud",
+      "footerMenu": "Meny på sidans fot",
+      "footerPage": "Sidan vars innehåll kommer att visas på sidans fot",
+      "collegePage": "Sidan vars innehåll kommer att visas kartsidan",
+      "publicDefaultPortfolio": "Standardportfölj för lagring av diverse uppladade filer, t ex profilbilder",
+      "validigDefaultPortfolio": "Standardportfölj för lagring av Validig-filer",
+      "defaultUserAvatar": "Standard avatar för användare",
+      "defaultContentAvatar": "Standard avatar för diverse innehåll",
+      "vocertDefaultHelpBook": "Standard bok med hjälpinnehåll för VoCert",
+      "voadminDefaultHelpBook": "Standard bok med hjälpinnehåll för VoAdmin"
+    },
+    "messages": {
+      "settingsSaved": "Inställningarna har sparats"
+    }
+  },
+  "entities": {
+    "label": {
+      "entity": "Entitet",
+      "search": "Sök",
+      "searchContent": "Sök innehåll",
+      "searchByTitle": "Sök efter innehållets titel"
+    }
+  },
+  "tag": {
+    "label": "Tagg",
+    "labels": {
+      "tags": "Taggar"
+    }
+  },
+  "portfolio": {
+    "label": "Portfölj"
+  },
+  "docs": {
+    "label": {
+      "portfolio": "Portfölj",
+      "portfolios": "Portföljer",
+      "thePortfolio": "Portföljen",
+      "folder": "Mapp",
+      "theFolder": "Mappen",
+      "file": "Fil",
+      "theFile": "Filen",
+      "fileTitle": "Filens titel",
+      "fileDescription": "Filens beskrivning",
+      "createPortfolio": "Skapa portfölj",
+      "updatePortfolio": "Redigera portfölj",
+      "createFolder": "Skapa mapp",
+      "updateFolder": "Redigera mapp",
+      "createFile": "Skapa fil",
+      "updateFile": "Redigera fil",
+      "path": "Sökväg",
+      "selectFile": "Välj fil",
+      "portfolioName": "Portföljens namn",
+      "filename": "Filnamn",
+      "filesize": "Filstorlek",
+      "filetype": "Filtyp",
+      "diskName": "Disknamn",
+      "public": "Publikt",
+      "uploadImage": "Ladda upp bild",
+      "downloading": "Laddar ner...",
+      "retrievingLink": "Hämtar länk..."
+    },
+    "errors": {
+      "invalidPortfolioName": "Ogiltigt portföljnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck är tillåtet. Ex: 'konferens', 'konferens2020', 'Nationellt_2018_Foto'"
+    },
+    "helperText": {
+      "name": "Detta värde används internt i systemet.",
+      "title": "Titel används här i gränssnittet för att identifierra din portfölj.",
+      "diskName": "Om innehållet i portföljen ska vara skyddat eller inte. Endast inloggade användare med rätt behörighet kan se en skyddad (privat) portfölj.",
+      "status": "'Publicerat' innebär att denna portfölj kommer att visas/listas på en grupps dokumentbank."
+    },
+    "messages": {
+      "portfolioCreated": "Portföljen har skapats",
+      "portfolioUpdated": "Portföljen har uppdaterats",
+      "folderCreated": "Mappen har skapats",
+      "folderUpdated": "Mappen har uppdaterats",
+      "fileCreated": "Filen har skapats",
+      "fileUpdated": "Filen har uppdaterats",
+      "linkCopiedToClipboard": "Länken har kopierats till urklippet"
+    },
+    "disks": {
+      "s3.vodocs_files": "Privat",
+      "s3.vofront_files": "Publikt"
+    }
+  },
+  "auth": {
+    "actions": {
+      "clickToSingIn": "Klicka här för att logga in"
+    }
+  },
+  "form": {
+    "errors": {
+      "required": "Obligatoriskt",
+      "invalidName": "Ogiltigt namn. Det får endast innehålla småbokstäver (minst 3), följd av en eller flera siffror, t ex: 'ann', 'olle.persson', 'ann1980', 'peter_ericsson'",
+      "invalidEmail": "Ogiltig e-postadress",
+      "invalidFirstname": "Ogiltigt förnamn",
+      "invalidLastname": "Ogiltigt efternamn",
+      "password": "Lösenordet måste vara minst 8 tecken, varav 1 versal, 1 gemen och 1 siffra",
+      "passwordNotMatch": "Lösenorden matchar inte",
+      "personalNumberInvalid": "Personnumret ska innehålla 12 siffror, med bindestreck.",
+      "orgnrInvalid": "Organisationsnumret ska innehålla 10 siffror, med bindestreck.",
+      "fillAllRequired": "Fyll i alla obligatoriska fält"
+    },
+    "labels": {
+      "createUser": "Skapa användare",
+      "updateUser": "Uppdatera användare:",
+      "searchField": "Sök…",
+      "searchFieldResult": "Sök… ::number objekt hittades",
+      "numberOfObjects": "Antal objekt: ::number",
+      "loadingContent": "Laddar innehåll...",
+      "createArticle": "Skapa artikel",
+      "createPage": "Skapa sida",
+      "createQueue": "Skapa kö",
+      "createMenu": "Skapa meny",
+      "createGroup": "Skapa grupp",
+      "createRole": "Skapa roll",
+      "check": "Kontrollera",
+      "checkAvailability": "Kontrollera tillgänglighet",
+      "title": "Titel",
+      "shortTitle": "Kort titel",
+      "description": "Beskrivning",
+      "body": "Brödtext",
+      "status": "Status",
+      "url": "URL",
+      "itemsToQueue": "Objekt att köa",
+      "items": "Objekt",
+      "file": "Fil",
+      "name": "Namn",
+      "category": "Kategori",
+      "categories": "Kategorier",
+      "latitude": "Latitud",
+      "longitude": "Longitud",
+      "location": "Position",
+      "contentType": "Innehållstyp",
+      "template": "Mall",
+      "start": "Start",
+      "end": "Slut",
+      "allday": "Hela dagen",
+      "time": "Tid",
+      "startdate": "Startdatum",
+      "starttime": "Starttid",
+      "enddate": "Slutdatum",
+      "endtime": "Sluttid",
+      "date": "Datum",
+      "active": "Aktiv",
+      "fields": "Fält",
+      "field": "Fält",
+      "website": "Webbadress",
+      "certified": "Certifierat",
+      "highestNumberOfColumns": "Högsta antal kolumner",
+      "adminTitle": "Administrativ titel",
+      "comments": "Kommentarer",
+      "internalComments": "Interna kommentarer",
+      "group": "Grupp",
+      "responsible": "Ansvarig",
+      "contact": "Kontakt",
+      "orgnr": "Org.nr.",
+      "workplace": "Arbetsplats",
+      "employer": "Arbetsgivare",
+      "organisation": "Organisation"
+    },
+    "messages": {
+      "invalidFields": "Det finns ogiltiga fält i formuläret",
+      "fieldPopulatedBy": "Detta fält autogenereras baserat på '::field'.",
+      "unsavedContent": "Det finns osparat innehåll. Är du säker på att du vill lämna denna sida?",
+      "redirecting": "Omdirigerar...",
+      "personalNumberWhenPossible": "Personnumer är ej obligatoriskt men bör ifyllas när detta är möjligt.",
+      "currentPassword": "Om du vill ändra lösenordet så måste nuvarande anges här."
+    }
+  },
+  "application": {
+    "label": "Ansökan",
+    "labels": {
+      "applications": "Ansökningar",
+      "createApplication": "Skapa ansökan",
+      "description": "Beskriv vilken roll du har och i vilken utbildare/organisation. Här kan du även skriva annan relevant information för din ansökan.",
+      "otherRelevantInformation": "Annan relevant information för din ansökan",
+      "roles": "Vilken roll har du?",
+      "describeRole": "Beskriv din roll",
+      "apps": "Vilka tjänster vill du få tillgång till?",
+      "pageTitle": "Ansök om ett användarkonto",
+      "sendApplication": "Skicka in ansökan",
+      "certItems": "Vilka delar av Diplom/intyg önskar du att få tillgång till?",
+      "organisation": "Organisation",
+      "educator": "Skola/utbildare",
+      "belongToCollege": "Jag tillhör lokalt VO-College",
+      "orgnr": "Organisationsnummer",
+      "reference": "Referens",
+      "billingAddress": "Faktureringsadress",
+      "exBillingAddress": "Ex: Sveavägen 900, 110 10 Stockholm"
+    },
+    "messages": {
+      "applicationSaved": "Ansökan har sparats",
+      "applicationDeleted": "Ansökan har raderats",
+      "applicationHasBeenSent": "Ansökan har skickats in. Du får ett meddelande från oss när din ansökan har behandlats och du har tilldelats ett konto."
+    },
+    "categories": {
+      "account_application": "Kontoansökan",
+      "metodmaterial": "Metodmaterial"
+    },
+    "metodmaterialOther": [
+      {
+        "name": "yrkeslarare",
+        "label": "Jag är ämneskunnig yrkeslärare"
+      },
+      {
+        "name": "syv",
+        "label": "Jag är SYV och arbetar med validering"
+      }
+    ],
+    "roles": [
+      {
+        "name": "teacher",
+        "label": "Lärare"
+      },
+      {
+        "name": "principal",
+        "label": "Rektor"
+      },
+      {
+        "name": "school_administrator",
+        "label": "Skoladministratör"
+      },
+      {
+        "name": "regional_processledare",
+        "label": "Regional processledare"
+      },
+      {
+        "name": "lokal_processledare",
+        "label": "Lokal processledare"
+      },
+      {
+        "name": "language_representative_educator",
+        "label": "Språkombudsutbildare"
+      },
+      {
+        "name": "syv",
+        "label": "SYV"
+      },
+      {
+        "name": "other",
+        "label": "Annat"
+      }
+    ],
+    "apps": [
+      {
+        "name": "cert",
+        "label": "Diplom/intyg"
+      },
+      {
+        "name": "pages",
+        "label": "VO-Sidor"
+      },
+      {
+        "name": "metodmaterial",
+        "label": "Metodmaterial"
+      }
+    ],
+    "certItems": [
+      {
+        "name": "diploma",
+        "label": "Diplom"
+      },
+      {
+        "name": "certificate",
+        "label": "Intyg"
+      },
+      {
+        "name": "diploma_care_assistant",
+        "label": "Diplom för vårdbiträde"
+      },
+      {
+        "name": "diploma_language_representative",
+        "label": "Diplom, språkombud"
+      },
+      {
+        "name": "tutor_certificate",
+        "label": "Intyg, handledarintyg"
+      }
+    ]
+  },
+  "actions": {
+    "cancel": "Avbryt",
+    "save": "Spara",
+    "create": "Skapa",
+    "edit": "Redigera",
+    "no": "Nej",
+    "yes": "Ja",
+    "reset": "Återställ",
+    "clearSearch": "Rensa sökresultatet",
+    "backToHome": "Tillbaka till startsidan",
+    "upload": "Ladda upp",
+    "acceptCookies": "Acceptera kakor",
+    "showAll": "Visa alla",
+    "show": "Visa",
+    "open": "Öppna",
+    "clear": "Rensa",
+    "delete": "Radera",
+    "download": "Ladda ner",
+    "copyLink": "Kopiera länk",
+    "apply": "Tillämpa",
+    "generate": "Generera"
+  },
+  "status": {
+    "unpublished": "Opublicerat",
+    "published": "Publicerat",
+    "open": "Öppet",
+    "closed": "Stängt",
+    "inProgress": "Under behandling"
+  },
+  "messages": {
+    "areYouSure": "Är du säker?",
+    "deleteElement": "Vill du radera ::element?",
+    "actionCantBeUndone": "Denna åtgärd kan inte ångras",
+    "sessionExpired": "Din session behöver förnyas och du omdirigeras till inloggningen. Var vänlig och logga in igen.",
+    "cookiesTitle": "Vi använder kakor (cookies)",
+    "cookiesMessage": "Vi använder nödvändiga kakor för att webbplatsen ska fungera på ett bra sätt för dig. Vi använder också kakor för webbanalys så vi kan förbättra vår webbplats.",
+    "accessDenied": "Åtkomst nekad",
+    "invalidCaptcha": "Robotkontrollen (Recaptcha) har misslyckats. Var vänlig och försök igen. Om problemet kvarstår ta gärna kontakt med kansliet på info@vo-college.se",
+    "newVersionAvailable": "En ny version av denna applikation är tillgänglig och sidan kommer att laddas om...",
+    "certifiedSince": "Certifierat sedan ::date",
+    "adminDashboard01": "Välkommen till",
+    "adminDashboard02": "Här kan du bl a hantera artiklar och dokumentbanken. Högst upp till höger väljer du vilken VoSida du vill hantera, i fall ditt konto har behörighet att hantera flera olika VoSidor.",
+    "adminDashboard03": "Vid frågor, vänligen kontakta oss på"
+  },
+  "toolbar": {
+    "createNewItem": "Skapa nytt objekt",
+    "filterList": "Filterlista"
+  },
+  "misc": {
+    "account": "Konto",
+    "groups": "Grupper",
+    "user": "Användare",
+    "dashboard": "Översiktspanel",
+    "signOut": "Logga ut",
+    "acl": "ACL",
+    "roles": "Roller",
+    "permissions": "Behörigheter",
+    "edit": "Redigera",
+    "update": "Uppdatera",
+    "updated_at": "Uppdaterat",
+    "created_at": "Skapat",
+    "nothingFound": "Inga objekt hittades",
+    "nothingAdded": "Inga objekt är tillagda",
+    "nothingSelected": "Inget har valts",
+    "nothing": "Ingen",
+    "alreadyAdded": "Detta objekt finns redan i listan",
+    "create": "Skapa",
+    "actions": "Åtgärder",
+    "articles": "Artiklar",
+    "pages": "Sidor",
+    "content": "Innehåll",
+    "extra": "Extra",
+    "documentbank": "Dokumentbank",
+    "queues": "Köer",
+    "queue": "Kö",
+    "type": "Typ",
+    "id": "ID",
+    "settings": "Inställningar",
+    "general": "Allmänt",
+    "error": "Fel",
+    "navigation": "Navigering",
+    "author": "Författare",
+    "date": "Datum",
+    "image": "Bild",
+    "logo": "Logo",
+    "logotype": "Logotyp",
+    "logotypes": "Logotyper",
+    "login": "Logga in",
+    "attachment": "Bilaga",
+    "attachments": "Bilagor",
+    "miscellaneous": "Diverse",
+    "other": "Övrigt",
+    "preview": "Förhandsgranskning",
+    "rendering": "Renderar",
+    "download": "Ladda ner",
+    "notes": "Anteckningar",
+    "notVoCollege": "Ej VO-College",
+    "year": "År",
+    "text": "Text",
+    "college": "VO-College",
+    "protected": "Skyddat",
+    "optional": "Valfritt",
+    "start": "Start",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "myAccount": "Mitt konto",
+    "managing": "Hanterar",
+    "validig": "Validig",
+    "from": "Från",
+    "to": "Till"
+  },
+  "diploma": {
+    "label": "Diplom",
+    "labels": {
+      "diplomas": "Diplom",
+      "createDiploma": "Skapa diplom",
+      "diplomaType": "Diplomtyp",
+      "president": "Ordförande (valfritt)",
+      "principal": "Rektor",
+      "credits": "Godkända poäng",
+      "education": "Utbildning",
+      "degree": "Examensbenämning",
+      "chooseAnEducator": "Välj en utbildare"
+    },
+    "messages": {
+      "intro": "För elever som uppfyller kraven på diplom. Yrkesexamen 2250 poäng och utvalda kurser eller yrkespaket i vård- och omsorgsutbildning eller barn- och fritidsutbildning mot funktionshinder 1500 poäng.",
+      "diplomasGenerated": "Diplomen har genererats",
+      "diplomaSaved": "Diplomet har sparats",
+      "diplomaDeleted": "Diplomet har raderats",
+      "saveBeforePrint": "Spara innan du skriver ut så att ett unikt id genereras och läggs in i dokumentet"
+    },
+    "diplomaTypes": {
+      "ung": "Ungdomsutbildning",
+      "vuxen": "Vuxenutbildning",
+      "yh": "YH-utbildning"
+    },
+    "education": {
+      "vardOchOmsorg": "Vård- och omsorgutbildning",
+      "barnFritid": "Barn- och fritidsutbildning med social inriktning"
+    },
+    "helpTexts": {
+      "creditsUng": "Antal godkända gymnasiepoäng, 2250 poäng",
+      "creditsVuxen": "Antalet godkända gymnasiepoäng, minst 1500 poäng",
+      "creditsYh": "Skriv antalet godkända poäng från yrkeshögskolan"
+    },
+    "template": {
+      "title": "Diplom",
+      "text": "För godkänd utbildning i lokalt certifierat Vård- och omsorgscollege",
+      "place": "Lokalt Vård- och omsorgscollege i ::college",
+      "president": "Ordförande i lokal styrgrupp",
+      "principal": "Rektor (eller motsvarande inom vuxenutbildningen)",
+      "certifiedSince": "::educator är certifierat sedan ::date",
+      "ungCredits": "::credits gymnasiepoäng",
+      "vuxenCredits": "::credits poäng",
+      "yhCredits": "::credits YH-poäng"
+    }
+  },
+  "certificate": {
+    "label": "Intyg",
+    "labels": {
+      "certificates": "Intyg",
+      "createCertificate": "Skapa intyg"
+    },
+    "messages": {
+      "intro": "För elever som har läst delar av en utbildning i ett VO-College men inte uppfyller kraven för diplom.",
+      "certificateSaved": "Intyget har sparats",
+      "certificateDeleted": "Intygt har raderats",
+      "certificatesGenerated": "Intygen har genererats"
+    },
+    "template": {
+      "title": "Intyg",
+      "subtitle": "Kurser i vård- och omsorgsutbildning",
+      "text1": "Intyget avser de delar av vård- och omsorgsutbildningen som är lästa inom Vård- och omsorgscollege och där eleven har godkända betyg",
+      "text2": "Har läst delar av vård- och omsorgsutbildningen inom ett Vård- och omsorgscollege och är godkänd i ::credits gymnasiepoäng",
+      "principal": "Rektor eller motsvarande",
+      "certifiedSince": "::college är certifierat sedan ::date"
+    }
+  },
+  "tutorCertificate": {
+    "label": "Handledarintyg",
+    "labels": {
+      "tutorCertificates": "Handledarintyg",
+      "createTutorCertificate": "Skapa handledarintyg",
+      "steps": "Steg",
+      "scope": "Omfattning"
+    },
+    "messages": {
+      "intro": "Intyg för handledarutbildning steg 1, 2, 1 & 2 och steg 3.",
+      "tutorCertificatesGenerated": "Handledarintygen har genererats",
+      "tutorCertificateSaved": "Handledarintyget har sparats",
+      "tutorCertificateDeleted": "Handledarintyget har raderats",
+      "scope": "Ange omfattning för denna handledarutbilning, t ex '3 dagar'. Detta fält är valfritt."
+    },
+    "template": {
+      "title": "Intyg",
+      "subtitle": "Handledarutbildning steg ::step",
+      "textStep1a": "För genomförd handledarutbildning inom vård och omsorg - steg 1.",
+      "textStep1b": "Kursen ger behörighet att handleda elever på reguljär utbildning (apl), praktikanter samt nyanställda",
+      "textStep2a": "För genomförd handledarutbildning inom vård och omsorg - steg 2.",
+      "textStep2b": "Kursen ger behörighet att arbeta som valideringshandledare och handledare för Yrkeshögskolestuderande (YH). Steg 1 och 2 tillsammans motsvarar kursen Vårdpedagogik och handledning samt VO-College struktur för handledarutbildning.",
+      "textStep3a": "För genomförd handledarutbildning inom vård och omsorg - steg 3.",
+      "textStep3b": "Kursen ger behörighet att arbeta som handledare för handledare.",
+      "textStep1Step2a": "För genomförd handledarutbildning inom vård och omsorg - steg 1 och 2.",
+      "textStep1Step2b": "Kursen ger behörighet att handleda elever på reguljär utbildning (apl), praktikanter och nyanställda samt att arbeta som valideringshandledare och handledare för Yrkeshögskolestuderande (YH). Steg 1 och 2 tillsammans motsvarar kursen Vårdpedagogik och handledning samt VO-College struktur för handledarutbildning.",
+      "responsible": "Utbildningsansvarig",
+      "region": "Regionalt Vård- och omsorgscollege ::region",
+      "and": "och",
+      "scope": "Kursens omfattning: ::scope"
+    }
+  },
+  "tutorAwardCertificate": {
+    "label": "Certifikat för Årets handledare",
+    "labels": {
+      "tutorAwardCertificates": "Certifikat för Årets handledare",
+      "createTutorAwardCertificate": "Skapa certifikat för Årets handledare",
+      "president": "Ordförande"
+    },
+    "messages": {
+      "intro": "För handledare som utnämnts till den lokala eller regionala utmärkelsen Årets handledare.",
+      "tutorAwardCertificateSaved": "Certifikatet har sparats",
+      "tutorAwardCertificateDeleted": "Certifikatet har raderats"
+    },
+    "template": {
+      "title": "Årets handledare",
+      "subtitle": "Vård- och omsorgscollege",
+      "has": "har utsett",
+      "tutorOfTheYear": "till Årets handledare ::year",
+      "presidentAt": "Ordförande för Vård- och omsorgscollege ::college",
+      "certifiedCollaboration": "Certifierad samverkan mellan utbildning och arbetsliv"
+    }
+  },
+  "careAssistantDiploma": {
+    "label": "Diplom för vårdbiträde",
+    "labels": {
+      "careAssistantDiplomas": "Diplom för vårdbiträde",
+      "createCareAssistantDiploma": "Skapa diplom för vårdbiträde"
+    },
+    "messages": {
+      "intro": "För elever som har slutfört yrkespaketet till vårdbiträde 800 poäng.",
+      "careAssistantDiplomasGenerated": "Diplomen har genererats",
+      "careAssistantDiplomaSaved": "Diplomet har sparats",
+      "careAssistantDiplomaDeleted": "Diplomet har raderats"
+    },
+    "template": {
+      "principal": "Rektor eller motsvarande",
+      "title": "Diplom",
+      "subtitle": "Vårdbiträde",
+      "text": "För godkänd utbildning till vårdbiträde enligt Vård- och omsorgscollege och Skolverkets yrkespaket på ::credits gymnasiepoäng",
+      "place": "Lokalt Vård- och omsorgscollege ::college"
+    }
+  },
+  "languageRepresentativeDiploma": {
+    "label": "Diplom för språkombud",
+    "labels": {
+      "languageRepresentativeDiplomas": "Diplom för språkombud",
+      "createLanguageRepresentativeDiploma": "Skapa diplom för språkombud",
+      "place": "Region/Ort",
+      "educator1": "Utbildare 1",
+      "educator2": "Utbildare 2"
+    },
+    "messages": {
+      "intro": "För diplom till de som genomgått utbildning till språkombud.",
+      "languageRepresentativeDiplomaSaved": "Diplomet för språkombud har sparats",
+      "languageRepresentativeDiplomaDeleted": "Diplomet för språkombud har raderats",
+      "languageRepresentativeDiplomasGenerated": "Diplomen för språkombud har genererats",
+      "participantsRetrievedFromCourseMoment": "Personerna hämtas från det valda kurstillfället."
+    },
+    "fieldsHelpers": {
+      "place": "Region/Ort behöver anges manuellt om 'Ej VO-College' är valt"
+    },
+    "template": {
+      "title": "Diplom",
+      "subtitle": "Tilldelas",
+      "signature": "Underskrift",
+      "educator": "Utbildare"
+    }
+  },
+  "languageRepresentativeEducatorDiploma": {
+    "label": "Diplom för språkombudsutbildare",
+    "labels": {
+      "languageRepresentativeEducatorDiplomas": "Diplom för språkombudsutbildare",
+      "createLanguageRepresentativeEducatorDiploma": "Skapa diplom för språkombudsutbildare",
+      "leader": "Kursledare",
+      "leader1": "Kursledare 1",
+      "leader2": "Kursledare 2",
+      "place": "Region/Ort"
+    },
+    "messages": {
+      "intro": "För diplom till de som utbildats till att utbilda språkombud (Nationell hantering).",
+      "languageRepresentativeEducatorDiplomaSaved": "Diplomet för språkombudsutbildare har sparats",
+      "languageRepresentativeEducatorDiplomaDeleted": "Diplomet för språkombudsutbildare har raderats",
+      "languageRepresentativeEducatorDiplomasGenerated": "Diplomen för språkombudsutbildare har genererats"
+    },
+    "template": {
+      "leader": "Kursledare"
+    }
+  },
+  "collegeCertificate": {
+    "label": "Certifikat för VO-College",
+    "labels": {
+      "collegeCertificates": "Certifikat för VO-College",
+      "createCollegeCertificate": "Skapa certifikat för College",
+      "from": "Från",
+      "to": "Till"
+    },
+    "messages": {
+      "intro": "Certifikat för nybildade och återcertifierade VO-College (Nationell hantering).",
+      "collegeCertificateSaved": "Certifikatet har sparats",
+      "collegeCertificateDeleted": "Certifikatet har raderats"
+    },
+    "template": {
+      "title": "Certifikat",
+      "subtitle": "Vård- och omsorgscollege",
+      "text": "har uppfyllt gällande kvalitetskriterier för",
+      "text2": "::type Vård- och omsorgscollege och är certifierad",
+      "region": "regionalt",
+      "local": "lokalt"
+    }
+  },
+  "courseMoment": {
+    "label": "Kurstillfälle",
+    "labels": {
+      "courseMoments": "Kurstillfällen",
+      "createCoruseMoment": "Skapa kurstillfälle",
+      "orderer": "Beställare",
+      "collegeBelonging": "Vilket VO-College tillhör du som utbildare?",
+      "ordererCollege": "På uppdrag av",
+      "describeTheOrderer": "Beskriv vem som är uppdragsgivare, till exempel äldreboende, hemtjänst...",
+      "stakeholders": "Intressenter "
+    },
+    "messages": {
+      "intro": "Här skapar du grupplista för hela utbildningen. Kurstillfälle = hela utbildningen. Börja här innan du skapar diplom.",
+      "courseMomentSaved": "Kurstillfället har sparats",
+      "courseMomentDeleted": "Kurstillfället har raderats",
+      "stakeholdersExplanation": "Intressenter är användare som kommer att få tillgång till alla diplom som kopplas till detta kurstillfälle."
+    }
+  },
+  "participant": {
+    "label": "Deltagare",
+    "labels": {
+      "participants": "Deltagare",
+      "createParticipant": "Skapa deltagare",
+      "participantsInCourseMoment": "Deltagare i ::courseMoment",
+      "employer": "Namn på arbetsgivare"
+    },
+    "messages": {
+      "participantSaved": "Deltagaren har sparats",
+      "participantDeleted": "Deltagaren har raderats"
+    },
+    "workplaces": {
+      "aldreboende": "Äldreboende",
+      "hemtjanst": "Hemtjänst",
+      "hemvard": "Hemvård",
+      "lss": "LSS",
+      "psykiatri": "Psykiatri",
+      "sjukhus": "Sjukhus",
+      "vardcentral": "Vårdcentral",
+      "annat": "Annat"
+    },
+    "employers": {
+      "kommun": "Kommun",
+      "region": "Region",
+      "privat": "privat"
+    }
+  },
+  "vocertIntro": {
+    "next": "Nästa",
+    "previous": "Föregående",
+    "done": "Klart",
+    "tip": "Tips",
+    "createMultipleItems": "Nu är det möjligt att skapa både ett eller fler diplom/intyg på en och samma gång.",
+    "handlePersons": "Hantera personerna för detta diplom/intyg här",
+    "commonFields": "Dessa fält blir gemensamma för alla personer som är inlagda",
+    "downloadFromList": "Här kan du ladda ner och skriva ut diplomet/intyget"
+  },
+  "sites": {
+    "vocollege": {
+      "label": "VO-College"
+    },
+    "spraketpajobbet": {
+      "label": "Språket på jobbet"
+    }
+  },
+  "statistics": {
+    "labels": {
+      "statistics": "Statistik"
+    }
+  }
 }

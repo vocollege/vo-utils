@@ -1,17 +1,20 @@
 import React from "react";
-import { Route, RouteProps, Navigate } from "react-router-dom";
+import { Route, RouteProps, Navigate, RouteObject } from "react-router-dom";
 // import { useSnackbar } from "notistack";
 import { toast } from "react-toastify";
 
 // Custom.
 import { VoConfig, VoAuth } from "@vocollege/app";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
-interface ProtectedRouteProps extends RouteProps {
+interface ProtectedRouteType {
   component: any;
-  action: string;
+  action: RouteObject["action"];
   subject?: string;
+  path?: string;
 }
+
+type ProtectedRouteProps = RouteObject & ProtectedRouteType;
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   component: Component,
@@ -36,26 +39,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   return isVisible() ? (
     <Component {...rest} />
   ) : (
-    <Navigate to={VoConfig.get.HOME} />
+    <Navigate to={VoConfig.get.HOME || "/"} />
   );
-
-  //   return (
-  //     <Route
-  //       path={path || ""}
-  //       {...rest}
-  //       render={(props) => {
-  //         return isVisible() ? (
-  //           <Component {...props} />
-  //         ) : (
-  //           <Redirect
-  //             to={{
-  //               pathname: VoConfig.get.HOME,
-  //               state: { from: props.location },
-  //             }}
-  //           />
-  //         );
-  //       }}
-  //     />
-  //   );
 };
 export default ProtectedRoute;

@@ -10,7 +10,7 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import { FileManagerBottomAreaProps } from "../global";
 import { useStyles } from "./styles";
 import FileManagerIcon from "../Element/FileManagerIcon";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 const FileManagerBottomArea: React.FC<FileManagerBottomAreaProps> =
   React.forwardRef((props, ref: React.Ref<HTMLDivElement>) => {

@@ -21,7 +21,14 @@ export default function EnhancedTableHead(props: EnhancedTableHeadProps) {
       onRequestSort(event, property.toUpperCase());
     };
   return (
-    <TableHead>
+    <TableHead
+      sx={(theme) => ({
+        backgroundColor: theme.palette.common.white,
+        position: "sticky",
+        top: 0,
+        zIndex: 1,
+      })}
+    >
       <TableRow>
         {columns.map((column: EnhancedTableColumns, index: number) => (
           <TableCell
@@ -31,18 +38,25 @@ export default function EnhancedTableHead(props: EnhancedTableHeadProps) {
               width: column.width || "auto",
             }}
           >
-            <TableSortLabel
-              active={orderBy === column.field.toLowerCase()}
-              direction={orderBy === column.field.toLowerCase() ? order : "asc"}
-              onClick={createSortHandler(column.field)}
-            >
-              {column.title}
-              {orderBy === column.field ? (
-                <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </span>
-              ) : null}
-            </TableSortLabel>
+            {column.disableSort && column.title}
+            {!column.disableSort && (
+              <TableSortLabel
+                active={orderBy === column.field.toLowerCase()}
+                direction={
+                  orderBy === column.field.toLowerCase() ? order : "asc"
+                }
+                onClick={createSortHandler(column.field)}
+              >
+                {column.title}
+                {orderBy === column.field ? (
+                  <span className={classes.visuallyHidden}>
+                    {order === "desc"
+                      ? "sorted descending"
+                      : "sorted ascending"}
+                  </span>
+                ) : null}
+              </TableSortLabel>
+            )}
           </TableCell>
         ))}
         {actionButtons && (

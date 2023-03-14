@@ -15,7 +15,7 @@ import VoTextField from "../../VoTextField";
 import { useStyles } from "./styles";
 import { FileManagerHeaderProps } from "../global";
 import { reducer, initialState } from "./state";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 let typingTimer: number;
 

@@ -43,14 +43,16 @@ class VoConfig {
     HOME: "",
     HOME_AUTHENTICATED: "",
 
-    AUTH_STORAGE_STATE: "voapp_state",
-    AUTH_STORAGE_VERIFIER: "voapp_verifier",
-    AUTH_STORAGE_REFRESH_TOKEN: "voapp_refreshtoken",
-    AUTH_STORAGE_ACCESS_TOKEN: "voapp_accesstoken",
-    AUTH_STORAGE_TOKEN_TYPE: "voapp_tokentype",
-    AUTH_STORAGE_EXPIRES_IN: "voapp_expiresin",
+    AUTH_STORAGE_STATE: "vo_state",
+    AUTH_STORAGE_VERIFIER: "vo_verifier",
+    AUTH_STORAGE_REFRESH_TOKEN: "vo_rtoken",
+    AUTH_STORAGE_ACCESS_TOKEN: "vo_atoken",
+    // AUTH_STORAGE_TOKEN_TYPE: "voapp_tokentype",
+    // AUTH_STORAGE_EXPIRES_IN: "voapp_expiresin",
+    AUTH_DOMAIN: ".vo-college.se",
 
     CURRENT_GROUP: "vo_group",
+    MASQUERADE_USER: "vo_masquerade",
   };
 
   setConfig(config: VoConfigType) {

@@ -35,6 +35,7 @@ import {
 import { useStyles } from "./styles";
 import { fakeMutation } from "@vocollege/app";
 import VoLoader from "../VoLoader";
+import VoApi from "@vocollege/app/dist/modules/VoApi";
 
 const FileManager: React.FC<FileManagerProps> = (props) => {
   const {
@@ -111,40 +112,53 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
           let variables = {
             id: element.id,
           };
-          switch (element.__typename) {
-            case "Portfolio":
-              await deletePortfolio({
-                variables,
-              });
-              break;
-            case "Folder":
-              await deleteFolder({
-                variables,
-              });
-              break;
-            case "File":
-              await deleteFile({
-                variables,
-              });
-              break;
-          }
-          if (refetch) {
-            refetch();
+          try {
+            switch (element.__typename) {
+              case "Portfolio":
+                await deletePortfolio({
+                  variables,
+                });
+                break;
+              case "Folder":
+                await deleteFolder({
+                  variables,
+                });
+                break;
+              case "File":
+                await deleteFile({
+                  variables,
+                });
+                break;
+            }
+            refetchElements();
+          } catch (error: any) {
+            toast.error(error.message);
+            console.error(error);
           }
         });
         break;
       case "download":
-        setRetrieving(I18n.get.docs.label.downloading);
-        url = await VoDocs.getTemporaryFileUrl(element.id);
-        downloadFile(url.data);
+        try {
+          setRetrieving(I18n.get.docs.label.downloading);
+          url = await VoDocs.getTemporaryFileUrl(element.id);
+          downloadFile(url.data);
+        } catch (error: any) {
+          toast.error(error.response.data.message);
+          console.error(error);
+        }
         setRetrieving(null);
         break;
       case "copy_url":
-        setRetrieving(I18n.get.docs.label.retrievingLink);
-        let response = await VoDocs.getTemporaryFileUrl(element.id);
-        url = response.data.split("?");
-        window.navigator.clipboard.writeText(url[0]);
-        toast.success(I18n.get.docs.messages.linkCopiedToClipboard);
+        try {
+          setRetrieving(I18n.get.docs.label.retrievingLink);
+          let response = await VoDocs.getTemporaryFileUrl(element.id);
+          url = response.data.split("?");
+          window.navigator.clipboard.writeText(url[0]);
+          toast.success(I18n.get.docs.messages.linkCopiedToClipboard);
+        } catch (error: any) {
+          toast.error(error.response.data.message);
+          console.error(error);
+        }
         setRetrieving(null);
         break;
     }
@@ -163,8 +177,18 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
 
   const handleFormChange = (element: FileManagerFolderElement) => {
     closeForm(`open${element.__typename}Form`);
-    if (refetch) {
-      refetch();
+    refetchElements();
+  };
+
+  const refetchElements = async () => {
+    if (client) {
+      await client.refetchQueries({
+        include: [operations.get],
+      });
+    } else {
+      await VoApi.graphqlClient.refetchQueries({
+        include: [operations.get],
+      });
     }
   };
 
@@ -234,6 +258,7 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
   const [deleteFile, { loading: deleteFileLoading }] = useMutation(
     operations?.deleteFile || fakeMutation
   );
+
   const [
     loadData,
     {
@@ -241,7 +266,6 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
       loading: queryLoading,
       error: queryError,
       called: queryCalled,
-      refetch,
     },
   ] = useLazyQuery(operations.get, {
     fetchPolicy: "cache-and-network",
@@ -316,7 +340,7 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
           />
         </Toolbar>
       </Slide>
-      {retrieving && <VoLoader title={retrieving} />}
+      {retrieving && <VoLoader title={retrieving || ""} />}
       {isLoading() && (
         <div className={classes.loaderWrapper}>
           <CircularProgress color="primary" />

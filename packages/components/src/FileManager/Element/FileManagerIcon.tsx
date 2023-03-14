@@ -12,6 +12,8 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import GridOnIcon from "@mui/icons-material/GridOn";
 import PublicIcon from "@mui/icons-material/Public";
 import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 // Custom.
 import { FileManagerIconProps } from "../global";
@@ -28,16 +30,31 @@ const FileManagerIcon: React.FC<FileManagerIconProps> = (props) => {
   const isImage = () => {
     return element.filetype.indexOf("image") > -1;
   };
-  switch (element.__typename) {
+  switch (element.type) {
     case "Portfolio":
+      let icons: React.ReactNode = <></>;
+      if (element.status === 1) {
+        icons = <PublicIcon color="primary" />;
+      }
+      icons = (
+        <>
+          {icons}
+          {!isDiskPublic(element) ? (
+            <LockIcon color="error" />
+          ) : (
+            <LockOpenIcon color="secondary" />
+          )}
+        </>
+      );
       return (
         <Badge
-          badgeContent={<PublicIcon color="error" />}
+          badgeContent={icons}
           color="primary"
           classes={{
             badge: clsx(classes.badge, classes.imageBadgeWithIcon),
           }}
-          invisible={!isDiskPublic(element)}
+          invisible={invisibleBadge}
+          // invisible={invisibleBadge || !isDiskPublic(element)}
         >
           <BusinessCenterIcon
             classes={classesProp}

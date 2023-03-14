@@ -60,8 +60,15 @@ export const GET_CARDS = gql`
     $page: Int
     $limit: Int
     $orderBy: [GetCardsOrderByClause]
+    $filters: [GetCardsFilter]
   ) {
-    cards(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
+    cards(
+      search: $search
+      page: $page
+      limit: $limit
+      orderBy: $orderBy
+      filters: $filters
+    ) {
       paginatorInfo {
         total
         currentPage

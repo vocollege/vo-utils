@@ -7,7 +7,8 @@ import { ButtonProps } from "@mui/material/Button";
 import {
   FileManagerFolderElement,
   FileManagerPortfolio,
-} from "FileManager/global";
+} from "@/FileManager/global";
+import React from "react";
 
 export interface TabPanelProps {
   children?: React.ReactNode;
@@ -48,6 +49,7 @@ export interface FormProps extends FormNakedProps {
     toolbar?: string;
     formTabs?: string;
     formWrapper?: string;
+    header?: string;
   };
   disableToolbar?: boolean;
   onFormChange?: (formState: { isDirty: boolean; isValid: boolean }) => void;
@@ -57,6 +59,7 @@ export interface FormProps extends FormNakedProps {
   onDataChange?: (data: any, fetchedData: any) => void;
   loadQueryOnParamsChange?: boolean;
   toolbarProps?: FormToolbarProps;
+  header?: React.ReactNode;
 }
 
 export interface FormNakedProps {
@@ -167,11 +170,13 @@ export interface FormToolbarProps {
     cancelButton?: FormToolbarButton;
   };
   className?: string;
+  extraActions?: React.ReactNode;
 }
 
 export interface FormToolbarButton {
   disabled?: boolean;
   hideLabel?: boolean;
+  label?: string;
 }
 
 export interface FormFieldContentListProps {
@@ -234,13 +239,15 @@ export interface FormFieldSortableTreeItemFormProps {
   title?: string;
   open: boolean;
   // types: string[];
-  onChange?: (
-    item: FormFieldSortableTreeItem,
-    path: FormFieldNumberOrStringArray
-  ) => void;
+  onChange?: (item: FormFieldSortableTreeItem, path: number[]) => void;
+  // onChange?: (
+  //   item: FormFieldSortableTreeItem,
+  //   path: FormFieldNumberOrStringArray
+  // ) => void;
   onCancel?: () => void;
   item?: TreeItem | null;
-  itemPath?: FormFieldNumberOrStringArray | null;
+  itemPath?: number[] | null;
+  // itemPath?: FormFieldNumberOrStringArray | null;
   dialog?: EntityPickerDialogProps;
 }
 
@@ -256,6 +263,8 @@ export interface EntityPickerProps {
   disableButtonLabel?: boolean;
   buttonLabel?: React.ReactElement;
   buttonColor?: ButtonProps["color"];
+  buttonTitle?: string;
+  icon?: React.ReactNode;
 }
 
 export interface EntityPickerDialogProps {
@@ -269,6 +278,7 @@ export interface EntityPickerDialogProps {
   query?: DocumentNode;
   category?: string;
   variables?: { [key: string]: any };
+  client?: ApolloClient<object>;
 }
 
 export interface FormFieldUrlFieldProps {

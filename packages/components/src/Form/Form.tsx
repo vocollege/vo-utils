@@ -20,21 +20,21 @@ import clsx from "clsx";
 
 // Custom.
 // import { VoAuth } from "@vocollege/app";
-import VoTextField from "VoTextField";
-import VoTextArea from "VoTextArea";
+import VoTextField from "@/VoTextField";
+import VoTextArea from "@/VoTextArea";
 import {
   VoDatePickerField,
   VoDateTimePickerField,
   VoTimePickerField,
-} from "VoPickerField";
-import VoSelectField, { VoSelectFieldAvailableValue } from "VoSelectField";
+} from "@/VoPickerField";
+import VoSelectField, { VoSelectFieldAvailableValue } from "@/VoSelectField";
 import ContentList from "./fields/ContentList";
 import SortableTree from "./fields/SortableTree";
 import UrlField from "./fields/UrlField";
 import EntityField from "./fields/EntityField";
 import TagsField from "./fields/TagsField";
 import FileField from "./fields/FileField";
-import Switch from "Switch";
+import Switch from "@/Switch";
 import { reducer } from "./state";
 import { useStyles } from "./styles";
 import {
@@ -49,10 +49,10 @@ import {
 import FormTabs from "./FormTabs";
 import FormViews from "./FormViews";
 import FormToolbar from "./FormToolbar";
-import VoLoader from "VoLoader";
-import ErrorBox from "ErrorBox";
-import Editor from "Editor";
-import { FileManagerFolderElement } from "FileManager/global";
+import VoLoader from "@/VoLoader";
+import ErrorBox from "@/ErrorBox";
+import Editor from "@/Editor";
+import { FileManagerFolderElement } from "@/FileManager/global";
 import { stylesLayout } from "@vocollege/theme";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { fakeMutation } from "@vocollege/app";
@@ -60,6 +60,8 @@ import Location from "./fields/Location";
 import Checkboxes from "./fields/Checkboxes";
 import TransferList from "./fields/TransferList";
 // import * as Helpers from "@vocollege/app/dist/modules/VoHelpers";
+// import { GeneralObject } from "@vocollege/app/dist/global";
+import { getError } from "@vocollege/app/dist/modules/VoHelpers";
 
 // const useStylesCommon = makeStyles(() => stylesCommon);
 const useStylesLayout = makeStyles(() => stylesLayout);
@@ -90,6 +92,7 @@ const Form: React.FC<FormProps> = (props) => {
     onDataChange,
     loadQueryOnParamsChange = false,
     toolbarProps,
+    header,
   } = props;
   const classes = useStyles();
   useStylesLayout();
@@ -579,13 +582,11 @@ const Form: React.FC<FormProps> = (props) => {
     }
 
     if (field.render) {
-      if (field?.overrideValue) {
-        handleChangeCustomField(
-          field.name,
-          field.overrideValue,
-          field.onChange
-        );
-      }
+      // @note
+      // field?.overrideValue
+      // Look at useEffect(() => {}, [tabs])
+      // If placed here it causes infinite loop on React.
+
       return field.render(state[field.name], data);
     }
 
@@ -779,7 +780,7 @@ const Form: React.FC<FormProps> = (props) => {
         format = getDefaultDateFormat(field);
         return (
           <VoDatePickerField
-            renderInput={(params) => (
+            renderInput={(params: any) => (
               <VoTextField
                 name={field.name}
                 required={field?.required}
@@ -795,7 +796,7 @@ const Form: React.FC<FormProps> = (props) => {
             )}
             label={field.label}
             value={state[field.name] ? Dayjs(state[field.name], format) : null}
-            onChange={(value) =>
+            onChange={(value: any) =>
               handleChangeDate(field.name, value, field.onChange, format)
             }
             inputFormat={format}
@@ -806,7 +807,7 @@ const Form: React.FC<FormProps> = (props) => {
         format = getDefaultDateFormat(field);
         return (
           <VoDateTimePickerField
-            renderInput={(params) => (
+            renderInput={(params: any) => (
               <VoTextField
                 name={field.name}
                 required={field?.required}
@@ -822,7 +823,7 @@ const Form: React.FC<FormProps> = (props) => {
             )}
             label={field.label}
             value={state[field.name] ? Dayjs(state[field.name], format) : null}
-            onChange={(value) =>
+            onChange={(value: any) =>
               handleChangeDate(field.name, value, field.onChange, format)
             }
             inputFormat={format}
@@ -833,7 +834,7 @@ const Form: React.FC<FormProps> = (props) => {
         format = getDefaultDateFormat(field);
         return (
           <VoTimePickerField
-            renderInput={(params) => (
+            renderInput={(params: any) => (
               <VoTextField
                 name={field.name}
                 required={field?.required}
@@ -849,7 +850,7 @@ const Form: React.FC<FormProps> = (props) => {
             )}
             label={field.label}
             value={state[field.name] ? Dayjs(state[field.name], format) : null}
-            onChange={(value) =>
+            onChange={(value: any) =>
               handleChangeDate(field.name, value, field.onChange, format)
             }
             inputFormat={format}
@@ -981,9 +982,25 @@ const Form: React.FC<FormProps> = (props) => {
   const handleError = (error: any) => {
     console.error("error", error);
     setValidationError(error.graphQLErrors);
-    toast.error(error.message, {
-      autoClose: getToastAutoCloseTime(error.message),
-    });
+    let errorMessages = getError(error);
+    if (errorMessages.fields) {
+      Object.keys(errorMessages.fields).forEach((field: string) => {
+        let message =
+          errorMessages?.fields && errorMessages.fields[field]
+            ? errorMessages.fields[field].join(" | ")
+            : null;
+
+        if (message) {
+          toast.error(message, {
+            autoClose: getToastAutoCloseTime(message),
+          });
+        }
+      });
+    } else {
+      toast.error(errorMessages.message, {
+        autoClose: getToastAutoCloseTime(error.message),
+      });
+    }
   };
 
   const getOperation = () => {
@@ -998,12 +1015,16 @@ const Form: React.FC<FormProps> = (props) => {
       if (field.indexOf(".") > -1) {
         let fieldParts = field.split(".");
         if (fieldParts.length === 3) {
-          mergedData[field] = data[fieldParts[0]][fieldParts[1]][fieldParts[2]];
+          mergedData[field] =
+            data[fieldParts[0]][fieldParts[1]][fieldParts[2]] ||
+            initialState[field];
         } else {
-          mergedData[field] = data[fieldParts[0]][fieldParts[1]];
+          mergedData[field] =
+            data[fieldParts[0]][fieldParts[1]] || initialState[field];
         }
       } else {
-        mergedData[field] = data[operations.category][field];
+        mergedData[field] =
+          data[operations.category][field] || initialState[field];
       }
     });
     dispatch({
@@ -1148,6 +1169,20 @@ const Form: React.FC<FormProps> = (props) => {
     }
   }, [params]);
 
+  useEffect(() => {
+    let customFields: FormField[] = [];
+    tabs.forEach((tab: FormTabProps) => {
+      customFields = customFields.concat(
+        tab.fields.filter(
+          (field: FormField) => field.type === "custom" && field?.overrideValue
+        )
+      );
+    });
+    customFields.forEach((field: FormField) => {
+      handleChangeCustomField(field.name, field.overrideValue, field?.onChange);
+    });
+  }, [tabs]);
+
   if (queryError) {
     toast.error(queryError.message, {
       autoClose: getToastAutoCloseTime(queryError.message),
@@ -1180,7 +1215,9 @@ const Form: React.FC<FormProps> = (props) => {
           autoComplete="off"
           encType="multipart/form-data"
         >
-          {/* <div style={{ marginTop: 100 }}>{JSON.stringify(state)}</div>
+          {/* <div style={{ marginTop: 100, maxWidth: 500 }}>
+            {JSON.stringify(state)}
+          </div>
           <div style={{ marginTop: 100 }}>{JSON.stringify(getValues())}</div>
           <div style={{ marginTop: 100 }}>{JSON.stringify(formState)}</div>
           <div style={{ marginTop: 100 }}>{JSON.stringify(errors)}</div> */}
@@ -1206,6 +1243,11 @@ const Form: React.FC<FormProps> = (props) => {
               }}
               className={classesProp?.toolbar}
             />
+          )}
+          {header && (
+            <div className={clsx(classes.formHeader, classesProp?.header)}>
+              {header}
+            </div>
           )}
           <Paper
             elevation={10}

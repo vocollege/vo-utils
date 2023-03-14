@@ -40,8 +40,8 @@ export const initialState = {
   personal_number: "",
   address1: "",
   address2: "",
-  zip: "",
-  county: "",
+  postalcode: "",
+  town: "",
   country: "",
   phone1: "",
   phone2: "",
@@ -209,8 +209,8 @@ const AccountDialog: React.FC<AccountDialogProps> = (props) => {
             },
           },
           {
-            name: "zip",
-            label: I18n.get.user.labels.zip,
+            name: "postalcode",
+            label: I18n.get.user.labels.postalcode,
             type: "text",
             grid: {
               xs: 12,
@@ -218,8 +218,8 @@ const AccountDialog: React.FC<AccountDialogProps> = (props) => {
             },
           },
           {
-            name: "county",
-            label: I18n.get.user.labels.county,
+            name: "town",
+            label: I18n.get.user.labels.town,
             type: "text",
             grid: {
               xs: 12,

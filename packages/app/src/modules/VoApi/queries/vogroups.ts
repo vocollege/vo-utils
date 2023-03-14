@@ -85,8 +85,8 @@ export const GET_GROUP = gql`
 `;
 
 export const GET_AVAILABLE_GROUPS = gql`
-  query Group($categories: [String]) {
-    allGroups(categories: $categories) {
+  query Group($categories: [String], $byPassMembership: Boolean) {
+    allGroups(categories: $categories, byPassMembership: $byPassMembership) {
       id
       title
       category
@@ -100,8 +100,15 @@ export const GET_GROUPS = gql`
     $page: Int
     $limit: Int
     $orderBy: [GetGroupsOrderByClause]
+    $filters: [GetGroupsFilter]
   ) {
-    groups(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
+    groups(
+      search: $search
+      page: $page
+      limit: $limit
+      orderBy: $orderBy
+      filters: $filters
+    ) {
       paginatorInfo {
         total
         currentPage

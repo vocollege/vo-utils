@@ -26,7 +26,7 @@ import {
 } from "@vocollege/app/dist/modules/VoApi/graphql";
 // import VoAuth from "@vocollege/app/dist/modules/VoAuth";
 // import VoLoader from "../../VoLoader";
-import VoTextField from "../../VoTextField";
+import VoTextField from "@/VoTextField";
 import { regexPatterns, reducer } from "@vocollege/app/dist/modules/VoHelpers";
 import { AccountFormProps } from "./global";
 
@@ -244,7 +244,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.email || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -267,7 +270,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.name || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -290,7 +296,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.firstname || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -313,7 +322,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.lastname || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -362,7 +374,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.profession || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -392,7 +407,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.personal_number || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -411,7 +429,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.address1 || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -430,7 +451,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.address2 || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -449,26 +473,32 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.postalcode || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <Controller
-              name="county"
+              name="town"
               control={control}
               render={({ field }) => (
                 <VoTextField
                   {...field}
-                  label={I18n.get.user.labels.county}
+                  label={I18n.get.user.labels.town}
                   variant="filled"
                   fullWidth
                   onChange={handleChange}
-                  value={state.county || ""}
+                  value={state.town || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -487,7 +517,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.country || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -506,7 +539,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.phone1 || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -525,7 +561,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.phone2 || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -544,7 +583,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.workplace || ""}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -597,7 +639,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.password}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />
@@ -632,7 +677,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                   value={state.password_repeat}
                   size="small"
                   error={!!errors[field.name]}
-                  helperText={errors[field.name] && errors[field.name]?.message}
+                  helperText={
+                    errors[field.name] &&
+                    (`${errors[field.name]?.message}` as string)
+                  }
                 />
               )}
             />

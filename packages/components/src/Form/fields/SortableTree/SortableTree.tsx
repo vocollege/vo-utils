@@ -7,8 +7,8 @@ import SortableTreeLib, {
   TreeItem,
   changeNodeAtPath,
   getFlatDataFromTree,
-  NodeData,
-  FullTree,
+  // NodeData,
+  // FullTree,
   // OnMovePreviousAndNextLocation,
 } from "@nosferatu500/react-sortable-tree";
 import Button from "@mui/material/Button";
@@ -28,7 +28,7 @@ import {
 } from "../../global";
 import { useStyles } from "./styles";
 import { stylesActions } from "@vocollege/theme";
-import FloatingButton from "FloatingButton";
+import FloatingButton from "@/FloatingButton";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import SortableTreeItemForm from "./SortableTreeItemForm";
 import { stylesCommon } from "@vocollege/theme";
@@ -78,9 +78,10 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
   useStylesActions();
   useStylesCommon();
   const [item, setItem] = useState<TreeItem | null | undefined>(null);
-  const [itemPath, setItemPath] = useState<
-    FormFieldNumberOrStringArray | null | undefined
-  >(null);
+  const [itemPath, setItemPath] = useState<number[] | null | undefined>(null);
+  // const [itemPath, setItemPath] = useState<
+  //   FormFieldNumberOrStringArray | null | undefined
+  // >(null);
   const [isChanged, setIsChanged] = useState(false);
   const [treeData, setTreeData] = useState<any>([]);
   const [openSortableTreeItemForm, setOpenSortableTreeItemForm] =
@@ -115,7 +116,8 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
     }
   };
 
-  const editItem = (node: TreeItem, path: FormFieldNumberOrStringArray) => {
+  // const editItem = (node: TreeItem, path: FormFieldNumberOrStringArray) => {
+  const editItem = (node: TreeItem, path: number[]) => {
     setItem(node);
     setItemPath(path);
     setOpenSortableTreeItemForm(true);
@@ -148,8 +150,8 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
     if (newItem.id !== "0") {
       newTreeData = changeNodeAtPath({
         treeData,
-        // path: path || [],
-        path: path && typeof path === "number" ? path : [],
+        path: path || [],
+        // path: path && typeof path === "number" ? path : [],
         getNodeKey,
         newNode: { ...newItem },
       });
@@ -255,7 +257,9 @@ const SortableTree: React.FC<FormFieldSortableTreeProps> = (props) => {
         {treeData.length > 0 && (
           <SortableTreeLib
             treeData={treeData}
-            onChange={(treeData) => setTreeData(treeData)}
+            onChange={(treeData) => {
+              setTreeData(treeData);
+            }}
             generateNodeProps={(data) => getNodeProps(data)}
             onMoveNode={handleOnMove}
             // isVirtualized={false}

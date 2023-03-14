@@ -6,6 +6,7 @@ import GraphClient from "../VoApi/GraphClient";
 import VoBase from "../VoBase";
 // import VoAuth from '../VoAuth';
 import VoConfig from "../VoConfig";
+import VoGroups from "../VoGroups";
 
 class VoDocs extends VoBase {
   graphqlClient: any;
@@ -21,9 +22,17 @@ class VoDocs extends VoBase {
     return VoConfig.get.DOCS_BASE_URL + "" + VoConfig.get.DOCS_GRAPHQL;
   }
 
-  async getTemporaryFileUrl(id: string) {
+  async getTemporaryFileUrl(id: string, publicDownload = false) {
     try {
-      const url = `${this.getUrl}/docs/download/${id}`;
+      let currentGroup = VoGroups.getCurrent(true);
+      axios.defaults.headers.common["VoGroup"] = currentGroup
+        ? currentGroup.id
+        : "";
+      let endpoint = "download";
+      if (publicDownload) {
+        endpoint = "download-public";
+      }
+      const url = `${this.getUrl}/docs/${endpoint}/${id}`;
       return axios.get(url);
     } catch (error) {
       throw error;

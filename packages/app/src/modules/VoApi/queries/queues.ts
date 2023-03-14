@@ -96,8 +96,15 @@ export const GET_QUEUES = gql`
     $page: Int
     $limit: Int
     $orderBy: [GetQueuesOrderByClause]
+    $filters: [GetQueuesFilter]
   ) {
-    queues(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
+    queues(
+      search: $search
+      page: $page
+      limit: $limit
+      orderBy: $orderBy
+      filters: $filters
+    ) {
       paginatorInfo {
         total
         currentPage

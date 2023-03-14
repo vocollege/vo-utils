@@ -18,8 +18,8 @@ import {
 } from "../../global";
 import { useStyles } from "./styles";
 import EntityPicker from "../EntityPicker";
-import FileManagerPicker from "FileManager/Picker";
-import { FileManagerFolderElement } from "FileManager/global";
+import FileManagerPicker from "@/FileManager/Picker";
+import { FileManagerFolderElement } from "@/FileManager/global";
 
 export const reorder = (
   list: any,

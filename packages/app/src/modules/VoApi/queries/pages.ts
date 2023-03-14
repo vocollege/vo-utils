@@ -51,8 +51,15 @@ export const GET_PAGES = gql`
     $page: Int
     $limit: Int
     $orderBy: [GetPagesOrderByClause]
+    $filters: [GetPagesFilter]
   ) {
-    pages(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
+    pages(
+      search: $search
+      page: $page
+      limit: $limit
+      orderBy: $orderBy
+      filters: $filters
+    ) {
       paginatorInfo {
         total
         currentPage

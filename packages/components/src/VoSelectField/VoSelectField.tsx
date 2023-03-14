@@ -66,6 +66,7 @@ const VoSelectField: React.FC<VoSelectFieldProps> = (props) => {
         [classes.fullWidth]: fullWidth,
         [classes.error]: error,
       })}
+      size="small"
     >
       {label && (
         <InputLabel required={SelectProps.required}>{label}</InputLabel>
@@ -73,7 +74,6 @@ const VoSelectField: React.FC<VoSelectFieldProps> = (props) => {
       <Select
         {...SelectProps}
         classes={{
-          // root: classes.root,
           select: classes.select,
         }}
         MenuProps={MenuProps}
@@ -89,7 +89,14 @@ const VoSelectField: React.FC<VoSelectFieldProps> = (props) => {
                   }
                 />
               )}
-              <ListItemText primary={v.label} />
+              <ListItemText
+                primary={v.label}
+                primaryTypographyProps={{
+                  sx: (theme) => ({
+                    fontSize: `${theme.typography.body1.fontSize} !important`,
+                  }),
+                }}
+              />
             </MenuItem>
           ))}
       </Select>

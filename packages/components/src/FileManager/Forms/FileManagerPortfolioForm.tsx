@@ -11,6 +11,7 @@ const initialState = {
   name: "",
   title: "",
   description: "",
+  status: 0,
 };
 
 const getAvailableDiskValues = () => {
@@ -44,8 +45,21 @@ const FileManagerPortfolioForm: React.FC<FileManagerFormProps> = (props) => {
           },
           params: {
             availableValues: getAvailableDiskValues,
+            helperText: I18n.get.docs.helperText.diskName,
           },
           // onChange: handleCategoryChange,
+        },
+        {
+          name: "status",
+          label: I18n.get.status.published,
+          type: "switch",
+          required: true,
+          grid: {
+            xs: 12,
+          },
+          params: {
+            helperText: I18n.get.docs.helperText.status,
+          },
         },
 
         // {

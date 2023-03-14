@@ -5,12 +5,13 @@ export const GET_PORTFOLIO = gql`
     portfolio(id: $id) {
       id
       disk
+      status
       name
-      disk
       title
       description
       created_at
       updated_at
+      type
     }
   }
 `;
@@ -31,12 +32,13 @@ export const GET_PORTFOLIOS = gql`
       data {
         id
         disk
+        status
         name
-        disk
         title
         description
         created_at
         updated_at
+        type
       }
     }
   }
@@ -97,6 +99,7 @@ export const GET_FOLDER_ELEMENTS = gql`
           description
           created_at
           updated_at
+          type
         }
         ... on File {
           id
@@ -112,6 +115,7 @@ export const GET_FOLDER_ELEMENTS = gql`
           updated_at
           url
           previewUrl
+          type
         }
       }
     }

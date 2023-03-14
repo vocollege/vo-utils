@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Editor as TinyMCEEditor } from "@tinymce/tinymce-react";
-import { Editor as TinyMCEEditorClass, RawEditorSettings } from "tinymce";
+import { Editor as TinyMCEEditorClass, RawEditorOptions } from "tinymce";
 import { jssPreset } from "@mui/styles";
 import jss from "jss";
 import Typography from "@mui/material/Typography";
 
 // Custom.
 
-import FileManagerDialog from "FileManager/Dialog";
-import { EntityPickerDialog } from "Form/fields/EntityPicker";
-import { I18n } from "@vocollege/app";
-import { FileManagerFolderElement } from "FileManager/global";
-import { FormFieldContentListItem } from "Form/global";
+import FileManagerDialog from "@/FileManager/Dialog";
+import { EntityPickerDialog } from "@/Form/fields/EntityPicker";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
+import { FileManagerFolderElement } from "@/FileManager/global";
+import { FormFieldContentListItem } from "@/Form/global";
 import { stylesGlobal } from "@vocollege/theme/dist/material/vocollege2-global";
 import colors from "@vocollege/theme/dist/material/vocollege2-colors";
 import styleFormats from "./settings/styleFormats";
@@ -22,7 +22,7 @@ import { useStyles } from "./styles";
 interface EditorProps {
   value: string;
   onChange: (content: string) => void;
-  editorSettings?: RawEditorSettings & {
+  editorSettings?: RawEditorOptions & {
     selector?: undefined;
     target?: undefined;
   };

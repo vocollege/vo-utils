@@ -17,7 +17,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { FileManagerListProps, FileManagerFolderElement } from "../global";
 import FileManagerElement from "../Element";
 import FileManagerIcon from "../Element/FileManagerIcon";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { useStyles } from "./styles";
 import { stylesCommon } from "@vocollege/theme";
 

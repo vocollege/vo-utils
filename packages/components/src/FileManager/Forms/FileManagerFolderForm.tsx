@@ -3,7 +3,7 @@ import React from "react";
 // Custom.
 import { FileManagerFormProps } from "../global";
 import FileManagerForm from "./FileManagerForm";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 const initialState = {
   id: 0,

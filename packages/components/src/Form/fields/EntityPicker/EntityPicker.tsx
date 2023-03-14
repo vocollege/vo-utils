@@ -6,7 +6,7 @@ import FindInPageIcon from "@mui/icons-material/FindInPage";
 
 // Custom.
 import { useStyles } from "./styles";
-import { EntityPickerProps } from "Form/global";
+import { EntityPickerProps } from "@/Form/global";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import EntityPickerDialog from "./EntityPickerDialog";
 
@@ -17,6 +17,8 @@ const EntityPicker: React.FC<EntityPickerProps> = (props) => {
     disableButtonLabel,
     buttonLabel,
     buttonColor,
+    buttonTitle,
+    icon,
   } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -38,9 +40,9 @@ const EntityPicker: React.FC<EntityPickerProps> = (props) => {
           color={buttonColor || "success"}
           onClick={handleOpen}
           size="small"
-          title={I18n.get.entities.label.search}
+          title={buttonTitle || I18n.get.entities.label.search}
         >
-          <FindInPageIcon />
+          {icon || <FindInPageIcon />}
         </IconButton>
       )}
       {!disableButtonLabel && (

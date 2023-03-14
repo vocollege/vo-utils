@@ -9,13 +9,13 @@ import { AccountDialogProps } from "./global";
 import { useStyles } from "./styles";
 import AccountForm from "./AccountForm";
 import VoAuth from "@vocollege/app/dist/modules/VoAuth";
-import VoApi from "@vocollege/app/dist/modules/VoApi";
+// import VoApi from "@vocollege/app/dist/modules/VoApi";
 import { GeneralObject } from "@vocollege/app/dist/global";
 import {
   GET_ACCOUNT,
   UPDATE_USER,
 } from "@vocollege/app/dist/modules/VoApi/graphql";
-import VoLoader from "../../VoLoader";
+import VoLoader from "@/VoLoader";
 import { getError } from "@vocollege/app/dist/modules/VoHelpers";
 
 const AccountDialog: React.FC<AccountDialogProps> = (props) => {

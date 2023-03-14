@@ -17,7 +17,7 @@ import { ApolloClient } from "@apollo/client";
 import VoAuth from "@vocollege/app/dist/modules/VoAuth";
 import VoRouter from "@vocollege/app/dist/modules/VoRouter";
 import VoConfig from "@vocollege/app/dist/modules/VoConfig";
-import VoApi from "@vocollege/app/dist/modules/VoApi";
+// import VoApi from "@vocollege/app/dist/modules/VoApi";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import {
   encodeQueryData,
@@ -27,12 +27,15 @@ import { GeneralObject } from "@vocollege/app/dist/global";
 import { useStyles } from "./styles";
 import Session, { CallParams } from "./Session";
 import AccountDialog from "./AccountDialog";
+// import Cookies from "js-cookie";
 
 export interface AccountIconProps {
   className?: string;
   classes?: AccountIconClassesProps;
   externalSession?: boolean;
   onChange?: (data: CallParams) => void;
+  onLoginAction?: () => void;
+  onLogoutAction?: () => void;
   onlyImage?: boolean;
   noButtonLabel?: boolean;
   callParams?: CallParams;
@@ -52,6 +55,8 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
     classes: classesProp,
     externalSession,
     onChange,
+    onLoginAction,
+    onLogoutAction,
     onlyImage = false,
     noButtonLabel,
     callParams: callParamsProp,
@@ -86,6 +91,9 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
     if (firstLoad || loading) {
       return;
     }
+    if (onLoginAction) {
+      onLoginAction();
+    }
     let loginUrl = "";
     if (!externalSession) {
       loginUrl = VoAuth.getAppLoginUrl;
@@ -103,6 +111,9 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
   // const handleLogout = async (event: React.MouseEvent<HTMLElement>) => {
   const logout = async () => {
     try {
+      if (onLogoutAction) {
+        onLogoutAction();
+      }
       setLoading(true);
       if (!externalSession) {
         await VoAuth.logout();
@@ -123,20 +134,27 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
     let dataToReturn = null;
     switch (data.action) {
       case "getCurrentUser":
-        setUser(data.value);
-        if (data.value && data.value.images && data.value.images.length > 0) {
-          setUserImage(
-            <img
-              className={classes.userImage}
-              src={`${data.value.images[0].url}?d=100x100`}
-              alt={data.value.name}
-            />
-          );
-        } else {
-          setUserImage(null);
-        }
-        if (data.value && data.value.permissions) {
-          VoAuth.ability.update(data.value.permissions);
+        if (data.value) {
+          const { currentUser } = data.value;
+          setUser(currentUser);
+          if (
+            currentUser &&
+            currentUser.images &&
+            currentUser.images.length > 0
+          ) {
+            setUserImage(
+              <img
+                className={classes.userImage}
+                src={`${currentUser.images[0].url}?d=100x100`}
+                alt={currentUser.name}
+              />
+            );
+          } else {
+            setUserImage(null);
+          }
+          if (currentUser && currentUser.permissions) {
+            VoAuth.ability.update(currentUser.permissions);
+          }
         }
         setLoading(false);
         dataToReturn = data.value;
@@ -149,6 +167,7 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
         break;
     }
     setFirstLoad(false);
+
     if (onChange) {
       onChange(dataToReturn);
     }
@@ -195,7 +214,9 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
         const userData = await VoAuth.check(false, true);
         handleSessionChange({
           action: "getCurrentUser",
-          value: userData,
+          value: {
+            currentUser: userData,
+          },
         });
       } catch (error) {
         console.error(error);
@@ -226,7 +247,9 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
       await VoAuth.loadUser(true);
       handleSessionChange({
         action: "getCurrentUser",
-        value: VoAuth.currentUser,
+        value: {
+          currentUser: VoAuth.currentUser,
+        },
       });
     }
   };
@@ -239,7 +262,9 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
     } else {
       handleSessionChange({
         action: "getCurrentUser",
-        value: VoAuth.currentUser,
+        value: {
+          currentUser: VoAuth.currentUser,
+        },
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

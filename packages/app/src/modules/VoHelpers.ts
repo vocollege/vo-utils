@@ -72,7 +72,7 @@ export const regexPatterns = {
 type errorObjectType = {
   message: string;
   fields?: {
-    [key: string]: string;
+    [key: string]: any;
   };
 };
 

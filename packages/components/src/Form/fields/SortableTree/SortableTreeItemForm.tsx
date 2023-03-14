@@ -9,7 +9,7 @@ import {
   FormFieldSortableTreeItemFormProps,
   EntityPickerItem,
 } from "../../global";
-import { I18n } from "@vocollege/app";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import VoTextField from "../../../VoTextField";
 import EntityField from "../EntityField";
 
@@ -219,7 +219,7 @@ const SortableTreeItemForm: React.FC<FormFieldSortableTreeItemFormProps> = (
             type="text"
             required={true}
             error={!!errors.title}
-            helperText={errors.title ? errors.title?.message : ""}
+            helperText={errors.title ? `${errors.title?.message}` as string : ""}
             inputProps={{
               autoComplete: "off",
             }}
@@ -266,7 +266,7 @@ const SortableTreeItemForm: React.FC<FormFieldSortableTreeItemFormProps> = (
               fullWidth
               type="text"
               error={!!errors.custom_url}
-              helperText={errors.custom_url ? errors.custom_url?.message : ""}
+              helperText={errors.custom_url ? `${errors.custom_url?.message}` as string : ""}
               inputProps={{
                 autoComplete: "off",
               }}

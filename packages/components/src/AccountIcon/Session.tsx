@@ -43,6 +43,7 @@ const Session: React.FC<SessionProps> = (props) => {
     // }
 
     const { action, key, value } = event.data;
+
     let allowedCall = false;
     switch (action) {
       case "sessionReady":

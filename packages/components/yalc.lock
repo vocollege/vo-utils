@@ -1,13 +1,8 @@
 {
   "version": "v1",
   "packages": {
-    "@vocollege/app": {
-      "signature": "3c5cfc790c60b326ea98125b6790117f",
-      "file": true,
-      "replaced": "^0.0.57"
-    },
     "@vocollege/theme": {
-      "signature": "1800baa739a458bb4a23a6b6062f8674",
+      "signature": "084c8263ea9cf32ae710c001e3a40234",
       "file": true,
       "replaced": "^0.0.20"
     }

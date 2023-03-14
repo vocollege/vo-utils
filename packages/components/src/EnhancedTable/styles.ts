@@ -57,8 +57,12 @@ export const useStyles = makeStyles((theme: Theme) =>
 export const useToolbarStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(1),
+      alignItems: "stretch",
+      display: "flex",
+      flexDirection: "column",
+      // paddingLeft: theme.spacing(2),
+      // paddingRight: theme.spacing(1),
+      padding: theme.spacing(2),
       "&$noTitle": {
         minHeight: 0,
       },

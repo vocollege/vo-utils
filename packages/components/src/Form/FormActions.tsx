@@ -10,8 +10,8 @@ import { alpha } from "@mui/material/styles";
 import Fade from "@mui/material/Fade";
 
 // Custom
-import FloatingButton from "FloatingButton";
-import { I18n } from "@vocollege/app";
+import FloatingButton from "@/FloatingButton";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

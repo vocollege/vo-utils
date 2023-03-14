@@ -5,6 +5,7 @@ export const CREATE_PORTFOLIO = gql`
     createPortfolio(input: $input) {
       id
       disk
+      status
       name
       disk
       title
@@ -20,6 +21,7 @@ export const UPDATE_PORTFOLIO = gql`
     updatePortfolio(id: $id, input: $input) {
       id
       disk
+      status
       name
       disk
       title

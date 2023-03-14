@@ -48,6 +48,20 @@ export const UPDATE_GROUPS_PERMISSION = gql`
   }
 `;
 
+export const UPDATE_GROUPS_PERMISSIONS = gql`
+  mutation UpdateGroupsPermissions($input: [UpdatePermissionInput!]!) {
+    updateGroupsPermissions(input: $input) {
+      id
+      subject
+      name
+      label
+      roles {
+        id
+      }
+    }
+  }
+`;
+
 export const CREATE_GROUPS_ROLE = gql`
   mutation CreateGroupsRole($input: UpdateGroupsRoleInput!) {
     createGroupsRole(input: $input) {

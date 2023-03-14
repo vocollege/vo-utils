@@ -5,7 +5,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 // Custom.
 import { createSlug2 } from "@vocollege/app";
-import VoTextField from "VoTextField";
+import VoTextField from "@/VoTextField";
 import { FormFieldUrlFieldProps } from "../../global";
 import { useStyles } from "./styles";
 
@@ -93,7 +93,8 @@ const UrlField: React.FC<FormFieldUrlFieldProps> = (props) => {
         className={classes.editButton}
         aria-label="edit url value"
         onClick={() => setFieldLocked(!fieldLocked)}
-        size="large">
+        size="large"
+      >
         {fieldLocked && <LockIcon />}
         {!fieldLocked && <LockOpenIcon />}
       </IconButton>

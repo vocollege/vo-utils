@@ -1,5 +1,9 @@
 import { gql } from "@apollo/client";
 
+// Custom.
+import { GET_USERS_FIELDS } from "./users";
+import { GET_ARTICLES_FIELDS } from "./articles";
+
 export const SEARCH_CONTENT = gql`
   query SearchContent(
     $search: String!
@@ -44,6 +48,20 @@ export const SEARCH_USER = gql`
       type
     }
   }
+`;
+
+export const SEARCH_USERS_LIST = gql`
+  query SearchUser(
+    $search: String!
+    $roles: [String]
+    $limit: Int
+    $entity: Boolean
+  ) {
+    searchUser(search: $search, roles: $roles, limit: $limit, entity: $entity) {
+      ...UsersFields
+    }
+  }
+  ${GET_USERS_FIELDS}
 `;
 
 export const SEARCH_GROUP = gql`

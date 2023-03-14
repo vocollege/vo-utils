@@ -1,7 +1,7 @@
 import React from "react";
 import { DocumentNode, ApolloClient } from "@apollo/client";
 import { SvgIconProps } from "@mui/material";
-import { FormField } from "Form/global";
+import { FormField } from "@/Form/global";
 
 export interface FileManagerProps {
   className?: string;
@@ -96,6 +96,7 @@ export interface FileManagerPortfolio {
   id: string;
   name: string;
   disk: string;
+  status: number;
   title: string;
   description: string;
   created_at: string;

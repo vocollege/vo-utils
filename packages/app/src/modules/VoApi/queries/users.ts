@@ -1,5 +1,35 @@
 import { gql } from "@apollo/client";
 
+export const GET_USERS_FIELDS = gql`
+  fragment UsersFields on User {
+    id
+    name
+    email
+    active
+    status
+    updated_at
+    created_at
+    roles {
+      id
+      label
+      type
+    }
+    groupRoles {
+      id
+      label
+      type
+    }
+    groups {
+      id
+      name
+      title
+    }
+    validig {
+      id
+    }
+  }
+`;
+
 export const GET_USER = gql`
   query User($id: ID!) {
     user(id: $id) {
@@ -69,42 +99,63 @@ export const GET_USERS = gql`
     $page: Int
     $limit: Int
     $orderBy: [GetUsersOrderByClause]
+    $filters: [GetUsersFilter]
   ) {
-    users(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
+    allGroups(categories: ["region", "local"]) {
+      id
+      title
+    }
+    roles {
+      id
+      name
+      label
+    }
+    users(
+      search: $search
+      page: $page
+      limit: $limit
+      orderBy: $orderBy
+      filters: $filters
+    ) {
       paginatorInfo {
         total
         currentPage
         hasMorePages
       }
       data {
-        id
-        name
-        email
-        active
-        status
-        updated_at
-        created_at
-        roles {
-          id
-          label
-          type
-        }
-        groupRoles {
-          id
-          label
-          type
-        }
-        groups {
-          id
-          name
-          title
-        }
-        validig {
-          id
-        }
+        ...UsersFields
       }
     }
   }
+  ${GET_USERS_FIELDS}
+`;
+
+export const GET_USERS_SIMPLIFIED = gql`
+  query UsersSimplified(
+    $search: String
+    $page: Int
+    $limit: Int
+    $orderBy: [GetUsersOrderByClause]
+    $filters: [GetUsersFilter]
+  ) {
+    users(
+      search: $search
+      page: $page
+      limit: $limit
+      orderBy: $orderBy
+      filters: $filters
+    ) {
+      paginatorInfo {
+        total
+        currentPage
+        hasMorePages
+      }
+      data {
+        ...UsersFields
+      }
+    }
+  }
+  ${GET_USERS_FIELDS}
 `;
 
 export const GET_ACCOUNT = gql`

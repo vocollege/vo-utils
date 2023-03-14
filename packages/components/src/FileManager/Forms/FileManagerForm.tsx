@@ -6,19 +6,20 @@ import { toast } from "react-toastify";
 
 // Custom.
 import { Vapor } from "@vocollege/app";
-import VoTextField from "../../VoTextField";
-import { FormField } from "Form/global";
+import VoTextField from "@/VoTextField";
+import { FormField } from "@/Form/global";
 import { reducer } from "./state";
 import { fakeMutation } from "@vocollege/app";
 // import FileManagerDialog from "../Dialog";
-import EditDialog from "../../EditDialog";
-import FileUploader from "FileUploader";
-import VoSelectField, { VoSelectFieldAvailableValue } from "VoSelectField";
+import EditDialog from "@/EditDialog";
+import FileUploader from "@/FileUploader";
+import VoSelectField, { VoSelectFieldAvailableValue } from "@/VoSelectField";
 import { FileManagerFormProps, FileManagerBreadcrumbLink } from "../global";
-import VoApi from "@vocollege/app/dist/modules/VoApi";
+// import VoApi from "@vocollege/app/dist/modules/VoApi";
 import VoConfig from "@vocollege/app/dist/modules/VoConfig";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { getBucket } from "../FileManagerHelper";
+import Switch from "@/Switch";
 
 let typingTimer: number;
 
@@ -104,6 +105,17 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
     });
   };
 
+  const handleCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    let newValue: boolean | number;
+    newValue = e.target.checked ? 1 : 0;
+    dispatch({ key: name, value: newValue });
+    setValue(`${name}` as const, newValue, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
   const getSelectValue = (field: FormField) => {
     if (Array.isArray(state[field.name])) {
       return state[field.name][0] ? state[field.name][0].id : "";
@@ -175,6 +187,18 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
 
   const getField = (field: FormField) => {
     switch (field.type) {
+      case "switch":
+        register(`${field.name}` as const, field?.validation);
+        return (
+          <Switch
+            checked={state[field.name] === 1}
+            onChange={handleCheckChange}
+            label={field.label}
+            name={field.name}
+            disabled={field.params?.disabled}
+            helperText={field?.params?.helperText || ""}
+          />
+        );
       case "text":
         register(`${field.name}` as const, field?.validation);
         return (
@@ -188,7 +212,11 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
             type="text"
             required={field?.required}
             error={!!errors[field.name]}
-            helperText={errors[field.name] ? errors[field.name]?.message : ""}
+            helperText={
+              errors[field.name]
+                ? (`${errors[field.name]?.message}` as string)
+                : ""
+            }
             inputProps={{
               autoComplete: "off",
             }}
@@ -221,7 +249,11 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
             fullWidth
             required={field.required}
             error={!!errors[field.name]}
-            helperText={errors[field.name] ? errors[field.name]?.message : ""}
+            helperText={
+              errors[field.name]
+                ? errors[field.name]?.message
+                : field?.params?.helperText || ""
+            }
           />
         );
       default:

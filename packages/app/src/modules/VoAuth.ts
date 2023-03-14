@@ -9,6 +9,7 @@ import VoRouter from "./VoRouter";
 import VoConfig from "./VoConfig";
 import { VoTokenType } from "../global";
 import VoGroups from "./VoGroups";
+import JsCookies from "js-cookie";
 
 class VoAuth extends VoBase {
   state: string;
@@ -60,9 +61,19 @@ class VoAuth extends VoBase {
           const url = this.getUrl + "/token";
           const response = await axios.post(url, params);
           let state = VoConfig.get.AUTH_STORAGE_STATE || "";
-          Helpers.localStorage.remove(state);
+          // Helpers.localStorage.remove(state);
+          JsCookies.remove(state, {
+            domain: VoConfig.get.AUTH_DOMAIN,
+            sameSite: "Lax",
+          });
+
           let verifier = VoConfig.get.AUTH_STORAGE_VERIFIER || "";
-          Helpers.localStorage.remove(verifier);
+          // Helpers.localStorage.remove(verifier);
+          JsCookies.remove(verifier, {
+            domain: VoConfig.get.AUTH_DOMAIN,
+            sameSite: "Lax",
+          });
+
           this.setSession(response.data);
           await this.loadUser(true);
           resolve(true);
@@ -88,18 +99,45 @@ class VoAuth extends VoBase {
   }
 
   setSession(token: any) {
-    const { token_type, access_token, refresh_token, expires_in } = token;
+    // const { token_type, access_token, refresh_token, expires_in } = token;
+    const { access_token, refresh_token } = token;
+
     let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
-    Helpers.localStorage.set(refreshTokenKey, refresh_token);
+    // Helpers.localStorage.set(refreshTokenKey, refresh_token);
+    JsCookies.set(refreshTokenKey, refresh_token, {
+      expires: 11,
+      sameSite: "Lax",
+      domain: VoConfig.get.AUTH_DOMAIN,
+    });
+
     let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
-    Helpers.localStorage.set(accessTokenKey, access_token);
-    let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
-    Helpers.localStorage.set(tokenTypeKey, token_type);
-    let expiresInKey = VoConfig.get.AUTH_STORAGE_EXPIRES_IN || "";
-    Helpers.localStorage.set(expiresInKey, expires_in);
+    // Helpers.localStorage.set(accessTokenKey, access_token);
+    JsCookies.set(accessTokenKey, access_token, {
+      expires: 1,
+      sameSite: "Lax",
+      domain: VoConfig.get.AUTH_DOMAIN,
+    });
+
+    // let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
+    // // Helpers.localStorage.set(tokenTypeKey, token_type);
+    // JsCookies.set(tokenTypeKey, token_type, {
+    //   expires: 11,
+    //   sameSite: "Lax",
+    //   domain: VoConfig.get.AUTH_DOMAIN,
+    // });
+
+    // let expiresInKey = VoConfig.get.AUTH_STORAGE_EXPIRES_IN || "";
+    // // Helpers.localStorage.set(expiresInKey, expires_in);
+    // JsCookies.set(expiresInKey, expires_in, {
+    //   expires: 11,
+    //   sameSite: "Lax",
+    //   domain: VoConfig.get.AUTH_DOMAIN,
+    // });
+
     axios.defaults.headers.common["Authorization"] =
-      token_type + " " + access_token;
-    let currentGroup = VoGroups.getCurrent();
+      // token_type + " " + access_token;
+      "Bearer " + access_token;
+    let currentGroup = VoGroups.getCurrent(true);
     axios.defaults.headers.common["VoGroup"] = currentGroup
       ? currentGroup.id
       : "";
@@ -107,12 +145,35 @@ class VoAuth extends VoBase {
   resetSession() {
     let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
     Helpers.localStorage.remove(refreshTokenKey);
+    JsCookies.remove(refreshTokenKey, {
+      domain: VoConfig.get.AUTH_DOMAIN,
+      sameSite: "Lax",
+    });
+
     let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
     Helpers.localStorage.remove(accessTokenKey);
-    let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
-    Helpers.localStorage.remove(tokenTypeKey);
-    let expiresInKey = VoConfig.get.AUTH_STORAGE_EXPIRES_IN || "";
-    Helpers.localStorage.remove(expiresInKey);
+    JsCookies.remove(accessTokenKey, {
+      domain: VoConfig.get.AUTH_DOMAIN,
+      sameSite: "Lax",
+    });
+
+    // let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
+    // Helpers.localStorage.remove(tokenTypeKey);
+    // JsCookies.remove(tokenTypeKey, {
+    //   domain: VoConfig.get.AUTH_DOMAIN,
+    //   sameSite: "Lax",
+    // });
+
+    // let expiresInKey = VoConfig.get.AUTH_STORAGE_EXPIRES_IN || "";
+    // Helpers.localStorage.remove(expiresInKey);
+    // JsCookies.remove(expiresInKey, {
+    //   domain: VoConfig.get.AUTH_DOMAIN,
+    //   sameSite: "Lax",
+    // });
+
+    Helpers.localStorage.remove(VoConfig.get.CURRENT_GROUP || "");
+    Helpers.localStorage.remove(VoConfig.get.MASQUERADE_USER || "");
+
     delete axios.defaults.headers.common["Authorization"];
   }
   async refreshToken() {
@@ -140,9 +201,28 @@ class VoAuth extends VoBase {
       throw error;
     }
   }
+
   check(forceRedirect = false, forceLoad = false): Promise<any> {
     this.checkConfig();
     return new Promise(async (resolve, reject) => {
+      // VC-231 | Clear up unnecessary cookies.
+      let currentCookies = JsCookies.get();
+      for (const cookieName in currentCookies) {
+        if (
+          [
+            "XSRF-TOKEN",
+            "voapp_redirectTo",
+            "vo_organisation",
+            VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN,
+            VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN,
+          ].indexOf(cookieName) === -1
+        ) {
+          JsCookies.remove(cookieName, {
+            domain: VoConfig.get.AUTH_DOMAIN,
+          });
+        }
+      }
+
       const token = this.getToken();
       if (token) {
         try {
@@ -168,7 +248,7 @@ class VoAuth extends VoBase {
           const response = await VoApi.getUser();
           this.user = response.data.data;
           this.ability.update(this.user.permissions);
-          if (VoGroups.getCurrent()) {
+          if (VoGroups.getCurrent(true)) {
             this.globalAbility.update(this.user.globalPermissions);
           }
         }
@@ -185,19 +265,28 @@ class VoAuth extends VoBase {
   getToken(): VoTokenType | void {
     try {
       let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
-      const refreshToken = Helpers.localStorage.get(refreshTokenKey);
+      // const refreshToken = Helpers.localStorage.get(refreshTokenKey);
+      const refreshToken = JsCookies.get(refreshTokenKey);
+
       let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
-      const accessToken = Helpers.localStorage.get(accessTokenKey);
-      let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
-      const tokenType = Helpers.localStorage.get(tokenTypeKey);
-      let expiresInKey = VoConfig.get.AUTH_STORAGE_EXPIRES_IN || "";
-      const expiresIn = Helpers.localStorage.get(expiresInKey);
-      if (refreshToken && accessToken && tokenType && expiresIn) {
+      // const accessToken = Helpers.localStorage.get(accessTokenKey);
+      const accessToken = JsCookies.get(accessTokenKey);
+
+      // let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
+      // // const tokenType = Helpers.localStorage.get(tokenTypeKey);
+      // const tokenType = JsCookies.get(tokenTypeKey);
+
+      // let expiresInKey = VoConfig.get.AUTH_STORAGE_EXPIRES_IN || "";
+      // // const expiresIn = Helpers.localStorage.get(expiresInKey);
+      // const expiresIn = JsCookies.get(expiresInKey);
+
+      // if (refreshToken && accessToken && tokenType && expiresIn) {
+      if (refreshToken && accessToken) {
         return {
           refresh_token: refreshToken,
           access_token: accessToken,
-          token_type: tokenType,
-          expires_in: expiresIn,
+          // token_type: tokenType,
+          // expires_in: expiresIn,
         };
       }
     } catch (error) {
@@ -214,14 +303,47 @@ class VoAuth extends VoBase {
       let state = Helpers.createRandomString(40);
       let verifier = Helpers.createRandomString(128);
       let challenge = Helpers.base64Url(crypto.SHA256(verifier));
+
       let stateKey = VoConfig.get.AUTH_STORAGE_STATE || "";
-      Helpers.localStorage.set(stateKey, state);
+      Helpers.localStorage.remove(stateKey);
+      JsCookies.set(stateKey, state, {
+        expires: 1,
+        sameSite: "Lax",
+        domain: VoConfig.get.AUTH_DOMAIN,
+      });
+
       let verifierKey = VoConfig.get.AUTH_STORAGE_VERIFIER || "";
-      Helpers.localStorage.set(verifierKey, verifier);
+      Helpers.localStorage.remove(verifierKey);
+      JsCookies.set(verifierKey, verifier, {
+        expires: 1,
+        sameSite: "Lax",
+        domain: VoConfig.get.AUTH_DOMAIN,
+      });
+
       let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
       Helpers.localStorage.remove(accessTokenKey);
-      let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
-      Helpers.localStorage.remove(tokenTypeKey);
+      JsCookies.remove(accessTokenKey, {
+        domain: VoConfig.get.AUTH_DOMAIN,
+        sameSite: "Lax",
+        expires: 1,
+      });
+
+      let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
+      Helpers.localStorage.remove(refreshTokenKey);
+      JsCookies.remove(refreshTokenKey, {
+        domain: VoConfig.get.AUTH_DOMAIN,
+        sameSite: "Lax",
+        expires: 1,
+      });
+
+      // let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
+      // Helpers.localStorage.remove(tokenTypeKey);
+      // JsCookies.remove(tokenTypeKey, {
+      //   domain: VoConfig.get.AUTH_DOMAIN,
+      //   sameSite: "Lax",
+      //   expires: 12,
+      // });
+
       return {
         state,
         challenge,
@@ -232,9 +354,13 @@ class VoAuth extends VoBase {
   }
   getInitiatedAuth(): { state: string; verifier: string } {
     let stateKey = VoConfig.get.AUTH_STORAGE_STATE || "";
-    const state = Helpers.localStorage.get(stateKey);
+    // const state = Helpers.localStorage.get(stateKey);
+    const state = JsCookies.get(stateKey);
+
     let verifierKey = VoConfig.get.AUTH_STORAGE_VERIFIER || "";
-    const verifier = Helpers.localStorage.get(verifierKey);
+    // const verifier = Helpers.localStorage.get(verifierKey);
+    const verifier = JsCookies.get(verifierKey);
+
     return {
       state: state || "",
       verifier: verifier || "",

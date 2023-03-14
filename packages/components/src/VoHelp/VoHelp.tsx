@@ -107,7 +107,6 @@ const Help: React.FC<HelpProps> = (props) => {
 
   // API.
 
-  // const [loadQuery, { error, data, refetch }] = useLazyQuery(
   const { loading, error, data } = useQuery(operation || GET_HELP, {
     errorPolicy: "all",
     client: client || undefined,

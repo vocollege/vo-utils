@@ -16,6 +16,7 @@ import OpenInBrowserIcon from "@mui/icons-material/OpenInBrowser";
 import clsx from "clsx";
 import { toast } from "react-toastify";
 import makeStyles from "@mui/styles/makeStyles";
+import { animateScroll } from "react-scroll";
 
 // Custom.
 import EnhancedTableHead from "./EnhancedTableHead";
@@ -23,13 +24,15 @@ import EnhancedTableToolbar from "./EnhancedTableToolbar";
 import { useStyles } from "./styles";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { reducer, initialState } from "./state";
-import { EnhancedTableProps, EnhancedTableColumns } from "./global";
+import {
+  EnhancedTableProps,
+  EnhancedTableColumns,
+  EnhancedTableSelectedFilter,
+} from "./global";
 import { stylesCommon } from "@vocollege/theme";
+// import { fakeQuery } from "@vocollege/app/dist/modules/VoApi";
 
 const useStylesCommon = makeStyles(() => stylesCommon);
-
-// @TODO API:et is called twice on the first load, but it's not triggered
-// by useEffect... Investigate later...
 
 const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
   useStylesCommon();
@@ -54,74 +57,22 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     labels,
     classes: classesProp,
     queryVariables,
+    // querySearchVariables,
     onDelete,
+    enableSearch,
+    filters,
+    onDataChange,
   } = props;
 
   if (!operations.delete) {
     operations.delete = gql``;
   }
 
-  const [
-    loadData,
-    {
-      data: queryData,
-      loading: queryLoading,
-      called: queryCalled,
-      refetch: refetchData,
-    },
-  ] = useLazyQuery(operations.get, {
-    fetchPolicy: "cache-and-network",
-    nextFetchPolicy: "cache-first",
-    client: client || undefined,
-    variables: {
-      page: state.page,
-      limit: state.limit,
-      search: state.search,
-      order: state.order,
-      orderBy: [
-        {
-          column: state.orderBy,
-          order: state.order,
-        },
-      ],
-      ...queryVariables,
-    },
-    onError: (error) => {
-      toast.error(error.message, {
-        autoClose: 10000,
-      });
-    },
-  });
+  // if (!operations.search) {
+  //   operations.search = gql``;
+  // }
 
-  const [deleteRow, { loading: deleteLoading }] = useMutation(
-    operations?.delete,
-    {
-      client: client || undefined,
-      onError: (error) => {
-        toast.error(error.message, {
-          autoClose: 10000,
-        });
-      },
-      onCompleted: (data: any) => {
-        if (labels?.deleted) {
-          toast.success(labels.deleted);
-        }
-        loadData();
-        onDelete && onDelete(data);
-      },
-      //   update(cache, { data }) {
-      //     const existingItems: any = cache.readQuery({ query: operations.get });
-      //     let category = Object.keys(data)[0];
-      //     const newItems = existingItems![operations.category].filter(
-      //       (t: any) => t.id !== data[category].id
-      //     );
-      //     cache.writeQuery({
-      //       query: operations.get,
-      //       data: { [operations.category]: newItems },
-      //     });
-      //   },
-    }
-  );
+  // Methods.
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -160,6 +111,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     dispatch({ key: "page", values: newPage });
+    animateScroll.scrollToTop();
   };
 
   const handleChangeRowsPerPage = (
@@ -195,6 +147,136 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     return row[column.field];
   };
 
+  const handleSearch = (searchTerm: string) => {
+    dispatch({ key: "search", values: searchTerm });
+    // if (searchTerm !== "") {
+    //   loadSearchData({
+    //     variables: {
+    //       search: searchTerm,
+    //     },
+    //   });
+    // } else {
+    //   // loadData();
+    //   setContent(queryData);
+    // }
+  };
+
+  // const setContent = (data: any) => {
+  //   dispatch({
+  //     values: {
+  //       data: data[operations.category].data || data[operations.category],
+  //       total: data[operations.category].paginatorInfo
+  //         ? data[operations.category].paginatorInfo.total
+  //         : data[operations.category].length,
+  //     },
+  //   });
+  // };
+
+  const handleFiltersChange = (filters: EnhancedTableSelectedFilter[]) => {
+    dispatch({ key: "filters", values: filters });
+  };
+
+  // Api.
+
+  const [
+    loadData,
+    {
+      data: queryData,
+      loading: queryLoading,
+      called: queryCalled,
+      refetch: refetchData,
+    },
+  ] = useLazyQuery(operations.get, {
+    fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
+    client: client || undefined,
+    variables: {
+      page: state.page,
+      limit: state.limit,
+      search: state.search,
+      order: state.order,
+      orderBy: [
+        {
+          column: state.orderBy,
+          order: state.order,
+        },
+      ],
+      filters: state.filters,
+      ...queryVariables,
+    },
+    onError: (error) => {
+      toast.error(error.message, {
+        autoClose: 10000,
+      });
+    },
+    // onCompleted: (data: any) => {
+    //   console.log("onCompleted data", JSON.parse(JSON.stringify(data)));
+    // },
+  });
+
+  const [deleteRow, { loading: deleteLoading }] = useMutation(
+    operations?.delete,
+    {
+      client: client || undefined,
+      onError: (error) => {
+        toast.error(error.message, {
+          autoClose: 10000,
+        });
+      },
+      onCompleted: (data: any) => {
+        if (labels?.deleted) {
+          toast.success(labels.deleted);
+        }
+        loadData();
+        onDelete && onDelete(data);
+      },
+      //   update(cache, { data }) {
+      //     const existingItems: any = cache.readQuery({ query: operations.get });
+      //     let category = Object.keys(data)[0];
+      //     const newItems = existingItems![operations.category].filter(
+      //       (t: any) => t.id !== data[category].id
+      //     );
+      //     cache.writeQuery({
+      //       query: operations.get,
+      //       data: { [operations.category]: newItems },
+      //     });
+      //   },
+    }
+  );
+
+  // const [
+  //   loadSearchData,
+  //   {
+  //     data: querySearchData,
+  //     loading: querySearchLoading,
+  //     called: querySearchCalled,
+  //     refetch: refetchSearchData,
+  //   },
+  // ] = useLazyQuery(operations.search || fakeQuery, {
+  //   fetchPolicy: "network-only",
+  //   client: client || undefined,
+  //   variables: {
+  //     ...querySearchVariables,
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.message, {
+  //       autoClose: 10000,
+  //     });
+  //   },
+  //   onCompleted: (data: any) => {
+  //     console.log("loadSearchData() onCompleted data", data);
+
+  //     dispatch({
+  //       values: {
+  //         data:
+  //           data[operations.searchCategory].data ||
+  //           data[operations.searchCategory],
+  //         total: data[operations.searchCategory].length,
+  //       },
+  //     });
+  //   },
+  // });
+
   // Effects.
 
   useEffect(() => {
@@ -228,6 +310,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
             : queryData[operations.category].length,
         },
       });
+      onDataChange && onDataChange(queryData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryData]);
@@ -241,7 +324,20 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
   return (
     <div className={clsx(classes.root, className)}>
       <Paper className={clsx(classes.paper, classesProp?.paper)} elevation={10}>
-        <EnhancedTableToolbar addItem={addItem} title={title} />
+        <EnhancedTableToolbar
+          addItem={addItem}
+          title={title}
+          total={state.total}
+          enableSearch={enableSearch}
+          SearchFieldProps={{
+            searchLoading: queryLoading,
+            onSearchTermChange: handleSearch,
+          }}
+          FiltersProps={{
+            filters,
+            onChange: handleFiltersChange,
+          }}
+        />
         <TableContainer>
           <Table
             className={clsx(classes.table, classesProp?.table)}
@@ -272,7 +368,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
                     ))}
                     {actionButtons && actionButtons.length > 0 && (
                       <TableCell className={classes.actionColumn}>
-                        {renderActionButtons && renderActionButtons(row)}
+                        {renderActionButtons && renderActionButtons(row, index)}
                         {actionButtons.indexOf("open") > -1 && openItem && (
                           <IconButton
                             className={classes.actionButton}

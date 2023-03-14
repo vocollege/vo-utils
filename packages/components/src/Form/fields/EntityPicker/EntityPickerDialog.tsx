@@ -18,9 +18,9 @@ import { toast } from "react-toastify";
 
 import { SEARCH_CONTENT } from "@vocollege/app";
 import { useStyles } from "./styles";
-import { EntityPickerDialogProps, EntityPickerItem } from "Form/global";
+import { EntityPickerDialogProps, EntityPickerItem } from "@/Form/global";
 import { getTemporaryId } from "@vocollege/app";
-import VoTextField from "VoTextField";
+import VoTextField from "@/VoTextField";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 let typingTimer: number;
@@ -37,6 +37,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
     query,
     category = "searchContent",
     variables = {},
+    client,
   } = props;
   const classes = useStyles();
   const searchInput = useRef();
@@ -51,6 +52,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
     useLazyQuery(query || SEARCH_CONTENT, {
       fetchPolicy: "network-only",
       errorPolicy: "all",
+      client: client || undefined,
       onError: (error) => {
         toast.error(error.message, { autoClose: false });
       },
@@ -153,9 +155,6 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
         .split(".")
         .reduce((o: any, i) => o && o[i], searchData);
       if (data) {
-        console.log("searchData", searchData);
-        console.log("data", data);
-
         setSearchResults(data);
       }
     }

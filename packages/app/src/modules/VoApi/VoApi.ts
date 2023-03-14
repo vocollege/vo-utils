@@ -15,15 +15,18 @@ import GraphClient from "./GraphClient";
 import VoBase from "../VoBase";
 // import VoAuth from "../VoAuth";
 import VoConfig from "../VoConfig";
+import { GeneralObject } from "../../global";
+import { localStorage } from "../VoHelpers";
 
 class VoApi extends VoBase {
   graphqlClient: any;
   graphqlSubscriptionClient: any;
 
-  init() {
+  init(params: GeneralObject = {}) {
     this.graphqlClient = GraphClient.createGraphClient(
       this.getGraphqlUrl,
-      false
+      false,
+      params
     );
   }
 
@@ -47,7 +50,13 @@ class VoApi extends VoBase {
 
   async getUser() {
     try {
-      const user = await axios.get(this.getUrl + "/user");
+      let url = this.getUrl + "/user";
+      let masquerade: any = localStorage.get(VoConfig.get.MASQUERADE_USER);
+      if (masquerade) {
+        masquerade = JSON.parse(masquerade);
+        url = `${url}?masquerade=${masquerade?.id}`;
+      }
+      const user = await axios.get(url);
       return user;
     } catch (error) {
       throw error;

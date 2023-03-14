@@ -13,19 +13,19 @@ import clsx from "clsx";
 
 // Custom.
 
-import FileManagerFileFormDirectUpload from "FileManager/Forms/FileManagerFileFormDirectUpload";
-import FileManagerDialog from "FileManager/Dialog";
+import FileManagerFileFormDirectUpload from "@/FileManager/Forms/FileManagerFileFormDirectUpload";
+import FileManagerDialog from "@/FileManager/Dialog";
 import { useStyles } from "./styles";
 import { useStyles as useStylesForm } from "../../styles";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { FileFieldProps } from "../../global";
-import { FileManagerFolderElement } from "FileManager/global";
+import { FileManagerFolderElement } from "@/FileManager/global";
 import { fakeMutation } from "@vocollege/app/dist/modules/VoApi/graphql";
 import { toast } from "react-toastify";
-import VoLoader from "../../../VoLoader";
+import VoLoader from "@/VoLoader";
 import { downloadFile } from "@vocollege/app/dist/modules/VoHelpers";
 import VoDocs from "@vocollege/app/dist/modules/VoDocs";
-import VoApi from "@vocollege/app/dist/modules/VoApi";
+// import VoApi from "@vocollege/app/dist/modules/VoApi";
 
 const FileField: React.FC<FileFieldProps> = (props) => {
   const {

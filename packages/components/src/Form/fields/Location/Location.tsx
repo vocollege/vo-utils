@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography";
 
 // Custom.
 
-import VoTextField from "VoTextField";
-import { I18n } from "@vocollege/app";
+import VoTextField from "@/VoTextField";
+import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { FormFieldLocationProps } from "../../global";
 import { useStyles } from "./styles";
 import { useStyles as useStylesForm } from "../../styles";

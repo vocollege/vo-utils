@@ -15,7 +15,8 @@ import VoAuth from "../VoAuth";
 import VoRouter from "../VoRouter";
 // import ws from "ws";
 import VoGroups from "../VoGroups";
-import VoApp from "../VoApp";
+// import VoApp from "../VoApp";
+import { GeneralObject } from "../../global";
 
 async function redirect() {
   await VoAuth.logout();
@@ -23,7 +24,11 @@ async function redirect() {
 }
 
 class GraphClient {
-  static createGraphClient(url: string, uploadLink = false) {
+  static createGraphClient(
+    url: string,
+    uploadLink = false,
+    params: GeneralObject = {}
+  ) {
     let httpLink;
 
     if (!uploadLink) {
@@ -61,7 +66,7 @@ class GraphClient {
 
     // Get other Apollo Links.
     // const links = this.getGraphClientLinks(getToken, refreshToken);
-    const links = this.getGraphClientLinks();
+    const links = this.getGraphClientLinks(params);
 
     return new ApolloClient({
       cache: new InMemoryCache(),
@@ -69,7 +74,7 @@ class GraphClient {
     });
   }
 
-  static getGraphClientLinks() {
+  static getGraphClientLinks(params: GeneralObject = {}) {
     // Create an errorLink to handle errors, e.g. when the token has expired
     // and has to be renewed. This works as an interceptor for GraphQL calls.
     const errorLink = onError(
@@ -119,17 +124,23 @@ class GraphClient {
     // Create authLink that ensures that all calls include
     // the access token.
     const authLink = new ApolloLink((operation, forward) => {
-      VoApp.checkVersion();
-      const token = VoAuth.getToken();
+      const token = params.token || VoAuth.getToken();
       const currentHeaders = operation.getContext().headers;
-      const currentGroup = VoGroups.getCurrent();
+      let groupId = "";
+      if (params.group) {
+        groupId = params.group;
+      } else {
+        const currentGroup = VoGroups.getCurrent(true);
+        groupId = currentGroup ? currentGroup.id : "";
+      }
       operation.setContext(() => ({
         ...currentHeaders,
         headers: {
           Authorization: token
-            ? `${token.token_type} ${token.access_token}`
+            ? // ? `${token.token_type} ${token.access_token}`
+              `Bearer ${token.access_token}`
             : "",
-          VoGroup: currentGroup ? currentGroup.id : "",
+          VoGroup: groupId,
         },
       }));
       return forward(operation);

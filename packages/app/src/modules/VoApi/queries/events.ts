@@ -47,6 +47,7 @@ export const GET_EVENTS = gql`
     $page: Int
     $limit: Int
     $orderBy: [GetEventsOrderByClause]
+    $filters: [GetEventsFilter]
   ) {
     events(
       search: $search
@@ -55,6 +56,7 @@ export const GET_EVENTS = gql`
       page: $page
       limit: $limit
       orderBy: $orderBy
+      filters: $filters
     ) {
       paginatorInfo {
         total
@@ -65,6 +67,9 @@ export const GET_EVENTS = gql`
         id
         title
         status
+        allday
+        start_date
+        start_time
         author {
           ... on User {
             id

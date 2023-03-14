@@ -1,5 +1,22 @@
 import { gql } from "@apollo/client";
 
+export const GET_ARTICLES_FIELDS = gql`
+  fragment ArticlesFields on Article {
+    id
+    title
+    status
+    author {
+      ... on User {
+        id
+        name
+        type
+      }
+    }
+    date
+    created_at
+    updated_at
+  }
+`;
 export const GET_ARTICLE = gql`
   query Article($id: ID!) {
     article(id: $id) {
@@ -66,28 +83,24 @@ export const GET_ARTICLES = gql`
     $page: Int
     $limit: Int
     $orderBy: [GetArticlesOrderByClause]
+    $filters: [GetArticlesFilter]
   ) {
-    articles(search: $search, page: $page, limit: $limit, orderBy: $orderBy) {
+    articles(
+      search: $search
+      page: $page
+      limit: $limit
+      orderBy: $orderBy
+      filters: $filters
+    ) {
       paginatorInfo {
         total
         currentPage
         hasMorePages
       }
       data {
-        id
-        title
-        status
-        author {
-          ... on User {
-            id
-            name
-            type
-          }
-        }
-        date
-        created_at
-        updated_at
+        ...ArticlesFields
       }
     }
   }
+  ${GET_ARTICLES_FIELDS}
 `;

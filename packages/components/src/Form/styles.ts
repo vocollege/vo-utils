@@ -77,5 +77,8 @@ export const useStyles = makeStyles((theme: Theme) =>
     gridItem: {},
     gridItemHidden: {},
     noLabel: {},
+    formHeader: {
+      margin: `${theme.spacing(3)} 0`,
+    },
   })
 );

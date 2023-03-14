@@ -5,8 +5,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 
 // Custom.
-import VoTextField from "VoTextField";
-import { EntityFieldProps, EntityPickerItem } from "Form/global";
+import VoTextField from "@/VoTextField";
+import { EntityFieldProps, EntityPickerItem } from "@/Form/global";
 import EntityPicker from "../EntityPicker";
 import { useStyles } from "./styles";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";

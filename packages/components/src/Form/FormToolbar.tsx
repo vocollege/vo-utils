@@ -15,7 +15,8 @@ import { FormToolbarProps } from "./global";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 export default function FormToolbar(props: FormToolbarProps) {
-  const { title, onSave, onCancel, loading, options, className } = props;
+  const { title, onSave, onCancel, loading, options, className, extraActions } =
+    props;
   const classes = useStyles();
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.down("md"));
@@ -38,10 +39,15 @@ export default function FormToolbar(props: FormToolbarProps) {
 
   return (
     <Toolbar className={className}>
-      <Typography variant="h6" noWrap>
-        {title}
-      </Typography>
-      <div className={classes.grow} />
+      {title && title !== "" && (
+        <>
+          <Typography variant="h6" noWrap>
+            {title}
+          </Typography>
+          <div className={classes.grow} />
+        </>
+      )}
+      {extraActions}
       {!showSaveLabel() && (
         <IconButton
           className={classes.toolbarButtonNoLabel}
@@ -65,7 +71,7 @@ export default function FormToolbar(props: FormToolbarProps) {
           onClick={onSave}
           disabled={loading || options?.saveButton?.disabled}
         >
-          {!options?.saveButton?.hideLabel && I18n.get.actions.save}
+          {options?.saveButton?.label || I18n.get.actions.save}
         </Button>
       )}
       {/* <Button
@@ -107,7 +113,7 @@ export default function FormToolbar(props: FormToolbarProps) {
               onClick={onCancel}
               disabled={loading || options?.cancelButton?.disabled}
             >
-              {I18n.get.actions.cancel}
+              {options?.cancelButton?.label || I18n.get.actions.cancel}
             </Button>
           )}
           {/* <Button
