@@ -47,6 +47,7 @@ export interface EnhancedTableProps {
   enableSearch?: boolean;
   filters?: EnhancedTableFilter[];
   onDataChange?: (data: any) => void;
+  actionButtonIsDisabled?: (action: string, row?: GeneralObject) => boolean;
 }
 
 export interface EnhancedTableHeadProps {

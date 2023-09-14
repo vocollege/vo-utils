@@ -31,7 +31,7 @@ const EnhancedTableRoles: React.FC<EnhancedTableRolesProps> = ({
             key={i}
             size="small"
             color="primary"
-            label={v.label || v.title}
+            label={v.label || v.title || v.name}
           />
         ))}
       </div>

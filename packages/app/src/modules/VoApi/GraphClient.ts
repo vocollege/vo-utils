@@ -9,13 +9,11 @@ import {
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { createUploadLink } from "apollo-upload-client";
-// import { getMainDefinition } from "@apollo/client/utilities";
-// import { WebSocketLink } from "@apollo/client/link/ws";
 import VoAuth from "../VoAuth";
 import VoRouter from "../VoRouter";
-// import ws from "ws";
 import VoGroups from "../VoGroups";
-// import VoApp from "../VoApp";
+import VoConfig from "../VoConfig";
+import { localStorage } from "../VoHelpers";
 import { GeneralObject } from "../../global";
 
 async function redirect() {
@@ -70,7 +68,12 @@ class GraphClient {
 
     return new ApolloClient({
       cache: new InMemoryCache(),
-      link: from([links.errorLink, links.authLink, httpLink]),
+      link: from([
+        links.errorLink,
+        links.authLink,
+        links.omitTypenameLink,
+        httpLink,
+      ]),
     });
   }
 
@@ -133,6 +136,13 @@ class GraphClient {
         const currentGroup = VoGroups.getCurrent(true);
         groupId = currentGroup ? currentGroup.id : "";
       }
+
+      let masquerade: any = localStorage.get(VoConfig.get.MASQUERADE_USER);
+
+      if (masquerade) {
+        masquerade = JSON.parse(masquerade);
+      }
+
       operation.setContext(() => ({
         ...currentHeaders,
         headers: {
@@ -141,14 +151,26 @@ class GraphClient {
               `Bearer ${token.access_token}`
             : "",
           VoGroup: groupId,
+          ...(masquerade && { VoMasquerade: masquerade?.id }),
         },
       }));
+      return forward(operation);
+    });
+
+    const omitTypenameLink = new ApolloLink((operation, forward) => {
+      if (operation.variables) {
+        operation.variables = JSON.parse(
+          JSON.stringify(operation.variables),
+          (key, value) => (key === "__typename" ? undefined : value)
+        );
+      }
       return forward(operation);
     });
 
     return {
       errorLink,
       authLink,
+      omitTypenameLink,
     };
   }
 

@@ -62,6 +62,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     enableSearch,
     filters,
     onDataChange,
+    actionButtonIsDisabled,
   } = props;
 
   if (!operations.delete) {
@@ -377,6 +378,11 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
                               openItem(row[primaryField || "id"], row)
                             }
                             size="large"
+                            disabled={
+                              (actionButtonIsDisabled &&
+                                actionButtonIsDisabled("open", row)) ||
+                              false
+                            }
                           >
                             <OpenInBrowserIcon />
                           </IconButton>
@@ -389,6 +395,11 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
                               editItem(row[primaryField || "id"], row)
                             }
                             size="large"
+                            disabled={
+                              (actionButtonIsDisabled &&
+                                actionButtonIsDisabled("edit", row)) ||
+                              false
+                            }
                           >
                             <EditIcon />
                           </IconButton>
@@ -401,6 +412,11 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
                               handleDelete(row[primaryField || "id"])
                             }
                             size="large"
+                            disabled={
+                              (actionButtonIsDisabled &&
+                                actionButtonIsDisabled("delete", row)) ||
+                              false
+                            }
                           >
                             <DeleteIcon />
                           </IconButton>

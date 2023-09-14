@@ -7,26 +7,34 @@ import { toast } from "react-toastify";
 import { VoConfig, VoAuth } from "@vocollege/app";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
+interface ProtectedRouteTypeAbility {
+  // action: RouteObject["action"];
+  action: string;
+  subject?: string;
+}
+
 interface ProtectedRouteType {
   component: any;
-  action: RouteObject["action"];
-  subject?: string;
+  abilities: ProtectedRouteTypeAbility[];
   path?: string;
 }
 
-type ProtectedRouteProps = RouteObject & ProtectedRouteType;
+// type ProtectedRouteProps = RouteObject & ProtectedRouteType;
+type ProtectedRouteProps = ProtectedRouteType;
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   component: Component,
-  action,
-  subject,
+  abilities,
   path,
   ...rest
 }) => {
   // Methods.
 
   const isVisible = () => {
-    let visible = VoAuth.ability.can(action, subject);
+    let visible = abilities.every(
+      (ability: ProtectedRouteTypeAbility) =>
+        !ability || VoAuth.ability.can(ability.action, ability.subject)
+    );
     if (!visible) {
       toast.error(
         I18n.trans(I18n.get.acl.errors.routeNotAllowed, { route: path }),

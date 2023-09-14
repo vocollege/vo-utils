@@ -16,7 +16,8 @@ import { useLazyQuery, useMutation, ApolloError } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import clsx from "clsx";
-// import TextField from "@mui/material/TextField";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 // Custom.
 // import { VoAuth } from "@vocollege/app";
@@ -55,7 +56,7 @@ import Editor from "@/Editor";
 import { FileManagerFolderElement } from "@/FileManager/global";
 import { stylesLayout } from "@vocollege/theme";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
-import { fakeMutation } from "@vocollege/app";
+import { GeneralObject, fakeMutation } from "@vocollege/app";
 import Location from "./fields/Location";
 import Checkboxes from "./fields/Checkboxes";
 import TransferList from "./fields/TransferList";
@@ -353,6 +354,23 @@ const Form: React.FC<FormProps> = (props) => {
     }, 300);
   };
 
+  const handleAutocompleteChange = (
+    field: string,
+    value: any,
+    onChange: FormField["onChange"]
+  ) => {
+    dispatch({ field: field, value: value });
+    if (onChange) {
+      onChange(value, data);
+    }
+    typingTimer[field] = window.setTimeout(async () => {
+      setValue(`${field}` as const, value, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }, 300);
+  };
+
   const handleContentListReset = (field: string) => {
     dispatch({ field: field, value: data[operations.category][field] });
   };
@@ -528,7 +546,7 @@ const Form: React.FC<FormProps> = (props) => {
     field: FormField
   ): VoSelectFieldAvailableValue[] => {
     if (field.params?.availableValues) {
-      return field.params?.availableValues(data);
+      return field.params?.availableValues(data, state);
     }
     return [];
   };
@@ -544,6 +562,13 @@ const Form: React.FC<FormProps> = (props) => {
       return state[field.name][0] ? state[field.name][0].id : "";
     }
     return state[field.name];
+  };
+
+  const getAutocompleteOptions = (field: FormField): GeneralObject[] => {
+    if (field.params?.options) {
+      return field.params?.options(data);
+    }
+    return [];
   };
 
   const getField = (field: FormField) => {
@@ -929,10 +954,40 @@ const Form: React.FC<FormProps> = (props) => {
           />
         );
 
+      case "autocomplete":
+        return (
+          <Autocomplete
+            {...field.params?.AutocompleteProps}
+            options={getAutocompleteOptions(field)}
+            disablePortal
+            ChipProps={{ size: "small", ...field.params?.ChipProps }}
+            value={
+              state[field.name] ??
+              (field.params?.AutocompleteProps.multiple ? [] : null)
+            }
+            onChange={(event, newValue) =>
+              handleAutocompleteChange(field.name, newValue, field.onChange)
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                {...field.params?.TextFieldProps}
+                helperText={
+                  errors[field.name]
+                    ? errors[field.name]?.message
+                    : field.params?.TextFieldProps?.helperText
+                }
+                label={field.label}
+              />
+            )}
+          />
+        );
+
       case "hidden":
         return (
           <input type="hidden" name={field.name} value={state[field.name]} />
         );
+
       case "empty":
         return "";
 
@@ -1018,9 +1073,18 @@ const Form: React.FC<FormProps> = (props) => {
           mergedData[field] =
             data[fieldParts[0]][fieldParts[1]][fieldParts[2]] ||
             initialState[field];
+          mergedData[field] =
+            data[fieldParts[0]] &&
+            data[fieldParts[0]][fieldParts[1]] &&
+            data[fieldParts[0]][fieldParts[1]][fieldParts[2]] !== undefined
+              ? data[fieldParts[0]][fieldParts[1]][fieldParts[2]]
+              : initialState[field];
         } else {
           mergedData[field] =
-            data[fieldParts[0]][fieldParts[1]] || initialState[field];
+            data[fieldParts[0]] &&
+            data[fieldParts[0]][fieldParts[1]] !== undefined
+              ? data[fieldParts[0]][fieldParts[1]]
+              : initialState[field];
         }
       } else {
         mergedData[field] =
@@ -1126,21 +1190,6 @@ const Form: React.FC<FormProps> = (props) => {
   useEffect(() => {
     if (data && data[operations.category]) {
       setData(data);
-      // setData(data[operations.category]);
-
-      // let mergedData: { [key: string]: any } = {};
-      // Object.keys(initialState).map((field: any) => {
-      //   if (field.indexOf(".") > -1) {
-      //     let fieldParts = field.split(".");
-      //     mergedData[field] = data[fieldParts[0]][fieldParts[1]];
-      //   } else {
-      //     mergedData[field] = data[operations.category][field];
-      //   }
-      // });
-      // dispatch({
-      //   item: mergedData,
-      // });
-      // reset(mergedData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);

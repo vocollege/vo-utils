@@ -51,7 +51,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
   const [searchItems, { loading: searchLoading, data: searchData }] =
     useLazyQuery(query || SEARCH_CONTENT, {
       fetchPolicy: "network-only",
-      errorPolicy: "all",
+      // errorPolicy: "all",
       client: client || undefined,
       onError: (error) => {
         toast.error(error.message, { autoClose: false });

@@ -18,6 +18,12 @@ export const GET_GROUP = gql`
       created_at
       updated_at
       parentGroupId
+      parentGroups {
+        id
+        name
+        title
+        category
+      }
       location {
         id
         latitude

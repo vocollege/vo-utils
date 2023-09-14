@@ -96,6 +96,7 @@ export interface FormField {
     | "checkboxes"
     | "content"
     | "transfer_list"
+    | "autocomplete"
     | "hidden"
     | "empty"
     | "custom";

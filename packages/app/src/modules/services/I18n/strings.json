@@ -319,7 +319,8 @@
       "vopagesStatus": "Detta innebär att denna grupp kommer att vara åtkomplig via 'gruppnamn.vo-college.se', t ex 'kronoberg.vo-college.se'.",
       "frontPageIntro": "Startsidan för denna grupp när den är aktiv som en VoSida.",
       "userAlreadyExistsGetInTouch": "Om användaren du försöker skapa redan finns i huvuddatabasen, då behöver du kontakta kansliet så den användaren kan läggas till på nuvarande VoSida.",
-      "userComesFromCentralDatabase": "Användarna nedan kommer från VO-Colleges centrala databas. Om du raderar en användare här så kommer den även att raderas centralt."
+      "userComesFromCentralDatabase": "Användarna nedan kommer från VO-Colleges centrala databas. Om du raderar en användare här så kommer den även att raderas centralt.",
+      "parentGroupsHelper": "Välj en eller flera grupper som denna grupp ska tillhöra, för att skapa en hierarki, t ex ett lokalt college ska ha ett regionalt college som 'Grupptillhörighet'."
     },
     "categories": {
       "region": "Regionalt college",
@@ -437,7 +438,7 @@
   "form": {
     "errors": {
       "required": "Obligatoriskt",
-      "invalidName": "Ogiltigt namn. Det får endast innehålla småbokstäver (minst 3), följd av en eller flera siffror, t ex: 'ann', 'olle.persson', 'ann1980', 'peter_ericsson'",
+      "invalidName": "Ogiltigt namn. Det får endast innehålla småbokstäver (minst 3), följd av en eller flera siffror, t ex: 'ann', 'olle.persson', 'ann1980', 'peter_ericsson', 'david-larsson'",
       "invalidEmail": "Ogiltig e-postadress",
       "invalidFirstname": "Ogiltigt förnamn",
       "invalidLastname": "Ogiltigt efternamn",
@@ -658,7 +659,7 @@
     "areYouSure": "Är du säker?",
     "deleteElement": "Vill du radera ::element?",
     "actionCantBeUndone": "Denna åtgärd kan inte ångras",
-    "sessionExpired": "Din session behöver förnyas och du omdirigeras till inloggningen. Var vänlig och logga in igen.",
+    "sessionExpired": "Din session behöver förnyas. Var vänlig och logga in igen.",
     "cookiesTitle": "Vi använder kakor (cookies)",
     "cookiesMessage": "Vi använder nödvändiga kakor för att webbplatsen ska fungera på ett bra sätt för dig. Vi använder också kakor för webbanalys så vi kan förbättra vår webbplats.",
     "accessDenied": "Åtkomst nekad",
@@ -666,7 +667,7 @@
     "newVersionAvailable": "En ny version av denna applikation är tillgänglig och sidan kommer att laddas om...",
     "certifiedSince": "Certifierat sedan ::date",
     "adminDashboard01": "Välkommen till",
-    "adminDashboard02": "Här kan du bl a hantera artiklar och dokumentbanken. Högst upp till höger väljer du vilken VoSida du vill hantera, i fall ditt konto har behörighet att hantera flera olika VoSidor.",
+    "adminDashboard02": "Här kan du bl a hantera artiklar och dokumentbanken. Högst upp till höger väljer du vilken VoSida/Grupp du vill hantera, i fall ditt konto har behörighet att hantera flera olika VoSidor/Grupper.",
     "adminDashboard03": "Vid frågor, vänligen kontakta oss på"
   },
   "toolbar": {
@@ -762,7 +763,7 @@
       "yh": "YH-utbildning"
     },
     "education": {
-      "vardOchOmsorg": "Vård- och omsorgutbildning",
+      "vardOchOmsorg": "Vård- och omsorgsutbildning",
       "barnFritid": "Barn- och fritidsutbildning med social inriktning"
     },
     "helpTexts": {
@@ -809,7 +810,12 @@
       "tutorCertificates": "Handledarintyg",
       "createTutorCertificate": "Skapa handledarintyg",
       "steps": "Steg",
-      "scope": "Omfattning"
+      "scope": "Omfattning",
+      "step1": "Steg 1",
+      "step2": "Steg 2",
+      "step2Modules": "Steg 2, moduler",
+      "step3": "Steg 3",
+      "all": "Alla"
     },
     "messages": {
       "intro": "Intyg för handledarutbildning steg 1, 2, 1 & 2 och steg 3.",
@@ -822,18 +828,55 @@
       "title": "Intyg",
       "subtitle": "Handledarutbildning steg ::step",
       "textStep1a": "För genomförd handledarutbildning inom vård och omsorg - steg 1.",
-      "textStep1b": "Kursen ger behörighet att handleda elever på reguljär utbildning (apl), praktikanter samt nyanställda",
+      "textStep1b": "Utbildningen ger behörighet att handleda elever på reguljär utbildning (apl), praktikanter samt nyanställda",
       "textStep2a": "För genomförd handledarutbildning inom vård och omsorg - steg 2.",
-      "textStep2b": "Kursen ger behörighet att arbeta som valideringshandledare och handledare för Yrkeshögskolestuderande (YH). Steg 1 och 2 tillsammans motsvarar kursen Vårdpedagogik och handledning samt VO-College struktur för handledarutbildning.",
+      "textStep2b": "Utbildningen ger behörighet att arbeta som valideringshandledare och handledare för Yrkeshögskolestuderande (YH). Steg 1 och 2 tillsammans motsvarar kursen Vårdpedagogik och handledning samt VO-College struktur för handledarutbildning.",
       "textStep3a": "För genomförd handledarutbildning inom vård och omsorg - steg 3.",
-      "textStep3b": "Kursen ger behörighet att arbeta som handledare för handledare.",
+      "textStep3b": "Utbildningen ger behörighet att arbeta som handledare för handledare.",
       "textStep1Step2a": "För genomförd handledarutbildning inom vård och omsorg - steg 1 och 2.",
-      "textStep1Step2b": "Kursen ger behörighet att handleda elever på reguljär utbildning (apl), praktikanter och nyanställda samt att arbeta som valideringshandledare och handledare för Yrkeshögskolestuderande (YH). Steg 1 och 2 tillsammans motsvarar kursen Vårdpedagogik och handledning samt VO-College struktur för handledarutbildning.",
+      "textStep1Step2b": "Utbildningen ger behörighet att handleda elever på reguljär utbildning (apl), praktikanter och nyanställda samt att arbeta som valideringshandledare och handledare för Yrkeshögskolestuderande (YH). Steg 1 och 2 tillsammans motsvarar kursen Vårdpedagogik och handledning samt VO-College struktur för handledarutbildning.",
       "responsible": "Utbildningsansvarig",
       "region": "Regionalt Vård- och omsorgscollege ::region",
+      "local": "Lokalt Vård- och omsorgscollege ::local",
       "and": "och",
-      "scope": "Kursens omfattning: ::scope"
-    }
+      "scope": "Kursens omfattning: ::scope",
+      "handledarutbildning": "Handledarutbildning",
+      "step1Title": "Steg 1 - Grundläggande handledarutbildning",
+      "step1Description": "För genomförd handledarutbildning som ger behörighet att handleda elever på prao och apl, deltagare i arbetsmarknadsåtgärder, introducera nyanställda, brukare/patienter samt närstående.",
+      "step2Title": "Steg 2 - Fördjupningsmoduler",
+      "step2PabyggnadsmodulTitle": "Steg 2 - Påbyggnadsmodul",
+      "step2PabyggnadsmodulDescription": "För genomförd handledarutbildning som ger behörighet att handleda elever från yrkeshögskoleutbildningar under Lärande i arbete (LIA).",
+      "step2LarlingsmodulTitle": "Steg 2 - Lärlingsmodul",
+      "step2LarlingsmodulDescription": "För genomförd webbaserad handledarutbildning inom Skolverket modul 5 som ger behörighet att handleda lärlingar.",
+      "step2SprakochinkluderingsmodulTitle": "Steg 2 - Språk- och inkluderingsmodul",
+      "step2SprakochinkluderingsmodulDescription": "För genomförd handledarutbildning i syfte att skapa förståelse kring hur olika kulturella bakgrunder påverkar kommunikationen och om språkinlärning.",
+      "step2ValideringsmodulTitle": "Steg 2 - Valideringsmodul",
+      "step2ValideringsmodulDescription": "För genomförd valideringshandledarutbildning som ger behörighet att lämna omdömen i de praktiska delarna vid validering.",
+      "step3Title": "Steg 3 - Att handleda handledare",
+      "step3Description": "Utbildningen ger behörighet att arbeta som handledare för handledare."
+    },
+    "modules": [
+      {
+        "name": "step2-mod01",
+        "label": "Påbyggnadsmodul",
+        "steps": [2]
+      },
+      {
+        "name": "step2-mod02",
+        "label": "Lärlingsmodul",
+        "steps": [2]
+      },
+      {
+        "name": "step2-mod03",
+        "label": "Språk och inkluderingsmodul",
+        "steps": [2]
+      },
+      {
+        "name": "step2-mod04",
+        "label": "Valideringsmodul",
+        "steps": [2]
+      }
+    ]
   },
   "tutorAwardCertificate": {
     "label": "Certifikat för Årets handledare",

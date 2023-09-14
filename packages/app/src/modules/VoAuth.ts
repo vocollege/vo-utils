@@ -98,25 +98,28 @@ class VoAuth extends VoBase {
     });
   }
 
-  setSession(token: any) {
+  setSession(token: any, updateCookie = true) {
     // const { token_type, access_token, refresh_token, expires_in } = token;
     const { access_token, refresh_token } = token;
 
-    let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
-    // Helpers.localStorage.set(refreshTokenKey, refresh_token);
-    JsCookies.set(refreshTokenKey, refresh_token, {
-      expires: 11,
-      sameSite: "Lax",
-      domain: VoConfig.get.AUTH_DOMAIN,
-    });
+    if (updateCookie) {
+      let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
+      // Helpers.localStorage.set(refreshTokenKey, refresh_token);
+      JsCookies.set(refreshTokenKey, refresh_token, {
+        expires: 21,
+        sameSite: "Lax",
+        domain: VoConfig.get.AUTH_DOMAIN,
+      });
 
-    let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
-    // Helpers.localStorage.set(accessTokenKey, access_token);
-    JsCookies.set(accessTokenKey, access_token, {
-      expires: 1,
-      sameSite: "Lax",
-      domain: VoConfig.get.AUTH_DOMAIN,
-    });
+      let expires = new Date(new Date().getTime() + 4 * 60 * 60 * 1000);
+      let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
+      // Helpers.localStorage.set(accessTokenKey, access_token);
+      JsCookies.set(accessTokenKey, access_token, {
+        expires,
+        sameSite: "Lax",
+        domain: VoConfig.get.AUTH_DOMAIN,
+      });
+    }
 
     // let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
     // // Helpers.localStorage.set(tokenTypeKey, token_type);
@@ -179,7 +182,7 @@ class VoAuth extends VoBase {
   async refreshToken() {
     try {
       const token: any = this.getToken();
-      if (token) {
+      if (token?.refresh_token && token?.refresh_token !== "") {
         let params = {
           grant_type: "refresh_token",
           refresh_token: token.refresh_token,
@@ -217,16 +220,16 @@ class VoAuth extends VoBase {
             VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN,
           ].indexOf(cookieName) === -1
         ) {
+          JsCookies.remove(cookieName);
           JsCookies.remove(cookieName, {
-            domain: VoConfig.get.AUTH_DOMAIN,
+            domain: `.${VoConfig.get.AUTH_DOMAIN}`,
           });
         }
       }
-
       const token = this.getToken();
       if (token) {
         try {
-          this.setSession(token);
+          this.setSession(token, forceLoad);
           await this.loadUser(forceLoad);
           resolve(this.user);
         } catch (error) {
@@ -281,10 +284,10 @@ class VoAuth extends VoBase {
       // const expiresIn = JsCookies.get(expiresInKey);
 
       // if (refreshToken && accessToken && tokenType && expiresIn) {
-      if (refreshToken && accessToken) {
+      if (refreshToken) {
         return {
           refresh_token: refreshToken,
-          access_token: accessToken,
+          access_token: accessToken || "",
           // token_type: tokenType,
           // expires_in: expiresIn,
         };

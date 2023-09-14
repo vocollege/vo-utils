@@ -60,7 +60,7 @@ export const encodeQueryData = (data: encodeQueryDataType) => {
 
 export const regexPatterns = {
   // username: /(^[a-z]{3,})([0-9]?)+$/,
-  username: /(^[a-z]{3,})([\.]|[\_]|[a-z]|[0-9]?)+$/,
+  username: /(^[a-z]{3,})([\.]|[\_]|[\-]|[a-z]|[0-9]?)+$/,
   email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
   stringNonDigit: /^[^0-9]+$/,
   password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, // At least 8 characters, 1 uppercase, 1 lowercase and 1 digit.
@@ -386,7 +386,6 @@ export const convertSvgToImage = (
     try {
       let response = await fetch(url);
       let svg = await response.text();
-
       let parser = new DOMParser();
       let doc = parser.parseFromString(svg, "image/svg+xml");
 

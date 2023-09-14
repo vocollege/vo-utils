@@ -1,21 +1,24 @@
 import axios from "axios";
 import VoAuth from "./modules/VoAuth";
 import VoRouter from "./modules/VoRouter";
-// import VoApp from "./modules/VoApp";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 // Custom.
 import I18n from "./modules/Services/I18n";
 
 (function () {
-  let retry = 0;
-
   async function redirect() {
     try {
+      Cookies.set("voapp_redirectTo", window.location.origin, {
+        domain: ".vo-college.se",
+        sameSite: "Lax",
+      });
       await VoAuth.logout();
       VoRouter.redirectToLogout();
     } catch (error) {
       console.error("Interceptor", error);
+      VoAuth.resetSession();
     }
   }
 
@@ -32,50 +35,27 @@ import I18n from "./modules/Services/I18n";
       return res;
     },
     async (error) => {
-      const status = error.response ? error.response.status : null;
-
-      if (status && retry < 2) {
-        retry++;
-        switch (status) {
-          case 400:
-          case 401:
-            try {
-              await VoAuth.refreshToken();
-              const token: any = VoAuth.getToken();
-
-              // Update the failed request with the new access token
-              // in order to redo the call.
-              if (token) {
-                retry = 0;
-                error.config.headers["Authorization"] =
-                  // token.token_type + " " + token.access_token;
-                  "Bearer " + token.access_token;
-              }
-
-              return axios.request(error.config);
-            } catch (error) {
-              redirect();
-              console.error("Interceptor", error);
-            }
-            break;
+      const { config } = error;
+      let isTokeRequest = config.url.includes("oauth/token");
+      try {
+        if (
+          !isTokeRequest &&
+          [400, 401, 403].indexOf(error.response?.status) > -1
+        ) {
+          await VoAuth.refreshToken();
+          const token: any = VoAuth.getToken();
+          if (token) {
+            config.headers["Authorization"] = "Bearer " + token.access_token;
+            return axios.request(config);
+          }
         }
+      } catch (error) {}
+
+      if (isTokeRequest) {
+        toast.error(I18n.get.messages.sessionExpired, { autoClose: false });
+        redirect();
       }
-
-      return new Promise((resolve, reject) => {
-        switch (status) {
-          case 419:
-            toast.error(I18n.get.messages.sessionExpired);
-            // setTimeout(() => {
-            redirect();
-            reject(error);
-            // }, 5000);
-            break;
-          default:
-            reject(error);
-            break;
-        }
-        console.error("Interceptor", error);
-      });
+      return Promise.reject(error);
     }
   );
 })();

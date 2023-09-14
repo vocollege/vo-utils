@@ -30,7 +30,7 @@ class VoRouter {
     const currentPath = this.getPath(window.location.pathname, 0);
     // const routes = VoConfig.getConfigByKey('routes');
     const routes = this.getRoutes();
-    return routes.hasOwnProperty(currentPath) && routes[currentPath].protected;
+    return routes.hasOwnProperty(currentPath) && routes[currentPath].abilities;
   }
   isAuthRoute() {
     const currentPath = this.getPath(window.location.pathname, 0);
@@ -54,10 +54,10 @@ class VoRouter {
       if (redirectTo) {
         webUrl.push(`?redirect=${redirectTo}`);
       }
-      // if (VoConfig.get.BASE_URL) {
-      //   webUrl.push(`?redirect=${VoConfig.get.BASE_URL}`);
-      // }
     }
+    Cookies.remove("voapp_redirectTo", {
+      domain: ".vo-college.se",
+    });
     if (webUrl.length > 0) {
       window.location.href = webUrl.join("");
     }
