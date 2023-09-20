@@ -27,6 +27,7 @@ export * from "./mutations/books";
 export * from "./mutations/cards";
 export * from "./mutations/events";
 export * from "./mutations/navigation";
+export * from "./mutations/newsletter";
 export * from "./mutations/pages";
 export * from "./mutations/queues";
 export * from "./mutations/settings";
