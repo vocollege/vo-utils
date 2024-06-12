@@ -100,7 +100,8 @@ const Editor: React.FC<EditorProps> = (props) => {
       <TinyMCEEditor
         // ref={(editor) => setEditorInstance(editor)}
         value={value}
-        apiKey="o6ga9s2czm0raynfmvaj1h3pgzv57brklv5bh7kmiitf5pjf"
+        // apiKey="o6ga9s2czm0raynfmvaj1h3pgzv57brklv5bh7kmiitf5pjf"
+        tinymceScriptSrc="/tinymce/tinymce.min.js"
         init={{
           branding: false,
           height: 500,

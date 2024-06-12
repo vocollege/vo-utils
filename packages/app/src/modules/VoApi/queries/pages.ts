@@ -20,6 +20,7 @@ export const GET_PAGE = gql`
       template
       created_at
       updated_at
+      settings
       tags {
         id
         label

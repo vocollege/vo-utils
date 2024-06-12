@@ -2,6 +2,7 @@ import React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import clsx from "clsx";
+import Badge from "@mui/material/Badge";
 
 import { FormTabProps, FormTabsProps } from "./global";
 import { useStyles } from "./styles";
@@ -18,6 +19,12 @@ const FormTabs = ({ className, tabs, currentTab, setTab }: FormTabsProps) => {
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
   };
+  const getLabel = (tab: FormTabProps) => {
+    if (tab.badge) {
+      return <Badge {...tab.badge}>{tab.label}</Badge>;
+    }
+    return tab.label;
+  };
   return (
     <Tabs
       className={clsx(classes.formTabs, className)}
@@ -29,7 +36,7 @@ const FormTabs = ({ className, tabs, currentTab, setTab }: FormTabsProps) => {
       variant="scrollable"
     >
       {tabs.map((tab: FormTabProps, key: number) => {
-        return <Tab key={key} label={tab.label} {...a11yProps(key)} />;
+        return <Tab key={key} label={getLabel(tab)} {...a11yProps(key)} />;
       })}
     </Tabs>
   );

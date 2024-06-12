@@ -1,14 +1,15 @@
+import React from "react";
 import { ApolloClient, DocumentNode } from "@apollo/client";
 import { TreeItem } from "@nosferatu500/react-sortable-tree";
 import { FilledTextFieldProps } from "@mui/material/TextField";
 import { ButtonProps } from "@mui/material/Button";
+import { BadgeProps } from "@mui/material/Badge";
 
 // Custom.
 import {
   FileManagerFolderElement,
   FileManagerPortfolio,
 } from "@/FileManager/global";
-import React from "react";
 
 export interface TabPanelProps {
   children?: React.ReactNode;
@@ -70,6 +71,7 @@ export interface FormTabProps {
   key: string;
   label: React.ReactNode;
   fields: FormField[];
+  badge?: BadgeProps;
   children?: React.ReactNode;
 }
 
@@ -156,7 +158,8 @@ export interface FormTabsProps {
   setTab: any;
 }
 export interface FormViewsProps {
-  children?: React.ReactNodeArray;
+  // children?: React.ReactNodeArray;
+  children?: React.ReactNode[];
   currentTab: any;
   setTab: any;
 }
@@ -363,6 +366,7 @@ export interface FileFieldProps {
   hideThumbnail?: boolean;
   simplified?: boolean;
   client?: ApolloClient<object> | null;
+  disabled?: boolean;
 }
 
 export interface FormFieldLocationProps {

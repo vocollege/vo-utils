@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
 
+import { GET_EDUCATIONS_FIELDS } from "./educations";
+
 export const GET_GROUP = gql`
   query Group($id: ID!, $categories: [String]) {
     group(id: $id) {
@@ -12,6 +14,8 @@ export const GET_GROUP = gql`
       docs
       website
       educator_category
+      educator_type
+      employer_type
       certified
       status
       url
@@ -81,6 +85,20 @@ export const GET_GROUP = gql`
         filesize
         filetype
         url
+      }
+      educations {
+        id
+        title
+        code
+        type
+        pivot {
+          education_id
+          education_usage_id
+          education_usage_type
+          field
+          certified
+          comments
+        }
       }
     }
     allGroups(categories: $categories) {

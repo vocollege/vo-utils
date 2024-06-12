@@ -26,6 +26,7 @@ export const GET_ARTICLE = gql`
       status
       url
       editUrl
+      settings
       author {
         ... on User {
           id

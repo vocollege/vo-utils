@@ -42,6 +42,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
     hideThumbnail,
     simplified,
     client,
+    disabled,
   } = props;
   const classes = useStyles();
   const classesForm = useStylesForm();
@@ -153,6 +154,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
             size="small"
             onClick={handleClear}
             classes={{ root: classes.clearButton }}
+            disabled={disabled}
           >
             <CloseIcon />
           </IconButton>
@@ -164,6 +166,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
             onClick={() => setDialogOpen(true)}
             size="small"
             startIcon={<FindInPageIcon />}
+            disabled={disabled}
           >
             {I18n.get.entities.label.search}
           </Button>
@@ -175,6 +178,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
             onClick={() => setDialogOpen(true)}
             size="small"
             startIcon={<BackupIcon />}
+            disabled={disabled}
           >
             {I18n.get.actions.upload}
           </Button>
@@ -224,6 +228,7 @@ const FileField: React.FC<FileFieldProps> = (props) => {
                 color="success"
                 size="small"
                 onClick={() => handleDownloadFile(file.id)}
+                disabled={disabled}
               >
                 <CloudDownloadIcon />
               </IconButton>

@@ -67,7 +67,31 @@ class GraphClient {
     const links = this.getGraphClientLinks(params);
 
     return new ApolloClient({
-      cache: new InMemoryCache(),
+      cache: new InMemoryCache({
+        typePolicies: {
+          Education: {
+            keyFields: (object, context) => {
+              if (!object.hasOwnProperty("pivot")) {
+                return ["id"];
+              }
+              return [
+                "id",
+                "pivot",
+                ["education_usage_id", "education_usage_type", "field"],
+              ];
+            },
+          },
+          //   PivotEducation: {
+          //     // keyFields: ["education_usage_id"],
+          //     keyFields: [
+          //       "education_id",
+          //       "education_usage_id",
+          //       "education_usage_type",
+          //       "field",
+          //     ],
+          //   },
+        },
+      }),
       link: from([
         links.errorLink,
         links.authLink,

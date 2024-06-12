@@ -1311,7 +1311,7 @@ const Form: React.FC<FormProps> = (props) => {
                     currentTab={currentTab}
                     setTab={setTab}
                     className={classesProp?.formTabs}
-                  ></FormTabs>
+                  />
                 </Grid>
               )}
               <Grid item xs={12}>

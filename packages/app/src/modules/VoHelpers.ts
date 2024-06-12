@@ -64,7 +64,7 @@ export const regexPatterns = {
   email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
   stringNonDigit: /^[^0-9]+$/,
   password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, // At least 8 characters, 1 uppercase, 1 lowercase and 1 digit.
-  cleanName: /(^[A-Za-z]{1,})(\w|-?)+$/,
+  cleanName: /(^[a-z]{1,})(\w|-?)+$/,
   personalNumber: /^(\d{8})[-]\d{4}$/,
   orgnr: /^(\d{6})[-]\d{4}$/,
 };
@@ -430,4 +430,32 @@ export const convertSvgToImage = (
       reject(error);
     }
   });
+};
+
+export const getCollegeUrl = (item: any, origin?: string) => {
+  if (!origin && typeof window === "undefined") {
+    return "/";
+  }
+  const currentUrl = new URL(origin || window.location.href);
+  let urlParts = currentUrl.host.split(".");
+  let url = [
+    item?.name,
+    urlParts[urlParts.length - 2],
+    urlParts[urlParts.length - 1],
+  ];
+  let currentGroupParts = urlParts[0].split("-");
+  if (currentGroupParts[0] === "local") {
+    url[0] = `local-${url[0]}`;
+  }
+  return currentUrl.protocol + "//" + url.join(".");
+};
+
+export const hasSettings = (item: any, settings: string[] = []) => {
+  if (!item.settings) {
+    return false;
+  }
+  let foundSettings = settings.filter((v: string) => {
+    return item.settings.indexOf(v) > -1;
+  });
+  return foundSettings.length > 0;
 };

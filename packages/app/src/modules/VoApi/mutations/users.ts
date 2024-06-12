@@ -45,6 +45,8 @@ export const UPDATE_USER = gql`
         label
         type
       }
+      apps
+      settings
     }
   }
 `;

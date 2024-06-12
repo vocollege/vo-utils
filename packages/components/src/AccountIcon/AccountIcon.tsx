@@ -296,7 +296,7 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
         <Session onChange={handleSessionChange} callParams={callParams} />
       )}
 
-      {(accountOpen || (user && !user.gdpr)) && (
+      {(accountOpen || (user && !user.gdpr && !user.auth)) && (
         <AccountDialog
           open={accountOpen || (user && !user.gdpr)}
           onChange={handleAccountDialogChange}

@@ -34,7 +34,13 @@
       "userDeleted": "Användaren har raderats",
       "statusHelper": "Detta avgör om en användare syns utåt, exempelvis i köer.",
       "readMoreDataPolicy": "Läs mer i vår dataskyddspolicy"
-    }
+    },
+    "settings": [
+      {
+        "name": "excludeFromAutomaticDeletion",
+        "label": "Uteslut denna användare från automatisk radering"
+      }
+    ]
   },
   "acl": {
     "label": "ACL",
@@ -60,6 +66,23 @@
     "messages": {
       "articleSaved": "Artikeln har sparats",
       "articleDeleted": "Artikeln har raderats"
+    },
+    "settings": [
+      {
+        "name": "hideTopImage",
+        "label": "Visa inte bilden högst upp på sidan"
+      }
+    ]
+  },
+  "education": {
+    "label": "Utbildning",
+    "labels": {
+      "educations": "Utbildningar",
+      "createEducation": "Skapa utbildning"
+    },
+    "messages": {
+      "educationSaved": "Utbildningen har sparats",
+      "educationDeleted": "Utbildningen har raderats"
     }
   },
   "page": {
@@ -75,7 +98,13 @@
     "templates": {
       "standard": "Standard",
       "bigImage": "Stor bild"
-    }
+    },
+    "settings": [
+      {
+        "name": "hideTopImage",
+        "label": "Visa inte bilden högst upp på sidan (gäller endast 'Standard'-mallen)"
+      }
+    ]
   },
   "queue": {
     "label": "Kö",
@@ -303,15 +332,18 @@
       "groupPermissions": "Gruppbehörigheter",
       "contacts": "Kontakter",
       "groupAffiliation": "Grupptillhörighet",
-      "educatorCategory": "Typ av utbildare",
+      "educatorCategory": "Typ av utbildare (gammal)",
+      "educatorType": "Typ av utbildare",
+      "employerType": "Typ av arbetsgivare",
       "currentGroup": "Aktuell grupp",
       "noGroup": "Ingen grupp är vald",
       "startPage": "Startsida",
       "vopagesStatus": "Aktivera VoSida för denna grupp",
-      "vopage": "VoSida"
+      "vopage": "VoSida",
+      "educator": "Utbildare"
     },
     "errors": {
-      "invalidGroupName": "Ogiltigt gruppnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag och specialtecken. Understreck/bindestreck är tillåtet. Ex: 'nationellt', 'kronoberg', 'projekt2020', 'orebro-lan"
+      "invalidGroupName": "Ogiltigt gruppnamn. Det måste starta med minst 1 bokstav följd av en eller flera siffror och/eller bokstäver, utan mellanslag, specialtecken eller stora bokstäver. Understreck/bindestreck är tillåtet. Ex: 'nationellt', 'kronoberg', 'projekt2020', 'orebro-lan"
     },
     "messages": {
       "groupSaved": "Gruppen har sparats",
@@ -320,7 +352,8 @@
       "frontPageIntro": "Startsidan för denna grupp när den är aktiv som en VoSida.",
       "userAlreadyExistsGetInTouch": "Om användaren du försöker skapa redan finns i huvuddatabasen, då behöver du kontakta kansliet så den användaren kan läggas till på nuvarande VoSida.",
       "userComesFromCentralDatabase": "Användarna nedan kommer från VO-Colleges centrala databas. Om du raderar en användare här så kommer den även att raderas centralt.",
-      "parentGroupsHelper": "Välj en eller flera grupper som denna grupp ska tillhöra, för att skapa en hierarki, t ex ett lokalt college ska ha ett regionalt college som 'Grupptillhörighet'."
+      "parentGroupsHelper": "Välj en eller flera grupper som denna grupp ska tillhöra, för att skapa en hierarki, t ex ett lokalt college ska ha ett regionalt college som 'Grupptillhörighet'.",
+      "doNotUseOldCategories": "Detta fält är 'den gamla typen' som kommer att raderas så småningom. Det går inte att ändra detta fält."
     },
     "categories": {
       "region": "Regionalt college",
@@ -328,6 +361,21 @@
       "educator": "Utbildare",
       "employer": "Arbetsgivare",
       "other": "Annat"
+    },
+    "employerTypes": {
+      "kommun": "Kommun",
+      "privat": "Privat",
+      "region": "Region"
+    },
+    "educatorTypes": {
+      "kom_gym": "Kommunal Gymnasium",
+      "fri_gym": "Friskola, Gymnasium",
+      "kom_vux": "Kommunal vuxenutbildning",
+      "fri_vux": "Vuxenutbildning, fristående",
+      "yrkeshogskola": "Yrkeshögskola",
+      "folkhogskola": "Folkhögskola",
+      "arb_utb": "Arbetsmarknadsutbildning",
+      "other": "Annan utbildning"
     },
     "educatorCategories": {
       "gym_vo": "Gymnasium VO",
@@ -474,6 +522,7 @@
       "file": "Fil",
       "name": "Namn",
       "category": "Kategori",
+      "severity": "Allvarlighetsgrad",
       "categories": "Kategorier",
       "latitude": "Latitud",
       "longitude": "Longitud",
@@ -646,7 +695,8 @@
     "download": "Ladda ner",
     "copyLink": "Kopiera länk",
     "apply": "Tillämpa",
-    "generate": "Generera"
+    "generate": "Generera",
+    "downloadExcel": "Excel-fil"
   },
   "status": {
     "unpublished": "Opublicerat",
@@ -696,6 +746,7 @@
     "actions": "Åtgärder",
     "articles": "Artiklar",
     "pages": "Sidor",
+    "messages": "Meddelanden",
     "content": "Innehåll",
     "extra": "Extra",
     "documentbank": "Dokumentbank",
@@ -723,6 +774,7 @@
     "download": "Ladda ner",
     "notes": "Anteckningar",
     "notVoCollege": "Ej VO-College",
+    "noLocalCollege": "Inget Lokalt College",
     "year": "År",
     "text": "Text",
     "college": "VO-College",
@@ -735,7 +787,10 @@
     "managing": "Hanterar",
     "validig": "Validig",
     "from": "Från",
-    "to": "Till"
+    "to": "Till",
+    "apps": "Appar",
+    "code": "Kod",
+    "new": "Ny"
   },
   "diploma": {
     "label": "Diplom",
@@ -764,7 +819,7 @@
     },
     "education": {
       "vardOchOmsorg": "Vård- och omsorgsutbildning",
-      "barnFritid": "Barn- och fritidsutbildning med social inriktning"
+      "barnFritid": "Barn- och fritidsutbildning med inriktning pedagogiskt och socialt arbete"
     },
     "helpTexts": {
       "creditsUng": "Antal godkända gymnasiepoäng, 2250 poäng",
@@ -1051,9 +1106,77 @@
       "label": "Språket på jobbet"
     }
   },
+  "message": {
+    "label": "Meddelande",
+    "labels": {
+      "messages": "Meddelanden",
+      "createMessage": "Skapa meddelande"
+    },
+    "messages": {
+      "messageSaved": "Meddelandet har sparats",
+      "messageDeleted": "Meddalandet har raderats",
+      "titleHelper": "Titeln används bara internt och visas inte utåt för slutanvändaren."
+    },
+    "severity": [
+      {
+        "value": "success",
+        "label": "Framgång (grön)"
+      },
+      {
+        "value": "warning",
+        "label": "Varning (gul)"
+      },
+      {
+        "value": "info",
+        "label": "Info (blå)"
+      },
+      {
+        "value": "error",
+        "label": "Fel (röd)"
+      }
+    ],
+    "settings": [
+      {
+        "name": "dismissible",
+        "label": "Kan avvisas"
+      }
+    ]
+  },
   "statistics": {
     "labels": {
-      "statistics": "Statistik"
+      "statistics": "Statistik",
+      "certifications": "Certifieringar",
+      "general": "Allmän",
+      "generalStatistics": "Allmän statistik",
+      "certificationsStatistics": "Statistik, certifieringar",
+      "numberOfRegionalVoCollege": "Antal regionala VO-College",
+      "numberOfLocalVoCollege": "Antal lokala VO-College",
+      "numberOfEmployer": "Antal arbetsgivare",
+      "numberEducatorGymVO": "Antal gymnasieskolor, vård och omsorg",
+      "numberEducatorGymBF": "Antal gymnasieskolor, barn och fritid",
+      "numberEducatorVuxVO": "Antal vuxenutbildare, vård och omsorg",
+      "numberEducatorVuxBF": "Antal vuxenutbildare, barn och fritid",
+      "numberEducatorFolkhogskolor": "Antal folkhögskolor",
+      "numberEducatorYrkeshogskolor": "Antal yrkeshögskolor",
+      "numberOfEducators": "Antal utbildare",
+      "educatorPerType": "Utbildare per typ",
+      "certifiedRegionalVoCollege": "Certifierade regionala college",
+      "certifiedLocalVoCollege": "Certifierade lokala college",
+      "certifiedEducators": "Certifierade utbildare",
+      "certifiedEducations": "Certifierade utbildningar",
+      "outsideSelectedPeriod": "Utanför vald period"
+    },
+    "messages": {
+      "educatorCanAppearMultipleTimes": "Notera att en och samma utbildare kan förekomma flera gånger, under olika rubriker. T ex kan en utbildare vara både 'Kommunal Gymnasium' och 'Kommunal vuxenutbildning'.",
+      "sumOfEducationsCanBeDifferentFromNumberOfEducators": "Notera att summan av utbildningar kan bli annorlunda från 'Antal utbildare', eftersom vissa utbildare kan sakna certfierade utbildningar under vald period och/eller en och samma utbildare kan ha flera utbildningar."
     }
+  },
+  "voadmin": {
+    "apps": [
+      {
+        "name": "validig",
+        "label": "Validig"
+      }
+    ]
   }
 }

@@ -75,6 +75,11 @@ export const GET_USER = gql`
         title
         type
       }
+      validig {
+        id
+      }
+      apps
+      settings
     }
   }
 `;
