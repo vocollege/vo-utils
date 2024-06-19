@@ -3,15 +3,10 @@ import React, { useState, useReducer, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-// import FormGroup from "@mui/material/FormGroup";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Switch from "@mui/material/Switch";
+
 import makeStyles from "@mui/styles/makeStyles";
-// import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-// import { MaterialUiPickersDate } from "@mui/lab/DatePicker";
 import Dayjs from "dayjs";
 import { useParams, useNavigate } from "react-router-dom";
-// import { Prompt } from "react-router-dom";
 import { useLazyQuery, useMutation, ApolloError } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -20,7 +15,6 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
 // Custom.
-// import { VoAuth } from "@vocollege/app";
 import VoTextField from "@/VoTextField";
 import VoTextArea from "@/VoTextArea";
 import {
@@ -60,11 +54,8 @@ import { GeneralObject, fakeMutation } from "@vocollege/app";
 import Location from "./fields/Location";
 import Checkboxes from "./fields/Checkboxes";
 import TransferList from "./fields/TransferList";
-// import * as Helpers from "@vocollege/app/dist/modules/VoHelpers";
-// import { GeneralObject } from "@vocollege/app/dist/global";
 import { getError } from "@vocollege/app/dist/modules/VoHelpers";
 
-// const useStylesCommon = makeStyles(() => stylesCommon);
 const useStylesLayout = makeStyles(() => stylesLayout);
 
 let typingTimer: { [key: string]: number } = {};
@@ -105,10 +96,9 @@ const Form: React.FC<FormProps> = (props) => {
 
   const {
     handleSubmit,
-    // trigger,
     register,
     unregister,
-    // clearErrors,
+    trigger,
     setError,
     setValue,
     reset,
@@ -116,7 +106,6 @@ const Form: React.FC<FormProps> = (props) => {
     getValues,
   } = useForm({
     mode: "onChange",
-    // shouldUnregister: true,
   });
 
   const { isDirty, isValid, errors } = formState;
@@ -128,23 +117,7 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const redirect = (params: { [key: string]: any } = {}) => {
-    // let redirectTo = Helpers.localStorage.get("redirectTo");
-    // if (redirectTo) {
-    //   let redirectToUrlObj = new URL(redirectTo);
-    //   let oldUrl = Helpers.localStorage.get("currentUrl");
-    //   if (
-    //     redirectToUrlObj.pathname.substr(1) === oldUrl &&
-    //     oldUrl !== state.url
-    //   ) {
-    //     redirectTo = `${redirectToUrlObj.origin}/${state.url}`;
-    //   }
-    //   window.location.href = redirectTo;
-    // } else if (paths?.back) {
-    //   history.push(paths.back, params);
-    // }
-
     if (paths?.back) {
-      // navigate(paths.back, params);
       window.location.href = paths.back;
     }
   };
@@ -207,7 +180,7 @@ const Form: React.FC<FormProps> = (props) => {
 
     // Find custom data categories.
     let customCategoryFields = Object.keys(state).filter(
-      (field: string) => field.indexOf(".") > -1
+      (field: string) => field.indexOf(".") > -1,
     );
     if (customCategoryFields.length > 0) {
       customCategoryFields.map((field: string) => {
@@ -230,7 +203,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeCustomField = (
     name: string,
     value: any,
-    onChange: FormField["onChange"]
+    onChange: FormField["onChange"],
   ) => {
     clearTimeout(typingTimer[name]);
     dispatch({ field: name, value });
@@ -247,7 +220,7 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    onChange: FormField["onChange"]
+    onChange: FormField["onChange"],
   ) => {
     const { name, value } = e.target;
     let newValue: any = value;
@@ -281,7 +254,7 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleCheckChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: FormField
+    field: FormField,
   ) => {
     const { name } = e.target;
     let newValue: boolean | number;
@@ -303,7 +276,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleEditorChange = (
     content: string,
     field: string,
-    onChange: FormField["onChange"]
+    onChange: FormField["onChange"],
   ) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: content });
@@ -322,25 +295,9 @@ const Form: React.FC<FormProps> = (props) => {
     items: FormFieldContentListItem[],
     field: string,
     fieldParams: any,
-    onChange: FormField["onChange"]
+    onChange: FormField["onChange"],
   ) => {
     clearTimeout(typingTimer[field]);
-    // let parsedItems = items.map((v: FormFieldContentListItem) => {
-    //   if (!fieldParams || !fieldParams.fields) {
-    //     return v;
-    //   }
-    //   let titleField = fieldParams.fields[v.type.toLowerCase()]?.title;
-    //   return {
-    //     id: v.id,
-    //     [titleField]: v.title,
-    //     type: v.type,
-    //     entity: v,
-    //   };
-    // });
-    // dispatch({ field: field, value: parsedItems });
-    // if (onChange) {
-    //   onChange(parsedItems);
-    // }
 
     dispatch({ field: field, value: items });
     if (onChange) {
@@ -357,7 +314,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleAutocompleteChange = (
     field: string,
     value: any,
-    onChange: FormField["onChange"]
+    onChange: FormField["onChange"],
   ) => {
     dispatch({ field: field, value: value });
     if (onChange) {
@@ -378,7 +335,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleSortableTreeChange = (
     items: any[],
     field: string,
-    onChange: FormField["onChange"]
+    onChange: FormField["onChange"],
   ) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: items });
@@ -397,7 +354,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeUrl = (
     field: string,
     value: string,
-    onChange: FormField["onChange"]
+    onChange: FormField["onChange"],
   ) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: value });
@@ -415,12 +372,8 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeEntity = (
     field: string,
     item: EntityPickerItem | null,
-    onChange: FormField["onChange"] | null
+    onChange: FormField["onChange"] | null,
   ) => {
-    // let value =
-    //   typeof item === "string"
-    //     ? ""
-    //     : `${item.id} - ${item.title} - ${item.type.toLowerCase()}`;
     dispatch({ field: field, value: item });
     setValue(`${field}` as const, item, {
       shouldValidate: true,
@@ -431,25 +384,12 @@ const Form: React.FC<FormProps> = (props) => {
     }
   };
 
-  // const handleEntityFieldReset = (
-  //   field: string,
-  //   type: string,
-  //   defaultValue = true
-  // ) => {
-  //   handleChangeEntity(field, {
-  //     id: defaultValue ? VoAuth.currentUser.id : 0,
-  //     title: defaultValue ? VoAuth.currentUser.name : "",
-  //     type: type,
-  //   });
-  // };
-
   const handleChangeDate = (
     field: string,
     date: any,
     onChange: FormField["onChange"],
-    format: string
+    format: string,
   ) => {
-    // let value = date?.format(format);
     let value = Dayjs(date, format).format(format);
     dispatch({ field: field, value: value });
     if (onChange) {
@@ -472,7 +412,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeFile = (
     field: string,
     files: FileManagerFolderElement[],
-    onChange: FormField["onChange"]
+    onChange: FormField["onChange"],
   ) => {
     dispatch({ field: field, value: files });
     setValue(`${field}` as const, files, {
@@ -497,7 +437,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeCheckboxes = (
     field: string,
     values: String[],
-    onChange: FormField["onChange"]
+    onChange: FormField["onChange"],
   ) => {
     dispatch({ field: field, value: values });
     setValue(`${field}` as const, values, {
@@ -528,22 +468,8 @@ const Form: React.FC<FormProps> = (props) => {
     }
   };
 
-  // const getContentListItems = (items: any, fieldParams: any) => {
-  //   if (!items || !fieldParams || !fieldParams.fields) {
-  //     return items;
-  //   }
-  //   return items.map((v: any) => {
-  //     let titleField = fieldParams.fields[v.type.toLowerCase()]?.title;
-  //     return {
-  //       id: v.id,
-  //       title: v[titleField] ? v[titleField] : v.title,
-  //       type: v.type,
-  //     };
-  //   });
-  // };
-
   const getAvailableValues = (
-    field: FormField
+    field: FormField,
   ): VoSelectFieldAvailableValue[] => {
     if (field.params?.availableValues) {
       return field.params?.availableValues(data, state);
@@ -573,13 +499,20 @@ const Form: React.FC<FormProps> = (props) => {
 
   const getField = (field: FormField) => {
     let visible = true;
+    //console.log("@vocollege/components -> Form: getField() field:", field);
+
+    /*  let df = {
+      triggers: [""],
+    } as FormField;
+    console.log(df);
+*/
     if (field.params?.dependency) {
       for (let fieldDependee in field.params?.dependency) {
         let dependencyValue = field.params?.dependency[fieldDependee].value;
         if (Array.isArray(dependencyValue)) {
           visible =
             field.params?.dependency[fieldDependee].value.indexOf(
-              state[fieldDependee]
+              state[fieldDependee],
             ) >
               -1 ===
             field.params?.dependency[fieldDependee].visibility;
@@ -617,6 +550,13 @@ const Form: React.FC<FormProps> = (props) => {
 
     let format = "";
 
+    let runOnChange = (func: any, ...args: any[]) => {
+      func(...args);
+      if (field.hasOwnProperty("triggers")) {
+        trigger(field.triggers);
+      }
+    };
+
     switch (field.type) {
       case "text":
         return (
@@ -624,7 +564,7 @@ const Form: React.FC<FormProps> = (props) => {
             name={field.name}
             label={field.label}
             value={state[field.name] || ""}
-            onChange={(e) => handleChange(e, field.onChange)}
+            onChange={(e) => runOnChange(handleChange, e, field.onChange)}
             variant="filled"
             fullWidth
             type={field.inputType || "text"}
@@ -637,6 +577,7 @@ const Form: React.FC<FormProps> = (props) => {
             }
             hidden={field.hidden}
             inputProps={field?.params && field?.params?.inputProps}
+            {...field?.params}
           />
         );
       case "textarea":
@@ -644,18 +585,10 @@ const Form: React.FC<FormProps> = (props) => {
           <VoTextArea
             name={field.name}
             label={field.label}
-            // placeholder={field.label}
             value={state[field.name] || ""}
-            onChange={(e) => handleChange(e, field.onChange)}
+            onChange={(e) => runOnChange(handleChange, e, field.onChange)}
             required={field.required}
-            // error={!!errors[field.name]}
-            // helperText={
-            //   errors[field.name]
-            //     ? errors[field.name]?.message
-            //     : field?.params?.helperText || ""
-            // }
             hidden={field.hidden}
-            // inputProps={field?.params && field?.params?.inputProps}
             {...field?.params}
           />
         );
@@ -665,7 +598,8 @@ const Form: React.FC<FormProps> = (props) => {
             SelectProps={{
               name: field.name,
               value: getSelectValue(field, field.params?.multiple),
-              onChange: (event) => handleSelectChange(event, field.onChange),
+              onChange: (event) =>
+                runOnChange(handleSelectChange, event, field.onChange),
               disabled: field.params?.disabled,
               multiple: field.params?.multiple,
               renderValue: field.params?.renderValue,
@@ -690,7 +624,7 @@ const Form: React.FC<FormProps> = (props) => {
                 ? state[field.name] === 1
                 : state[field.name]
             }
-            onChange={(e) => handleCheckChange(e, field)}
+            onChange={(e) => runOnChange(handleCheckChange, e, field)}
             label={field.label}
             name={field.name}
             disabled={field.params?.disabled}
@@ -702,7 +636,12 @@ const Form: React.FC<FormProps> = (props) => {
           <Editor
             value={state[field.name]}
             onChange={(content: any) =>
-              handleEditorChange(content, field.name, field.onChange)
+              runOnChange(
+                handleEditorChange,
+                content,
+                field.name,
+                field.onChange,
+              )
             }
             editorSettings={field.params?.editorSettings}
             label={field.label}
@@ -715,17 +654,16 @@ const Form: React.FC<FormProps> = (props) => {
             name={field.name}
             label={field.label}
             onChange={(items: FormFieldContentListItem[]) =>
-              handleContentListChange(
+              runOnChange(
+                handleContentListChange,
                 items,
                 field.name,
                 field.params,
-                field.onChange
+                field.onChange,
               )
             }
             onReset={() => handleContentListReset(field.name)}
-            // items={getContentListItems(state[field.name], field.params)}
             items={state[field.name]}
-            // types={field.params?.types}
             contentType={field.params?.contentType}
             multiple={field.params?.multiple}
             renderItemTitle={field.params?.renderItemTitle}
@@ -746,7 +684,12 @@ const Form: React.FC<FormProps> = (props) => {
             name={field.name}
             label={field.label}
             onChange={(items) =>
-              handleSortableTreeChange(items, field.name, field.onChange)
+              runOnChange(
+                handleSortableTreeChange,
+                items,
+                field.name,
+                field.onChange,
+              )
             }
             onReset={() => handleSortableTreeChangeReset(field.name)}
             items={state[field.name]}
@@ -761,7 +704,9 @@ const Form: React.FC<FormProps> = (props) => {
             label={field.label}
             value={state[field.name]}
             overrideValue={field.overrideValue}
-            onChange={(url) => handleChangeUrl(field.name, url, field.onChange)}
+            onChange={(url) =>
+              runOnChange(handleChangeUrl, field.name, url, field.onChange)
+            }
             helperText={
               errors[field.name]
                 ? errors[field.name]?.message
@@ -772,26 +717,17 @@ const Form: React.FC<FormProps> = (props) => {
           />
         );
       case "entity_field":
-        // let defaultValue =
-        //   typeof field.params?.defaultValue !== "undefined"
-        //     ? field.params?.defaultValue
-        //     : true;
         return (
           <EntityField
             name={field.name}
             label={field.label}
             value={state[field.name]}
             onChange={(item) =>
-              handleChangeEntity(field.name, item, field.onChange)
+              runOnChange(handleChangeEntity, field.name, item, field.onChange)
             }
-            onReset={() => handleChangeEntity(field.name, null, field.onChange)}
-            // onReset={() =>
-            //   handleEntityFieldReset(
-            //     field.name,
-            //     field.params?.types,
-            //     defaultValue
-            //   )
-            // }
+            onReset={() =>
+              runOnChange(handleChangeEntity, field.name, null, field.onChange)
+            }
             required={field?.required}
             fields={field.params?.fields}
             dialog={field.params?.dialog}
@@ -822,7 +758,13 @@ const Form: React.FC<FormProps> = (props) => {
             label={field.label}
             value={state[field.name] ? Dayjs(state[field.name], format) : null}
             onChange={(value: any) =>
-              handleChangeDate(field.name, value, field.onChange, format)
+              runOnChange(
+                handleChangeDate,
+                field.name,
+                value,
+                field.onChange,
+                format,
+              )
             }
             inputFormat={format}
             mask={field?.params?.mask}
@@ -849,7 +791,13 @@ const Form: React.FC<FormProps> = (props) => {
             label={field.label}
             value={state[field.name] ? Dayjs(state[field.name], format) : null}
             onChange={(value: any) =>
-              handleChangeDate(field.name, value, field.onChange, format)
+              runOnChange(
+                handleChangeDate,
+                field.name,
+                value,
+                field.onChange,
+                format,
+              )
             }
             inputFormat={format}
             mask={field?.params?.mask}
@@ -876,7 +824,13 @@ const Form: React.FC<FormProps> = (props) => {
             label={field.label}
             value={state[field.name] ? Dayjs(state[field.name], format) : null}
             onChange={(value: any) =>
-              handleChangeDate(field.name, value, field.onChange, format)
+              runOnChange(
+                handleChangeDate,
+                field.name,
+                value,
+                field.onChange,
+                format,
+              )
             }
             inputFormat={format}
             mask={field?.params?.mask}
@@ -887,7 +841,9 @@ const Form: React.FC<FormProps> = (props) => {
           <TagsField
             label={field.label}
             value={state[field.name]}
-            onChange={(items) => handleChangeTags(field.name, items)}
+            onChange={(items) =>
+              runOnChange(handleChangeTags, field.name, items)
+            }
             required={field?.required}
             dialog={field.params?.dialog}
           />
@@ -899,7 +855,7 @@ const Form: React.FC<FormProps> = (props) => {
             value={state[field.name]}
             required={field?.required}
             onChange={(files: FileManagerFolderElement[]) =>
-              handleChangeFile(field.name, files, field.onChange)
+              runOnChange(handleChangeFile, field.name, files, field.onChange)
             }
             filetypes={field.params?.filetypes}
             multiple={field.params?.multiple}
@@ -915,7 +871,9 @@ const Form: React.FC<FormProps> = (props) => {
             label={field.label}
             value={state[field.name]}
             required={field?.required}
-            onChange={(location) => handleChangeLocation(field.name, location)}
+            onChange={(location) =>
+              runOnChange(handleChangeLocation, field.name, location)
+            }
           />
         );
       case "checkboxes":
@@ -926,7 +884,12 @@ const Form: React.FC<FormProps> = (props) => {
             availableValues={field.params?.availableValues}
             required={field?.required}
             onChange={(values) =>
-              handleChangeCheckboxes(field.name, values, field.onChange)
+              runOnChange(
+                handleChangeCheckboxes,
+                field.name,
+                values,
+                field.onChange,
+              )
             }
             row={field.params?.row}
           />
@@ -944,11 +907,12 @@ const Form: React.FC<FormProps> = (props) => {
             renderItemTitle={field.params?.renderItemTitle}
             renderItemDetails={field.params?.renderItemDetails}
             onChange={(items: FormFieldContentListItem[]) =>
-              handleContentListChange(
+              runOnChange(
+                handleContentListChange,
                 items,
                 field.name,
                 field.params,
-                field.onChange
+                field.onChange,
               )
             }
           />
@@ -966,7 +930,12 @@ const Form: React.FC<FormProps> = (props) => {
               (field.params?.AutocompleteProps.multiple ? [] : null)
             }
             onChange={(event, newValue) =>
-              handleAutocompleteChange(field.name, newValue, field.onChange)
+              runOnChange(
+                handleAutocompleteChange,
+                field.name,
+                newValue,
+                field.onChange,
+              )
             }
             renderInput={(params) => (
               <TextField
@@ -1009,7 +978,7 @@ const Form: React.FC<FormProps> = (props) => {
               type: v.extensions.category,
               message: v.extensions.validation[field].join(" | "),
             },
-            { shouldFocus: true }
+            { shouldFocus: true },
           );
         }
       }
@@ -1114,7 +1083,6 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   // API
-
   const [
     loadQuery,
     {
@@ -1129,9 +1097,6 @@ const Form: React.FC<FormProps> = (props) => {
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-first",
     errorPolicy: "all",
-    // variables: {
-    //   [primaryField || "id"]: params[primaryField || "id"],
-    // },
   });
 
   const [create, { loading: createLoading }] = useMutation(
@@ -1140,7 +1105,7 @@ const Form: React.FC<FormProps> = (props) => {
       client: client || undefined,
       onError: handleError,
       onCompleted: (data: any) => handleCompleted(data, labels.created),
-    }
+    },
   );
 
   const [update, { loading: updateLoading }] = useMutation(
@@ -1149,11 +1114,10 @@ const Form: React.FC<FormProps> = (props) => {
       client: client || undefined,
       onError: handleError,
       onCompleted: (data: any) => handleCompleted(data, labels.updated),
-    }
+    },
   );
 
   // Effects.
-
   useEffect(() => {
     let callLoadQuery = !queryCalled;
     if (isCreateNew()) {
@@ -1210,7 +1174,6 @@ const Form: React.FC<FormProps> = (props) => {
   }, [queryLoading]);
 
   useEffect(() => {
-    // if (loadQueryOnParamsChange && !queryCalled && !isCreateNew()) {
     if (loadQueryOnParamsChange && !isCreateNew()) {
       loadQuery({
         variables: getVariables(),
@@ -1223,8 +1186,8 @@ const Form: React.FC<FormProps> = (props) => {
     tabs.forEach((tab: FormTabProps) => {
       customFields = customFields.concat(
         tab.fields.filter(
-          (field: FormField) => field.type === "custom" && field?.overrideValue
-        )
+          (field: FormField) => field.type === "custom" && field?.overrideValue,
+        ),
       );
     });
     customFields.forEach((field: FormField) => {
@@ -1240,14 +1203,8 @@ const Form: React.FC<FormProps> = (props) => {
 
   return (
     <div className={clsx(classesProp?.formWrapper)}>
-      {/* <Prompt
-        when={isDirty && !formSaved}
-        message={I18n.get.form.messages.unsavedContent}
-      /> */}
-      {(queryLoading || createLoading || updateLoading) && (
-        <VoLoader />
-        // <VoLoader noOverlay={data && queryLoading} />
-      )}
+      {}
+      {(queryLoading || createLoading || updateLoading) && <VoLoader />}
       {!queryLoading && queryError && (
         <div className="vo-global__top-bottom-space">
           <ErrorBox
@@ -1264,12 +1221,7 @@ const Form: React.FC<FormProps> = (props) => {
           autoComplete="off"
           encType="multipart/form-data"
         >
-          {/* <div style={{ marginTop: 100, maxWidth: 500 }}>
-            {JSON.stringify(state)}
-          </div>
-          <div style={{ marginTop: 100 }}>{JSON.stringify(getValues())}</div>
-          <div style={{ marginTop: 100 }}>{JSON.stringify(formState)}</div>
-          <div style={{ marginTop: 100 }}>{JSON.stringify(errors)}</div> */}
+          {}
           <input
             autoComplete="false"
             name="hidden"
@@ -1345,7 +1297,7 @@ const Form: React.FC<FormProps> = (props) => {
                                   </Grid>
                                 )
                               );
-                            }
+                            },
                           )}
                         </Grid>
                       </Box>

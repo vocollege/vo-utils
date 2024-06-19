@@ -1,6 +1,6 @@
 {
   "name": "@vocollege/components",
-  "version": "0.0.151",
+  "version": "0.0.152",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -34,7 +34,6 @@
     "@types/react-beautiful-dnd": "^13.0.0",
     "@types/react-dom": "^18.0.3",
     "@types/tinymce": "^4.6.5",
-    "@vocollege/app": "^0.0.123",
     "@vocollege/theme": "^0.0.30",
     "axios": "^0.21.1",
     "clsx": "^1.2.1",
@@ -93,5 +92,8 @@
     "react-router-dom": "^6.8.1",
     "react-scroll": "^1.8.7",
     "react-toastify": "^8.0.0"
+  },
+  "dependencies": {
+    "@vocollege/app": "^0.0.127"
   }
 }

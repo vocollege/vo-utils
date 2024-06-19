@@ -120,6 +120,7 @@ export interface FormField {
   };
   render?: (fieldValue: any, data?: any) => JSX.Element;
   onChange?: (value: any, data: any) => void;
+  triggers?: string[];
   hidden?: boolean;
   field?: React.ReactNode;
 }
