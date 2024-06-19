@@ -8,6 +8,7 @@ import {
   split,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
+//@ts-ignore
 import { createUploadLink } from "apollo-upload-client";
 import VoAuth from "../VoAuth";
 import VoRouter from "../VoRouter";
@@ -25,7 +26,7 @@ class GraphClient {
   static createGraphClient(
     url: string,
     uploadLink = false,
-    params: GeneralObject = {}
+    params: GeneralObject = {},
   ) {
     let httpLink;
 
@@ -145,7 +146,7 @@ class GraphClient {
           //   redirect();
           // }
         }
-      }
+      },
     );
 
     // Create authLink that ensures that all calls include
@@ -185,7 +186,7 @@ class GraphClient {
       if (operation.variables) {
         operation.variables = JSON.parse(
           JSON.stringify(operation.variables),
-          (key, value) => (key === "__typename" ? undefined : value)
+          (key, value) => (key === "__typename" ? undefined : value),
         );
       }
       return forward(operation);

@@ -403,6 +403,7 @@
       "defaultUserAvatar": "Standard avatar för användare",
       "defaultContentAvatar": "Standard avatar för diverse innehåll",
       "vocertDefaultHelpBook": "Standard bok med hjälpinnehåll för VoCert",
+      "vocertCourseMomentBillingMail": "Mail för fakurering av utbildning.",
       "voadminDefaultHelpBook": "Standard bok med hjälpinnehåll för VoAdmin"
     },
     "messages": {
@@ -1040,6 +1041,29 @@
       "text2": "::type Vård- och omsorgscollege och är certifierad",
       "region": "regionalt",
       "local": "lokalt"
+    }
+  },
+  "vocertCourseMoment": {
+    "label": "Utbildning",
+    "labels": {
+      "courseMoments": "Utbildningar",
+      "createCourseMoment": "Skapa utbildning",
+      "orderer": "Beställare",
+      "collegeBelonging": "Vilket VO-College tillhör du som utbildare?",
+      "ordererCollege": "På uppdrag av",
+      "describeTheOrderer": "Beskriv vem som är uppdragsgivare, till exempel äldreboende, hemtjänst...",
+      "stakeholders": "Intressenter ",
+      "billingAddress": "Fakturureringsadress",
+      "noVoOrderer": "Om utbildningen genomförs för målgruppen som är utanför VO-College (lokalt eller regionalt) en administrationsavgift på 3000 kr tas av VO-College"
+    },
+    "messages": {
+      "intro": "Här registrerar du din utbildning och skapar en deltagarlista. Tryck på skapa.",
+      "courseMomentSaved": "Utbildningen har sparats",
+      "courseMomentDeleted": "Utbildningen har raderats",
+      "stakeholdersExplanation": "Intressenter är användare som kommer att få tillgång till alla diplom som kopplas till denna utbildning."
+    },
+    "placeholders": {
+      "billingAddress": "Privet Drive 4, 00 007 London"
     }
   },
   "courseMoment": {
