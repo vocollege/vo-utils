@@ -1053,7 +1053,7 @@
       "ordererCollege": "På uppdrag av",
       "describeTheOrderer": "Beskriv vem som är uppdragsgivare, till exempel äldreboende, hemtjänst...",
       "stakeholders": "Intressenter ",
-      "billingAddress": "Fakturureringsadress",
+      "billingAddress": "Faktureringsadress",
       "noVoOrderer": "Om utbildningen genomförs för målgruppen som är utanför VO-College (lokalt eller regionalt) en administrationsavgift på 3000 kr tas av VO-College"
     },
     "messages": {
@@ -1063,7 +1063,7 @@
       "stakeholdersExplanation": "Intressenter är användare som kommer att få tillgång till alla diplom som kopplas till denna utbildning."
     },
     "placeholders": {
-      "billingAddress": "Privet Drive 4, 00 007 London"
+      "billingAddress": "Föreningen Vård- och omsorgscollege, 118 82 Stockholm"
     }
   },
   "courseMoment": {
