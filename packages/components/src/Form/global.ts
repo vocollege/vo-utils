@@ -99,6 +99,8 @@ export interface FormField {
     | "content"
     | "transfer_list"
     | "autocomplete"
+    | "list"
+    | "info"
     | "hidden"
     | "empty"
     | "custom";

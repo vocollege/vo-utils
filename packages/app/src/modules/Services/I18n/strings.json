@@ -1053,17 +1053,23 @@
       "ordererCollege": "På uppdrag av",
       "describeTheOrderer": "Beskriv vem som är uppdragsgivare, till exempel äldreboende, hemtjänst...",
       "stakeholders": "Intressenter ",
-      "billingAddress": "Faktureringsadress",
-      "noVoOrderer": "Om utbildningen genomförs för målgruppen som är utanför VO-College (lokalt eller regionalt) en administrationsavgift på 3000 kr tas av VO-College"
+      "billingAddress": "Faktureringsadress"
     },
     "messages": {
       "intro": "Här registrerar du din utbildning och skapar en deltagarlista. Tryck på skapa.",
       "courseMomentSaved": "Utbildningen har sparats",
       "courseMomentDeleted": "Utbildningen har raderats",
-      "stakeholdersExplanation": "Intressenter är användare som kommer att få tillgång till alla diplom som kopplas till denna utbildning."
+      "stakeholdersExplanation": "Intressenter är användare som kommer att få tillgång till alla diplom som kopplas till denna utbildning.",
+      "noVoOrderer": "Om utbildningen genomförs för målgruppen som är utanför VO-College (lokalt eller regionalt) en administrationsavgift på 3000 kr tas av VO-College",
+      "billingAddressInfo": [
+        "Organisation, organisationsnummer",
+        "Faktureringsaddress",
+        "Ansvariges för- och efternamn",
+        "Ansvarsnummer/beställningsnummer"
+      ]
     },
     "placeholders": {
-      "billingAddress": "Föreningen Vård- och omsorgscollege, 118 82 Stockholm"
+      "billingAddress": "Organisation org, 234567-9876\nFöreningen Vård- och omsorgscollege, 118 82 Stockholm\nAlice Bobson\n9753124"
     }
   },
   "courseMoment": {

@@ -1,8 +1,15 @@
 // Vendors.
 import React, { useState, useReducer, useEffect } from "react";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import {
+  Paper,
+  Box,
+  Grid,
+  Alert,
+  List,
+  ListItem,
+  TextField,
+  Autocomplete,
+} from "@mui/material";
 
 import makeStyles from "@mui/styles/makeStyles";
 import Dayjs from "dayjs";
@@ -11,8 +18,6 @@ import { useLazyQuery, useMutation, ApolloError } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import clsx from "clsx";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 
 // Custom.
 import VoTextField from "@/VoTextField";
@@ -588,6 +593,11 @@ const Form: React.FC<FormProps> = (props) => {
             value={state[field.name] || ""}
             onChange={(e) => runOnChange(handleChange, e, field.onChange)}
             required={field.required}
+            helperText={
+              errors[field.name]
+                ? errors[field.name]?.message
+                : field?.params?.helperText || ""
+            }
             hidden={field.hidden}
             {...field?.params}
           />
@@ -950,6 +960,29 @@ const Form: React.FC<FormProps> = (props) => {
               />
             )}
           />
+        );
+      case "list":
+        return (
+          <List
+            sx={{
+              listStyleType: "disc",
+              listStylePosition: "inside",
+            }}
+            {...field?.params}
+          >
+            {field.params?.items?.map((item) => (
+              <ListItem sx={{ display: "list-item" }} dense={true}>
+                {item}
+              </ListItem>
+            ))}
+          </List>
+        );
+
+      case "info":
+        return (
+          <Alert severity="info" variant="outlined">
+            {field.label}
+          </Alert>
         );
 
       case "hidden":
