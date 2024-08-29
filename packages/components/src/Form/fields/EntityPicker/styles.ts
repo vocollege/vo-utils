@@ -28,23 +28,19 @@ export const useStyles = makeStyles(
     searchResultWrapper: {
       border: `1px solid ${VoTheme.palette.grey[200]}`,
       borderRadius: VoTheme.shape.borderRadius,
-      // marginTop: -2,
       marginTop: VoTheme.spacing(1),
       maxHeight: 180,
       overflowY: "auto",
       position: "relative",
     },
     searchResult: {
-      // margin: `0 -${theme.spacing(3)}`,
       overflow: "hidden",
       padding: 0,
       position: "relative",
-      // width: `calc(100% - ${theme.spacing(2)})`,
       zIndex: 0,
     },
 
     searchResultItem: {
-      // borderRadius: VoTheme.shape.borderRadius,
       padding: `0 ${VoTheme.spacing(2)}`,
     },
     // Double selectors to ensure that the style is applied, since
@@ -93,5 +89,5 @@ export const useStyles = makeStyles(
       marginTop: VoTheme.spacing(2),
       textAlign: "center",
     },
-  })
+  }),
 );

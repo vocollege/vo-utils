@@ -38,12 +38,13 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
     category = "searchContent",
     variables = {},
     client,
+    DialogProps,
   } = props;
   const classes = useStyles();
   const searchInput = useRef();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<null | EntityPickerItem[]>(
-    []
+    [],
   );
 
   // Methods.
@@ -126,7 +127,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
     }
     let foundItems = searchResults?.filter(
       (item: EntityPickerItem) =>
-        searchTerm.trim().toLowerCase() === item.title.trim().toLowerCase()
+        searchTerm.trim().toLowerCase() === item.title.trim().toLowerCase(),
     );
     return foundItems?.length === 0;
   };
@@ -175,9 +176,10 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
 
   return (
     <Dialog
+      classes={{ paper: classes.dialogPaper }}
+      {...DialogProps}
       open={open}
       onClose={onClose}
-      classes={{ paper: classes.dialogPaper }}
     >
       <DialogTitle classes={{ root: classes.dialogTitleRoot }}>
         <Typography
@@ -262,7 +264,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
                         variant="subtitle1"
                         className={clsx(
                           classes.rowItemTitle,
-                          classes.textNoWrap
+                          classes.textNoWrap,
                         )}
                       >
                         {getTitle(item)}

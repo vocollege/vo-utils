@@ -25,7 +25,7 @@ import Form from "@/Form";
 export const reorder = (
   list: any,
   startIndex: any,
-  endIndex: any
+  endIndex: any,
 ): FormFieldContentListItem[] => {
   let result = [...list];
   const [removed] = result.splice(startIndex, 1);
@@ -68,7 +68,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     const reorderedItems: FormFieldContentListItem[] = reorder(
       draggableItems,
       result.source.index,
-      result.destination.index
+      result.destination.index,
     );
     setDraggableItems(reorderedItems);
     setIsChanged(true);
@@ -94,7 +94,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
       result = [...draggableItems];
     }
     let i = result.findIndex(
-      (v: FormFieldContentListItem) => v.id === item.id && v.type === item.type
+      (v: FormFieldContentListItem) => v.id === item.id && v.type === item.type,
     );
     if (i > -1 && !remove) {
       toast.error(I18n.get.misc.alreadyAdded);
@@ -182,7 +182,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
             //       type: v.type,
             //     };
             // }
-          })
+          }),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -310,7 +310,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
                                 variant="subtitle1"
                                 className={clsx(
                                   classes.rowItemTitle,
-                                  classes.textNoWrap
+                                  classes.textNoWrap,
                                 )}
                               >
                                 {getTitle(item)}
@@ -319,7 +319,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
                                 <div
                                   className={clsx(
                                     classes.rowItemDetails,
-                                    classes.textNoWrap
+                                    classes.textNoWrap,
                                   )}
                                 >
                                   {getDetails(item)}

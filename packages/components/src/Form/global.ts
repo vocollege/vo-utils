@@ -4,7 +4,7 @@ import { TreeItem } from "@nosferatu500/react-sortable-tree";
 import { FilledTextFieldProps } from "@mui/material/TextField";
 import { ButtonProps } from "@mui/material/Button";
 import { BadgeProps } from "@mui/material/Badge";
-
+import { DialogProps } from "@mui/material/Dialog";
 // Custom.
 import {
   FileManagerFolderElement,
@@ -41,6 +41,7 @@ export interface FormProps extends FormNakedProps {
   client?: ApolloClient<object>;
   onComplete?: (data: any) => void;
   onCancel?: (data: any) => void;
+  onSave?: (data: any) => any;
   urlParams?: { [key: string]: any };
   createParam?: string;
   classes?: {
@@ -286,6 +287,7 @@ export interface EntityPickerDialogProps {
   category?: string;
   variables?: { [key: string]: any };
   client?: ApolloClient<object>;
+  DialogProps?: DialogProps;
 }
 
 export interface FormFieldUrlFieldProps {

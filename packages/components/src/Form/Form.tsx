@@ -78,6 +78,7 @@ const Form: React.FC<FormProps> = (props) => {
     client,
     onComplete,
     onCancel,
+    onSave,
     urlParams,
     createParam = "create",
     classes: classesProp,
@@ -95,9 +96,7 @@ const Form: React.FC<FormProps> = (props) => {
   useStylesLayout();
   const params = urlParams || useParams<any>();
   const [currentTab, setTab] = useState(0);
-  // const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [formSaved, setFormSaved] = useState(false);
 
   const {
     handleSubmit,
@@ -179,10 +178,9 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const handleSave = () => {
-    const variables: { [key: string]: any } = {
+    let variables: { [key: string]: any } = {
       input: getInputValues(),
     };
-
     // Find custom data categories.
     let customCategoryFields = Object.keys(state).filter(
       (field: string) => field.indexOf(".") > -1,
@@ -192,6 +190,9 @@ const Form: React.FC<FormProps> = (props) => {
         let fieldParts = field.split(".");
         variables[fieldParts[0]] = getInputValues(fieldParts[0]);
       });
+    }
+    if (onSave) {
+      variables = onSave(variables);
     }
     if (!isCreateNew()) {
       variables[primaryField || "id"] = state[primaryField || "id"];
@@ -504,13 +505,7 @@ const Form: React.FC<FormProps> = (props) => {
 
   const getField = (field: FormField) => {
     let visible = true;
-    //console.log("@vocollege/components -> Form: getField() field:", field);
 
-    /*  let df = {
-      triggers: [""],
-    } as FormField;
-    console.log(df);
-*/
     if (field.params?.dependency) {
       for (let fieldDependee in field.params?.dependency) {
         let dependencyValue = field.params?.dependency[fieldDependee].value;
@@ -1027,7 +1022,6 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const handleCompleted = (data: any, message = "") => {
-    setFormSaved(true);
     toast.success(message, { autoClose: getToastAutoCloseTime(message) });
     if (onComplete) {
       onComplete(data);
