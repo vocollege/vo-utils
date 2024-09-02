@@ -250,8 +250,8 @@ class VoAuth extends VoBase {
         if (!this.user || force) {
           const response = await VoApi.getUser();
           this.user = response.data.data;
-          // this.ability.update(this.user.permissions);
-          this.ability.update([{ action: "test", subject: "Test" }]);
+          this.ability.update(this.user.permissions);
+          // this.ability.update([{ action: "test", subject: "Test" }]);
           if (VoGroups.getCurrent(true)) {
             this.globalAbility.update(this.user.globalPermissions);
           }
