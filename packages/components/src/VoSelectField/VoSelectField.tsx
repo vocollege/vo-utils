@@ -1,18 +1,22 @@
 import React from "react";
 import Select, { SelectProps } from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormHelperText from "@mui/material/FormHelperText";
-import FormControl from "@mui/material/FormControl";
 import clsx from "clsx";
-import Checkbox from "@mui/material/Checkbox";
-import ListItemText from "@mui/material/ListItemText";
+import {
+  InputLabel,
+  MenuItem,
+  FormHelperText,
+  FormControl,
+  Checkbox,
+  ListItemText,
+  ListSubheader,
+  Typography,
+} from "@mui/material";
 
 // Custom.
 import { useStyles } from "./styles";
 
 export interface VoSelectFieldProps {
-  availableValues: VoSelectFieldAvailableValue[];
+  availableValues: VoSelectFieldOption[];
   fullWidth?: boolean;
   required?: boolean;
   error?: boolean;
@@ -25,13 +29,31 @@ export interface VoSelectFieldProps {
     event: React.ChangeEvent<{
       name?: string | undefined;
       value: unknown;
-    }>
+    }>,
   ) => void;
 }
 
-export interface VoSelectFieldAvailableValue {
+export interface VoSelectFieldValue {
   label: string;
-  value: string;
+  value: any;
+}
+export interface VoSelectFieldGroup {
+  group: string;
+  options: VoSelectFieldOption[];
+}
+
+export type VoSelectFieldOption = VoSelectFieldValue | VoSelectFieldGroup;
+
+export function isVoSelectFieldGroup(
+  option: VoSelectFieldOption,
+): option is VoSelectFieldGroup {
+  return "group" in option && "options" in option;
+}
+
+export function isVoSelectFieldValue(
+  option: VoSelectFieldOption,
+): option is VoSelectFieldValue {
+  return "label" in option && "value" in option;
 }
 
 const ITEM_HEIGHT = 48;
@@ -56,6 +78,80 @@ const VoSelectField: React.FC<VoSelectFieldProps> = (props) => {
     SelectProps,
   } = props;
   const classes = useStyles();
+  const currentValue = SelectProps.value;
+
+  // Methods.
+
+  const getMenuItems = (values: any, indentLevel: number = 0) => {
+    if (!values) {
+      return null;
+    }
+    return values.map((v: VoSelectFieldOption, key: number) => {
+      if (isVoSelectFieldGroup(v)) {
+        return [
+          <ListSubheader
+            sx={(theme: any) => ({
+              fontWeight: "800",
+              fontSize: `${theme.typography.body1.fontSize} !important`,
+              paddingLeft: `${indentLevel + 1}rem`,
+            })}
+          >
+            {v.group}
+          </ListSubheader>,
+          getMenuItems(v.options, indentLevel + 1),
+        ];
+      } else {
+        return (
+          <MenuItem key={key} value={v.value}>
+            {SelectProps && SelectProps.multiple && (
+              <Checkbox
+                checked={
+                  Array.isArray(SelectProps?.value) &&
+                  SelectProps.value.indexOf(v.value) > -1
+                }
+              />
+            )}
+            <ListItemText
+              primary={v.label}
+              primaryTypographyProps={{
+                sx: (theme) => ({
+                  fontSize: `${theme.typography.body1.fontSize} !important`,
+                  paddingLeft: `${indentLevel}rem`,
+                }),
+              }}
+            />
+          </MenuItem>
+        );
+      }
+    });
+  };
+
+  const getSelected = (
+    data: VoSelectFieldOption[],
+  ): VoSelectFieldValue | undefined => {
+    return data.reduce<VoSelectFieldValue | undefined>((acc, current) => {
+      if (acc) {
+        return acc;
+      }
+      if (isVoSelectFieldGroup(current)) {
+        return getSelected(current.options);
+      } else {
+        return current.value == currentValue ? current : undefined;
+      }
+    }, undefined);
+  };
+  const renderValue = (s: any) => {
+    const selected = getSelected(availableValues);
+    return (
+      <Typography
+        sx={(theme: any) => ({
+          overflow: "hidden",
+        })}
+      >
+        {selected.label}
+      </Typography>
+    );
+  };
 
   return (
     <FormControl
@@ -72,33 +168,14 @@ const VoSelectField: React.FC<VoSelectFieldProps> = (props) => {
         <InputLabel required={SelectProps.required}>{label}</InputLabel>
       )}
       <Select
+        renderValue={renderValue}
         {...SelectProps}
         classes={{
           select: classes.select,
         }}
         MenuProps={MenuProps}
       >
-        {availableValues &&
-          availableValues.map((v: VoSelectFieldAvailableValue, key: number) => (
-            <MenuItem key={key} value={v.value}>
-              {SelectProps && SelectProps.multiple && (
-                <Checkbox
-                  checked={
-                    Array.isArray(SelectProps?.value) &&
-                    SelectProps.value.indexOf(v.value) > -1
-                  }
-                />
-              )}
-              <ListItemText
-                primary={v.label}
-                primaryTypographyProps={{
-                  sx: (theme) => ({
-                    fontSize: `${theme.typography.body1.fontSize} !important`,
-                  }),
-                }}
-              />
-            </MenuItem>
-          ))}
+        {getMenuItems(availableValues)}
       </Select>
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>

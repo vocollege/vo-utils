@@ -10,12 +10,10 @@ import VoTextField from "@/VoTextField";
 import { FormField } from "@/Form/global";
 import { reducer } from "./state";
 import { fakeMutation } from "@vocollege/app";
-// import FileManagerDialog from "../Dialog";
 import EditDialog from "@/EditDialog";
 import FileUploader from "@/FileUploader";
-import VoSelectField, { VoSelectFieldAvailableValue } from "@/VoSelectField";
+import VoSelectField, { VoSelectFieldValue } from "@/VoSelectField";
 import { FileManagerFormProps, FileManagerBreadcrumbLink } from "../global";
-// import VoApi from "@vocollege/app/dist/modules/VoApi";
 import VoConfig from "@vocollege/app/dist/modules/VoConfig";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import { getBucket } from "../FileManagerHelper";
@@ -55,7 +53,7 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
 
   const handleCompleted = (data: any) => {
     toast.success(
-      isCreateNew() ? messages?.itemCreated : messages?.itemUpdated
+      isCreateNew() ? messages?.itemCreated : messages?.itemUpdated,
     );
     let keys = Object.keys(data);
     if (onChange) {
@@ -176,9 +174,7 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
     setLoading(false);
   };
 
-  const getAvailableValues = (
-    field: FormField
-  ): VoSelectFieldAvailableValue[] => {
+  const getAvailableValues = (field: FormField): VoSelectFieldValue[] => {
     if (field.params?.availableValues) {
       return field.params?.availableValues();
     }
@@ -313,7 +309,7 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
       client: client || undefined,
       onError: handleError,
       onCompleted: handleCompleted,
-    }
+    },
   );
 
   const [update, { loading: updateLoading }] = useMutation(
@@ -322,7 +318,7 @@ const FileManagerForm: React.FC<FileManagerFormProps> = (props) => {
       client: client || undefined,
       onError: handleError,
       onCompleted: handleCompleted,
-    }
+    },
   );
 
   // Effects.

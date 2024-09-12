@@ -16,7 +16,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
     },
     error: {
-      // "& $root": {
       "& $select": {
         borderColor: theme.palette.error.dark,
       },
@@ -25,26 +24,12 @@ export const useStyles = makeStyles((theme: Theme) =>
         borderColor: theme.palette.error.dark,
       },
     },
-    // root: {
-    //   border: "1px solid #e2e2e1",
-    //   overflow: "hidden",
-    //   borderRadius: theme.spacing(1),
-    //   backgroundColor: "#fcfcfb",
-    //   outline: "none",
-    //   transition: theme.transitions.create(["border-color", "box-shadow"]),
-    //   "&:hover": {
-    //     backgroundColor: "#ffffff",
-    //   },
-    // },
     select: {
       border: "1px solid #e2e2e1",
       overflow: "hidden",
       borderRadius: theme.spacing(1),
       backgroundColor: "#fcfcfb",
-      // minHeight: "34px",
       outline: "none",
-      // paddingBottom: "2px",
-      // paddingTop: "17px",
       transition: theme.transitions.create(["border-color", "box-shadow"]),
       "&:hover": {
         backgroundColor: "#ffffff",
@@ -60,5 +45,5 @@ export const useStyles = makeStyles((theme: Theme) =>
         marginTop: 0,
       },
     },
-  })
+  }),
 );

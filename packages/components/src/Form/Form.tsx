@@ -27,7 +27,7 @@ import {
   VoDateTimePickerField,
   VoTimePickerField,
 } from "@/VoPickerField";
-import VoSelectField, { VoSelectFieldAvailableValue } from "@/VoSelectField";
+import VoSelectField, { VoSelectFieldValue } from "@/VoSelectField";
 import ContentList from "./fields/ContentList";
 import SortableTree from "./fields/SortableTree";
 import UrlField from "./fields/UrlField";
@@ -474,9 +474,7 @@ const Form: React.FC<FormProps> = (props) => {
     }
   };
 
-  const getAvailableValues = (
-    field: FormField,
-  ): VoSelectFieldAvailableValue[] => {
+  const getAvailableValues = (field: FormField): VoSelectFieldValue[] => {
     if (field.params?.availableValues) {
       return field.params?.availableValues(data, state);
     }
