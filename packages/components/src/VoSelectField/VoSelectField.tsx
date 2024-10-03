@@ -129,6 +129,9 @@ const VoSelectField: React.FC<VoSelectFieldProps> = (props) => {
   const getSelected = (
     data: VoSelectFieldOption[],
   ): VoSelectFieldValue | undefined => {
+    if (!data) {
+      return undefined;
+    }
     return data.reduce<VoSelectFieldValue | undefined>((acc, current) => {
       if (acc) {
         return acc;
@@ -148,7 +151,7 @@ const VoSelectField: React.FC<VoSelectFieldProps> = (props) => {
           overflow: "hidden",
         })}
       >
-        {selected.label}
+        {selected?.label}
       </Typography>
     );
   };
