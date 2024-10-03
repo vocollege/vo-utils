@@ -1085,6 +1085,12 @@ const Form: React.FC<FormProps> = (props) => {
           data[operations.category][field] || initialState[field];
       }
     });
+    /*console.log(
+      "@vocollege/components->Forms->initialState:",
+      initialState,
+      "mergedData:",
+      mergedData,
+    );*/
     dispatch({
       item: mergedData,
     });

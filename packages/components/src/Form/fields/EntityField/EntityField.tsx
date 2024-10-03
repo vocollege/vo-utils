@@ -47,12 +47,6 @@ const EntityField: React.FC<EntityFieldProps> = (props) => {
     }
   };
 
-  // const handleCreateClick = () => {
-  //   if (createCallback) {
-  //     createCallback();
-  //   }
-  // };
-
   const setValue = (newValue: any) => {
     if (renderFieldValue) {
       setFieldValue(renderFieldValue(newValue));

@@ -4,7 +4,6 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import CircularProgress from "@mui/material/CircularProgress";
 import Slide from "@mui/material/Slide";
 import Toolbar from "@mui/material/Toolbar";
-// import { useSnackbar } from "notistack";
 import { useConfirm } from "material-ui-confirm";
 import parse from "html-react-parser";
 import { useNavigate } from "react-router-dom";
@@ -52,7 +51,6 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
   } = props;
   const classes = useStyles();
   const navigate = useNavigate();
-  // const { enqueueSnackbar } = useSnackbar();
   const confirm = useConfirm();
   const [path, setPath] = useState<FileManagerBreadcrumbLink[]>([]);
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -85,7 +83,7 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
 
   const handleElementActionClick = async (
     action: FileManagerElementAction,
-    element: FileManagerFolderElement
+    element: FileManagerFolderElement,
   ) => {
     let url = null;
     switch (action) {
@@ -166,7 +164,7 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
 
   const handleDoubleClick = (
     url: string,
-    element: FileManagerFolderElement
+    element: FileManagerFolderElement,
   ) => {
     if (onDoubleClick) {
       onDoubleClick(element);
@@ -228,7 +226,7 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
   const handleHeaderChange = (
     search: string,
     order: string,
-    orderBy: string
+    orderBy: string,
   ) => {
     dispatch({
       value: {
@@ -250,13 +248,13 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
   // Api.
 
   const [deletePortfolio, { loading: deletePortfolioLoading }] = useMutation(
-    operations?.deletePortfolio || fakeMutation
+    operations?.deletePortfolio || fakeMutation,
   );
   const [deleteFolder, { loading: deleteFolderLoading }] = useMutation(
-    operations?.deleteFolder || fakeMutation
+    operations?.deleteFolder || fakeMutation,
   );
   const [deleteFile, { loading: deleteFileLoading }] = useMutation(
-    operations?.deleteFile || fakeMutation
+    operations?.deleteFile || fakeMutation,
   );
 
   const [
@@ -275,13 +273,8 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
       portfolio_id: portfolioId,
       folder_id: folderId,
       filetypes: filetypes,
-      // page: state.page,
-      // limit: state.limit,
-      // search: state.search,
       orderBy: [
         {
-          // column: state.orderBy,
-          // order: state.order,
           column: "TITLE",
           order: "ASC",
         },
@@ -304,7 +297,7 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
       let currentPath: FileManagerBreadcrumbLink[] = [];
       if (queryData[operations.category].folder.fullPath.length > 0) {
         currentPath = currentPath.concat(
-          queryData[operations.category].folder.fullPath
+          queryData[operations.category].folder.fullPath,
         );
       }
       currentPath.push({
@@ -319,10 +312,6 @@ const FileManager: React.FC<FileManagerProps> = (props) => {
   }, [queryData]);
 
   if (queryError) {
-    // enqueueSnackbar(queryError.message, {
-    //   variant: "error",
-    //   persist: true,
-    // });
     toast.error(queryError.message, { autoClose: false });
   }
 

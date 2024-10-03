@@ -158,30 +158,12 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
 
   useEffect(() => {
     if (items) {
+      //console.log("@vocollege/components->ContentList->items:", items);
       setDraggableItems(
         items
           ?.filter((v: FormFieldContentListItem) => v)
           .map((v: FormFieldContentListItem) => {
             return v;
-            // switch (contentType) {
-            //   case "file":
-            //     return {
-            //       id: v.id,
-            //       title: v.title,
-            //       type: v.type,
-            //       filename: "filename" in v && v.filename,
-            //       filesize: "filesize" in v && v.filesize,
-            //       filetype: "filetype" in v && v.filetype,
-            //       url: "url" in v && v.url,
-            //     };
-            //     break;
-            //   default:
-            //     return {
-            //       id: v.id,
-            //       title: v.title,
-            //       type: v.type,
-            //     };
-            // }
           }),
       );
     }
