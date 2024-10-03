@@ -10,6 +10,7 @@ import I18n from "./modules/Services/I18n";
 (function () {
   async function redirect() {
     try {
+      //console.log("@vocollege/api->interceptor.ts->redirect()");
       Cookies.set("voapp_redirectTo", window.location.origin, {
         domain: ".vo-college.se",
         sameSite: "Lax",
@@ -22,11 +23,12 @@ import I18n from "./modules/Services/I18n";
     }
   }
 
+  //console.log("@vocollege/api->interceptor.ts");
   axios.defaults.withCredentials = true;
   axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
   axios.interceptors.request.use((req) => {
-    // console.log('Interceptor request', `${req.method} ${req.url}`);
+    //console.log("Interceptor request", `${req.method} ${req.url}`);
     return req;
   });
 
@@ -36,10 +38,14 @@ import I18n from "./modules/Services/I18n";
     },
     async (error) => {
       const { config } = error;
-      let isTokeRequest = config.url.includes("oauth/token");
+      let isTokenRequest = config.url.includes("oauth/token");
+      /*console.log(
+        "@vocollege/api->interceptor.js - isTokenRequest: ",
+        isTokenRequest,
+      );*/
       try {
         if (
-          !isTokeRequest &&
+          !isTokenRequest &&
           [400, 401, 403].indexOf(error.response?.status) > -1
         ) {
           await VoAuth.refreshToken();
@@ -51,11 +57,11 @@ import I18n from "./modules/Services/I18n";
         }
       } catch (error) {}
 
-      if (isTokeRequest) {
+      if (isTokenRequest) {
         toast.error(I18n.get.messages.sessionExpired, { autoClose: false });
         redirect();
       }
       return Promise.reject(error);
-    }
+    },
   );
 })();

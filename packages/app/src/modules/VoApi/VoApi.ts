@@ -1,19 +1,9 @@
 // Vendors.
 import axios from "axios";
-import {
-  ApolloClient,
-  ApolloLink,
-  HttpLink,
-  InMemoryCache,
-  Observable,
-  from,
-} from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
 
 // Custom.
 import GraphClient from "./GraphClient";
 import VoBase from "../VoBase";
-// import VoAuth from "../VoAuth";
 import VoConfig from "../VoConfig";
 import { GeneralObject } from "../../global";
 import { localStorage } from "../VoHelpers";
@@ -26,15 +16,9 @@ class VoApi extends VoBase {
     this.graphqlClient = GraphClient.createGraphClient(
       this.getGraphqlUrl,
       false,
-      params
+      params,
     );
   }
-
-  // initSubscriptions() {
-  //   this.graphqlSubscriptionClient = GraphClient.createGraphSubscriptionClient(
-  //     this.getGraphqlSubscriptionUrl
-  //   );
-  // }
 
   get getGraphqlUrl() {
     return VoConfig.get.API_BASE_URL + "" + VoConfig.get.API_GRAPHQL;
@@ -78,17 +62,6 @@ class VoApi extends VoBase {
       throw error;
     }
   }
-
-  // async authorize(params: object) {
-  //     try {
-  //         const url = this.getUrl + '/token';
-  //         const response = await axios.post(url, params);
-  //         return response.data;
-  //     } catch(error) {
-  //         throw error;
-  //     }
-
-  // }
 }
 
 export default new VoApi("api");

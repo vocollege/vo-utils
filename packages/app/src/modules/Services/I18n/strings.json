@@ -807,7 +807,7 @@
       "chooseAnEducator": "Välj en utbildare"
     },
     "messages": {
-      "intro": "För elever som uppfyller kraven på diplom. Yrkesexamen 2250 poäng och utvalda kurser eller yrkespaket i vård- och omsorgsutbildning eller barn- och fritidsutbildning mot funktionshinder 1500 poäng.",
+      "intro": "För elever som uppfyller kraven på diplom för yrkesexamen 2250 poäng och utvalda kurser eller yrkespaket i vård- och omsorgsutbildning eller barn- och fritidsutbildning med yrkesutgång mot funktionshinder 1500 poäng.",
       "diplomasGenerated": "Diplomen har genererats",
       "diplomaSaved": "Diplomet har sparats",
       "diplomaDeleted": "Diplomet har raderats",
@@ -819,13 +819,21 @@
       "yh": "YH-utbildning"
     },
     "education": {
-      "vardOchOmsorg": "Vård- och omsorgsutbildning",
-      "barnFritid": "Barn- och fritidsutbildning med inriktning pedagogiskt och socialt arbete"
+      "ung": {
+        "vardOchOmsorg": "Vård- och omsorgsprogrammet",
+        "barnFritid": "Barn och fritidsprogrammet med yrkesutgång mot funktionshinder"
+      },
+      "vuxen": {
+        "vardOchOmsorg": "Vård- och omsorgsutbildning",
+        "barnFritid": "Barn och fritidsutbildning med yrkesutgång mot funktionshinder"
+      }
     },
     "helpTexts": {
-      "creditsUng": "Antal godkända gymnasiepoäng, 2250 poäng",
-      "creditsVuxen": "Antalet godkända gymnasiepoäng, minst 1500 poäng",
-      "creditsYh": "Skriv antalet godkända poäng från yrkeshögskolan"
+      "credits": {
+        "ung": "Antal godkända gymnasiepoäng, 2250 poäng",
+        "vuxen": "Antalet godkända gymnasiepoäng, minst 1500 poäng",
+        "yh": "Skriv antalet godkända poäng från yrkeshögskolan"
+      }
     },
     "template": {
       "title": "Diplom",
@@ -834,9 +842,11 @@
       "president": "Ordförande i lokal styrgrupp",
       "principal": "Rektor (eller motsvarande inom vuxenutbildningen)",
       "certifiedSince": "::educator är certifierat sedan ::date",
-      "ungCredits": "::credits gymnasiepoäng",
-      "vuxenCredits": "::credits poäng",
-      "yhCredits": "::credits YH-poäng"
+      "credits": {
+        "ung": "::credits gymnasiepoäng",
+        "vuxen": "::credits poäng",
+        "yh": "::credits YH-poäng"
+      }
     }
   },
   "certificate": {

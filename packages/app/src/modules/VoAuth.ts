@@ -104,7 +104,6 @@ class VoAuth extends VoBase {
 
     if (updateCookie) {
       let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
-      // Helpers.localStorage.set(refreshTokenKey, refresh_token);
       JsCookies.set(refreshTokenKey, refresh_token, {
         expires: 21,
         sameSite: "Lax",
@@ -113,29 +112,12 @@ class VoAuth extends VoBase {
 
       let expires = new Date(new Date().getTime() + 4 * 60 * 60 * 1000);
       let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
-      // Helpers.localStorage.set(accessTokenKey, access_token);
       JsCookies.set(accessTokenKey, access_token, {
         expires,
         sameSite: "Lax",
         domain: VoConfig.get.AUTH_DOMAIN,
       });
     }
-
-    // let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
-    // // Helpers.localStorage.set(tokenTypeKey, token_type);
-    // JsCookies.set(tokenTypeKey, token_type, {
-    //   expires: 11,
-    //   sameSite: "Lax",
-    //   domain: VoConfig.get.AUTH_DOMAIN,
-    // });
-
-    // let expiresInKey = VoConfig.get.AUTH_STORAGE_EXPIRES_IN || "";
-    // // Helpers.localStorage.set(expiresInKey, expires_in);
-    // JsCookies.set(expiresInKey, expires_in, {
-    //   expires: 11,
-    //   sameSite: "Lax",
-    //   domain: VoConfig.get.AUTH_DOMAIN,
-    // });
 
     axios.defaults.headers.common["Authorization"] =
       // token_type + " " + access_token;
@@ -159,20 +141,6 @@ class VoAuth extends VoBase {
       domain: VoConfig.get.AUTH_DOMAIN,
       sameSite: "Lax",
     });
-
-    // let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
-    // Helpers.localStorage.remove(tokenTypeKey);
-    // JsCookies.remove(tokenTypeKey, {
-    //   domain: VoConfig.get.AUTH_DOMAIN,
-    //   sameSite: "Lax",
-    // });
-
-    // let expiresInKey = VoConfig.get.AUTH_STORAGE_EXPIRES_IN || "";
-    // Helpers.localStorage.remove(expiresInKey);
-    // JsCookies.remove(expiresInKey, {
-    //   domain: VoConfig.get.AUTH_DOMAIN,
-    //   sameSite: "Lax",
-    // });
 
     Helpers.localStorage.remove(VoConfig.get.CURRENT_GROUP || "");
     Helpers.localStorage.remove(VoConfig.get.MASQUERADE_USER || "");
@@ -251,7 +219,6 @@ class VoAuth extends VoBase {
           const response = await VoApi.getUser();
           this.user = response.data.data;
           this.ability.update(this.user.permissions);
-          // this.ability.update([{ action: "test", subject: "Test" }]);
           if (VoGroups.getCurrent(true)) {
             this.globalAbility.update(this.user.globalPermissions);
           }
@@ -269,19 +236,15 @@ class VoAuth extends VoBase {
   getToken(): VoTokenType | void {
     try {
       let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
-      // const refreshToken = Helpers.localStorage.get(refreshTokenKey);
       const refreshToken = JsCookies.get(refreshTokenKey);
 
       let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
-      // const accessToken = Helpers.localStorage.get(accessTokenKey);
       const accessToken = JsCookies.get(accessTokenKey);
 
       // let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
-      // // const tokenType = Helpers.localStorage.get(tokenTypeKey);
       // const tokenType = JsCookies.get(tokenTypeKey);
 
       // let expiresInKey = VoConfig.get.AUTH_STORAGE_EXPIRES_IN || "";
-      // // const expiresIn = Helpers.localStorage.get(expiresInKey);
       // const expiresIn = JsCookies.get(expiresInKey);
 
       // if (refreshToken && accessToken && tokenType && expiresIn) {
