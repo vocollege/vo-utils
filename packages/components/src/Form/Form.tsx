@@ -91,6 +91,7 @@ const Form: React.FC<FormProps> = (props) => {
     loadQueryOnParamsChange = false,
     toolbarProps,
     header,
+    refetchQueries,
   } = props;
   const classes = useStyles();
   useStylesLayout();
@@ -1134,6 +1135,7 @@ const Form: React.FC<FormProps> = (props) => {
     operations.create || fakeMutation,
     {
       client: client || undefined,
+      refetchQueries,
       onError: handleError,
       onCompleted: (data: any) => handleCompleted(data, labels.created),
     },
@@ -1143,6 +1145,7 @@ const Form: React.FC<FormProps> = (props) => {
     operations.update || fakeMutation,
     {
       client: client || undefined,
+      refetchQueries,
       onError: handleError,
       onCompleted: (data: any) => handleCompleted(data, labels.updated),
     },

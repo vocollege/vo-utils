@@ -1,5 +1,9 @@
 import React from "react";
-import { ApolloClient, DocumentNode } from "@apollo/client";
+import {
+  ApolloClient,
+  DocumentNode,
+  MutationHookOptions,
+} from "@apollo/client";
 import { TreeItem } from "@nosferatu500/react-sortable-tree";
 import { FilledTextFieldProps } from "@mui/material/TextField";
 import { ButtonProps } from "@mui/material/Button";
@@ -62,6 +66,7 @@ export interface FormProps extends FormNakedProps {
   loadQueryOnParamsChange?: boolean;
   toolbarProps?: FormToolbarProps;
   header?: React.ReactNode;
+  refetchQueries?: MutationHookOptions["refetchQueries"];
 }
 
 export interface FormNakedProps {
