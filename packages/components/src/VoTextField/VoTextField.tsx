@@ -15,22 +15,24 @@ const VoTextField: React.FC<FilledTextFieldProps> = React.forwardRef(
     const classesTextField = useStylesTextField();
     return (
       <TextField
+        {...props}
         inputRef={ref}
         InputLabelProps={{
           classes: {
             root: classesTextField.inputLabelRoot,
           },
+          ...props?.InputLabelProps,
         }}
         InputProps={
           {
             classes,
             disableUnderline: true,
+            ...props?.InputProps,
           } as Partial<OutlinedInputProps>
         }
-        {...props}
       />
     );
-  }
+  },
 );
 
 export default VoTextField;

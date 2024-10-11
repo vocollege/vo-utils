@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import clsx from "clsx";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -9,6 +8,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import { toast } from "react-toastify";
 import AddIcon from "@mui/icons-material/Add";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 
 // Custom.
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
@@ -16,11 +17,9 @@ import {
   FormFieldContentListProps,
   FormFieldContentListItem,
 } from "../../global";
-import { useStyles } from "./styles";
 import EntityPicker from "../EntityPicker";
 import FileManagerPicker from "@/FileManager/Picker";
 import { FileManagerFolderElement } from "@/FileManager/global";
-import Form from "@/Form";
 
 export const reorder = (
   list: any,
@@ -55,11 +54,24 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     hideType,
     renderExtraDetails,
   } = props;
-  const classes = useStyles();
   const [draggableItems, setDraggableItems] = useState<
     FormFieldContentListItem[] | undefined
   >([]);
   const [isChanged, setIsChanged] = useState(false);
+
+  const textNoWrapSx = (theme: any) => {
+    return {
+      overflow: "hidden",
+      textOverflow: "elipsis",
+      whiteSpace: "nowrap",
+    };
+  };
+  const rowItemDetailsLabelSx = (theme: any) => {
+    return {
+      fontWeight: theme.typography.fontWeightBold,
+      marginRight: theme.spacing(1),
+    };
+  };
 
   const onDragEnd = (result: any) => {
     if (!result.destination) {
@@ -120,14 +132,32 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
       type && I18n.get[type]?.label ? I18n.get[type]?.label : item.type;
     return (
       <>
-        <span className={classes.rowItemDetailsLabel}>{I18n.get.misc.id}:</span>
-        <span className={classes.rowItemDetailsValue}>{item.id}</span>
+        <Box
+          component="span"
+          sx={(theme: any) => ({ ...rowItemDetailsLabelSx(theme) })}
+        >
+          {I18n.get.misc.id}:
+        </Box>
+        <Box
+          component="span"
+          sx={(theme: any) => ({ marginRight: theme.spacing(2) })}
+        >
+          {item.id}
+        </Box>
         {typeString && typeString !== "" && (
           <>
-            <span className={classes.rowItemDetailsLabel}>
+            <Box
+              component="span"
+              sx={(theme: any) => ({ ...rowItemDetailsLabelSx(theme) })}
+            >
               {I18n.get.misc.type}:
-            </span>
-            <span className={classes.rowItemDetailsValue}>{typeString}</span>
+            </Box>
+            <Box
+              component="span"
+              sx={(theme: any) => ({ marginRight: theme.spacing(2) })}
+            >
+              {typeString}
+            </Box>
           </>
         )}
       </>
@@ -158,7 +188,6 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
 
   useEffect(() => {
     if (items) {
-      //console.log("@vocollege/components->ContentList->items:", items);
       setDraggableItems(
         items
           ?.filter((v: FormFieldContentListItem) => v)
@@ -182,13 +211,30 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
   }, [overrideValue]);
 
   return (
-    <div id={`contentlist-${name}`} className={classes.root}>
-      <div className={classes.head}>
+    <Box
+      id={`contentlist-${name}`}
+      sx={(theme: any) => ({
+        border: `1px dotted ${theme.palette.grey[500]}`,
+        borderRadius: 1,
+        padding: theme.spacing(2),
+        width: "100%",
+      })}
+    >
+      <Box
+        sx={(theme: any) => ({
+          alignItems: "center",
+          display: "flex",
+          minHeight: theme.spacing(5),
+        })}
+      >
         {label && (
           <Typography
             variant="subtitle1"
             component="label"
-            className={classes.headLabel}
+            sx={(theme: any) => ({
+              display: "block",
+              flex: 1,
+            })}
           >
             {label}
             {required && (
@@ -201,7 +247,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
             )}
           </Typography>
         )}
-        <div className={classes.headActions}>
+        <Stack direction="row" spacing={1}>
           {isChanged && (
             <Button
               variant="outlined"
@@ -209,7 +255,6 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
               size="small"
               startIcon={<RotateLeftIcon />}
               onClick={() => resetList()}
-              className={classes.headButton}
             >
               {I18n.get.actions.reset}
             </Button>
@@ -229,7 +274,6 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
 
           {contentType === "entity" && (
             <EntityPicker
-              className={classes.headButton}
               dialog={{
                 ...dialog,
                 onSelect: handleSelect,
@@ -239,18 +283,17 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
           )}
           {contentType === "file" && (
             <FileManagerPicker
-              className={classes.headButton}
               onSelect={handleFileSelect}
               filetypes={dialog.types}
             />
           )}
-        </div>
-      </div>
+        </Stack>
+      </Box>
       {draggableItems?.length === 0 && (
         <Typography
           align="center"
           variant="subtitle1"
-          className={classes.nothingAdded}
+          sx={(theme: any) => ({ margin: `${theme.spacing(2)} 0 0` })}
         >
           {I18n.get.misc.nothingAdded}
         </Typography>
@@ -259,11 +302,17 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided: any, snapshot: any) => (
-              <div
+              <Box
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className={clsx(classes.list, {
-                  [classes.listDragging]: snapshot.isDraggingOver,
+                sx={(theme: any) => ({
+                  border: "2px dashed transparent",
+                  borderRadius: 1,
+                  margin: `0 -${theme.spacing(1.25)} -${theme.spacing(1)}`,
+                  padding: `${theme.spacing(2)} ${theme.spacing(1)} 0`,
+                  ...(snapshot.isDraggingOver && {
+                    borderColor: theme.palette.primary.main,
+                  }),
                 })}
               >
                 {draggableItems &&
@@ -274,48 +323,76 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
                       index={index}
                     >
                       {(provided: any, snapshot: any) => (
-                        <div
+                        <Box
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           style={provided.draggableProps.style}
-                          className={clsx(classes.item, {
-                            [classes.itemDragging]: snapshot.isDragging,
+                          sx={(theme: any) => ({
+                            backgroundColor: theme.palette.grey[100],
+                            border: `1px solid ${theme.palette.grey[200]}`,
+                            borderRadius: 1,
+                            margin: `0 0 ${theme.spacing(2)} 0`,
+                            padding: theme.spacing(1),
+                            userSelect: "none",
+                            "&:last-child": {
+                              marginBottom: theme.spacing(0.5),
+                            },
+                            ...(snapshot.isDragging && {
+                              backgroundColor: theme.palette.primary.main,
+                              borderColor: theme.palette.primary.main,
+                              boxShadow: theme.shadows[20],
+                              color: theme.palette.primary.contrastText,
+                            }),
                           })}
                         >
-                          <div className={classes.row}>
-                            <div className={classes.rowDragArea}>
+                          <Box
+                            sx={(theme: any) => ({
+                              alignItems: "center",
+                              display: "flex",
+                              flexWrap: "wrap",
+                            })}
+                          >
+                            <Box
+                              sx={(theme: any) => ({
+                                alignItems: "center",
+                                display: "flex",
+                                marginRight: theme.spacing(1),
+                              })}
+                            >
                               <DragIndicatorIcon />
-                            </div>
-                            <div className={classes.rowTitle}>
+                            </Box>
+                            <Box
+                              sx={(theme: any) => ({ flex: 1, minWidth: 0 })}
+                            >
                               <Typography
                                 variant="subtitle1"
-                                className={clsx(
-                                  classes.rowItemTitle,
-                                  classes.textNoWrap,
-                                )}
+                                sx={(theme: any) => ({
+                                  ...textNoWrapSx(theme),
+                                })}
                               >
                                 {getTitle(item)}
                               </Typography>
                               {!hideType && (
-                                <div
-                                  className={clsx(
-                                    classes.rowItemDetails,
-                                    classes.textNoWrap,
-                                  )}
+                                <Box
+                                  sx={(theme: any) => ({
+                                    ...textNoWrapSx(theme),
+                                  })}
                                 >
                                   {getDetails(item)}
-                                </div>
+                                </Box>
                               )}
                               {renderExtraDetails && (
-                                <div
-                                  className={clsx(classes.rowItemExtraDetails)}
-                                >
+                                <Box sx={(theme: any) => ({})}>
                                   {renderExtraDetails(item)}
-                                </div>
+                                </Box>
                               )}
-                            </div>
-                            <div className={classes.rowActions}>
+                            </Box>
+                            <Box
+                              sx={(theme: any) => ({
+                                marginLeft: theme.spacing(1),
+                              })}
+                            >
                               {renderActionButtons && renderActionButtons(item)}
                               <IconButton
                                 color="inherit"
@@ -325,19 +402,19 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
                               >
                                 <DeleteIcon />
                               </IconButton>
-                            </div>
-                          </div>
-                        </div>
+                            </Box>
+                          </Box>
+                        </Box>
                       )}
                     </Draggable>
                   ))}
                 {provided.placeholder}
-              </div>
+              </Box>
             )}
           </Droppable>
         </DragDropContext>
       )}
-    </div>
+    </Box>
   );
 };
 

@@ -30,7 +30,6 @@ import {
   EnhancedTableSelectedFilter,
 } from "./global";
 import { stylesCommon } from "@vocollege/theme";
-// import { fakeQuery } from "@vocollege/app/dist/modules/VoApi";
 
 const useStylesCommon = makeStyles(() => stylesCommon);
 
@@ -57,7 +56,6 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     labels,
     classes: classesProp,
     queryVariables,
-    // querySearchVariables,
     onDelete,
     enableSearch,
     filters,
@@ -69,15 +67,11 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     operations.delete = gql``;
   }
 
-  // if (!operations.search) {
-  //   operations.search = gql``;
-  // }
-
   // Methods.
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: any
+    property: any,
   ) => {
     const isAsc = state.orderBy === property && state.order === "ASC";
     dispatch({
@@ -116,7 +110,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     dispatch({
       values: {
@@ -150,28 +144,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
 
   const handleSearch = (searchTerm: string) => {
     dispatch({ key: "search", values: searchTerm });
-    // if (searchTerm !== "") {
-    //   loadSearchData({
-    //     variables: {
-    //       search: searchTerm,
-    //     },
-    //   });
-    // } else {
-    //   // loadData();
-    //   setContent(queryData);
-    // }
   };
-
-  // const setContent = (data: any) => {
-  //   dispatch({
-  //     values: {
-  //       data: data[operations.category].data || data[operations.category],
-  //       total: data[operations.category].paginatorInfo
-  //         ? data[operations.category].paginatorInfo.total
-  //         : data[operations.category].length,
-  //     },
-  //   });
-  // };
 
   const handleFiltersChange = (filters: EnhancedTableSelectedFilter[]) => {
     dispatch({ key: "filters", values: filters });
@@ -210,9 +183,6 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
         autoClose: 10000,
       });
     },
-    // onCompleted: (data: any) => {
-    //   console.log("onCompleted data", JSON.parse(JSON.stringify(data)));
-    // },
   });
 
   const [deleteRow, { loading: deleteLoading }] = useMutation(
@@ -231,52 +201,8 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
         loadData();
         onDelete && onDelete(data);
       },
-      //   update(cache, { data }) {
-      //     const existingItems: any = cache.readQuery({ query: operations.get });
-      //     let category = Object.keys(data)[0];
-      //     const newItems = existingItems![operations.category].filter(
-      //       (t: any) => t.id !== data[category].id
-      //     );
-      //     cache.writeQuery({
-      //       query: operations.get,
-      //       data: { [operations.category]: newItems },
-      //     });
-      //   },
-    }
+    },
   );
-
-  // const [
-  //   loadSearchData,
-  //   {
-  //     data: querySearchData,
-  //     loading: querySearchLoading,
-  //     called: querySearchCalled,
-  //     refetch: refetchSearchData,
-  //   },
-  // ] = useLazyQuery(operations.search || fakeQuery, {
-  //   fetchPolicy: "network-only",
-  //   client: client || undefined,
-  //   variables: {
-  //     ...querySearchVariables,
-  //   },
-  //   onError: (error) => {
-  //     toast.error(error.message, {
-  //       autoClose: 10000,
-  //     });
-  //   },
-  //   onCompleted: (data: any) => {
-  //     console.log("loadSearchData() onCompleted data", data);
-
-  //     dispatch({
-  //       values: {
-  //         data:
-  //           data[operations.searchCategory].data ||
-  //           data[operations.searchCategory],
-  //         total: data[operations.searchCategory].length,
-  //       },
-  //     });
-  //   },
-  // });
 
   // Effects.
 
@@ -434,8 +360,6 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
           count={state.total}
           rowsPerPage={state.limit}
           page={state.page}
-          // onChangePage={handleChangePage}
-          // onChangeRowsPerPage={handleChangeRowsPerPage}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
