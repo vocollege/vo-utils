@@ -79,6 +79,7 @@ export interface FormTabProps {
   fields: FormField[];
   badge?: BadgeProps;
   children?: React.ReactNode;
+  visible?: Boolean;
 }
 
 export interface FormField {

@@ -16,15 +16,18 @@ function a11yProps(index: any) {
 
 const FormTabs = ({ className, tabs, currentTab, setTab }: FormTabsProps) => {
   const classes = useStyles();
+
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
   };
+
   const getLabel = (tab: FormTabProps) => {
     if (tab.badge) {
       return <Badge {...tab.badge}>{tab.label}</Badge>;
     }
     return tab.label;
   };
+
   return (
     <Tabs
       className={clsx(classes.formTabs, className)}
@@ -36,7 +39,18 @@ const FormTabs = ({ className, tabs, currentTab, setTab }: FormTabsProps) => {
       variant="scrollable"
     >
       {tabs.map((tab: FormTabProps, key: number) => {
-        return <Tab key={key} label={getLabel(tab)} {...a11yProps(key)} />;
+        if (tab.visible !== undefined && !tab.visible) {
+          return (
+            <Tab
+              key={tab.key}
+              disabled
+              sx={(theme: any) => ({
+                display: "None",
+              })}
+            ></Tab>
+          );
+        }
+        return <Tab key={tab.key} label={getLabel(tab)} {...a11yProps(key)} />;
       })}
     </Tabs>
   );
