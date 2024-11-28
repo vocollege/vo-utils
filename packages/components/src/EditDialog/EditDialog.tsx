@@ -132,7 +132,11 @@ const EditDialog: React.FC<EditorDialogProps> = (props) => {
               </Typography>
             )}
             {subtitle && subtitle !== "" && (
-              <Typography variant="caption" className={classes.subtitle}>
+              <Typography
+                variant="caption"
+                className={classes.subtitle}
+                lineHeight={1.2}
+              >
                 {subtitle}
               </Typography>
             )}
