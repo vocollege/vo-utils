@@ -91,12 +91,30 @@ class GraphClient {
           //       "field",
           //     ],
           //   },
+
+          ValidigGeneralSurveyRow: {
+            fields: {
+              options: {
+                read(existing) {
+                  return existing ? JSON.parse(existing) : existing;
+                },
+                // merge(existing = "", incoming: "") {
+                //   console.log("existing", existing);
+                //   console.log("incoming", incoming);
+
+                //   // return [...existing, ...incoming];
+                //   return incoming;
+                // },
+              },
+            },
+          },
         },
       }),
       link: from([
         links.errorLink,
         links.authLink,
         links.omitTypenameLink,
+        links.transformVariablesLink,
         httpLink,
       ]),
     });
@@ -192,10 +210,54 @@ class GraphClient {
       return forward(operation);
     });
 
+    const transformVariablesLink = new ApolloLink((operation, forward) => {
+      const { operationName, variables } = operation;
+
+      switch (operationName) {
+        // Manipulate fields on GeneralSurvey.
+        case "CreateGeneralSurvey":
+        case "UpdateGeneralSurvey":
+          Object.keys(variables.input)
+            .filter((key: string) => Array.isArray(variables.input[key]))
+            .map((key: string) => {
+              // JSON stringify GeneralSurveyRow.options.
+              variables.input[key]
+                .filter((v: GeneralObject) => v?.options)
+                .map((v: GeneralObject) => {
+                  if (v.options) {
+                    v.options = JSON.stringify(v.options);
+                  }
+                });
+            });
+          break;
+      }
+
+      // Traverse the variables and convert objects to JSON strings as needed
+      // const transformVariables = (vars) => {
+      //   if (!vars || typeof vars !== 'object') return vars;
+
+      //   return Object.keys(vars).reduce((acc, key) => {
+      //     const value = vars[key];
+
+      //     // Check if the value is an object that needs conversion
+      //     acc[key] = value && typeof value === 'object' && !(value instanceof Array)
+      //       ? JSON.stringify(value)
+      //       : value;
+
+      //     return acc;
+      //   }, {});
+      // };
+
+      // operation.variables = transformVariables(variables);
+
+      return forward(operation);
+    });
+
     return {
       errorLink,
       authLink,
       omitTypenameLink,
+      transformVariablesLink,
     };
   }
 
