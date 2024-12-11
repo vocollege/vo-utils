@@ -31,6 +31,7 @@ const Switch: React.FC<SwitchProps> = (props) => {
     helperText,
   } = props;
   const classes = useStyles();
+
   return (
     <FormGroup row className={clsx(classes.root, classes[size])}>
       <FormControlLabel

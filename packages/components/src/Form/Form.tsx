@@ -184,7 +184,7 @@ const Form: React.FC<FormProps> = (props) => {
     };
     // Find custom data categories.
     let customCategoryFields = Object.keys(state).filter(
-      (field: string) => field.indexOf(".") > -1,
+      (field: string) => field.indexOf(".") > -1
     );
     if (customCategoryFields.length > 0) {
       customCategoryFields.map((field: string) => {
@@ -210,7 +210,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeCustomField = (
     name: string,
     value: any,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[name]);
     dispatch({ field: name, value });
@@ -227,7 +227,7 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     const { name, value } = e.target;
     let newValue: any = value;
@@ -261,7 +261,7 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleCheckChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: FormField,
+    field: FormField
   ) => {
     const { name } = e.target;
     let newValue: boolean | number;
@@ -283,7 +283,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleEditorChange = (
     content: string,
     field: string,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: content });
@@ -302,7 +302,7 @@ const Form: React.FC<FormProps> = (props) => {
     items: FormFieldContentListItem[],
     field: string,
     fieldParams: any,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[field]);
 
@@ -321,7 +321,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleAutocompleteChange = (
     field: string,
     value: any,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     dispatch({ field: field, value: value });
     if (onChange) {
@@ -342,7 +342,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleSortableTreeChange = (
     items: any[],
     field: string,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: items });
@@ -361,7 +361,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeUrl = (
     field: string,
     value: string,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: value });
@@ -379,7 +379,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeEntity = (
     field: string,
     item: EntityPickerItem | null,
-    onChange: FormField["onChange"] | null,
+    onChange: FormField["onChange"] | null
   ) => {
     dispatch({ field: field, value: item });
     setValue(`${field}` as const, item, {
@@ -395,7 +395,7 @@ const Form: React.FC<FormProps> = (props) => {
     field: string,
     date: any,
     onChange: FormField["onChange"],
-    format: string,
+    format: string
   ) => {
     let value = Dayjs(date, format).format(format);
     dispatch({ field: field, value: value });
@@ -419,7 +419,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeFile = (
     field: string,
     files: FileManagerFolderElement[],
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     dispatch({ field: field, value: files });
     setValue(`${field}` as const, files, {
@@ -444,7 +444,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeCheckboxes = (
     field: string,
     values: String[],
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     dispatch({ field: field, value: values });
     setValue(`${field}` as const, values, {
@@ -511,7 +511,7 @@ const Form: React.FC<FormProps> = (props) => {
         if (Array.isArray(dependencyValue)) {
           visible =
             field.params?.dependency[fieldDependee].value.indexOf(
-              state[fieldDependee],
+              state[fieldDependee]
             ) >
               -1 ===
             field.params?.dependency[fieldDependee].visibility;
@@ -621,12 +621,18 @@ const Form: React.FC<FormProps> = (props) => {
           />
         );
       case "switch":
+        // console.log("field.name", field.name);
+
+        // console.log("state[field.name]", state[field.name]);
+
+        // console.log("state", JSON.parse(JSON.stringify(state)));
+
         return (
           <Switch
             checked={
               !field?.params?.boolean
                 ? state[field.name] === 1
-                : state[field.name]
+                : Boolean(state[field.name])
             }
             onChange={(e) => runOnChange(handleCheckChange, e, field)}
             label={field.label}
@@ -644,7 +650,7 @@ const Form: React.FC<FormProps> = (props) => {
                 handleEditorChange,
                 content,
                 field.name,
-                field.onChange,
+                field.onChange
               )
             }
             editorSettings={field.params?.editorSettings}
@@ -663,7 +669,7 @@ const Form: React.FC<FormProps> = (props) => {
                 items,
                 field.name,
                 field.params,
-                field.onChange,
+                field.onChange
               )
             }
             onReset={() => handleContentListReset(field.name)}
@@ -692,7 +698,7 @@ const Form: React.FC<FormProps> = (props) => {
                 handleSortableTreeChange,
                 items,
                 field.name,
-                field.onChange,
+                field.onChange
               )
             }
             onReset={() => handleSortableTreeChangeReset(field.name)}
@@ -767,7 +773,7 @@ const Form: React.FC<FormProps> = (props) => {
                 field.name,
                 value,
                 field.onChange,
-                format,
+                format
               )
             }
             inputFormat={format}
@@ -800,7 +806,7 @@ const Form: React.FC<FormProps> = (props) => {
                 field.name,
                 value,
                 field.onChange,
-                format,
+                format
               )
             }
             inputFormat={format}
@@ -833,7 +839,7 @@ const Form: React.FC<FormProps> = (props) => {
                 field.name,
                 value,
                 field.onChange,
-                format,
+                format
               )
             }
             inputFormat={format}
@@ -892,7 +898,7 @@ const Form: React.FC<FormProps> = (props) => {
                 handleChangeCheckboxes,
                 field.name,
                 values,
-                field.onChange,
+                field.onChange
               )
             }
             row={field.params?.row}
@@ -916,7 +922,7 @@ const Form: React.FC<FormProps> = (props) => {
                 items,
                 field.name,
                 field.params,
-                field.onChange,
+                field.onChange
               )
             }
           />
@@ -938,7 +944,7 @@ const Form: React.FC<FormProps> = (props) => {
                 handleAutocompleteChange,
                 field.name,
                 newValue,
-                field.onChange,
+                field.onChange
               )
             }
             renderInput={(params) => (
@@ -1005,7 +1011,7 @@ const Form: React.FC<FormProps> = (props) => {
               type: v.extensions.category,
               message: v.extensions.validation[field].join(" | "),
             },
-            { shouldFocus: true },
+            { shouldFocus: true }
           );
         }
       }
@@ -1083,15 +1089,11 @@ const Form: React.FC<FormProps> = (props) => {
         }
       } else {
         mergedData[field] =
-          data[operations.category][field] || initialState[field];
+          typeof data[operations.category][field] !== undefined
+            ? data[operations.category][field]
+            : initialState[field];
       }
     });
-    /*console.log(
-      "@vocollege/components->Forms->initialState:",
-      initialState,
-      "mergedData:",
-      mergedData,
-    );*/
     dispatch({
       item: mergedData,
     });
@@ -1138,7 +1140,7 @@ const Form: React.FC<FormProps> = (props) => {
       refetchQueries,
       onError: handleError,
       onCompleted: (data: any) => handleCompleted(data, labels.created),
-    },
+    }
   );
 
   const [update, { loading: updateLoading }] = useMutation(
@@ -1148,7 +1150,7 @@ const Form: React.FC<FormProps> = (props) => {
       refetchQueries,
       onError: handleError,
       onCompleted: (data: any) => handleCompleted(data, labels.updated),
-    },
+    }
   );
 
   // Effects.
@@ -1220,8 +1222,8 @@ const Form: React.FC<FormProps> = (props) => {
     tabs.forEach((tab: FormTabProps) => {
       customFields = customFields.concat(
         tab.fields.filter(
-          (field: FormField) => field.type === "custom" && field?.overrideValue,
-        ),
+          (field: FormField) => field.type === "custom" && field?.overrideValue
+        )
       );
     });
     customFields.forEach((field: FormField) => {
@@ -1331,7 +1333,7 @@ const Form: React.FC<FormProps> = (props) => {
                                   </Grid>
                                 )
                               );
-                            },
+                            }
                           )}
                         </Grid>
                       </Box>
