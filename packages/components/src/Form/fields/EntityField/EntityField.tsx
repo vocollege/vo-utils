@@ -55,7 +55,9 @@ const EntityField: React.FC<EntityFieldProps> = (props) => {
         setFieldValue(newValue);
       } else {
         let titleField = "title";
-        let type = newValue.type.toLowerCase();
+        let type = newValue.type
+          ? newValue.type.toLowerCase()
+          : "undefined_type";
         if (fields) {
           titleField = fields[type].title;
         }

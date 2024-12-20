@@ -144,6 +144,7 @@ class VoAuth extends VoBase {
 
     Helpers.localStorage.remove(VoConfig.get.CURRENT_GROUP || "");
     Helpers.localStorage.remove(VoConfig.get.MASQUERADE_USER || "");
+    Helpers.localStorage.remove(VoConfig.get.USER_LICENSEE || "");
 
     delete axios.defaults.headers.common["Authorization"];
   }

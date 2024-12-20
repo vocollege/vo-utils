@@ -26,7 +26,7 @@ class GraphClient {
   static createGraphClient(
     url: string,
     uploadLink = false,
-    params: GeneralObject = {}
+    params: GeneralObject = {},
   ) {
     let httpLink;
 
@@ -164,7 +164,7 @@ class GraphClient {
           //   redirect();
           // }
         }
-      }
+      },
     );
 
     // Create authLink that ensures that all calls include
@@ -186,6 +186,12 @@ class GraphClient {
         masquerade = JSON.parse(masquerade);
       }
 
+      let userLicensee: any = localStorage.get(VoConfig.get.USER_LICENSEE);
+
+      if (userLicensee) {
+        userLicensee = JSON.parse(userLicensee);
+      }
+
       operation.setContext(() => ({
         ...currentHeaders,
         headers: {
@@ -195,6 +201,7 @@ class GraphClient {
             : "",
           VoGroup: groupId,
           ...(masquerade && { VoMasquerade: masquerade?.id }),
+          ...(userLicensee && { VoLicensee: userLicensee }),
         },
       }));
       return forward(operation);
@@ -204,7 +211,7 @@ class GraphClient {
       if (operation.variables) {
         operation.variables = JSON.parse(
           JSON.stringify(operation.variables),
-          (key, value) => (key === "__typename" ? undefined : value)
+          (key, value) => (key === "__typename" ? undefined : value),
         );
       }
       return forward(operation);
