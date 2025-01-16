@@ -201,7 +201,7 @@ class GraphClient {
             : "",
           VoGroup: groupId,
           ...(masquerade && { VoMasquerade: masquerade?.id }),
-          ...(userLicensee && { VoLicensee: userLicensee }),
+          ...(userLicensee && { VoLicensee: userLicensee?.id }),
         },
       }));
       return forward(operation);
