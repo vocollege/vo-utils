@@ -1,15 +1,19 @@
 #!/bin/bash
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 if [ -z $1 ]; then
   echo "No package specified"
   PWD=`pwd`
-  if [[ $PWD =~ "packages/components" ]] || [[ $PWD =~ "packages/app" ]] || [[ $PWD =~ "packages/theme" ]]; then
-    echo "Running build from ${PWD}"
-  else 
-    echo "Please run from a package or specify what package to build."
-    exit
-  fi
+  case $PWD in
+    *"packages/components"* | *"packages/app"* | *"packages/theme"*)
+      echo "Running build from ${PWD}";;
+    *)
+      echo "Please run from a package or specify what package to build."
+      exit;;
+  esac
 fi
+
+cd $SCRIPT_DIR
 
 if [[ $1 = "components" ]]; then
   cd packages/components
