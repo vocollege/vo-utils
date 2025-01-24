@@ -14,6 +14,9 @@ else
   EXEC_DIR=${SCRIPT_DIR%%/}/packages/"$1"
   if [ -d $EXEC_DIR ]; then
     cd $EXEC_DIR
+  else 
+    echo "The package '${1}' could not be found in ${SCRIPT_DIR}/packages/!"
+    exit
   fi
   PACKAGE=packages/"$1"
   echo "Building ${PACKAGE} from:"
