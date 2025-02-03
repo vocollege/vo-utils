@@ -28,6 +28,13 @@ export const SEARCH_CONTENT = gql`
         usage_type
         alias
       }
+      entity {
+        ... on ValidigKeyword {
+          id
+          title
+          regulation
+        }
+      }
     }
   }
 `;
