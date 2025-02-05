@@ -10,20 +10,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       margin: "0 auto",
       paddingBottom: VoTheme.spacing(3),
     },
-    toolbarButton: {
-      flexShrink: 0,
-      marginLeft: VoTheme.spacing(1),
-      // "&$noLabel": {
-      //   minWidth: 0,
-      //   "& .MuiButton-startIcon": {
-      //     marginRight: theme.spacing(-0.5),
-      //   },
-      // },
-    },
-    toolbarButtonNoLabel: {
-      flexShrink: 0,
-      marginLeft: VoTheme.spacing(1),
-    },
     formTabs: {
       borderBottom: `1px solid ${VoTheme.palette.divider}`,
       marginLeft: VoTheme.spacing(-3),
@@ -80,5 +66,5 @@ export const useStyles = makeStyles((theme: Theme) =>
     formHeader: {
       margin: `${theme.spacing(3)} 0`,
     },
-  })
+  }),
 );

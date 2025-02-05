@@ -1,137 +1,140 @@
 import React from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-// import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
+import SendIcon from "@mui/icons-material/Send";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
 // Custom.
-import { useStyles } from "./styles";
 import { FormToolbarProps } from "./global";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 export default function FormToolbar(props: FormToolbarProps) {
-  const { title, onSave, onCancel, loading, options, className, extraActions } =
+  const { title, onSave, onSubmit, onCancel, loading, options, className, extraActions } =
     props;
-  const classes = useStyles();
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.down("md"));
 
   // Methods.
 
-  const showSaveLabel = () => {
-    if (matchesMd) {
+ const showCancelButton = () => {
+    if (!onCancel) {
       return false;
     }
-    return !options?.saveButton?.hideLabel;
+    if (options && options.cancelButton) {
+      return options.cancelButton.visible != false;
+    }
+    return true;
   };
 
-  const showCancelLabel = () => {
-    if (matchesMd) {
+  const showSaveButton = () => {
+    if (options && options.saveButton) {
+      return options.saveButton.visible != false;
+    }
+    return true;
+  }
+
+  const showSubmitButton = () => {
+    if (!onSubmit) {
       return false;
     }
-    return !options?.cancelButton?.hideLabel;
+    if (options && options.submitButton) {
+      return options.submitButton.visible
+    }
+    return true;
+  }
+
+  const addDivider = () => {
+    return extraActions || showSubmitButton();
+  };
+
+  const buttonStyle = (theme: any) => {
+    return {
+      flexShrink: 0,
+    };
+  };
+
+  const button = (options, defaultTitle, label, color, variant, onClick, Icon) => {
+    const disabled = loading || options?.disabled;
+    const showLabel = !matchesMd ? !options?.hideLabel : false;
+    const title = options?.label || defaultTitle;
+    if (showLabel) {
+      return <Button
+                variant={variant}
+                color={color}
+                aria-label={label}
+                startIcon={<Icon />}
+                sx={buttonStyle}
+                onClick={onClick}
+                disabled={disabled}
+                >
+                {title}
+                </Button>;
+     } else {
+        return <IconButton 
+                sx={buttonStyle}
+                color={color}
+                aria-label={label}
+                onClick={onClick}
+                size="small"
+                disabled={disabled}
+                title={title}
+                >
+                <Icon />
+                </IconButton>;
+     }
   };
 
   return (
     <Toolbar className={className}>
       {title && title !== "" && (
-        <>
-          <Typography variant="h6" noWrap>
-            {title}
-          </Typography>
-          <div className={classes.grow} />
-        </>
+        <Typography variant="h6" noWrap>
+          {title}
+        </Typography>
       )}
-      {extraActions}
-      {!showSaveLabel() && (
-        <IconButton
-          className={classes.toolbarButtonNoLabel}
-          color="success"
-          aria-label="save item"
-          onClick={onSave}
-          disabled={loading || options?.saveButton?.disabled}
-          size="small"
-          title={I18n.get.actions.save}
-        >
-          <SaveIcon />
-        </IconButton>
-      )}
-      {showSaveLabel() && (
-        <Button
-          variant="contained"
-          color="success"
-          aria-label="save item"
-          startIcon={<SaveIcon />}
-          className={classes.toolbarButton}
-          onClick={onSave}
-          disabled={loading || options?.saveButton?.disabled}
-        >
-          {options?.saveButton?.label || I18n.get.actions.save}
-        </Button>
-      )}
-      {/* <Button
-        variant={options?.saveButton?.hideLabel ? "text" : "contained"}
-        color="secondary"
-        aria-label="save item"
-        startIcon={<SaveIcon />}
-        className={clsx(classes.toolbarButton, {
-          [classes.noLabel]: options?.saveButton?.hideLabel,
+      <Box sx={(theme: any) => ({ flexGrow: 1 })}></Box>
+      <Box
+        sx={(theme: any) => ({
+          display: "flex",
+          gap: theme.spacing(1),
+          justifyContent: "flex-end",
         })}
-        onClick={onSave}
-        disabled={loading || options?.saveButton?.disabled}
-        title={options?.saveButton?.hideLabel && I18n.get.actions.save}
       >
-        {!options?.saveButton?.hideLabel && I18n.get.actions.save}
-      </Button> */}
-      {onCancel && (
-        <>
-          {!showCancelLabel() && (
-            <IconButton
-              className={classes.toolbarButtonNoLabel}
-              color="success"
-              aria-label="cancel"
-              onClick={onCancel}
-              disabled={loading || options?.cancelButton?.disabled}
-              size="small"
-              title={I18n.get.actions.cancel}
-            >
-              <CloseIcon />
-            </IconButton>
-          )}
-          {showCancelLabel() && (
-            <Button
-              variant="outlined"
-              color="success"
-              aria-label="cancel"
-              startIcon={<CloseIcon />}
-              className={classes.toolbarButton}
-              onClick={onCancel}
-              disabled={loading || options?.cancelButton?.disabled}
-            >
-              {options?.cancelButton?.label || I18n.get.actions.cancel}
-            </Button>
-          )}
-          {/* <Button
-          variant={options?.cancelButton?.hideLabel ? "text" : "outlined"}
-          color="secondary"
-          aria-label="cancel"
-          startIcon={<CloseIcon />}
-          className={clsx(classes.toolbarButton, {
-            [classes.noLabel]: options?.cancelButton?.hideLabel,
-          })}
-          onClick={onCancel}
-          disabled={loading || options?.cancelButton?.disabled}
-          title={options?.cancelButton?.hideLabel && I18n.get.actions.cancel}
-        >
-          {!options?.cancelButton?.hideLabel && I18n.get.actions.cancel}
-        </Button> */}
-        </>
-      )}
+        {extraActions}
+        {showSubmitButton() && button(options?.submitButton,
+                                   I18n.get.actions.submit,
+                                   "submit",
+                                   "success",
+                                   "outlined",
+                                   onSubmit,
+                                   SendIcon,
+              )}
+        {addDivider() && (
+          <Divider orientation="vertical" flexItem />
+        )}
+        {showSaveButton() && button(options?.saveButton,
+                                  I18n.get.actions.save,
+                                  "save item",
+                                  "success",
+                                  "contained",
+                                  onSave,
+                                  SaveIcon,
+               )}
+        {showCancelButton() && button(options?.cancelButton,
+                                  I18n.get.actions.cancel,
+                                  "cancel",
+                                  "success",
+                                  "outlined",
+                                  onCancel,
+                                  CloseIcon,
+                )}
+      </Box>
     </Toolbar>
   );
 }

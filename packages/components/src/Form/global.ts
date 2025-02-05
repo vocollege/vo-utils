@@ -43,9 +43,9 @@ export interface FormProps extends FormNakedProps {
   pageTitleField?: string;
   primaryField?: string;
   client?: ApolloClient<object>;
-  onComplete?: (data: any) => void;
+  onComplete?: (data: any, type?: any) => void;
   onCancel?: (data: any) => void;
-  onSave?: (data: any) => any;
+  onSave?: (data: any, saveType?: string) => any;
   urlParams?: { [key: string]: any };
   createParam?: string;
   classes?: {
@@ -67,6 +67,8 @@ export interface FormProps extends FormNakedProps {
   toolbarProps?: FormToolbarProps;
   header?: React.ReactNode;
   refetchQueries?: MutationHookOptions["refetchQueries"];
+  autosave?: boolean;
+  autosaveInterval?: number; 
 }
 
 export interface FormNakedProps {
@@ -177,17 +179,20 @@ export interface FormViewsProps {
 export interface FormToolbarProps {
   title?: string | JSX.Element;
   onSave?: () => void;
+  onSubmit?: () => void;
   onCancel?: FormProps["onCancel"];
   loading?: boolean;
   options?: {
     saveButton?: FormToolbarButton;
     cancelButton?: FormToolbarButton;
+    submitButton?: FormToolbarButton;
   };
   className?: string;
   extraActions?: React.ReactNode;
 }
 
 export interface FormToolbarButton {
+  visible?: boolean;
   disabled?: boolean;
   hideLabel?: boolean;
   label?: string;

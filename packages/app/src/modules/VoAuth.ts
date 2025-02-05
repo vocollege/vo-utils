@@ -128,6 +128,7 @@ class VoAuth extends VoBase {
       : "";
   }
   resetSession() {
+    console.log("Resetting session");
     let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
     Helpers.localStorage.remove(refreshTokenKey);
     JsCookies.remove(refreshTokenKey, {

@@ -697,7 +697,8 @@
     "copyLink": "Kopiera länk",
     "apply": "Tillämpa",
     "generate": "Generera",
-    "downloadExcel": "Excel-fil"
+    "downloadExcel": "Excel-fil",
+    "submit": "Skicka in"
   },
   "status": {
     "unpublished": "Opublicerat",
