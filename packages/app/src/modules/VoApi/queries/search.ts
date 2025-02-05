@@ -10,7 +10,7 @@ export const SEARCH_CONTENT = gql`
     $types: [String]
     $primaryField: String
     $limit: Int
-    $entity: Boolean
+    $entity: Boolean! = false
   ) {
     searchContent(
       search: $search
@@ -27,6 +27,13 @@ export const SEARCH_CONTENT = gql`
         usage_id
         usage_type
         alias
+      }
+      entity @include(if: $entity) {
+        ... on ValidigKeyword {
+          id
+          title
+          regulation
+        }
       }
     }
   }
