@@ -76,7 +76,8 @@ const options = {
     },
     success: { main: "#1E9141", contrastText: "#ffffff" },
     text: {
-      primary: "#646464",
+      // primary: "#646464",
+      primary: "#444444",
     },
     grey: {
       100: "#F0F0F0",
