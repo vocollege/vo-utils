@@ -89,5 +89,5 @@ export const useStyles = makeStyles(
       marginTop: VoTheme.spacing(2),
       textAlign: "center",
     },
-  }),
+  })
 );
