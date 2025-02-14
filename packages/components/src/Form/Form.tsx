@@ -124,7 +124,6 @@ const Form: React.FC<FormProps> = (props) => {
     }
     if (!autosaveIntervalId.current) {
       autosaveIntervalId.current = setInterval( () => {
-        console.log("Autosave!");
         handleSave("autosave");
       }, autosaveInterval || 1000);
     }
@@ -203,13 +202,12 @@ const Form: React.FC<FormProps> = (props) => {
     let variables: { [key: string]: any } = {
       input: getInputValues(),
     };
-    console.log("@voComponents/Form.tsx->handleSave()");
     // Find custom data categories.
     let customCategoryFields = Object.keys(state).filter(
       (field: string) => field.indexOf(".") > -1,
     );
     if (customCategoryFields.length > 0) {
-      customCategoryFields.map((field: string) => {
+      customCategoryFields?.map((field: string) => {
         let fieldParts = field.split(".");
         variables[fieldParts[0]] = getInputValues(fieldParts[0]);
       });
@@ -1089,7 +1087,7 @@ const Form: React.FC<FormProps> = (props) => {
 
   const setData = (data: any) => {
     let mergedData: { [key: string]: any } = {};
-    Object.keys(initialState).map((field: any) => {
+    Object.keys(initialState)?.map((field: any) => {
       if (field.indexOf(".") > -1) {
         let fieldParts = field.split(".");
         if (fieldParts.length === 3) {
@@ -1250,7 +1248,7 @@ const Form: React.FC<FormProps> = (props) => {
     let customFields: FormField[] = [];
     tabs.forEach((tab: FormTabProps) => {
       customFields = customFields.concat(
-        tab.fields.filter(
+        tab?.fields?.filter(
           (field: FormField) => field.type === "custom" && field?.overrideValue,
         ),
       );
@@ -1332,7 +1330,7 @@ const Form: React.FC<FormProps> = (props) => {
               )}
               <Grid item xs={12}>
                 <FormViews currentTab={currentTab} setTab={setTab}>
-                  {tabs.map((tab: FormTabProps, index: number) => {
+                  {tabs?.map((tab: FormTabProps, index: number) => {
                     return (
                       <Box key={index}>
                         <Grid
@@ -1340,7 +1338,7 @@ const Form: React.FC<FormProps> = (props) => {
                           spacing={3}
                           className={classes.gridContainer}
                         >
-                          {tab.fields.map(
+                          {tab?.fields?.map(
                             (field: FormField, fieldIndex: number) => {
                               let fieldElement = getField(field);
                               if (fieldElement === "") {

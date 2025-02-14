@@ -41,7 +41,6 @@ class VoApi extends VoBase {
         url = `${url}?masquerade=${masquerade?.id}`;
       }
       const user = await axios.get(url);
-      console.log("VoApi.ts -> getUser() -> user:", user);
       return user;
     } catch (error) {
       throw error;

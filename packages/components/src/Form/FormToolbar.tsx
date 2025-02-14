@@ -47,7 +47,7 @@ export default function FormToolbar(props: FormToolbarProps) {
     if (options && options.submitButton) {
       return options.submitButton.visible
     }
-    return true;
+    return false;
   }
 
   const addDivider = () => {
