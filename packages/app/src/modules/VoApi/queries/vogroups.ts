@@ -19,6 +19,7 @@ export const GET_GROUP = gql`
       certified
       status
       url
+      data_protection_policy_url
       created_at
       updated_at
       parentGroupId

@@ -298,6 +298,7 @@ export interface EntityPickerDialogProps {
   category?: string;
   variables?: { [key: string]: any };
   client?: ApolloClient<object>;
+  extraDetails?: (item: any) => React.ReactNode;
   DialogProps?: DialogProps;
 }
 

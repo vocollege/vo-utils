@@ -554,7 +554,8 @@
       "orgnr": "Org.nr.",
       "workplace": "Arbetsplats",
       "employer": "Arbetsgivare",
-      "organisation": "Organisation"
+      "organisation": "Organisation",
+      "dataProtectionPolicyUrl": "Länk till dataskyddspolicy"
     },
     "messages": {
       "invalidFields": "Det finns ogiltiga fält i formuläret",
@@ -562,7 +563,8 @@
       "unsavedContent": "Det finns osparat innehåll. Är du säker på att du vill lämna denna sida?",
       "redirecting": "Omdirigerar...",
       "personalNumberWhenPossible": "Personnumer är ej obligatoriskt men bör ifyllas när detta är möjligt.",
-      "currentPassword": "Om du vill ändra lösenordet så måste nuvarande anges här."
+      "currentPassword": "Om du vill ändra lösenordet så måste nuvarande anges här.",
+      "dataProtectionPolicyUrlHelper": "Denna länk kommer att visas i foten på denna VoSida."
     }
   },
   "application": {

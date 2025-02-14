@@ -5,6 +5,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import LinearProgress from "@mui/material/LinearProgress";
 import Dialog from "@mui/material/Dialog";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -38,13 +40,14 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
     category = "searchContent",
     variables = {},
     client,
+    extraDetails,
     DialogProps,
   } = props;
   const classes = useStyles();
   const searchInput = useRef();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<null | EntityPickerItem[]>(
-    [],
+    []
   );
 
   // Methods.
@@ -91,20 +94,31 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
     let typeString =
       type && I18n.get[type]?.label ? I18n.get[type]?.label : item.type;
     return (
-      <>
-        <span className={classes.rowItemDetailsLabel}>{I18n.get.misc.id}:</span>
-        <span className={classes.rowItemDetailsValue}>{item.id}</span>
+      <Stack alignItems="center" spacing={1.5} direction="row">
+        <Box>
+          <span className={classes.rowItemDetailsLabel}>
+            {I18n.get.misc.id}:
+          </span>
+          <span
+          // className={classes.rowItemDetailsValue}
+          >
+            {item.id}
+          </span>
+        </Box>
         {typeString && typeString !== "" && (
-          <>
+          <Box>
             <span className={classes.rowItemDetailsLabel}>
               {I18n.get.misc.type}:
             </span>
-            <span className={classes.rowItemDetailsValue}>
+            <span
+            // className={classes.rowItemDetailsValue}
+            >
               {type && I18n.get[type]?.label}
             </span>
-          </>
+          </Box>
         )}
-      </>
+        {extraDetails && <Box>{extraDetails(item)}</Box>}
+      </Stack>
     );
   };
 
@@ -127,7 +141,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
     }
     let foundItems = searchResults?.filter(
       (item: EntityPickerItem) =>
-        searchTerm.trim().toLowerCase() === item.title.trim().toLowerCase(),
+        searchTerm.trim().toLowerCase() === item.title.trim().toLowerCase()
     );
     return foundItems?.length === 0;
   };
@@ -264,7 +278,7 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
                         variant="subtitle1"
                         className={clsx(
                           classes.rowItemTitle,
-                          classes.textNoWrap,
+                          classes.textNoWrap
                         )}
                       >
                         {getTitle(item)}

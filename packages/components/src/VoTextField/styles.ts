@@ -10,6 +10,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       overflow: "hidden",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
+      "& ~ .MuiFormHelperText-root": {
+        lineHeight: 1.3,
+      },
     },
   })
 );
