@@ -213,6 +213,7 @@ const Form: React.FC<FormProps> = (props) => {
       });
     }
     if (onSave) {
+      console.log("Form.tsx saving!", saveType||"save");
       variables = onSave(variables, saveType || "save");
     }
     if (!isCreateNew()) {
@@ -1227,6 +1228,7 @@ const Form: React.FC<FormProps> = (props) => {
     if (autosave && isDirty && isValid) {
       // set new interval of save
        
+      initiateAutosave();
     }
   }, [isDirty, isValid]);
 
