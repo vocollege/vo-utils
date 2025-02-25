@@ -43,7 +43,7 @@ export interface FormProps extends FormNakedProps {
   pageTitleField?: string;
   primaryField?: string;
   client?: ApolloClient<object>;
-  onComplete?: (data: any, type?: any) => void;
+  onComplete?: (data: any, saveType?: string) => void;
   onCancel?: (data: any) => void;
   onSave?: (data: any, saveType?: string) => any;
   urlParams?: { [key: string]: any };

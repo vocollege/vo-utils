@@ -100,8 +100,11 @@ const Form: React.FC<FormProps> = (props) => {
   const params = urlParams || useParams<any>();
   const [currentTab, setTab] = useState(0);
   const autosaveIntervalId = useRef(null);
+  const saveTypeRef = useRef(null);
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
+  console.log("autosaveIntervalId:", autosaveIntervalId);
   const {
     handleSubmit,
     register,
@@ -111,10 +114,12 @@ const Form: React.FC<FormProps> = (props) => {
     reset,
     formState,
     getValues,
+    watch,
   } = useForm({
     mode: "onChange",
   });
-
+  const formData = watch();
+  
   const { isDirty, isValid, errors } = formState;
 
   // Methods
@@ -122,11 +127,21 @@ const Form: React.FC<FormProps> = (props) => {
     if (!autosave) {
       return;
     }
-    if (!autosaveIntervalId.current) {
-      autosaveIntervalId.current = setInterval( () => {
-        handleSave("autosave");
-      }, autosaveInterval || 1000);
+    if (autosaveIntervalId.current) {
+      clearTimeout(autosaveIntervalId.current);
+      autosaveIntervalId.current = null;
     }
+    console.log("Setting autosave interval");
+    const interval = autosaveInterval || 10000;
+    autosaveIntervalId.current = setTimeout( () => {
+      if (isValid && isDirty) {
+        console.log("Autosaving... isValid:", isValid, "isDirty:", isDirty);
+        handleSave("autosave");
+        forceUpdate();
+        clearTimeout(autosaveIntervalId.current);
+        autosaveIntervalId.current = null;
+      }
+    }, interval);
   }
 
   const onSubmit = () => {
@@ -202,6 +217,10 @@ const Form: React.FC<FormProps> = (props) => {
     let variables: { [key: string]: any } = {
       input: getInputValues(),
     };
+    if (!saveType) {
+      saveType = "save";
+    }
+    saveTypeRef.current = saveType
     // Find custom data categories.
     let customCategoryFields = Object.keys(state).filter(
       (field: string) => field.indexOf(".") > -1,
@@ -212,9 +231,10 @@ const Form: React.FC<FormProps> = (props) => {
         variables[fieldParts[0]] = getInputValues(fieldParts[0]);
       });
     }
+
+    console.log("Form.tsx saving!", saveType);
     if (onSave) {
-      console.log("Form.tsx saving!", saveType||"save");
-      variables = onSave(variables, saveType || "save");
+      variables = onSave(variables, saveTypeRef.current);
     }
     if (!isCreateNew()) {
       variables[primaryField || "id"] = state[primaryField || "id"];
@@ -1048,12 +1068,15 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const handleCompleted = (data: any, message = "") => {
-    toast.success(message, { autoClose: getToastAutoCloseTime(message) });
+    if (saveTypeRef.current && saveTypeRef.current !== "autosave") {
+      toast.success(message, { autoClose: getToastAutoCloseTime(message) });
+    }
     if (onComplete) {
-      onComplete(data);
+      onComplete(data, saveTypeRef.current);
     } else {
       redirect({ refetch: true });
     }
+    saveTypeRef.current = null;
   };
 
   const handleError = (error: any) => {
@@ -1195,6 +1218,12 @@ const Form: React.FC<FormProps> = (props) => {
       setData(initialData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      if (autosaveIntervalId.current) {
+        clearTimeout(autosaveIntervalId.current);
+        console.log("clearing timeout");
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -1204,12 +1233,16 @@ const Form: React.FC<FormProps> = (props) => {
       window.onbeforeunload = null;
     }
     return () => {
-      if (autosaveIntervalId.current) {
-        clearInterval(autosaveIntervalId.current)
-      }
       window.onbeforeunload = null;
     };
   });
+
+  useEffect(() => {
+    if (autosave && isDirty && isValid && !autosaveIntervalId.current) {
+      console.log("Initiating Autosave");
+      initiateAutosave();
+    }
+  }, [formData]);
 
   useEffect(() => {
     if (data && data[operations.category]) {
@@ -1225,11 +1258,12 @@ const Form: React.FC<FormProps> = (props) => {
         isValid,
       });
     }
+    /*console.log("useEffect dirty/valid");
     if (autosave && isDirty && isValid) {
       // set new interval of save
        
       initiateAutosave();
-    }
+    }*/
   }, [isDirty, isValid]);
 
   useEffect(() => {
