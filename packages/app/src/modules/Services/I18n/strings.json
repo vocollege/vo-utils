@@ -880,7 +880,7 @@
       "createCertificate": "Skapa intyg"
     },
     "messages": {
-      "intro": "",
+      "intro": "Intyg för de som genomgått utbildning till vård- och omsorgsambassadör.",
       "certificateSaved": "Intyget har sparats",
       "certificateDeleted": "Intygt har raderats",
       "certificatesGenerated": "Intygen har genererats"
@@ -893,13 +893,13 @@
       "text1b": "vara en del av marknadsföring och kommunikation mot olika målgrupper utifrån rätt insats och vid rätt tillfälle",
       "text1c": "vara delaktig i arbetet att lyfta fram och sprida det positiva med att utbilda sig och arbeta inom vård- och omsorgsyrket",
       "text2": "Utbildningsinnehåll",
-      "text2a": "Vad är VO-College roll i vård- och omsorgsambassadörsarbetet",
-      "text2b": "Vad innebär kompetensförsörjning",
-      "text2c": "Vad innebär vård- och omsorgsambassadörsrollen",
-      "text2d": "Vad innebär det att vara en del av marknadsföringen av utbildning och yrken inom vård och omsorg",
-      "text2e": "Vad innebär presentationsteknik, kommunikation och genomförande av aktivitet",
-      "text2f": "Vad innebär etik, normer, värderingar, inkludering och genusperspektiv inom aktuellt området",
-      "text2g": "Vad innebär det att följa upp olika insatser",
+      "text2a": "VO-College roll i vård -och omsorgsambassadörsarbetet",
+      "text2b": "Innebörden av kompetensutveckling",
+      "text2c": "Vård- och omsorgsambassadörsrollen",
+      "text2d": "Att vara en del av marknadsföringen av utbildning och yrken inom vård och omsorg",
+      "text2e": "Presentationsteknik, kommunikation och genomförande av aktiviteter",
+      "text2f": "Etik, normer, värderingar, inkludering och genusperspektiv",
+      "text2g": "Följa upp insatser",
       "responsible": "Utbildningsansvarig"
     }
   },
