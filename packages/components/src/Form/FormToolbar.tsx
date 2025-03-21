@@ -10,6 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import { useConfirm } from "material-ui-confirm";
 
 // Custom.
 import { FormToolbarProps } from "./global";
@@ -18,6 +19,7 @@ import I18n from "@vocollege/app/dist/modules/Services/I18n";
 export default function FormToolbar(props: FormToolbarProps) {
   const { title, onSave, onSubmit, onCancel, loading, options, className, extraActions } =
     props;
+  const confirm = useConfirm();
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -52,6 +54,18 @@ export default function FormToolbar(props: FormToolbarProps) {
 
   const addDivider = () => {
     return extraActions || showSubmitButton();
+  };
+
+  const handleSubmit = () => { 
+    if (onSubmit) {
+      if (options && options.submitConfirmDescription) {
+        confirm({description: options.submitConfirmDescription}).then(()=>{
+          onSubmit();
+        }, ()=>{});
+      } else {
+        onSubmit();
+      }
+    }
   };
 
   const buttonStyle = (theme: any) => {
@@ -112,7 +126,7 @@ export default function FormToolbar(props: FormToolbarProps) {
                                    "submit",
                                    "success",
                                    "outlined",
-                                   onSubmit,
+                                   handleSubmit,
                                    SendIcon,
               )}
         {addDivider() && (

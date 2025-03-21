@@ -101,29 +101,44 @@ const Form: React.FC<FormProps> = (props) => {
   const [currentTab, setTab] = useState(0);
   const autosaveIntervalId = useRef(null);
   const saveTypeRef = useRef(null);
+  const isMutating = useRef(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const autosaveTimeout = autosaveInterval || 2000;
 
-  console.log("autosaveIntervalId:", autosaveIntervalId);
   const {
     handleSubmit,
     register,
     trigger,
     setError,
+    clearErrors,
     setValue,
     reset,
     formState,
     getValues,
     watch,
   } = useForm({
-    mode: "onChange",
+    mode: "onTouched",
   });
-  const formData = watch();
+  const watchForm = watch();
   
   const { isDirty, isValid, errors } = formState;
+  const hasErrors = Object.keys(errors).length > 0;
 
+  console.log("Form.tsx render isDirty:", isDirty, "isValid:", isValid, "hasErrors:", hasErrors, "autosave:", autosave, "errors", errors, "values:", getValues(), "state:", state);
+
+  const handleAutosave = () => {
+    isMutating.current = true;
+    if (!hasErrors && isDirty) {
+        handleSave("autosave");
+        forceUpdate();
+        clearTimeout(autosaveIntervalId.current);
+        autosaveIntervalId.current = null;
+    }
+  };
   // Methods
   const initiateAutosave = () => {
+    console.log("Form.tsx InitiateAutosave");
     if (!autosave) {
       return;
     }
@@ -131,21 +146,23 @@ const Form: React.FC<FormProps> = (props) => {
       clearTimeout(autosaveIntervalId.current);
       autosaveIntervalId.current = null;
     }
-    console.log("Setting autosave interval");
-    const interval = autosaveInterval || 10000;
-    autosaveIntervalId.current = setTimeout( () => {
-      if (isValid && isDirty) {
-        console.log("Autosaving... isValid:", isValid, "isDirty:", isDirty);
-        handleSave("autosave");
-        forceUpdate();
-        clearTimeout(autosaveIntervalId.current);
-        autosaveIntervalId.current = null;
-      }
-    }, interval);
-  }
+    autosaveIntervalId.current = setTimeout(handleAutosave, autosaveTimeout);
+  } 
 
   const onSubmit = () => {
     handleSave("submit");
+  };
+
+  const enableSaveButton = () => {
+    if (hasErrors) {
+      return false;
+    }
+    if (autosave) {
+      return true;
+    }
+    if (isDirty) {
+      return true;
+    }
   };
 
   const isCreateNew = () => {
@@ -161,7 +178,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleCancel = () => {
     if (autosave && isValid && isDirty) {
       // autosave
-      handleSave("autosave"); 
+      handleSave("autosave");
     }
     if (onCancel) {
       onCancel(state);
@@ -217,13 +234,16 @@ const Form: React.FC<FormProps> = (props) => {
     let variables: { [key: string]: any } = {
       input: getInputValues(),
     };
+    console.log("saveType: ", saveType);
     if (!saveType) {
       saveType = "save";
     }
-    saveTypeRef.current = saveType
+    saveTypeRef.current = saveType;
+
+    console.log("Form.tsx handleSave saveType:", saveTypeRef.current); 
     // Find custom data categories.
     let customCategoryFields = Object.keys(state).filter(
-      (field: string) => field.indexOf(".") > -1,
+      (field: string) => field.indexOf(".") > -1
     );
     if (customCategoryFields.length > 0) {
       customCategoryFields?.map((field: string) => {
@@ -232,7 +252,6 @@ const Form: React.FC<FormProps> = (props) => {
       });
     }
 
-    console.log("Form.tsx saving!", saveType);
     if (onSave) {
       variables = onSave(variables, saveTypeRef.current);
     }
@@ -251,7 +270,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeCustomField = (
     name: string,
     value: any,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[name]);
     dispatch({ field: name, value });
@@ -268,7 +287,7 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     const { name, value } = e.target;
     let newValue: any = value;
@@ -299,10 +318,10 @@ const Form: React.FC<FormProps> = (props) => {
       shouldDirty: true,
     });
   };
-
+  console.log("Form.tsx 321 values:", getValues());
   const handleCheckChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: FormField,
+    field: FormField
   ) => {
     const { name } = e.target;
     let newValue: boolean | number;
@@ -324,7 +343,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleEditorChange = (
     content: string,
     field: string,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: content });
@@ -343,7 +362,7 @@ const Form: React.FC<FormProps> = (props) => {
     items: FormFieldContentListItem[],
     field: string,
     fieldParams: any,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[field]);
 
@@ -362,7 +381,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleAutocompleteChange = (
     field: string,
     value: any,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     dispatch({ field: field, value: value });
     if (onChange) {
@@ -383,7 +402,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleSortableTreeChange = (
     items: any[],
     field: string,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: items });
@@ -402,7 +421,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeUrl = (
     field: string,
     value: string,
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[field]);
     dispatch({ field: field, value: value });
@@ -420,7 +439,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeEntity = (
     field: string,
     item: EntityPickerItem | null,
-    onChange: FormField["onChange"] | null,
+    onChange: FormField["onChange"] | null
   ) => {
     dispatch({ field: field, value: item });
     setValue(`${field}` as const, item, {
@@ -436,7 +455,7 @@ const Form: React.FC<FormProps> = (props) => {
     field: string,
     date: any,
     onChange: FormField["onChange"],
-    format: string,
+    format: string
   ) => {
     let value = Dayjs(date, format).format(format);
     dispatch({ field: field, value: value });
@@ -460,7 +479,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeFile = (
     field: string,
     files: FileManagerFolderElement[],
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     dispatch({ field: field, value: files });
     setValue(`${field}` as const, files, {
@@ -485,7 +504,7 @@ const Form: React.FC<FormProps> = (props) => {
   const handleChangeCheckboxes = (
     field: string,
     values: String[],
-    onChange: FormField["onChange"],
+    onChange: FormField["onChange"]
   ) => {
     dispatch({ field: field, value: values });
     setValue(`${field}` as const, values, {
@@ -543,6 +562,11 @@ const Form: React.FC<FormProps> = (props) => {
     return [];
   };
 
+  const showLoader = () => {
+    const loading = queryLoading || createLoading || updateLoading;
+    return loading && !autosave; 
+  }
+
   const getField = (field: FormField) => {
     let visible = true;
 
@@ -552,7 +576,7 @@ const Form: React.FC<FormProps> = (props) => {
         if (Array.isArray(dependencyValue)) {
           visible =
             field.params?.dependency[fieldDependee].value.indexOf(
-              state[fieldDependee],
+              state[fieldDependee]
             ) >
               -1 ===
             field.params?.dependency[fieldDependee].visibility;
@@ -662,12 +686,6 @@ const Form: React.FC<FormProps> = (props) => {
           />
         );
       case "switch":
-        // console.log("field.name", field.name);
-
-        // console.log("state[field.name]", state[field.name]);
-
-        // console.log("state", JSON.parse(JSON.stringify(state)));
-
         return (
           <Switch
             checked={
@@ -691,7 +709,7 @@ const Form: React.FC<FormProps> = (props) => {
                 handleEditorChange,
                 content,
                 field.name,
-                field.onChange,
+                field.onChange
               )
             }
             editorSettings={field.params?.editorSettings}
@@ -710,7 +728,7 @@ const Form: React.FC<FormProps> = (props) => {
                 items,
                 field.name,
                 field.params,
-                field.onChange,
+                field.onChange
               )
             }
             onReset={() => handleContentListReset(field.name)}
@@ -739,7 +757,7 @@ const Form: React.FC<FormProps> = (props) => {
                 handleSortableTreeChange,
                 items,
                 field.name,
-                field.onChange,
+                field.onChange
               )
             }
             onReset={() => handleSortableTreeChangeReset(field.name)}
@@ -814,7 +832,7 @@ const Form: React.FC<FormProps> = (props) => {
                 field.name,
                 value,
                 field.onChange,
-                format,
+                format
               )
             }
             inputFormat={format}
@@ -847,7 +865,7 @@ const Form: React.FC<FormProps> = (props) => {
                 field.name,
                 value,
                 field.onChange,
-                format,
+                format
               )
             }
             inputFormat={format}
@@ -880,7 +898,7 @@ const Form: React.FC<FormProps> = (props) => {
                 field.name,
                 value,
                 field.onChange,
-                format,
+                format
               )
             }
             inputFormat={format}
@@ -939,7 +957,7 @@ const Form: React.FC<FormProps> = (props) => {
                 handleChangeCheckboxes,
                 field.name,
                 values,
-                field.onChange,
+                field.onChange
               )
             }
             row={field.params?.row}
@@ -963,7 +981,7 @@ const Form: React.FC<FormProps> = (props) => {
                 items,
                 field.name,
                 field.params,
-                field.onChange,
+                field.onChange
               )
             }
           />
@@ -985,7 +1003,7 @@ const Form: React.FC<FormProps> = (props) => {
                 handleAutocompleteChange,
                 field.name,
                 newValue,
-                field.onChange,
+                field.onChange
               )
             }
             renderInput={(params) => (
@@ -1052,7 +1070,7 @@ const Form: React.FC<FormProps> = (props) => {
               type: v.extensions.category,
               message: v.extensions.validation[field].join(" | "),
             },
-            { shouldFocus: true },
+            { shouldFocus: true }
           );
         }
       }
@@ -1067,20 +1085,21 @@ const Form: React.FC<FormProps> = (props) => {
     return time > 4000 ? time : 4000;
   };
 
-  const handleCompleted = (data: any, message = "") => {
+  const handleCompleted = async (data: any, message = "") => {
     if (saveTypeRef.current && saveTypeRef.current !== "autosave") {
       toast.success(message, { autoClose: getToastAutoCloseTime(message) });
     }
-    if (onComplete) {
+    if (onComplete && saveTypeRef.current !== "submit") {
       onComplete(data, saveTypeRef.current);
-    } else {
+    } else if (!autosave) {
       redirect({ refetch: true });
     }
     saveTypeRef.current = null;
+    setTimeout(() => (isMutating.current = false), 100);
+    await trigger();
   };
 
   const handleError = (error: any) => {
-    console.error("error", error);
     setValidationError(error.graphQLErrors);
     let errorMessages = getError(error);
     if (errorMessages.fields) {
@@ -1109,7 +1128,7 @@ const Form: React.FC<FormProps> = (props) => {
       : operations.get;
   };
 
-  const setData = (data: any) => {
+  const setData = async (data: any) => {
     let mergedData: { [key: string]: any } = {};
     Object.keys(initialState)?.map((field: any) => {
       if (field.indexOf(".") > -1) {
@@ -1141,7 +1160,10 @@ const Form: React.FC<FormProps> = (props) => {
     dispatch({
       item: mergedData,
     });
-    reset(mergedData, { keepIsValid: true });
+    console.log("Form.tsx reset mergedData:", mergedData);
+    await reset(mergedData, { keepIsValid: true, keepErrors: true});
+    await trigger();
+    console.log("Form.tsx reset after, values:", getValues());
     if (onDataChange) {
       onDataChange(mergedData, data);
     }
@@ -1173,7 +1195,7 @@ const Form: React.FC<FormProps> = (props) => {
   ] = useLazyQuery(getOperation(), {
     client: client || undefined,
     fetchPolicy: "cache-and-network",
-    nextFetchPolicy: "cache-first",
+    nextFetchPolicy: autosave ? "standby" : "cache-first",
     errorPolicy: "all",
   });
 
@@ -1184,95 +1206,120 @@ const Form: React.FC<FormProps> = (props) => {
       refetchQueries,
       onError: handleError,
       onCompleted: (data: any) => handleCompleted(data, labels.created),
-    },
+    }
   );
 
   const [update, { loading: updateLoading }] = useMutation(
     operations.update || fakeMutation,
     {
+      async update(cache, { data: savedData }) {
+        if (autosave) {
+          const data = savedData[Object.keys(savedData)[0]];
+          const id = data.id;
+
+          console.log("Form.tsx update savedData:", savedData); 
+                  
+
+          cache.writeQuery({
+            query: operations.update || fakeMutation,
+            variables: { id: id },
+            data: savedData,
+          });
+          
+          await reset(savedData, { keepIsValid: true, keepErrors: true});
+          await trigger();
+          console.log("Form.tsx update after reset, values:", getValues());
+        }
+      },
       client: client || undefined,
-      refetchQueries,
       onError: handleError,
       onCompleted: (data: any) => handleCompleted(data, labels.updated),
-    },
+      ...(!autosave && {refetchQueries}),
+    }
   );
 
+  console.log("Form.tsx 1241 values:", getValues());
   // Effects.
   useEffect(() => {
+    console.log("Form.tsx useEffect");
     let callLoadQuery = !queryCalled;
     if (isCreateNew()) {
-      reset(initialState);
       if (operations) {
         callLoadQuery = typeof operations.getOnCreate !== "undefined" || false;
       }
     }
+
     if (callLoadQuery) {
-      if (initialData) {
-        setData(initialData);
-      } else {
+      if (!initialData) {
         loadQuery({
           variables: getVariables(),
         });
       }
-    } else if (initialData) {
+    }
+
+    if (initialData) {
       setData(initialData);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => {
       if (autosaveIntervalId.current) {
         clearTimeout(autosaveIntervalId.current);
-        console.log("clearing timeout");
       }
     };
   }, []);
 
   useEffect(() => {
+    console.log("Form.tsx useEffect window, values:", getValues());
     if (isDirty) {
       window.onbeforeunload = () => true;
     } else {
       window.onbeforeunload = null;
     }
+    console.log("Form.tsx useEffect window end, values:", getValues());
     return () => {
       window.onbeforeunload = null;
     };
   });
 
-  useEffect(() => {
-    if (autosave && isDirty && isValid && !autosaveIntervalId.current) {
-      console.log("Initiating Autosave");
-      initiateAutosave();
-    }
-  }, [formData]);
 
   useEffect(() => {
-    if (data && data[operations.category]) {
+    console.log("Form.tsx useEffect watchform values:", getValues(), "isMutating:", isMutating.current);
+    if (isMutating.current) {return;}
+    if (autosave && isDirty && !hasErrors) {
+      initiateAutosave();
+      console.log("Form.tsx watchform initiateAutosave values:", getValues());
+    }
+  }, [watchForm]);
+
+  useEffect(() => {
+    console.log("Form.tsx useEffect data");
+    if (data && data[operations.category] && saveTypeRef.current !== "autosave") {
       setData(data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
+    console.log("Form.tsx useEffect isDirty, isValid");
     if (onFormChange) {
       onFormChange({
         isDirty,
         isValid,
       });
     }
-    /*console.log("useEffect dirty/valid");
-    if (autosave && isDirty && isValid) {
-      // set new interval of save
-       
-      initiateAutosave();
-    }*/
   }, [isDirty, isValid]);
 
+
   useEffect(() => {
+    console.log("Form.tsx useEffect queryLoading");
     if (onQueryLoading) {
       onQueryLoading(queryLoading);
     }
   }, [queryLoading]);
 
   useEffect(() => {
+    console.log("Form.tsx useEffect params");
     if (loadQueryOnParamsChange && !isCreateNew()) {
       loadQuery({
         variables: getVariables(),
@@ -1281,12 +1328,13 @@ const Form: React.FC<FormProps> = (props) => {
   }, [params]);
 
   useEffect(() => {
+    console.log("Form.tsx useEffect tabs");
     let customFields: FormField[] = [];
     tabs.forEach((tab: FormTabProps) => {
       customFields = customFields.concat(
         tab?.fields?.filter(
-          (field: FormField) => field.type === "custom" && field?.overrideValue,
-        ),
+          (field: FormField) => field.type === "custom" && field?.overrideValue
+        )
       );
     });
     customFields.forEach((field: FormField) => {
@@ -1299,10 +1347,10 @@ const Form: React.FC<FormProps> = (props) => {
       autoClose: getToastAutoCloseTime(queryError.message),
     });
   }
-
+  console.log("Form.tsx 1350 values:", getValues());
   return (
     <div className={clsx(classesProp?.formWrapper)}>
-      {(queryLoading || createLoading || updateLoading) && <VoLoader />}
+      {showLoader() && <VoLoader />}
       {!queryLoading && queryError && (
         <div className="vo-global__top-bottom-space">
           <ErrorBox
@@ -1329,16 +1377,27 @@ const Form: React.FC<FormProps> = (props) => {
             <FormToolbar
               {...toolbarProps}
               title={getPageTitle()}
-              onSave={handleSubmit(()=>{handleSave();})}
+              onSave={ async () => {
+                try {
+                console.log("Form.tsx getValues():", getValues());
+                await handleSubmit(() => {
+                  handleSave("save");
+                }, (e) => {
+                  console.log("Form.tsx handleSubmit failed:", e, "values:", getValues());
+                })();
+                } catch (e) {
+                  console.error("Form.tsx handleSubmit unexpected error:", e);
+                }
+              }}
               onCancel={handleCancel}
               onSubmit={onSubmit}
-              loading={createLoading || updateLoading}
+              loading={!autosave && (createLoading || updateLoading)}
               options={{
+                ...toolbarProps?.options,
                 saveButton: {
-                  disabled: !isDirty || !isValid,
+                  disabled: !enableSaveButton(),
                   ...toolbarProps?.options?.saveButton,
                 },
-                ...toolbarProps?.options,
               }}
               className={classesProp?.toolbar}
             />
@@ -1395,7 +1454,7 @@ const Form: React.FC<FormProps> = (props) => {
                                   </Grid>
                                 )
                               );
-                            },
+                            }
                           )}
                         </Grid>
                       </Box>

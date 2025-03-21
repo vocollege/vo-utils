@@ -186,6 +186,7 @@ export interface FormToolbarProps {
     saveButton?: FormToolbarButton;
     cancelButton?: FormToolbarButton;
     submitButton?: FormToolbarButton;
+    submitConfirmDescription?: string;
   };
   className?: string;
   extraActions?: React.ReactNode;
