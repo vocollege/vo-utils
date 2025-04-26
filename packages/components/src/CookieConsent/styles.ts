@@ -22,11 +22,12 @@ export const useStyles = makeStyles((theme: Theme) =>
     message: {
       margin: `${theme.spacing(2)} 0`,
     },
-    actions: {
-      alignItems: "flex-end",
-      display: "flex",
-      flexDirection: "column",
-      marginTop: theme.spacing(1),
-    },
+    // actions: {
+    //   alignItems: "center",
+    //   display: "flex",
+    //   flexDirection: "row",
+    //   justifyContent: "flex-start",
+    //   marginTop: theme.spacing(1),
+    // },
   })
 );
