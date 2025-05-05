@@ -704,7 +704,9 @@
     "apply": "Tillämpa",
     "generate": "Generera",
     "downloadExcel": "Excel-fil",
-    "submit": "Skicka in"
+    "submit": "Skicka in",
+    "onlyNecessary": "Endast nödvändiga",
+    "iApprove": "Jag godkänner"
   },
   "status": {
     "unpublished": "Opublicerat",

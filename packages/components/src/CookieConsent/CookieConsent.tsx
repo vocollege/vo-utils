@@ -148,19 +148,19 @@ const CookieConsent: React.FC<CookieConsentProps> = (props) => {
             </Box>
             <VoButton
               onClick={() => handleAccept("0")}
-              color="error"
-              variant="text"
-              size="small"
-            >
-              {I18n.get.actions.doNotApprove}
-            </VoButton>
-            <VoButton
-              onClick={() => handleAccept("1")}
-              color="secondary"
+              color="primary"
               variant="contained"
               size="small"
             >
-              {I18n.get.actions.approveCookies}
+              {I18n.get.actions.onlyNecessary}
+            </VoButton>
+            <VoButton
+              onClick={() => handleAccept("1")}
+              color="primary"
+              variant="contained"
+              size="small"
+            >
+              {I18n.get.actions.iApprove}
             </VoButton>
           </Stack>
           {/* </div> */}
