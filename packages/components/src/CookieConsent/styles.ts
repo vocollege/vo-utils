@@ -11,7 +11,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       maxWidth: theme.spacing(60),
       padding: theme.spacing(2),
       position: "fixed",
-
       zIndex: theme.zIndex.modal,
       [theme.breakpoints.down("sm")]: {
         maxWidth: "100%",

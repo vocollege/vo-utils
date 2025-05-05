@@ -34,12 +34,18 @@ const CookieConsent: React.FC<CookieConsentProps> = (props) => {
 
   // Methods.
 
-  const clearCookies = () => {
-    const allCookies = Cookies.get();
+  const getDomain = () => {
     let hostnameParts = window.location.hostname.split(".");
     let domain = `${hostnameParts[hostnameParts.length - 2]}.${
       hostnameParts[hostnameParts.length - 1]
     }`;
+    return domain;
+  };
+
+  const clearCookies = () => {
+    const allCookies = Cookies.get();
+    // let domain = getDomain();
+    let domain = window.location.hostname;
     Object.keys(allCookies).forEach((cookieName) => {
       Cookies.remove(cookieName);
       Cookies.remove(cookieName, { path: "/" });
@@ -66,9 +72,14 @@ const CookieConsent: React.FC<CookieConsentProps> = (props) => {
     if (value === "0") {
       clearCookies();
     }
+
+    // let domain = getDomain();
+    let domain = window.location.hostname;
+
     Cookies.set("vo_cookie_consent", value, {
       expires: 100,
       sameSite: "Lax",
+      domain: domain,
     });
     setReloading(true);
     // window.location = window.location;
@@ -176,13 +187,15 @@ const CookieConsent: React.FC<CookieConsentProps> = (props) => {
       {showCookieButton && (
         <Box
           sx={(theme) => ({
-            background: alpha(theme.palette.common.white, 0.85),
-            border: `1px solid ${theme.palette.grey}`,
-            borderBottomRightRadius: theme.spacing(1),
-            borderTopRightRadius: theme.spacing(1),
-            bottom: "50vh",
-            boxShadow: theme.shadows[8],
-            left: 0,
+            // background: alpha(theme.palette.common.white, 0.85),
+            background: theme.palette.common.white,
+            // border: `1px solid ${theme.palette.grey}`,
+            borderRadius: theme.spacing(1),
+            // borderBottomRightRadius: theme.spacing(1),
+            // borderTopRightRadius: theme.spacing(1),
+            bottom: theme.spacing(4),
+            boxShadow: theme.shadows[15],
+            left: theme.spacing(4),
             position: "fixed",
             zIndex: 1,
           })}
@@ -190,7 +203,7 @@ const CookieConsent: React.FC<CookieConsentProps> = (props) => {
           <Button
             startIcon={<CookieIcon color="secondary" />}
             disableFocusRipple
-            size="small"
+            size="medium"
             onClick={handleShowCookieButtonClick}
           >
             {I18n.get.actions.cookies}
