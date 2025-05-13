@@ -11,7 +11,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       maxWidth: theme.spacing(60),
       padding: theme.spacing(2),
       position: "fixed",
-
       zIndex: theme.zIndex.modal,
       [theme.breakpoints.down("sm")]: {
         maxWidth: "100%",
@@ -22,11 +21,12 @@ export const useStyles = makeStyles((theme: Theme) =>
     message: {
       margin: `${theme.spacing(2)} 0`,
     },
-    actions: {
-      alignItems: "flex-end",
-      display: "flex",
-      flexDirection: "column",
-      marginTop: theme.spacing(1),
-    },
+    // actions: {
+    //   alignItems: "center",
+    //   display: "flex",
+    //   flexDirection: "row",
+    //   justifyContent: "flex-start",
+    //   marginTop: theme.spacing(1),
+    // },
   })
 );

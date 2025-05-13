@@ -109,6 +109,7 @@ export interface FormField {
     | "transfer_list"
     | "autocomplete"
     | "list"
+    | "options"
     | "info"
     | "hidden"
     | "empty"

@@ -22,6 +22,7 @@ import clsx from "clsx";
 // Custom.
 import VoTextField from "@/VoTextField";
 import VoTextArea from "@/VoTextArea";
+import VoOptionsField from "@/VoOptionsField";
 import {
   VoDatePickerField,
   VoDateTimePickerField,
@@ -516,6 +517,21 @@ const Form: React.FC<FormProps> = (props) => {
     }
   };
 
+  const handleChangeOptions = (
+    field: string,
+    values: any[],
+    onChange: FormField["onChange"]
+  ) => {
+    dispatch({field: field, value: values});
+    setValue(`${field}` as const, values, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    if (onChange) {
+      onChange(values, data);
+    }
+  };
+
   const getPageTitle = () => {
     if (renderPageTitle) {
       return renderPageTitle(state);
@@ -963,7 +979,6 @@ const Form: React.FC<FormProps> = (props) => {
             row={field.params?.row}
           />
         );
-
       case "transfer_list":
         return (
           <TransferList
@@ -986,7 +1001,6 @@ const Form: React.FC<FormProps> = (props) => {
             }
           />
         );
-
       case "autocomplete":
         return (
           <Autocomplete
@@ -1036,6 +1050,22 @@ const Form: React.FC<FormProps> = (props) => {
             ))}
           </List>
         );
+      case "options":
+        return (
+          <VoOptionsField 
+            name={field.name}
+            items={state[field.name]}
+            onChange={(name: string, value: any) =>
+              runOnChange(
+                handleChangeOptions,
+                name,
+                value,
+                field.onChange
+              )
+            }
+            fields={field.params.fields}
+            />
+        );
 
       case "info":
         return (
@@ -1043,15 +1073,12 @@ const Form: React.FC<FormProps> = (props) => {
             {field.label}
           </Alert>
         );
-
       case "hidden":
         return (
           <input type="hidden" name={field.name} value={state[field.name]} />
         );
-
       case "empty":
         return "";
-
       default:
         return <div></div>;
     }
