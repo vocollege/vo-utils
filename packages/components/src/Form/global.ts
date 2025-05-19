@@ -30,6 +30,7 @@ export interface FormProps extends FormNakedProps {
     created?: string;
     updated?: string;
     deleted?: string;
+    submitted?: string;
     fieldRequired?: string;
   };
   operations: FormOperations;

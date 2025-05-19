@@ -112,7 +112,12 @@ export default function FormToolbar(props: FormToolbarProps) {
           {title}
         </Typography>
       )}
-      <Box sx={(theme: any) => ({ flexGrow: 1 })}></Box>
+      <Box 
+        sx={(theme: any) => ({ 
+          flexGrow: 1,
+          marginLeft: theme.spacing(1.5),
+        })}
+      ></Box>
       <Box
         sx={(theme: any) => ({
           display: "flex",
