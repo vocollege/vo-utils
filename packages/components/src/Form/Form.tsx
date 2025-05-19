@@ -94,18 +94,17 @@ const Form: React.FC<FormProps> = (props) => {
     header,
     refetchQueries,
     autosave,
-    autosaveInterval,
+    autosaveInterval = 2000,
   } = props;
   const classes = useStyles();
   useStylesLayout();
   const params = urlParams || useParams<any>();
   const [currentTab, setTab] = useState(0);
-  const autosaveIntervalId = useRef(null);
+  const autosaveTimeout = useRef(null);
   const saveTypeRef = useRef(null);
   const isMutating = useRef(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
-  const autosaveTimeout = autosaveInterval || 2000;
 
   const {
     handleSubmit,
@@ -126,13 +125,18 @@ const Form: React.FC<FormProps> = (props) => {
   const { isDirty, isValid, errors } = formState;
   const hasErrors = Object.keys(errors).length > 0;
 
+  const clearAutosave = () => {
+    if (autosaveTimeout.current) {
+      clearTimeout(autosaveTimeout.current);
+      autosaveTimeout.current = null;
+    }
+  };
+
   const handleAutosave = () => {
-    isMutating.current = true;
     if (!hasErrors && isDirty) {
         handleSave("autosave");
         forceUpdate();
-        clearTimeout(autosaveIntervalId.current);
-        autosaveIntervalId.current = null;
+        clearAutosave();
     }
   };
 
@@ -141,15 +145,44 @@ const Form: React.FC<FormProps> = (props) => {
     if (!autosave) {
       return;
     }
-    if (autosaveIntervalId.current) {
-      clearTimeout(autosaveIntervalId.current);
-      autosaveIntervalId.current = null;
-    }
-    autosaveIntervalId.current = setTimeout(handleAutosave, autosaveTimeout);
+    clearAutosave();
+    autosaveTimeout.current = setTimeout(handleAutosave, autosaveInterval);
   } 
+  
+  const onMutationUpdate = async (cache, { data: savedData} ) => {
+    if (autosave) {
+      const data = savedData[Object.keys(savedData)[0]];
+      const id = data.id;
+
+      cache.writeQuery({
+        query: operations.update || fakeMutation,
+        variables: { id: id },
+        data: savedData,
+      });
+      
+      await reset(savedData, { keepIsValid: true, keepErrors: true});
+      await trigger();
+    }
+  };
+
+  const onMutationCompleted = (data: any, baseLabel: string) => {
+    let label = baseLabel;
+    if (saveTypeRef.current 
+        && saveTypeRef.current === "submit" 
+        && labels.submitted
+    ) {
+      label = labels.submitted;
+    }
+    handleCompleted(data, label);
+   };
 
   const onSubmit = () => {
-    handleSave("submit");
+    clearAutosave();
+    handleSubmit(() => {
+      handleSave("submit");
+    }, (e)=> {
+      console.error("Form.tsx handleSubmit failed:", e);
+    })();
   };
 
   const enableSaveButton = () => {
@@ -229,6 +262,7 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const handleSave = (saveType?: string) => {
+    isMutating.current = true;
     let variables: { [key: string]: any } = {
       input: getInputValues(),
     };
@@ -251,6 +285,7 @@ const Form: React.FC<FormProps> = (props) => {
     if (onSave) {
       variables = onSave(variables, saveTypeRef.current);
     }
+
     if (!isCreateNew()) {
       variables[primaryField || "id"] = state[primaryField || "id"];
       update({
@@ -1224,40 +1259,17 @@ const Form: React.FC<FormProps> = (props) => {
       client: client || undefined,
       refetchQueries,
       onError: handleError,
-      onCompleted: (data: any) => handleCompleted(data, labels.created),
+      onCompleted: (data: any) => onMutationCompleted(data, labels.created),
     }
   );
 
   const [update, { loading: updateLoading }] = useMutation(
     operations.update || fakeMutation,
     {
-      async update(cache, { data: savedData }) {
-        if (autosave) {
-          const data = savedData[Object.keys(savedData)[0]];
-          const id = data.id;
-
-          cache.writeQuery({
-            query: operations.update || fakeMutation,
-            variables: { id: id },
-            data: savedData,
-          });
-          
-          await reset(savedData, { keepIsValid: true, keepErrors: true});
-          await trigger();
-        }
-      },
+      update: onMutationUpdate,
       client: client || undefined,
       onError: handleError,
-      onCompleted: (data: any) => {
-        let label = labels.updated;
-        if (saveTypeRef.current 
-            && saveTypeRef.current === "submit" 
-            && labels.submitted
-        ) {
-          label = labels.submitted;
-        }
-        handleCompleted(data, label);
-      },
+      onCompleted: (data: any) => onMutationCompleted(data, labels.updated),
       ...(!autosave && {refetchQueries}),
     }
   );
@@ -1285,8 +1297,8 @@ const Form: React.FC<FormProps> = (props) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => {
-      if (autosaveIntervalId.current) {
-        clearTimeout(autosaveIntervalId.current);
+      if (autosaveTimeout.current) {
+        clearTimeout(autosaveTimeout.current);
       }
     };
   }, []);
