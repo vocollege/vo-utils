@@ -13,12 +13,24 @@ import { useTheme } from "@mui/material/styles";
 import { useConfirm } from "material-ui-confirm";
 
 // Custom.
-import { FormToolbarProps } from "./global";
+import { FormToolbarProps, ValueChangeProps } from "./global";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 export default function FormToolbar(props: FormToolbarProps) {
-  const { title, onSave, onSubmit, onCancel, loading, options, className, extraActions } =
-    props;
+  const { 
+    title,
+
+    onSave,
+    onSubmit,
+    onCancel,
+    triggerChange,
+
+    loading,
+    options,
+    className,
+    extraActions,
+  } = props;
+
   const confirm = useConfirm();
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.down("md"));
@@ -56,15 +68,40 @@ export default function FormToolbar(props: FormToolbarProps) {
     return extraActions || showSubmitButton();
   };
 
+  const handleTriggers = (valueChange: any) => {
+    if (triggerChange && valueChange && valueChange.length > 0) {
+      valueChange.forEach((v) => triggerChange(v));
+    }
+  };
+
+  const doSubmit = () => {
+    handleTriggers(options?.submitButton?.triggerValueChange);
+    onSubmit();
+  };
+
   const handleSubmit = () => { 
     if (onSubmit) {
       if (options && options.submitConfirmDescription) {
         confirm({description: options.submitConfirmDescription}).then(()=>{
-          onSubmit();
+          doSubmit();
         }, ()=>{});
       } else {
-        onSubmit();
+        doSubmit();
       }
+    }
+  };
+
+  const handleSave = () => {
+    handleTriggers(options?.saveButton?.triggerValueChange);
+    if (onSave) {
+      onSave();
+    }
+  };
+
+  const handleCancel = (e) => {
+    handleTriggers(options?.cancelButton?.triggerValueChange);
+    if (onCancel) {
+      onCancel(e);
     }
   };
 
@@ -142,7 +179,7 @@ export default function FormToolbar(props: FormToolbarProps) {
                                   "save item",
                                   "success",
                                   "contained",
-                                  onSave,
+                                  handleSave,
                                   SaveIcon,
                )}
         {showCancelButton() && button(options?.cancelButton,
@@ -150,7 +187,7 @@ export default function FormToolbar(props: FormToolbarProps) {
                                   "cancel",
                                   "success",
                                   "outlined",
-                                  onCancel,
+                                  handleCancel,
                                   CloseIcon,
                 )}
       </Box>

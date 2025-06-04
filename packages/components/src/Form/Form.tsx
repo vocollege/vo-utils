@@ -46,6 +46,7 @@ import {
   EntityPickerItem,
   TagsFieldItem,
   FormFieldLocation,
+  ValueChangeProps,
 } from "./global";
 import FormTabs from "./FormTabs";
 import FormViews from "./FormViews";
@@ -103,6 +104,7 @@ const Form: React.FC<FormProps> = (props) => {
   const autosaveTimeout = useRef(null);
   const saveTypeRef = useRef(null);
   const isMutating = useRef(false);
+  const modelExists = useRef(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -173,16 +175,32 @@ const Form: React.FC<FormProps> = (props) => {
     ) {
       label = labels.submitted;
     }
+    if (!modelExists.current) {
+      modelExists.current = true;
+    }
+    console.log("Form.tsx onMutationCompleted data:", data);
+    if (autosave) {
+      const keys = Object.keys(data);
+      const objectKey = keys.find((k) => k.startsWith("update"));
+      if (objectKey) {
+        const model = data[objectKey];
+        if (model.hasOwnProperty("id")) {
+          const id = model["id"];
+          dispatch({ field: "id", value: id });
+          setValue("id" as const, id, {
+            shouldValidate: true,
+            shouldDirty: true,
+          });
+        }
+      }
+    }
     handleCompleted(data, label);
    };
 
   const onSubmit = () => {
     clearAutosave();
-    handleSubmit(() => {
-      handleSave("submit");
-    }, (e)=> {
-      console.error("Form.tsx handleSubmit failed:", e);
-    })();
+    console.log("Form.tsx onSubmit() isMutating:", isMutating.current);
+    handleSave("submit");
   };
 
   const enableSaveButton = () => {
@@ -198,7 +216,7 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const isCreateNew = () => {
-    return params[primaryField || "id"] === createParam;
+    return params[primaryField || "id"] === createParam && isNaN(getValues("id")) && !modelExists.current;
   };
 
   const redirect = (params: { [key: string]: any } = {}) => {
@@ -263,9 +281,22 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleSave = (saveType?: string) => {
     isMutating.current = true;
+
+    // Merge state and react-hook-form(rhf) values
+    // prefer rhf value if different, since it may 
+    // be updated before state
+    let values = getInputValues();
+    for (let [key, value] of Object.entries(getValues())) {
+      if (value === undefined) continue;
+      if (values.hasOwnProperty(key) && values[key] !== value) {
+        values[key] = value;
+      }
+    }
+
     let variables: { [key: string]: any } = {
-      input: getInputValues(),
+      input: values,
     };
+
     if (!saveType) {
       saveType = "save";
     }
@@ -286,6 +317,9 @@ const Form: React.FC<FormProps> = (props) => {
       variables = onSave(variables, saveTypeRef.current);
     }
 
+    const hasId = variables.hasOwnProperty("id");
+    
+    console.log("Form.tsx handleSave isCreateNew():", isCreateNew(), hasId, variables);
     if (!isCreateNew()) {
       variables[primaryField || "id"] = state[primaryField || "id"];
       update({
@@ -1141,15 +1175,27 @@ const Form: React.FC<FormProps> = (props) => {
     return time > 4000 ? time : 4000;
   };
 
+  const handleTriggerChange = (vc: ValueChangeProps) => {
+    const value = vc.getNewValue(getValues(`${vc.name}` as const));
+    dispatch({field: vc.name, value: value});
+    setValue(`${vc.name}` as const, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
   const handleCompleted = async (data: any, message = "") => {
     if (saveTypeRef.current && saveTypeRef.current !== "autosave") {
       toast.success(message, { autoClose: getToastAutoCloseTime(message) });
     }
+
     if (onComplete) {
       onComplete(data, saveTypeRef.current);
     } else if (!autosave) {
       redirect({ refetch: true });
     }
+    console.log("Form.tsx handleCompleted data:",data);
+
     saveTypeRef.current = null;
     setTimeout(() => (isMutating.current = false), 100);
     await trigger();
@@ -1429,6 +1475,7 @@ const Form: React.FC<FormProps> = (props) => {
                 },
               }}
               className={classesProp?.toolbar}
+              triggerChange={handleTriggerChange}
             />
           )}
           {header && (

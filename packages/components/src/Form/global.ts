@@ -183,6 +183,7 @@ export interface FormToolbarProps {
   onSave?: () => void;
   onSubmit?: () => void;
   onCancel?: FormProps["onCancel"];
+  triggerChange?: (props: ValueChangeProps) => void;
   loading?: boolean;
   options?: {
     saveButton?: FormToolbarButton;
@@ -199,6 +200,12 @@ export interface FormToolbarButton {
   disabled?: boolean;
   hideLabel?: boolean;
   label?: string;
+  triggerValueChange?: ValueChangeProps[]; 
+}
+
+export interface ValueChangeProps {
+  name: string;
+  getNewValue: (oldValue: any) => any;
 }
 
 export interface FormFieldContentListProps {
