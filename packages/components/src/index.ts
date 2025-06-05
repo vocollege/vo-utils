@@ -27,3 +27,4 @@ export * from "./SimpleTable";
 export { default as VoTextArea } from "./VoTextArea";
 export * from "./Acl";
 export { default as VoHelp } from "./VoHelp";
+export * from "./SendResetEmailButton";

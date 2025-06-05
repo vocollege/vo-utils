@@ -25,7 +25,8 @@
       "professionalTitle": "Yrkestitel",
       "notifyUser": "Notifiera användaren om att kontot har skapats",
       "gdpr": "Jag samtycker till att VO-College lagrar mina personuppgifter",
-      "gdprIsRequired": "Du behöver godkänna att vi hanterar dina personuppgifter"
+      "gdprIsRequired": "Du behöver godkänna att vi hanterar dina personuppgifter",
+      "sendResetEmail": "Skicka välkomst mail"
     },
     "messages": {
       "userCreated": "Användaren har skapats.",
