@@ -26,7 +26,8 @@
       "notifyUser": "Notifiera användaren om att kontot har skapats",
       "gdpr": "Jag samtycker till att VO-College lagrar mina personuppgifter",
       "gdprIsRequired": "Du behöver godkänna att vi hanterar dina personuppgifter",
-      "sendResetEmail": "Skicka välkomst mail"
+      "sendResetEmail": "Återställ lösenord",
+      "confirmResetEmail": "Är du säker på att du vill skicka ett lösenordåterställnings-mail till användaren med id ::uid igen?"
     },
     "messages": {
       "userCreated": "Användaren har skapats.",
@@ -34,7 +35,8 @@
       "accountUpdated": "Kontot har uppdaterats",
       "userDeleted": "Användaren har raderats",
       "statusHelper": "Detta avgör om en användare syns utåt, exempelvis i köer.",
-      "readMoreDataPolicy": "Läs mer i vår dataskyddspolicy"
+      "readMoreDataPolicy": "Läs mer i vår dataskyddspolicy",
+      "resetEmailSent": "Länk till lösenordsåterställning ska skickas till användaren"
     },
     "settings": [
       {
