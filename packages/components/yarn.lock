@@ -753,10 +753,10 @@
 "@virtuoso.dev/urx@^0.2.12", "@virtuoso.dev/urx@^0.2.13":
   version "0.2.13"
 
-"@vocollege/app@^0.0.148":
-  version "0.0.148"
-  resolved "https://registry.npmjs.org/@vocollege/app/-/app-0.0.148.tgz"
-  integrity sha512-AfBijDGVwou6uZadgoEQnKSayuyZRtfVVJaRxpKmAVrqWbvhdYAW+M8NaCxswbYdTWgOsyNVza63KfqDxSmAzQ==
+"@vocollege/app@^0.0.150":
+  version "0.0.150"
+  resolved "https://registry.npmjs.org/@vocollege/app/-/app-0.0.150.tgz"
+  integrity sha512-Max51uaxbCsfvqKav8kSAa0y8sVj/rIVvgMXDtksnaJFXVQBV+3DiDXW/ksfxfsqDHDzEj5fMCXlDL7lEaMikQ==
 
 "@vocollege/theme@^0.0.31":
   version "0.0.31"
