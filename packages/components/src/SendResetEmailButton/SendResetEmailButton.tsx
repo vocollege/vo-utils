@@ -1,16 +1,6 @@
-/*
- *  @TODO
- *  Make a button to send a new welcome email to the provided user,
- *  use the necessary Auth checks to make sure the current user is 
- *  allowed to make this request.
- *  Take into account which system (validig/other) is using the button 
- *  if necessary.
- *  Add a confirmation dialog for when pressing the button.
- * */
-
 import React from "react";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import Tooltip, { TooltipProps } from "@mui/material/Tooltip";
 import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
 import { useConfirm } from "material-ui-confirm";
 import { ApolloClient, useMutation } from "@apollo/client";
@@ -24,13 +14,17 @@ export interface SendResetEmailButtonProps {
   userId: any;
   client?: ApolloClient<object>;
   onClick?: (userId: any) => void;
+  iconButtonProps?: IconButtonProps;
+  tooltipProps?: TooltipProps;
 }
 
 const SendResetEmailButton: React.FC<SendResetEmailButtonProps> = (props) => {
   const { 
     userId, 
     onClick,
-    client
+    client,
+    iconButtonProps,
+    tooltipProps
   } = props;
 
   const confirm = useConfirm();
@@ -76,7 +70,7 @@ const SendResetEmailButton: React.FC<SendResetEmailButtonProps> = (props) => {
     return (<></>);
   }
   return (
-    <Tooltip title={label} >
+    <Tooltip title={label} {...tooltipProps}>
       <IconButton
         size="large"
         onClick={handleClick}
@@ -86,6 +80,7 @@ const SendResetEmailButton: React.FC<SendResetEmailButtonProps> = (props) => {
           },
         })}
         disabled={loading}
+        {...iconButtonProps}
         >
         <ForwardToInboxIcon/>
       </IconButton>
