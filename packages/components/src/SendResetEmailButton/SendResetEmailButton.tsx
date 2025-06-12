@@ -74,13 +74,38 @@ const SendResetEmailButton: React.FC<SendResetEmailButtonProps> = (props) => {
       <IconButton
         size="large"
         onClick={handleClick}
-        sx={(theme: any) => ({
-          "&:hover": {
-            color: loading ? "grey.500" :"primary.main",
-          },
-        })}
         disabled={loading}
         {...iconButtonProps}
+        sx={(theme: any) => {
+          const baseSx = {
+            "&:hover": {
+              color: loading ? "grey.500":"primary.main",
+            },
+          };
+
+          if (!iconButtonProps?.sx) {
+            return baseSx;
+          }
+          
+          if (typeof iconButtonProps.sx === 'function') {
+            return {
+              ...iconButtonProps.sx(theme),
+              ...baseSx,
+            };
+          }
+
+          if (Array.isArray(iconButtonProps.sx)) {
+            return {
+              ...Object.assign({}, ...iconButtonProps.sx),
+              ...baseSx,
+            };
+          }
+
+          return {
+            ...(iconButtonProps.sx || {}),
+            ...baseSx,
+          };
+        }}
         >
         <ForwardToInboxIcon/>
       </IconButton>

@@ -1,6 +1,6 @@
 {
   "name": "@vocollege/components",
-  "version": "0.0.190",
+  "version": "0.0.191",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
