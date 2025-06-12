@@ -58,3 +58,11 @@ export const DELETE_USER = gql`
     }
   }
 `;
+
+export const SEND_RESET_EMAIL_TO_USER = gql`
+mutation SendResetEmailToUser($id: ID!) {
+     sendResetEmailToUser(id: $id) {
+       id
+     }
+  }
+`;
