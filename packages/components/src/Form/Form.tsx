@@ -72,7 +72,7 @@ const Form: React.FC<FormProps> = (props) => {
     tabs,
     labels,
     operations,
-    variables,
+    variables: additionalQueryVariables,
     paths,
     initialState,
     pageTitleField,
@@ -107,6 +107,7 @@ const Form: React.FC<FormProps> = (props) => {
   const modelExists = useRef(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
+  
 
   const {
     handleSubmit,
@@ -127,6 +128,7 @@ const Form: React.FC<FormProps> = (props) => {
   const { isDirty, isValid, errors } = formState;
   const hasErrors = Object.keys(errors).length > 0;
 
+  console.log("Form.tsx state:", state, "\nvariables:", additionalQueryVariables, "\ninitialState:", initialState, "\ninitialData:", initialData, "getValues():", getValues());
   const clearAutosave = () => {
     if (autosaveTimeout.current) {
       clearTimeout(autosaveTimeout.current);
@@ -216,7 +218,14 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const isCreateNew = () => {
-    return params[primaryField || "id"] === createParam && isNaN(getValues("id")) && !modelExists.current;
+    const paramIsCreate = params[primaryField || "id"] === createParam;
+    const id = getValues("id");
+    const hasId = !isNaN(id) && id !== 0;
+    const modelNonExistant = !modelExists.current;
+    const shouldCreateNewModel = paramIsCreate && !hasId && modelNonExistant;
+
+    console.log("Form.tsx isCreateNew paramIsCreate:", paramIsCreate,"hasId:",hasId,"modelNonExistant:", modelNonExistant, "id:", id);
+    return shouldCreateNewModel;
   };
 
   const redirect = (params: { [key: string]: any } = {}) => {
@@ -356,11 +365,11 @@ const Form: React.FC<FormProps> = (props) => {
   ) => {
     const { name, value } = e.target;
     let newValue: any = value;
-    clearTimeout(typingTimer[name]);
     dispatch({ field: name, value: newValue });
     if (onChange) {
       onChange(newValue, data);
     }
+    clearTimeout(typingTimer[name]);
     typingTimer[name] = window.setTimeout(async () => {
       setValue(`${name}` as const, newValue, {
         shouldValidate: true,
@@ -1230,7 +1239,8 @@ const Form: React.FC<FormProps> = (props) => {
       : operations.get;
   };
 
-  const setData = async (data: any) => {
+  const setData = async (data: any, useDispatch = true) => {
+    console.log("Form.tsx setData(data) data:", data, "Object.keys(initialState):", Object.keys(initialState));
     let mergedData: { [key: string]: any } = {};
     Object.keys(initialState)?.map((field: any) => {
       if (field.indexOf(".") > -1) {
@@ -1259,9 +1269,11 @@ const Form: React.FC<FormProps> = (props) => {
             : initialState[field];
       }
     });
-    dispatch({
-      item: mergedData,
-    });
+    if (useDispatch) {
+      dispatch({
+        item: mergedData,
+      });
+    }
     await reset(mergedData, { keepIsValid: true, keepErrors: true});
     await trigger();
     if (onDataChange) {
@@ -1269,14 +1281,14 @@ const Form: React.FC<FormProps> = (props) => {
     }
   };
 
-  const getVariables = () => {
+  const getQueryVariables = () => {
     let queryVariables = {
       [primaryField || "id"]: params[primaryField || "id"],
     };
-    if (variables) {
+    if (additionalQueryVariables) {
       queryVariables = {
         ...queryVariables,
-        ...variables,
+        ...additionalQueryVariables,
       };
     }
     return queryVariables;
@@ -1322,6 +1334,7 @@ const Form: React.FC<FormProps> = (props) => {
 
   // Effects.
   useEffect(() => {
+    console.log("Form.tsx useEffect ([]) initialData:", initialData, "state:", state);
     let callLoadQuery = !queryCalled;
     if (isCreateNew()) {
       if (operations) {
@@ -1332,7 +1345,7 @@ const Form: React.FC<FormProps> = (props) => {
     if (callLoadQuery) {
       if (!initialData) {
         loadQuery({
-          variables: getVariables(),
+          variables: getQueryVariables(),
         });
       }
     }
@@ -1341,6 +1354,11 @@ const Form: React.FC<FormProps> = (props) => {
       setData(initialData);
     }
 
+    if (initialState) {
+      let iData = {};
+      iData[operations.category] = initialState;
+      setData(iData, false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => {
       if (autosaveTimeout.current) {
@@ -1350,6 +1368,7 @@ const Form: React.FC<FormProps> = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log("Form.tsx useEffect ()");
     if (isDirty) {
       window.onbeforeunload = () => true;
     } else {
@@ -1369,6 +1388,7 @@ const Form: React.FC<FormProps> = (props) => {
   }, [watchForm]);
 
   useEffect(() => {
+    console.log("Form.tsx useEffect ([data]) data:", data);
     if (data && data[operations.category] && saveTypeRef.current !== "autosave") {
       setData(data);
     }
@@ -1394,7 +1414,7 @@ const Form: React.FC<FormProps> = (props) => {
   useEffect(() => {
     if (loadQueryOnParamsChange && !isCreateNew()) {
       loadQuery({
-        variables: getVariables(),
+        variables: getQueryVariables(),
       });
     }
   }, [params]);
@@ -1454,7 +1474,9 @@ const Form: React.FC<FormProps> = (props) => {
                   toast.success(message, { autoClose: getToastAutoCloseTime(message) });
                   return;
                 } else {
+                  console.log("Form.tsx FormToolbar->onSave() values:", getValues());
                   await handleSubmit(() => {
+                    console.log("Form.tsx submitting handleSave('save')");
                     handleSave("save");
                   }, (e) => {
                     console.error("Form.tsx handleSubmit failed:", e, "values:", getValues());
