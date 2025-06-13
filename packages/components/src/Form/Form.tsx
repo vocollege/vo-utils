@@ -128,7 +128,6 @@ const Form: React.FC<FormProps> = (props) => {
   const { isDirty, isValid, errors } = formState;
   const hasErrors = Object.keys(errors).length > 0;
 
-  console.log("Form.tsx state:", state, "\nvariables:", additionalQueryVariables, "\ninitialState:", initialState, "\ninitialData:", initialData, "getValues():", getValues());
   const clearAutosave = () => {
     if (autosaveTimeout.current) {
       clearTimeout(autosaveTimeout.current);
@@ -180,7 +179,6 @@ const Form: React.FC<FormProps> = (props) => {
     if (!modelExists.current) {
       modelExists.current = true;
     }
-    console.log("Form.tsx onMutationCompleted data:", data);
     if (autosave) {
       const keys = Object.keys(data);
       const objectKey = keys.find((k) => k.startsWith("update"));
@@ -201,7 +199,6 @@ const Form: React.FC<FormProps> = (props) => {
 
   const onSubmit = () => {
     clearAutosave();
-    console.log("Form.tsx onSubmit() isMutating:", isMutating.current);
     handleSave("submit");
   };
 
@@ -224,7 +221,6 @@ const Form: React.FC<FormProps> = (props) => {
     const modelNonExistant = !modelExists.current;
     const shouldCreateNewModel = paramIsCreate && !hasId && modelNonExistant;
 
-    console.log("Form.tsx isCreateNew paramIsCreate:", paramIsCreate,"hasId:",hasId,"modelNonExistant:", modelNonExistant, "id:", id);
     return shouldCreateNewModel;
   };
 
@@ -328,7 +324,6 @@ const Form: React.FC<FormProps> = (props) => {
 
     const hasId = variables.hasOwnProperty("id");
     
-    console.log("Form.tsx handleSave isCreateNew():", isCreateNew(), hasId, variables);
     if (!isCreateNew()) {
       variables[primaryField || "id"] = state[primaryField || "id"];
       update({
@@ -1203,7 +1198,6 @@ const Form: React.FC<FormProps> = (props) => {
     } else if (!autosave) {
       redirect({ refetch: true });
     }
-    console.log("Form.tsx handleCompleted data:",data);
 
     saveTypeRef.current = null;
     setTimeout(() => (isMutating.current = false), 100);
@@ -1240,7 +1234,6 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const setData = async (data: any, useDispatch = true) => {
-    console.log("Form.tsx setData(data) data:", data, "Object.keys(initialState):", Object.keys(initialState));
     let mergedData: { [key: string]: any } = {};
     Object.keys(initialState)?.map((field: any) => {
       if (field.indexOf(".") > -1) {
@@ -1334,7 +1327,6 @@ const Form: React.FC<FormProps> = (props) => {
 
   // Effects.
   useEffect(() => {
-    console.log("Form.tsx useEffect ([]) initialData:", initialData, "state:", state);
     let callLoadQuery = !queryCalled;
     if (isCreateNew()) {
       if (operations) {
@@ -1368,7 +1360,6 @@ const Form: React.FC<FormProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("Form.tsx useEffect ()");
     if (isDirty) {
       window.onbeforeunload = () => true;
     } else {
@@ -1388,7 +1379,6 @@ const Form: React.FC<FormProps> = (props) => {
   }, [watchForm]);
 
   useEffect(() => {
-    console.log("Form.tsx useEffect ([data]) data:", data);
     if (data && data[operations.category] && saveTypeRef.current !== "autosave") {
       setData(data);
     }
@@ -1474,9 +1464,7 @@ const Form: React.FC<FormProps> = (props) => {
                   toast.success(message, { autoClose: getToastAutoCloseTime(message) });
                   return;
                 } else {
-                  console.log("Form.tsx FormToolbar->onSave() values:", getValues());
                   await handleSubmit(() => {
-                    console.log("Form.tsx submitting handleSave('save')");
                     handleSave("save");
                   }, (e) => {
                     console.error("Form.tsx handleSubmit failed:", e, "values:", getValues());
