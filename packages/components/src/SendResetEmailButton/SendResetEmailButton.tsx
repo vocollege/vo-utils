@@ -78,9 +78,8 @@ const SendResetEmailButton: React.FC<SendResetEmailButtonProps> = (props) => {
         {...iconButtonProps}
         sx={(theme: any) => {
           const baseSx = {
-            "&:hover": {
-              color: loading ? "grey.500":"primary.main",
-            },
+            //"&:hover": {color: loading ? "grey.500":"primary.main"},
+            padding: theme.spacing(0.5),
           };
 
           if (!iconButtonProps?.sx) {

@@ -31,7 +31,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     actionButton: {
       marginRight: theme.spacing(2),
-      padding: 0,
+      padding: theme.spacing(0.5),
       "&:last-child": {
         marginRight: 0,
       },
