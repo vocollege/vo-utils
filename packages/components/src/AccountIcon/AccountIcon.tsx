@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { styled } from "@mui/material/styles";
 import Button, { ButtonProps } from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import PersonIcon from "@mui/icons-material/Person";
@@ -8,16 +7,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import clsx from "clsx";
-// import useMediaQuery from "@mui/material/useMediaQuery";
-// import { useTheme } from "@mui/material/styles";
-// import { toast } from "react-toastify";
 import { ApolloClient } from "@apollo/client";
 
 // Custom.
 import VoAuth from "@vocollege/app/dist/modules/VoAuth";
 import VoRouter from "@vocollege/app/dist/modules/VoRouter";
 import VoConfig from "@vocollege/app/dist/modules/VoConfig";
-// import VoApi from "@vocollege/app/dist/modules/VoApi";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import {
   encodeQueryData,
@@ -27,7 +22,6 @@ import { GeneralObject } from "@vocollege/app/dist/global";
 import { useStyles } from "./styles";
 import Session, { CallParams } from "./Session";
 import AccountDialog from "./AccountDialog";
-// import Cookies from "js-cookie";
 
 export interface AccountIconProps {
   className?: string;

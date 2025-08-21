@@ -589,13 +589,19 @@ const Form: React.FC<FormProps> = (props) => {
     values: any[],
     onChange: FormField["onChange"]
   ) => {
-    dispatch({field: field, value: values});
+    let newValues = values?.map((o) => {
+      return {
+        ...o,
+        value: JSON.stringify(o.value),
+      };
+    });
+    dispatch({field: field, value: newValues});
     setValue(`${field}` as const, values, {
       shouldValidate: true,
       shouldDirty: true,
     });
     if (onChange) {
-      onChange(values, data);
+      onChange(newValues, data);
     }
   };
 

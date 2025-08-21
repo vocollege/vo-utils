@@ -96,14 +96,6 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     accountDialogForm: {},
     accountDialogToolbar: {
-      // backgroundColor: theme.palette.common.white,
-      // bottom: 0,
-      // // boxShadow: theme.shadows[10],
-      // left: 0,
-      // position: "absolute",
-      // right: 0,
-      // zIndex: 1,
-
       backgroundColor: theme.palette.background.paper,
       borderRadius: theme.shape.borderRadius,
       boxShadow: theme.shadows[10],
@@ -113,23 +105,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     accountDialogFormTabs: {
       marginTop: 0,
     },
-    // accountDialogPaper: {
-    //   width: "auto",
-    // },
-    // accountDialogPaper: {
-    //   boxShadow: "none",
-    //   marginBottom: theme.spacing(8),
-    //   position: "relative",
-    //   zIndex: 0,
-    // },
-    personIcon: {
-      // fontSize: "1.7142857142857144rem !important",
-    },
-    personIconBig: {
-      //   fontSize: `${theme.typography.pxToRem(24)} !important`,
-      //   [theme.breakpoints.up("lg")]: {
-      //     fontSize: `${theme.typography.pxToRem(31)} !important`,
-      //   },
-    },
+    personIcon: {},
+    personIconBig: {},
   })
 );

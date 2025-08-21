@@ -3,29 +3,25 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-// import Box from "@mui/material/Box";
 import { useForm, Controller } from "react-hook-form";
-// import { gql } from "@apollo/client";
 import CheckIcon from "@mui/icons-material/Check";
-// import CloseIcon from "@mui/icons-material/Close";
-// import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Alert from "@mui/material/Alert";
 
 // Custom.
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
+import VoAuth from "@vocollege/app/dist/modules/VoAuth";
 import { GeneralObject } from "@vocollege/app/dist/global";
 import { useStyles } from "./styles";
 import FileField from "../../Form/fields/FileField";
 import { FileManagerFolderElement } from "../../FileManager/global";
+import VoOptionsField from "../../VoOptionsField/VoOptionsField";
 import {
   CREATE_FILE,
   UPDATE_FILE,
   DELETE_FILE,
 } from "@vocollege/app/dist/modules/VoApi/graphql";
-// import VoAuth from "@vocollege/app/dist/modules/VoAuth";
-// import VoLoader from "../../VoLoader";
 import VoTextField from "@/VoTextField";
 import { regexPatterns, reducer } from "@vocollege/app/dist/modules/VoHelpers";
 import { AccountFormProps } from "./global";
@@ -51,6 +47,9 @@ export const initialState = {
   password: "",
   password_current: "",
   password_repeat: "",
+  validig: {
+    options: [],
+  },
 };
 
 let typingTimer: GeneralObject = {};
@@ -136,6 +135,29 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
     });
   };
 
+  const handleOptionChange = (name: string, value: any) => {
+    dispatch({
+      key: 'validig',
+      values: {
+        ...state.validig,
+        options: value.map((o) => {
+          let v = o.value;
+          if (typeof v !== "string") {
+            v == JSON.stringify(v);
+          }
+          return {
+            ...o,
+            value: v,
+          };
+        }),
+      },
+    });
+    setValue(`validig.${name}` as const, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
   const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
   };
@@ -181,6 +203,9 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
           <Tab label={I18n.get.misc.account} {...a11yProps(0)} />
           <Tab label={I18n.get.user.labels.personalData} {...a11yProps(1)} />
           <Tab label={I18n.get.user.labels.password} {...a11yProps(2)} />
+          {VoAuth.currentUser?.validig && (
+            <Tab label={I18n.get.user.labels.notifications} {...a11yProps(3)} />
+          )}
         </Tabs>
       </div>
       <TabPanel value={tab} index={0}>
@@ -256,9 +281,6 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
             <Controller
               name="name"
               control={control}
-              // rules={{
-              //   required: I18n.get.form.errors.required,
-              // }}
               render={({ field }) => (
                 <VoTextField
                   {...field}
@@ -659,11 +681,6 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                       I18n.get.form.errors.passwordNotMatch
                     );
                   },
-
-                  //   match: {
-                  //     field: "password",
-                  //     message: I18n.get.form.errors.passwordNotMatch,
-                  //   },
                 },
               }}
               render={({ field }) => (
@@ -687,6 +704,59 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
           </Grid>
         </Grid>
       </TabPanel>
+      {VoAuth.currentUser?.validig && (
+      <TabPanel value={tab} index={3}> 
+        <Controller
+          name="options"
+          control={control}
+          render={({ field }) => (
+            <VoOptionsField 
+              name="options"
+              onChange={handleOptionChange}
+              items={state['validig']['options']}
+              fields={[
+                {
+                  name: "notificationSelection",
+                  type: "notification",
+                  defaultValue: "all",
+                  label: I18n.get.user.options.notificationSelection,
+                  values: [
+                    { 
+                      value: "all",
+                      label: I18n.get.user.notifications.all,
+                    },
+                    ...(VoAuth.isOnlyValidigCandidate ? [] : [{
+                      value: "candidate",
+                      label: I18n.get.user.notifications.candidate,
+                    }]),
+                    {
+                      value: "none",
+                      label: I18n.get.user.notifications.none,
+                    },
+                  ],
+                  inputType: "radio",
+                  grid: {
+                    xs: 12,
+                    sm: 6,
+                  },
+                },
+                {
+                  name: "notificationDisableDailyMail",
+                  type: "notification",
+                  defaultValue: false,
+                  label: I18n.get.user.options.notificationDisableDailyMail,
+                  inputType: "switch",
+                  grid: {
+                    xs: 12,
+                    sm: 6,
+                  },
+                }
+              ]}
+            />
+          )}
+        />
+      </TabPanel>)}
+
     </div>
   );
 };

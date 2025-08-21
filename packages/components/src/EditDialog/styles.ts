@@ -5,10 +5,6 @@ export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       "&$noBackdrop": {
-        // bottom: "auto",
-        // left: "auto",
-        // right: "auto",
-        // top: "auto",
       },
     },
     titleRoot: {
@@ -42,18 +38,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       padding: `${theme.spacing(2)} ${theme.spacing(3)}`,
     },
     loading: {},
-    // buttonConfirm: {
-    //   position: "relative",
-    // },
-    // buttonConfirmLabel: {},
-    // loading: {
-    //   "& $buttonConfirmLabel": {
-    //     opacity: 0
-    //   }
-    // },
-    // buttonCreateLoading: {
-    //   position: "absolute"
-    // }
     draggable: {},
     noBackdrop: {},
     extraActions: {

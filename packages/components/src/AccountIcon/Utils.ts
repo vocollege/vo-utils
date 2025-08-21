@@ -26,7 +26,6 @@ class Utils {
         (resp: MessageEvent) => {
           if (resp.data.action === params.action && resp.data.__seq == seq) {
             resolve(resp.data);
-            // window.removeEventListener("message", this);
           } else {
             resolve(false);
           }
@@ -40,37 +39,7 @@ class Utils {
     });
   }
 
-  messageHandler(data: any, promise: { [key: string]: any }) {
-    // if (data.action === params.action && resp.data.__seq == seq) {
-    //   resolve(resp.data);
-    //   // window.removeEventListener("message", this);
-    // }
-    // if (params.action === params.action && params.__seq == seq) {
-    //   promise.resolve(resp.data);
-    // } else {
-    //   promise.reject(false);
-    // }
-    // const { action, key, value } = event.data;
-    // switch (action) {
-    //   case "checkAbility":
-    //     console.log("Utils.ts messageHandler");
-    //     console.log("action", action);
-    //     console.log("value", value);
-    //     break;
-    // }
-    // (resp: MessageEvent) => {
-    //     //   console.log("resp.data.action", resp.data.action);
-    //     //   if (resp && resp.data && resp.data.__seq && resp.data.__seq == seq) {
-    //     //     // window.removeEventListener("message", eventRef);
-    //     //     // resolve(resp.data);
-    //     //   }
-    //     if (resp.data.action === params.action && resp.data.__seq == seq) {
-    //       resolve(resp.data);
-    //     } else {
-    //       reject(false);
-    //     }
-    //   },
-  }
+  messageHandler(data: any, promise: { [key: string]: any }) {}
 }
 
 export default new Utils();
