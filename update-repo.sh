@@ -18,6 +18,6 @@ npm remove --force @vocollege/components
 npm remove --force @vocollege/theme
 
 echo "Reinstalling @vocollege packages"
-npm install --force @vocollege/app
 npm install --force @vocollege/components
 npm install --force @vocollege/theme
+npm install --force @vocollege/app
