@@ -26,6 +26,12 @@ export const GET_USERS_FIELDS = gql`
     }
     validig {
       id
+      options {
+        id
+        name
+        type
+        value
+      }
     }
   }
 `;
@@ -77,9 +83,16 @@ export const GET_USER = gql`
       }
       validig {
         id
+        options {
+          id
+          name
+          type
+          value
+        }
       }
       apps
       settings
+      
     }
   }
 `;
@@ -191,6 +204,13 @@ export const GET_ACCOUNT = gql`
         filesize
         filetype
         url
+      }
+      validig {
+        options {
+          name
+          type
+          value
+        }
       }
     }
     userSettings {

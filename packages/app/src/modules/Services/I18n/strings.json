@@ -24,6 +24,7 @@
       "electronicReference": "Elektronisk referens",
       "professionalTitle": "Yrkestitel",
       "notifyUser": "Notifiera användaren om att kontot har skapats",
+      "notifications": "Notiser",
       "gdpr": "Jag samtycker till att VO-College lagrar mina personuppgifter",
       "gdprIsRequired": "Du behöver godkänna att vi hanterar dina personuppgifter",
       "sendResetEmail": "Återställ lösenord",
@@ -43,7 +44,18 @@
         "name": "excludeFromAutomaticDeletion",
         "label": "Uteslut denna användare från automatisk radering"
       }
-    ]
+    ],
+    "options": {
+      "disableAllNotifications": "Stäng av alla notiser",
+      "onlyValedictorianNotifications": "Få endast notiser från validander",
+      "notificationSelection": "Val av notiser",
+      "notificationDisableDailyMail": "Avstå från dagliga mailutskick"
+    },
+    "notifications": {
+      "all": "Ta emot alla notiser",
+      "candidate": "Få endast notiser från validander",
+      "none": "Stäng av alla notiser"
+    }
   },
   "acl": {
     "label": "ACL",

@@ -47,6 +47,14 @@ export const UPDATE_USER = gql`
       }
       apps
       settings
+      validig {
+        options {
+          id
+          name
+          type
+          value
+        }
+      }
     }
   }
 `;

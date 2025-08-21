@@ -234,6 +234,12 @@ class VoAuth extends VoBase {
   get currentUser() {
     return this.user;
   }
+  get isOnlyValidigCandidate() {
+    if (this.user?.validig) {
+      return this.user?.roles?.length == 1 && this.user?.roles.find((r: any) => r.name ==="candidate");
+    }
+    return false;
+  }
 
   getToken(): VoTokenType | void {
     try {
