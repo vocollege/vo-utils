@@ -283,19 +283,12 @@ export const parseState = (state: any, initialState: any) => {
   return newState;
 };
 
-// This method is copied from
-// https://stackoverflow.com/questions/6393943/convert-javascript-string-in-dot-notation-into-an-object-reference
-//
-// @TODO Maybe this entire logic can be replaced by Array.reduce(),
-// something like this:
-// let data = is.split(".").reduce((o: any, i) => o && o[i], pbj);
-// data = value;
-//
-export const changeObj = (obj: any, is: any, value: any): {} => {
-  if (typeof is == "string") return changeObj(obj, is.split("."), value);
-  else if (is.length == 1 && value !== undefined) return (obj[is[0]] = value);
-  else if (is.length == 0) return obj;
-  else return changeObj(obj[is[0]], is.slice(1), value);
+export const changeObj = (obj: any, key: string, value: any): {} => {
+  let keys = key.split(".");
+  return keys.reduce((acc, v, i) => {
+    if (i == keys.length -1) acc[v] = value; 
+    return acc[v];
+  }, obj);
 };
 
 export const reducer = (state: any, action: any) => {
@@ -313,11 +306,8 @@ export const reducer = (state: any, action: any) => {
     }
     return { ...state, loading: newValues };
   }
-  if (key.indexOf(".") > -1) {
-    changeObj(state, key, values);
-    return { ...state };
-  }
-  return { ...state, [key]: values };
+  changeObj(state, key, values);
+  return { ...state };
 };
 
 export const getGroupLogotype = (
@@ -334,17 +324,6 @@ export const getGroupLogotype = (
   }
   return null;
 };
-
-// export const makeId = (length = 10) => {
-//   let result = "";
-//   let characters =
-//     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-//   let charactersLength = characters.length;
-//   for (var i = 0; i < length; i++) {
-//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-//   }
-//   return result;
-// };
 
 export const getObjValue = (obj: any, ...props: string[]): any => {
   return (
