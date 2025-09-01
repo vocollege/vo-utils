@@ -1124,7 +1124,7 @@
       "courseMomentSaved": "Utbildningen har sparats",
       "courseMomentDeleted": "Utbildningen har raderats",
       "stakeholdersExplanation": "Intressenter är användare som kommer att få tillgång till alla diplom som kopplas till denna utbildning.",
-      "noVoOrderer": "Om utbildningen genomförs för målgruppen som är utanför VO-College (lokalt eller regionalt) en administrationsavgift på 3000 kr tas av VO-College",
+      "noVoOrderer": "Om utbildningen genomförs för målgruppen som är utanför VO-College (lokalt eller regionalt) en administrationsavgift på 2000 kr tas av VO-College. Om utbildningen genomförs för målgruppen i en annan bransch är vård och omsorg en administrationsavgift på 3000 kr tas av VO-College",
       "billingAddressInfo": [
         "Organisation, organisationsnummer",
         "Faktureringsaddress",
