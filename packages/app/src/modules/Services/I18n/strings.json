@@ -800,6 +800,8 @@
     "notes": "Anteckningar",
     "notVoCollege": "Ej VO-College",
     "noLocalCollege": "Inget Lokalt College",
+    "noEducator": "Ingen Utbildare",
+    "noRegion": "Ingen Region",
     "year": "År",
     "text": "Text",
     "college": "VO-College",
@@ -1124,7 +1126,7 @@
       "courseMomentSaved": "Utbildningen har sparats",
       "courseMomentDeleted": "Utbildningen har raderats",
       "stakeholdersExplanation": "Intressenter är användare som kommer att få tillgång till alla diplom som kopplas till denna utbildning.",
-      "noVoOrderer": "Om utbildningen genomförs för målgruppen som är utanför VO-College (lokalt eller regionalt) en administrationsavgift på 2000 kr tas av VO-College. Om utbildningen genomförs för målgruppen i en annan bransch är vård och omsorg en administrationsavgift på 3000 kr tas av VO-College",
+      "noVoOrderer": "Om utbildningen riktar sig till en målgrupp inom vård och omsorg och hälso- och sjukvård, men arbetsplatsen ligger utanför VO-College (lokalt eller regionalt), tas en administrationsavgift på 2 000 kr ut. För utbildningar som vänder sig till målgrupper i andra branscher än vård och omsorg och hälso- och sjukvård tas en administrationsavgift på 3 000 kr ut.",
       "billingAddressInfo": [
         "Organisation, organisationsnummer",
         "Faktureringsaddress",

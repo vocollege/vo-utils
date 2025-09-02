@@ -242,6 +242,7 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const getInputValues = (customCategory: null | string = null) => {
+    const formValues = getValues();
     const values: { [key: string]: any } = {};
     tabs.forEach((tab: FormTabProps) => {
       tab.fields
@@ -257,6 +258,7 @@ const Form: React.FC<FormProps> = (props) => {
             let fieldParts = field.name.split(".");
             fieldName = fieldParts[1];
           }
+
           let value = state[field.name];
           if (state[field.name] && field.type === "entity_field") {
             value = {
@@ -264,11 +266,12 @@ const Form: React.FC<FormProps> = (props) => {
               type: state[field.name].type || "",
             };
           }
+
           values[fieldName] = value;
         });
     });
 
-    console.log("values", values);
+    console.log("getValues()", getValues());
 
     return values;
   };
@@ -294,12 +297,16 @@ const Form: React.FC<FormProps> = (props) => {
     // prefer rhf value if different, since it may
     // be updated before state
     let values = getInputValues();
-    for (let [key, value] of Object.entries(getValues())) {
-      if (value === undefined) continue;
-      if (values.hasOwnProperty(key) && values[key] !== value) {
-        values[key] = value;
-      }
-    }
+
+    // @note This logic overrides the values from getInputValues() (state) with values
+    // from react-hook-form, which causes already "cleaned up" values (ex from "entity_field") to be overridden.
+    // Look at VC-445
+    // for (let [key, value] of Object.entries(getValues())) {
+    //   if (value === undefined) continue;
+    //   if (values.hasOwnProperty(key) && values[key] !== value) {
+    //     values[key] = value;
+    //   }
+    // }
 
     let variables: { [key: string]: any } = {
       input: values,
