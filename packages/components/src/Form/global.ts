@@ -69,7 +69,7 @@ export interface FormProps extends FormNakedProps {
   header?: React.ReactNode;
   refetchQueries?: MutationHookOptions["refetchQueries"];
   autosave?: boolean;
-  autosaveInterval?: number; 
+  autosaveInterval?: number;
 }
 
 export interface FormNakedProps {
@@ -200,7 +200,7 @@ export interface FormToolbarButton {
   disabled?: boolean;
   hideLabel?: boolean;
   label?: string;
-  triggerValueChange?: ValueChangeProps[]; 
+  triggerValueChange?: ValueChangeProps[];
 }
 
 export interface ValueChangeProps {
@@ -228,6 +228,8 @@ export interface FormFieldContentListProps {
   renderActionButtons?: (item: FormFieldContentListItem) => React.ReactElement;
   hideType?: boolean;
   renderExtraDetails?: (item: FormFieldContentListItem) => React.ReactElement;
+  hideFilter?: boolean;
+  filterLabel?: React.ReactNode;
 }
 
 export interface FormFieldContentListCustomAction {
@@ -241,6 +243,7 @@ export type FormFieldContentListItem =
 
 export interface FormFieldContentListItemEntity extends EntityPickerItem {
   position?: number;
+  [key: string]: any;
 }
 
 export interface FormFieldContentListItemFile extends FileManagerFolderElement {

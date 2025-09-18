@@ -817,7 +817,8 @@
     "to": "Till",
     "apps": "Appar",
     "code": "Kod",
-    "new": "Ny"
+    "new": "Ny",
+    "filter": "Filtrera"
   },
   "diploma": {
     "label": "Diplom",

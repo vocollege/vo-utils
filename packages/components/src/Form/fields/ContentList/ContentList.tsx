@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import { toast } from "react-toastify";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 
@@ -20,11 +21,14 @@ import {
 import EntityPicker from "../EntityPicker";
 import FileManagerPicker from "@/FileManager/Picker";
 import { FileManagerFolderElement } from "@/FileManager/global";
+import VoTextField from "@/VoTextField";
+import EnhancedTableSearchField from "@/EnhancedTable/components/EnhancedTableSearchField";
+import { GeneralObject } from "@vocollege/app";
 
 export const reorder = (
   list: any,
   startIndex: any,
-  endIndex: any,
+  endIndex: any
 ): FormFieldContentListItem[] => {
   let result = [...list];
   const [removed] = result.splice(startIndex, 1);
@@ -53,11 +57,14 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     renderActionButtons,
     hideType,
     renderExtraDetails,
+    hideFilter,
+    filterLabel,
   } = props;
   const [draggableItems, setDraggableItems] = useState<
     FormFieldContentListItem[] | undefined
   >([]);
   const [isChanged, setIsChanged] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<null | string>(null);
 
   const textNoWrapSx = (theme: any) => {
     return {
@@ -80,7 +87,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     const reorderedItems: FormFieldContentListItem[] = reorder(
       draggableItems,
       result.source.index,
-      result.destination.index,
+      result.destination.index
     );
     setDraggableItems(reorderedItems);
     setIsChanged(true);
@@ -106,7 +113,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
       result = [...draggableItems];
     }
     let i = result.findIndex(
-      (v: FormFieldContentListItem) => v.id === item.id && v.type === item.type,
+      (v: FormFieldContentListItem) => v.id === item.id && v.type === item.type
     );
     if (i > -1 && !remove) {
       toast.error(I18n.get.misc.alreadyAdded);
@@ -193,7 +200,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
           ?.filter((v: FormFieldContentListItem) => v)
           .map((v: FormFieldContentListItem) => {
             return v;
-          }),
+          })
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -209,6 +216,22 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [overrideValue]);
+
+  // Memos.
+
+  const filteredDraggableItems = useMemo(() => {
+    if (!searchTerm) {
+      return draggableItems;
+    }
+    return draggableItems.filter((v: GeneralObject) => {
+      return Object.keys(v).find((k: string) => {
+        return typeof v[k] === "string"
+          ? v[k].toLocaleLowerCase().indexOf(searchTerm.toLocaleLowerCase()) >
+              -1
+          : false;
+      });
+    });
+  }, [draggableItems, searchTerm]);
 
   return (
     <Box
@@ -228,26 +251,39 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
         })}
       >
         {label && (
-          <Typography
-            variant="subtitle1"
-            component="label"
+          <Stack
+            spacing={0}
             sx={(theme: any) => ({
-              display: "block",
               flex: 1,
             })}
           >
-            {label}
-            {required && (
-              <span
-                aria-hidden="true"
-                className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
-              >
-                *
-              </span>
-            )}
-          </Typography>
+            <Typography variant="subtitle1" component="h4" display="block">
+              {label}
+              {required && (
+                <span
+                  aria-hidden="true"
+                  className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+                >
+                  *
+                </span>
+              )}
+            </Typography>
+            <Typography variant="caption" component="h5" display="block">
+              {I18n.trans(I18n.get.form.labels.numberOfObjects, {
+                number: filteredDraggableItems.length,
+              })}
+            </Typography>
+          </Stack>
         )}
         <Stack direction="row" spacing={1}>
+          {!hideFilter && (
+            <Box>
+              <EnhancedTableSearchField
+                label={filterLabel || I18n.get.misc.filter}
+                onSearchTermChange={(term) => setSearchTerm(term)}
+              />
+            </Box>
+          )}
           {isChanged && (
             <Button
               variant="outlined"
@@ -289,16 +325,16 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
           )}
         </Stack>
       </Box>
-      {draggableItems?.length === 0 && (
+      {filteredDraggableItems?.length === 0 && (
         <Typography
           align="center"
           variant="subtitle1"
           sx={(theme: any) => ({ margin: `${theme.spacing(2)} 0 0` })}
         >
-          {I18n.get.misc.nothingAdded}
+          {searchTerm ? I18n.get.misc.nothingFound : I18n.get.misc.nothingAdded}
         </Typography>
       )}
-      {draggableItems && draggableItems?.length > 0 && (
+      {filteredDraggableItems && filteredDraggableItems?.length > 0 && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided: any, snapshot: any) => (
@@ -315,8 +351,8 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
                   }),
                 })}
               >
-                {draggableItems &&
-                  draggableItems.map((item: any, index: any) => (
+                {filteredDraggableItems &&
+                  filteredDraggableItems.map((item: any, index: any) => (
                     <Draggable
                       key={`${item.type}-${item.id}`}
                       draggableId={`${getType(item)}-${item.id}`}

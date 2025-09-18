@@ -14,7 +14,7 @@ let typingTimer: number;
 const EnhancedTableSearchField: React.FC<EnhancedTableSearchFieldProps> = (
   props
 ) => {
-  const { searchLoading, onSearchTermChange } = props;
+  const { label, searchLoading, onSearchTermChange } = props;
   const [searchTerm, setSearchTerm] = useState("");
 
   // Methods.
@@ -27,6 +27,10 @@ const EnhancedTableSearchField: React.FC<EnhancedTableSearchFieldProps> = (
       typingTimer = window.setTimeout(async () => {
         onSearchTermChange(value);
       }, 300);
+    } else if (value === "") {
+      typingTimer = window.setTimeout(async () => {
+        clearSearch();
+      }, 300);
     }
   };
 
@@ -38,7 +42,7 @@ const EnhancedTableSearchField: React.FC<EnhancedTableSearchFieldProps> = (
   return (
     <Box sx={{ position: "relative" }}>
       <VoTextField
-        label={I18n.get.form.labels.searchField}
+        label={label || I18n.get.form.labels.searchField}
         variant="filled"
         size="small"
         type="text"

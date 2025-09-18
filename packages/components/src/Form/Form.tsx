@@ -843,6 +843,8 @@ const Form: React.FC<FormProps> = (props) => {
             renderActionButtons={field.params?.renderActionButtons}
             hideType={field.params?.hideType}
             renderExtraDetails={field.params?.renderExtraDetails}
+            hideFilter={field.params?.hideFilter}
+            filterLabel={field.params?.filterLabel}
           />
         );
 
