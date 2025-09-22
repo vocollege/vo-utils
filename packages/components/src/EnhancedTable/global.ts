@@ -90,6 +90,7 @@ export interface EnhancedTableApplicationsStatusProps {
 }
 
 export interface EnhancedTableSearchFieldProps {
+  label?: React.ReactNode;
   searchLoading?: boolean;
   onSearchTermChange?: (searchTerm: string) => void;
 }

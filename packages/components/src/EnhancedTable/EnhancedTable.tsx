@@ -71,7 +71,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: any,
+    property: any
   ) => {
     const isAsc = state.orderBy === property && state.order === "ASC";
     dispatch({
@@ -110,7 +110,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     dispatch({
       values: {
@@ -201,7 +201,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
         loadData();
         onDelete && onDelete(data);
       },
-    },
+    }
   );
 
   // Effects.
