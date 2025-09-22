@@ -20,42 +20,46 @@ export interface VoTextAreaProps extends TextareaAutosizeProps {
 
 const useStylesReddit = makeStyles(() => createStyles(stylesReddit));
 
-const VoTextArea: React.FC<VoTextAreaProps> = React.forwardRef((props, ref) => {
-  const { label, error, helperText, required, ...rest } = props;
-  const classesReddit = useStylesReddit();
-  const classes = useStyles();
-  return (
-    <>
-      {label && (
-        <div className={clsx(classes.labelWrapper, { [classes.error]: error })}>
-          <Typography
-            variant="subtitle1"
-            component="label"
-            className={clsx(classes.label, { [classes.error]: error })}
+const VoTextArea = React.forwardRef<HTMLTextAreaElement, VoTextAreaProps>(
+  (props, ref) => {
+    const { label, error, helperText, required, ...rest } = props;
+    const classesReddit = useStylesReddit();
+    const classes = useStyles();
+    return (
+      <>
+        {label && (
+          <div
+            className={clsx(classes.labelWrapper, { [classes.error]: error })}
           >
-            {label}
-            {required && (
-              <span
-                aria-hidden="true"
-                className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
-              >
-                *
-              </span>
-            )}
-          </Typography>
-        </div>
-      )}
-      <TextareaAutosize
-        ref={ref}
-        className={clsx(classes.root, classesReddit.root, {
-          [classes.hasLabel]: label,
-          [classes.error]: error,
-        })}
-        maxRows={4}
-        {...rest}
-      />
-    </>
-  );
-});
+            <Typography
+              variant="subtitle1"
+              component="label"
+              className={clsx(classes.label, { [classes.error]: error })}
+            >
+              {label}
+              {required && (
+                <span
+                  aria-hidden="true"
+                  className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+                >
+                  *
+                </span>
+              )}
+            </Typography>
+          </div>
+        )}
+        <TextareaAutosize
+          ref={ref}
+          className={clsx(classes.root, classesReddit.root, {
+            [classes.hasLabel]: label,
+            [classes.error]: error,
+          })}
+          maxRows={4}
+          {...rest}
+        />
+      </>
+    );
+  }
+);
 
 export default VoTextArea;

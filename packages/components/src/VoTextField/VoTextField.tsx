@@ -9,7 +9,7 @@ import { useStyles as useStylesTextField } from "./styles";
 
 const useStylesReddit = makeStyles(() => stylesReddit);
 
-const VoTextField: React.FC<FilledTextFieldProps> = React.forwardRef(
+const VoTextField = React.forwardRef<HTMLDivElement, FilledTextFieldProps>(
   (props, ref) => {
     const classes = useStylesReddit();
     const classesTextField = useStylesTextField();
@@ -32,7 +32,7 @@ const VoTextField: React.FC<FilledTextFieldProps> = React.forwardRef(
         }
       />
     );
-  },
+  }
 );
 
 export default VoTextField;

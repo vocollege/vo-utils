@@ -106,8 +106,7 @@ const Form: React.FC<FormProps> = (props) => {
   const isMutating = useRef(false);
   const modelExists = useRef(false);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
-  
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const {
     handleSubmit,
@@ -124,7 +123,7 @@ const Form: React.FC<FormProps> = (props) => {
     mode: "onTouched",
   });
   const watchForm = watch();
-  
+
   const { isDirty, isValid, errors } = formState;
   const hasErrors = Object.keys(errors).length > 0;
 
@@ -137,9 +136,9 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleAutosave = () => {
     if (!hasErrors && isDirty) {
-        handleSave("autosave");
-        forceUpdate();
-        clearAutosave();
+      handleSave("autosave");
+      forceUpdate();
+      clearAutosave();
     }
   };
 
@@ -150,9 +149,9 @@ const Form: React.FC<FormProps> = (props) => {
     }
     clearAutosave();
     autosaveTimeout.current = setTimeout(handleAutosave, autosaveInterval);
-  } 
-  
-  const onMutationUpdate = async (cache, { data: savedData} ) => {
+  };
+
+  const onMutationUpdate = async (cache, { data: savedData }) => {
     if (autosave) {
       const data = savedData[Object.keys(savedData)[0]];
       const id = data.id;
@@ -162,17 +161,18 @@ const Form: React.FC<FormProps> = (props) => {
         variables: { id: id },
         data: savedData,
       });
-      
-      await reset(savedData, { keepIsValid: true, keepErrors: true});
+
+      await reset(savedData, { keepIsValid: true, keepErrors: true });
       await trigger();
     }
   };
 
   const onMutationCompleted = (data: any, baseLabel: string) => {
     let label = baseLabel;
-    if (saveTypeRef.current 
-        && saveTypeRef.current === "submit" 
-        && labels.submitted
+    if (
+      saveTypeRef.current &&
+      saveTypeRef.current === "submit" &&
+      labels.submitted
     ) {
       label = labels.submitted;
     }
@@ -195,7 +195,7 @@ const Form: React.FC<FormProps> = (props) => {
       }
     }
     handleCompleted(data, label);
-   };
+  };
 
   const onSubmit = () => {
     clearAutosave();
@@ -242,6 +242,7 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const getInputValues = (customCategory: null | string = null) => {
+    const formValues = getValues();
     const values: { [key: string]: any } = {};
     tabs.forEach((tab: FormTabProps) => {
       tab.fields
@@ -257,6 +258,7 @@ const Form: React.FC<FormProps> = (props) => {
             let fieldParts = field.name.split(".");
             fieldName = fieldParts[1];
           }
+
           let value = state[field.name];
           if (state[field.name] && field.type === "entity_field") {
             value = {
@@ -264,6 +266,7 @@ const Form: React.FC<FormProps> = (props) => {
               type: state[field.name].type || "",
             };
           }
+
           values[fieldName] = value;
         });
     });
@@ -288,15 +291,19 @@ const Form: React.FC<FormProps> = (props) => {
     isMutating.current = true;
 
     // Merge state and react-hook-form(rhf) values
-    // prefer rhf value if different, since it may 
+    // prefer rhf value if different, since it may
     // be updated before state
     let values = getInputValues();
-    for (let [key, value] of Object.entries(getValues())) {
-      if (value === undefined) continue;
-      if (values.hasOwnProperty(key) && values[key] !== value) {
-        values[key] = value;
-      }
-    }
+
+    // @note This logic overrides the values from getInputValues() (state) with values
+    // from react-hook-form, which causes already "cleaned up" values (ex from "entity_field") to be overridden.
+    // Look at VC-445
+    // for (let [key, value] of Object.entries(getValues())) {
+    //   if (value === undefined) continue;
+    //   if (values.hasOwnProperty(key) && values[key] !== value) {
+    //     values[key] = value;
+    //   }
+    // }
 
     let variables: { [key: string]: any } = {
       input: values,
@@ -323,7 +330,7 @@ const Form: React.FC<FormProps> = (props) => {
     }
 
     const hasId = variables.hasOwnProperty("id");
-    
+
     if (!isCreateNew()) {
       variables[primaryField || "id"] = state[primaryField || "id"];
       update({
@@ -595,7 +602,7 @@ const Form: React.FC<FormProps> = (props) => {
         value: JSON.stringify(o.value),
       };
     });
-    dispatch({field: field, value: newValues});
+    dispatch({ field: field, value: newValues });
     setValue(`${field}` as const, values, {
       shouldValidate: true,
       shouldDirty: true,
@@ -652,9 +659,9 @@ const Form: React.FC<FormProps> = (props) => {
   };
 
   const showLoader = () => {
-    const loading = queryLoading || createLoading || updateLoading;
-    return loading && !autosave; 
-  }
+    const loading = queryLoading || createLoading || updateLoading;
+    return loading && !autosave;
+  };
 
   const getField = (field: FormField) => {
     let visible = true;
@@ -1125,19 +1132,14 @@ const Form: React.FC<FormProps> = (props) => {
         );
       case "options":
         return (
-          <VoOptionsField 
+          <VoOptionsField
             name={field.name}
             items={state[field.name]}
             onChange={(name: string, value: any) =>
-              runOnChange(
-                handleChangeOptions,
-                name,
-                value,
-                field.onChange
-              )
+              runOnChange(handleChangeOptions, name, value, field.onChange)
             }
             fields={field.params.fields}
-            />
+          />
         );
 
       case "info":
@@ -1187,7 +1189,7 @@ const Form: React.FC<FormProps> = (props) => {
 
   const handleTriggerChange = (vc: ValueChangeProps) => {
     const value = vc.getNewValue(getValues(`${vc.name}` as const));
-    dispatch({field: vc.name, value: value});
+    dispatch({ field: vc.name, value: value });
     setValue(`${vc.name}` as const, value, {
       shouldValidate: true,
       shouldDirty: true,
@@ -1273,7 +1275,7 @@ const Form: React.FC<FormProps> = (props) => {
         item: mergedData,
       });
     }
-    await reset(mergedData, { keepIsValid: true, keepErrors: true});
+    await reset(mergedData, { keepIsValid: true, keepErrors: true });
     await trigger();
     if (onDataChange) {
       onDataChange(mergedData, data);
@@ -1327,7 +1329,7 @@ const Form: React.FC<FormProps> = (props) => {
       client: client || undefined,
       onError: handleError,
       onCompleted: (data: any) => onMutationCompleted(data, labels.updated),
-      ...(!autosave && {refetchQueries}),
+      ...(!autosave && { refetchQueries }),
     }
   );
 
@@ -1376,16 +1378,21 @@ const Form: React.FC<FormProps> = (props) => {
     };
   });
 
-
   useEffect(() => {
-    if (isMutating.current) {return;}
+    if (isMutating.current) {
+      return;
+    }
     if (autosave && isDirty && !hasErrors) {
       initiateAutosave();
     }
   }, [watchForm]);
 
   useEffect(() => {
-    if (data && data[operations.category] && saveTypeRef.current !== "autosave") {
+    if (
+      data &&
+      data[operations.category] &&
+      saveTypeRef.current !== "autosave"
+    ) {
       setData(data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1399,7 +1406,6 @@ const Form: React.FC<FormProps> = (props) => {
       });
     }
   }, [isDirty, isValid]);
-
 
   useEffect(() => {
     if (onQueryLoading) {
@@ -1463,19 +1469,29 @@ const Form: React.FC<FormProps> = (props) => {
             <FormToolbar
               {...toolbarProps}
               title={getPageTitle()}
-              onSave={ async () => {
+              onSave={async () => {
                 try {
-                if (autosave && !isDirty) {
-                  const message = labels.updated;
-                  toast.success(message, { autoClose: getToastAutoCloseTime(message) });
-                  return;
-                } else {
-                  await handleSubmit(() => {
-                    handleSave("save");
-                  }, (e) => {
-                    console.error("Form.tsx handleSubmit failed:", e, "values:", getValues());
-                  })();
-                }
+                  if (autosave && !isDirty) {
+                    const message = labels.updated;
+                    toast.success(message, {
+                      autoClose: getToastAutoCloseTime(message),
+                    });
+                    return;
+                  } else {
+                    await handleSubmit(
+                      () => {
+                        handleSave("save");
+                      },
+                      (e) => {
+                        console.error(
+                          "Form.tsx handleSubmit failed:",
+                          e,
+                          "values:",
+                          getValues()
+                        );
+                      }
+                    )();
+                  }
                 } catch (e) {
                   console.error("Form.tsx handleSubmit unexpected error:", e);
                 }

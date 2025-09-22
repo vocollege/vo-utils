@@ -6,6 +6,7 @@ import { SvgIconProps } from "@mui/material/SvgIcon";
 import CircularProgress from "@mui/material/CircularProgress";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Box from "@mui/material/Box";
 import clsx from "clsx";
 import { ApolloClient } from "@apollo/client";
 
@@ -63,7 +64,7 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
   const [user, setUser] = useState<GeneralObject | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
-  const [userImage, setUserImage] = useState<any>(null);
+  const [userImage, setUserImage] = useState(false);
   const [accountOpen, setAccountOpen] = useState<any>(false);
   const [callParams, setCallParams] = useState<null | CallParams>(null);
   const classes = useStyles();
@@ -126,25 +127,16 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
   const handleSessionChange = (data: any) => {
     setCallParams(null);
     let dataToReturn = null;
+
     switch (data.action) {
       case "getCurrentUser":
         if (data.value) {
           const { currentUser } = data.value;
           setUser(currentUser);
-          if (
-            currentUser &&
-            currentUser.images &&
-            currentUser.images.length > 0
-          ) {
-            setUserImage(
-              <img
-                className={classes.userImage}
-                src={`${currentUser.images[0].url}?d=100x100`}
-                alt={currentUser.name}
-              />
-            );
+          if (currentUser) {
+            setUserImage(true);
           } else {
-            setUserImage(null);
+            setUserImage(false);
           }
           if (currentUser && currentUser.permissions) {
             VoAuth.ability.update(currentUser.permissions);
@@ -184,17 +176,21 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
   };
 
   const getUserImage = () => {
-    return (
-      userImage || (
-        <PersonIcon
-          color="inherit"
-          className={clsx(classes.personIcon, classesProp?.icon, {
-            // [classes.personIconBig]: onlyImage,
-            // [classes.personIconBig]: noButtonLabel,
-          })}
-          {...iconProps}
-        />
-      )
+    return userImage && user && user?.images.length > 0 ? (
+      <img
+        className={classes.userImage}
+        src={`${user?.images[0].url}?d=100x100`}
+        alt={user.name}
+      />
+    ) : (
+      <PersonIcon
+        color="inherit"
+        className={clsx(classes.personIcon, classesProp?.icon, {
+          // [classes.personIconBig]: onlyImage,
+          // [classes.personIconBig]: noButtonLabel,
+        })}
+        {...iconProps}
+      />
     );
   };
 
@@ -261,6 +257,7 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
         },
       });
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -289,7 +286,6 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
       {externalSession && (
         <Session onChange={handleSessionChange} callParams={callParams} />
       )}
-
       {(accountOpen || (user && !user.gdpr && !user.auth)) && (
         <AccountDialog
           open={accountOpen || (user && !user.gdpr)}
@@ -298,7 +294,13 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
           client={client}
         />
       )}
-
+      {/* <Box>
+        <img
+          className={classes.userImage}
+          // src={`${currentUser.images[0].url}?d=100x100`}
+          src="https://vofront-files.vo-college.se/uploads/e1896b00-a244-4263-bb2b-29e136974cd1.jpg?d=100x100"
+        />
+      </Box> */}
       {onlyImage && (
         <IconButton
           color="inherit"
@@ -340,7 +342,6 @@ const AccountIcon: React.FC<AccountIconProps> = (props) => {
           )}
         </Button>
       )}
-
       {!firstLoad && user && (
         <Menu
           anchorEl={anchorEl}
