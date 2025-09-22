@@ -1352,6 +1352,8 @@ const Form: React.FC<FormProps> = (props) => {
       }
     }
 
+    // @TODO Property initialData should maybe be removed..?
+    // Ensure that all uses of Form.tsx pass data into initialState.
     if (initialData) {
       setData(initialData);
     }
@@ -1361,6 +1363,7 @@ const Form: React.FC<FormProps> = (props) => {
       iData[operations.category] = initialState;
       setData(iData, false);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => {
       if (autosaveTimeout.current) {
