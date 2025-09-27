@@ -9,6 +9,8 @@ import { FilledTextFieldProps } from "@mui/material/TextField";
 import { ButtonProps } from "@mui/material/Button";
 import { BadgeProps } from "@mui/material/Badge";
 import { DialogProps } from "@mui/material/Dialog";
+import { AutocompleteProps } from "@mui/material/Autocomplete";
+
 // Custom.
 import {
   FileManagerFolderElement,
@@ -219,8 +221,9 @@ export interface FormFieldContentListProps {
   // types: string[];
   // filetypes?: string[];
   multiple?: boolean;
-  contentType?: "entity" | "file";
+  contentType?: "entity" | "file" | "values";
   dialog?: EntityPickerDialogProps;
+  autocomplete?: Partial<AutocompleteProps<any, any, any, any, any>>;
   renderItemTitle?: (item: FormFieldContentListItem) => string;
   createCallback?: () => EntityPickerItem;
   createCallbackLabel?: string;
@@ -228,7 +231,7 @@ export interface FormFieldContentListProps {
   renderActionButtons?: (item: FormFieldContentListItem) => React.ReactElement;
   hideType?: boolean;
   renderExtraDetails?: (item: FormFieldContentListItem) => React.ReactElement;
-  hideFilter?: boolean;
+  showFilter?: boolean;
   filterLabel?: React.ReactNode;
 }
 

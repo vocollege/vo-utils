@@ -440,7 +440,6 @@ const Form: React.FC<FormProps> = (props) => {
     onChange: FormField["onChange"]
   ) => {
     clearTimeout(typingTimer[field]);
-
     dispatch({ field: field, value: items });
     if (onChange) {
       onChange(items, data);
@@ -833,6 +832,7 @@ const Form: React.FC<FormProps> = (props) => {
             multiple={field.params?.multiple}
             renderItemTitle={field.params?.renderItemTitle}
             dialog={field.params?.dialog}
+            autocomplete={field.params?.autocomplete}
             required={field?.required}
             createCallback={field.params?.createCallback}
             createCallbackLabel={field.params?.createCallbackLabel}
@@ -840,7 +840,7 @@ const Form: React.FC<FormProps> = (props) => {
             renderActionButtons={field.params?.renderActionButtons}
             hideType={field.params?.hideType}
             renderExtraDetails={field.params?.renderExtraDetails}
-            hideFilter={field.params?.hideFilter}
+            showFilter={field.params?.showFilter}
             filterLabel={field.params?.filterLabel}
           />
         );
@@ -1336,40 +1336,68 @@ const Form: React.FC<FormProps> = (props) => {
   );
 
   // Effects.
+  // useEffect(() => {
+  //   let callLoadQuery = !queryCalled;
+  //   if (isCreateNew()) {
+  //     if (operations) {
+  //       callLoadQuery = typeof operations.getOnCreate !== "undefined" || false;
+  //     }
+  //   }
+
+  //   if (callLoadQuery) {
+  //     if (!initialData) {
+  //       loadQuery({
+  //         variables: getQueryVariables(),
+  //       });
+  //     }
+  //   }
+
+  //   // operations.category = validigGoals
+  //   // data.validigGoal = [{}]
+  //   // data.validigAllGoals = [{}]
+  //   // data.tags = [{}]
+
+  //   // @TODO Property initialData should maybe be removed..?
+  //   // Ensure that all uses of Form.tsx pass data into initialState.
+  //   if (initialData) {
+  //     setData(initialData);
+  //   }
+
+  //   if (initialState) {
+  //     let iData = {};
+  //     iData[operations.category] = initialState;
+  //     setData(iData, false);
+  //   }
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   return () => {
+  //     if (autosaveTimeout.current) {
+  //       clearTimeout(autosaveTimeout.current);
+  //     }
+  //   };
+  // }, []);
+
+  // Effects.
   useEffect(() => {
     let callLoadQuery = !queryCalled;
     if (isCreateNew()) {
+      reset(initialState);
       if (operations) {
         callLoadQuery = typeof operations.getOnCreate !== "undefined" || false;
       }
     }
-
     if (callLoadQuery) {
-      if (!initialData) {
+      if (initialData) {
+        setData(initialData);
+      } else {
         loadQuery({
           variables: getQueryVariables(),
         });
       }
-    }
-
-    // @TODO Property initialData should maybe be removed..?
-    // Ensure that all uses of Form.tsx pass data into initialState.
-    if (initialData) {
+    } else if (initialData) {
       setData(initialData);
     }
-
-    if (initialState) {
-      let iData = {};
-      iData[operations.category] = initialState;
-      setData(iData, false);
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    return () => {
-      if (autosaveTimeout.current) {
-        clearTimeout(autosaveTimeout.current);
-      }
-    };
   }, []);
 
   useEffect(() => {
@@ -1399,6 +1427,8 @@ const Form: React.FC<FormProps> = (props) => {
       saveTypeRef.current !== "autosave"
     ) {
       setData(data);
+    } else if (data) {
+      onDataChange?.(data, data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);

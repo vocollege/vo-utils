@@ -8,9 +8,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import { toast } from "react-toastify";
 import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
+import Autocomplete from "@mui/material/Autocomplete";
+import Checkbox from "@mui/material/Checkbox";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 
 // Custom.
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
@@ -36,6 +39,9 @@ export const reorder = (
   return result;
 };
 
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
 const ContentList: React.FC<FormFieldContentListProps> = (props) => {
   const {
     name,
@@ -50,6 +56,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     dialog = {
       types: [],
     },
+    autocomplete,
     renderItemTitle,
     createCallback,
     createCallbackLabel,
@@ -57,7 +64,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     renderActionButtons,
     hideType,
     renderExtraDetails,
-    hideFilter,
+    showFilter,
     filterLabel,
   } = props;
   const [draggableItems, setDraggableItems] = useState<
@@ -179,6 +186,19 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     addItem(items[0]);
   };
 
+  const handleValueSelect = (event: React.SyntheticEvent, value: any[]) => {
+    const ids2 = draggableItems.map((o) => o.id);
+    const onlyInArr1 = value.filter((o) => !ids2.includes(o.id));
+    const onlyInArr2 = draggableItems.filter(
+      (o) => !value.some((a) => a.id === o.id)
+    );
+    if (onlyInArr1.length === 1) {
+      addItem(onlyInArr1[0]);
+    } else if (onlyInArr2.length === 1) {
+      addItem(onlyInArr2[0], true);
+    }
+  };
+
   const getTitle = (item: FormFieldContentListItem) => {
     if (renderItemTitle) {
       return renderItemTitle(item);
@@ -251,12 +271,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
         })}
       >
         {label && (
-          <Stack
-            spacing={0}
-            sx={(theme: any) => ({
-              flex: 1,
-            })}
-          >
+          <Stack spacing={0}>
             <Typography variant="subtitle1" component="h4" display="block">
               {label}
               {required && (
@@ -268,15 +283,25 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
                 </span>
               )}
             </Typography>
-            <Typography variant="caption" component="h5" display="block">
-              {I18n.trans(I18n.get.form.labels.numberOfObjects, {
-                number: filteredDraggableItems.length,
-              })}
-            </Typography>
+            {showFilter && (
+              <Typography variant="caption" component="h5" display="block">
+                {I18n.trans(I18n.get.form.labels.numberOfObjects, {
+                  number: filteredDraggableItems.length,
+                })}
+              </Typography>
+            )}
           </Stack>
         )}
-        <Stack direction="row" spacing={1}>
-          {!hideFilter && (
+        <Stack
+          alignItems="center"
+          direction="row"
+          spacing={1}
+          justifyContent="flex-end"
+          sx={(theme: any) => ({
+            flex: 1,
+          })}
+        >
+          {showFilter && (
             <Box>
               <EnhancedTableSearchField
                 label={filterLabel || I18n.get.misc.filter}
@@ -321,6 +346,43 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
             <FileManagerPicker
               onSelect={handleFileSelect}
               filetypes={dialog.types}
+            />
+          )}
+          {contentType === "values" && autocomplete && (
+            <Autocomplete
+              {...autocomplete}
+              options={autocomplete?.options || []}
+              sx={autocomplete?.sx || { maxWidth: 400, width: "100%" }}
+              value={items}
+              multiple={true}
+              disableCloseOnSelect
+              disableClearable
+              renderTags={() => null}
+              onChange={handleValueSelect}
+              renderInput={(params: any) => (
+                <VoTextField
+                  {...params}
+                  size="small"
+                  fullWidth
+                  label={I18n.get.entities.label.search}
+                  variant="filled"
+                />
+              )}
+              renderOption={(props, option, { selected }) => {
+                const { key, ...optionProps } = props;
+                return (
+                  <li key={key} {...optionProps}>
+                    <Checkbox
+                      icon={icon}
+                      checkedIcon={checkedIcon}
+                      style={{ marginRight: 8 }}
+                      checked={selected}
+                      size="small"
+                    />
+                    {option.title}
+                  </li>
+                );
+              }}
             />
           )}
         </Stack>
@@ -406,6 +468,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
                                 sx={(theme: any) => ({
                                   ...textNoWrapSx(theme),
                                 })}
+                                title={getTitle(item)}
                               >
                                 {getTitle(item)}
                               </Typography>
