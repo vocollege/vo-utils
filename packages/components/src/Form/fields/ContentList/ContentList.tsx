@@ -56,7 +56,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
     dialog = {
       types: [],
     },
-    autocomplete,
+    AutocompleteProps,
     renderItemTitle,
     createCallback,
     createCallbackLabel,
@@ -348,11 +348,11 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
               filetypes={dialog.types}
             />
           )}
-          {contentType === "values" && autocomplete && (
+          {contentType === "values" && AutocompleteProps && (
             <Autocomplete
-              {...autocomplete}
-              options={autocomplete?.options || []}
-              sx={autocomplete?.sx || { maxWidth: 400, width: "100%" }}
+              {...AutocompleteProps}
+              options={AutocompleteProps?.options || []}
+              sx={AutocompleteProps?.sx || { maxWidth: 400, width: "100%" }}
               value={items}
               multiple={true}
               disableCloseOnSelect

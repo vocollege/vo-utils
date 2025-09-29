@@ -223,7 +223,7 @@ export interface FormFieldContentListProps {
   multiple?: boolean;
   contentType?: "entity" | "file" | "values";
   dialog?: EntityPickerDialogProps;
-  autocomplete?: Partial<AutocompleteProps<any, any, any, any, any>>;
+  AutocompleteProps?: Partial<AutocompleteProps<any, any, any, any, any>>;
   renderItemTitle?: (item: FormFieldContentListItem) => string;
   createCallback?: () => EntityPickerItem;
   createCallbackLabel?: string;

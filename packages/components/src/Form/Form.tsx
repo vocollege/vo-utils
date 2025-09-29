@@ -832,7 +832,10 @@ const Form: React.FC<FormProps> = (props) => {
             multiple={field.params?.multiple}
             renderItemTitle={field.params?.renderItemTitle}
             dialog={field.params?.dialog}
-            autocomplete={field.params?.autocomplete}
+            AutocompleteProps={{
+              ...field.params?.AutocompleteProps,
+              options: getAutocompleteOptions(field),
+            }}
             required={field?.required}
             createCallback={field.params?.createCallback}
             createCallbackLabel={field.params?.createCallbackLabel}
@@ -1427,9 +1430,8 @@ const Form: React.FC<FormProps> = (props) => {
       saveTypeRef.current !== "autosave"
     ) {
       setData(data);
-    } else if (data) {
-      onDataChange?.(data, data);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
