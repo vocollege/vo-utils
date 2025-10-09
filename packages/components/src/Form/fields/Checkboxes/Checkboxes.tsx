@@ -10,7 +10,7 @@ import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
 export interface CheckboxesProps {
   label?: string;
-  values: String[];
+  values: any[];
   availableValues: CheckboxesAvailableValue[];
   required?: boolean;
   onChange?: (values: String[]) => void;
@@ -28,12 +28,15 @@ const Checkboxes: React.FC<CheckboxesProps> = (props) => {
   const classes = useStyles();
 
   // Methods.
+  const isChecked = (name: string) => {
+    return state.indexOf(name || "") > -1;
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     let checkedValues = [...state];
     if (checked) {
-      if (state.indexOf(name) === -1) {
+      if (!isChecked(name)) {
         checkedValues.push(name);
       }
     } else {
@@ -53,7 +56,12 @@ const Checkboxes: React.FC<CheckboxesProps> = (props) => {
 
   useEffect(() => {
     if (values && Array.isArray(values)) {
-      setState(values);
+      setState(values.map((v) => {
+        if (typeof v === "string") return v;
+        if (v.hasOwnProperty("name")) {
+          return v.name;
+        }
+      }).filter((x, i, a) => a.indexOf(x) == i).filter((n) => !!n));
     }
   }, [values]);
 
@@ -86,7 +94,7 @@ const Checkboxes: React.FC<CheckboxesProps> = (props) => {
             key={i}
             control={
               <Checkbox
-                checked={state.indexOf(v.name || "") > -1}
+                checked={isChecked(v.name)}
                 onChange={handleChange}
                 name={v.name}
               />

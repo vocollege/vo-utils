@@ -368,7 +368,7 @@ const ContentList: React.FC<FormFieldContentListProps> = (props) => {
                   variant="filled"
                 />
               )}
-              renderOption={(props, option, { selected }) => {
+              renderOption={(props: any, option, { selected }) => {
                 const { key, ...optionProps } = props;
                 return (
                   <li key={key} {...optionProps}>
