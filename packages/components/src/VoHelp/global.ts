@@ -8,4 +8,5 @@ export interface HelpProps extends DrawerProps {
   category?: string;
   operation?: DocumentNode;
   client?: ApolloClient<object>;
+  enlargeImages?: boolean;
 }

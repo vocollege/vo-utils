@@ -58,7 +58,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(1),
       position: "sticky",
       top: 0,
-      zIndex: 1,
+      // zIndex: 1,
       [theme.breakpoints.up("lg")]: {
         top: theme.spacing(8),
       },

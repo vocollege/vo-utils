@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -15,6 +15,9 @@ import clsx from "clsx";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import HomeIcon from "@mui/icons-material/Home";
 import Chip from "@mui/material/Chip";
+import Box from "@mui/material/Box";
+import Backdrop from "@mui/material/Backdrop";
+import { alpha } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
@@ -38,6 +41,49 @@ const initialState = {
 const drawerWidth = 560;
 const drawerWidthMobile = "100%";
 
+export const EnlargeableImage = ({
+  src,
+  alt,
+}: {
+  src: string;
+  alt?: string;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Box
+        component="img"
+        src={src}
+        alt={alt}
+        onClick={() => setIsOpen(true)}
+        sx={{
+          cursor: "zoom-in",
+          maxWidth: "100%",
+        }}
+      />
+      {isOpen && (
+        <Backdrop
+          open={isOpen}
+          onClick={() => setIsOpen(false)}
+          sx={{ cursor: "zoom-out" }}
+        >
+          <Box
+            component="img"
+            src={src}
+            alt={alt}
+            sx={(theme) => ({
+              maxWidth: "90%",
+              maxHeight: "90%",
+              boxShadow: "0 0 20px rgba(255, 255, 255, 0.5)",
+            })}
+          />
+        </Backdrop>
+      )}
+    </>
+  );
+};
+
 const Help: React.FC<HelpProps> = (props) => {
   const {
     settingName,
@@ -45,6 +91,7 @@ const Help: React.FC<HelpProps> = (props) => {
     operation,
     client,
     onClose,
+    enlargeImages = false,
     ...rest
   } = props;
   const classes = useStyles();
@@ -52,6 +99,15 @@ const Help: React.FC<HelpProps> = (props) => {
   const theme = useTheme();
   const matchesLg = useMediaQuery(theme.breakpoints.up("lg"));
   const matchesSm = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const options = {
+    replace: (domNode: any) => {
+      if (enlargeImages && domNode.type === "tag" && domNode.name === "img") {
+        const { src, alt } = domNode.attribs;
+        return <EnlargeableImage src={src} alt={alt} />;
+      }
+    },
+  };
 
   // Methods.
 
@@ -80,14 +136,6 @@ const Help: React.FC<HelpProps> = (props) => {
   };
 
   const setContent = () => {
-    // if (!data || !data[category]) {
-    //   dispatch({
-    //     values: {
-    //       items: null,
-    //       selected: null,
-    //     },
-    //   });
-    // } else {
     if (data && data[category]) {
       dispatch({
         values: {
@@ -191,7 +239,7 @@ const Help: React.FC<HelpProps> = (props) => {
             </Typography>
             {state.selected.body && (
               <div className={clsx("vo-global__content", classes.contentBody)}>
-                {parse(state.selected.body)}
+                {parse(state.selected.body, options)}
               </div>
             )}
 
