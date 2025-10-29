@@ -194,12 +194,17 @@ export const orderByPosition = (a: any, b: any) => {
   return 0;
 };
 
-export const orderByField = (a: any, b: any, field: string) => {
+export const orderByField = (
+  a: any,
+  b: any,
+  field: string,
+  descending = false
+) => {
   if (a[field] < b[field]) {
-    return -1;
+    return descending ? 1 : -1;
   }
   if (a[field] > b[field]) {
-    return 1;
+    return descending ? -1 : 1;
   }
   return 0;
 };
@@ -286,7 +291,7 @@ export const parseState = (state: any, initialState: any) => {
 export const changeObj = (obj: any, key: string, value: any): {} => {
   let keys = key.split(".");
   return keys.reduce((acc, v, i) => {
-    if (i == keys.length -1) acc[v] = value; 
+    if (i == keys.length - 1) acc[v] = value;
     return acc[v];
   }, obj);
 };

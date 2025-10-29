@@ -57,16 +57,19 @@ export const EnlargeableImage = ({
         src={src}
         alt={alt}
         onClick={() => setIsOpen(true)}
-        sx={{
+        sx={(theme) => ({
           cursor: "zoom-in",
           maxWidth: "100%",
-        }}
+        })}
       />
       {isOpen && (
         <Backdrop
           open={isOpen}
           onClick={() => setIsOpen(false)}
-          sx={{ cursor: "zoom-out" }}
+          sx={(theme) => ({
+            cursor: "zoom-out",
+            zIndex: theme.zIndex.tooltip + 1,
+          })}
         >
           <Box
             component="img"
