@@ -38,31 +38,6 @@ class GraphClient {
       httpLink = createUploadLink({ uri: url });
     }
 
-    // const wsLink = new WebSocketLink({
-    //   uri: wsUrl,
-    //   options: {
-    //     reconnect: true,
-    //   },
-    //   // webSocketImpl: ws,
-    // });
-
-    // The split function takes three parameters:
-    //
-    // * A function that's called for each operation to execute
-    // * The Link to use for an operation if the function returns a "truthy" value
-    // * The Link to use for an operation if the function returns a "falsy" value
-    // const splitLink = split(
-    //   ({ query }) => {
-    //     const definition = getMainDefinition(query);
-    //     return (
-    //       definition.kind === "OperationDefinition" &&
-    //       definition.operation === "subscription"
-    //     );
-    //   },
-    //   wsLink,
-    //   httpLink
-    // );
-
     // Get other Apollo Links.
     // const links = this.getGraphClientLinks(getToken, refreshToken);
     const links = this.getGraphClientLinks(params);
@@ -82,15 +57,6 @@ class GraphClient {
               ];
             },
           },
-          //   PivotEducation: {
-          //     // keyFields: ["education_usage_id"],
-          //     keyFields: [
-          //       "education_id",
-          //       "education_usage_id",
-          //       "education_usage_type",
-          //       "field",
-          //     ],
-          //   },
 
           ValidigGeneralSurveyRow: {
             fields: {
@@ -98,13 +64,6 @@ class GraphClient {
                 read(existing) {
                   return existing ? JSON.parse(existing) : existing;
                 },
-                // merge(existing = "", incoming: "") {
-                //   console.log("existing", existing);
-                //   console.log("incoming", incoming);
-
-                //   // return [...existing, ...incoming];
-                //   return incoming;
-                // },
               },
             },
           },
@@ -192,16 +151,22 @@ class GraphClient {
         userLicensee = JSON.parse(userLicensee);
       }
 
+      let userPlatform: any = localStorage.get(VoConfig.get.USER_PLATFORM);
+
+      if (userPlatform) {
+        userPlatform = JSON.parse(userPlatform);
+      }
+
       operation.setContext(() => ({
         ...currentHeaders,
         headers: {
           Authorization: token
-            ? // ? `${token.token_type} ${token.access_token}`
-              `Bearer ${token.access_token}`
+            ? `Bearer ${token.access_token}`
             : "",
           VoGroup: groupId,
           ...(masquerade && { VoMasquerade: masquerade?.id }),
           ...(userLicensee && { VoLicensee: userLicensee?.id }),
+          ...(userPlatform && { VoPlatform: userPlatform?.id }),
         },
       }));
       return forward(operation);
@@ -227,7 +192,6 @@ class GraphClient {
           Object.keys(variables.input)
             .filter((key: string) => Array.isArray(variables.input[key]))
             .map((key: string) => {
-              // JSON stringify GeneralSurveyRow.options.
               variables.input[key]
                 .filter((v: GeneralObject) => v?.options)
                 .map((v: GeneralObject) => {
@@ -238,25 +202,6 @@ class GraphClient {
             });
           break;
       }
-
-      // Traverse the variables and convert objects to JSON strings as needed
-      // const transformVariables = (vars) => {
-      //   if (!vars || typeof vars !== 'object') return vars;
-
-      //   return Object.keys(vars).reduce((acc, key) => {
-      //     const value = vars[key];
-
-      //     // Check if the value is an object that needs conversion
-      //     acc[key] = value && typeof value === 'object' && !(value instanceof Array)
-      //       ? JSON.stringify(value)
-      //       : value;
-
-      //     return acc;
-      //   }, {});
-      // };
-
-      // operation.variables = transformVariables(variables);
-
       return forward(operation);
     });
 
@@ -268,20 +213,6 @@ class GraphClient {
     };
   }
 
-  // static createGraphSubscriptionClient(url: string) {
-  //   const wsLink = new WebSocketLink({
-  //     uri: url,
-  //     options: {
-  //       reconnect: true,
-  //     },
-  //     // webSocketImpl: ws,
-  //   });
-  //   const links = this.getGraphClientLinks();
-  //   return new ApolloClient({
-  //     cache: new InMemoryCache(),
-  //     link: from([links.errorLink, links.authLink, wsLink]),
-  //   });
-  // }
 }
 
 export default GraphClient;

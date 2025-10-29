@@ -54,6 +54,7 @@ class VoConfig {
     CURRENT_GROUP: "vo_group",
     MASQUERADE_USER: "vo_masquerade",
     USER_LICENSEE: "vo_licensee",
+    USER_PLATFORM: "vo_platform",
   };
 
   setConfig(config: VoConfigType) {
