@@ -61,7 +61,7 @@ const Checkboxes: React.FC<CheckboxesProps> = (props) => {
         if (v.hasOwnProperty("name")) {
           return v.name;
         }
-      }).filter((x, i, a) => !!x && a.indexOf(x) == i);
+      }).filter((x, i, a) => !!x && a.indexOf(x) == i));
     }
   }, [values]);
 
