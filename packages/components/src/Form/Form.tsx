@@ -1062,6 +1062,7 @@ const Form: React.FC<FormProps> = (props) => {
               )
             }
             row={field.params?.row}
+            hidden={field?.hidden}
           />
         );
       case "transfer_list":

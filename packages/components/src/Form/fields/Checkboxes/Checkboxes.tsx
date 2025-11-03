@@ -15,6 +15,7 @@ export interface CheckboxesProps {
   required?: boolean;
   onChange?: (values: String[]) => void;
   row?: boolean;
+  hidden?: boolean;
 }
 
 export interface CheckboxesAvailableValue {
@@ -23,7 +24,8 @@ export interface CheckboxesAvailableValue {
 }
 
 const Checkboxes: React.FC<CheckboxesProps> = (props) => {
-  const { label, values, availableValues, required, onChange, row } = props;
+  const { label, values, availableValues, required, onChange, row, hidden } =
+    props;
   const [state, setState] = useState<String[]>([]);
   const classes = useStyles();
 
@@ -56,12 +58,16 @@ const Checkboxes: React.FC<CheckboxesProps> = (props) => {
 
   useEffect(() => {
     if (values && Array.isArray(values)) {
-      setState(values.map((v) => {
-        if (typeof v === "string") return v;
-        if (v.hasOwnProperty("name")) {
-          return v.name;
-        }
-      }).filter((x, i, a) => !!x && a.indexOf(x) == i));
+      setState(
+        values
+          .map((v) => {
+            if (typeof v === "string") return v;
+            if (v.hasOwnProperty("name")) {
+              return v.name;
+            }
+          })
+          .filter((x, i, a) => !!x && a.indexOf(x) == i)
+      );
     }
   }, [values]);
 
@@ -70,7 +76,11 @@ const Checkboxes: React.FC<CheckboxesProps> = (props) => {
   }
 
   return (
-    <FormGroup row={row} className={classes.root}>
+    <FormGroup
+      row={row}
+      className={classes.root}
+      sx={{ display: hidden ? "none" : "block" }}
+    >
       {label && (
         <Typography
           variant="subtitle1"
