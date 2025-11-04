@@ -747,6 +747,7 @@ const Form: React.FC<FormProps> = (props) => {
             value={state[field.name] || ""}
             onChange={(e) => runOnChange(handleChange, e, field.onChange)}
             required={field.required}
+            error={!!errors[field.name]}
             helperText={
               errors[field.name]
                 ? errors[field.name]?.message

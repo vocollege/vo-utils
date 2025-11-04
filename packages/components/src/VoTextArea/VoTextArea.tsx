@@ -7,6 +7,10 @@ import { OutlinedInputProps } from "@mui/material/OutlinedInput";
 import createStyles from "@mui/styles/createStyles";
 import makeStyles from "@mui/styles/makeStyles";
 import clsx from "clsx";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import FormHelperText from "@mui/material/FormHelperText";
 
 // Custom.
 import { stylesReddit } from "@vocollege/theme";
@@ -26,26 +30,17 @@ const VoTextArea = React.forwardRef<HTMLTextAreaElement, VoTextAreaProps>(
     const classesReddit = useStylesReddit();
     const classes = useStyles();
     return (
-      <>
+      <FormControl sx={{ width: "100%" }}>
         {label && (
           <div
             className={clsx(classes.labelWrapper, { [classes.error]: error })}
           >
-            <Typography
-              variant="subtitle1"
-              component="label"
+            <FormLabel
+              required={required}
               className={clsx(classes.label, { [classes.error]: error })}
             >
               {label}
-              {required && (
-                <span
-                  aria-hidden="true"
-                  className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
-                >
-                  *
-                </span>
-              )}
-            </Typography>
+            </FormLabel>
           </div>
         )}
         <TextareaAutosize
@@ -57,7 +52,12 @@ const VoTextArea = React.forwardRef<HTMLTextAreaElement, VoTextAreaProps>(
           maxRows={4}
           {...rest}
         />
-      </>
+        {helperText && (
+          <FormHelperText error={error} sx={{ mt: 0.5 }}>
+            {helperText}
+          </FormHelperText>
+        )}
+      </FormControl>
     );
   }
 );
