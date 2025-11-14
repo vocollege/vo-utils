@@ -722,10 +722,10 @@
     "@ucast/js" "^3.0.0"
     "@ucast/mongo" "^2.4.0"
 
-"@vocollege/app@^0.0.160":
-  version "0.0.160"
-  resolved "https://registry.npmjs.org/@vocollege/app/-/app-0.0.160.tgz"
-  integrity sha512-YGX/d1B9cfFOqobz2mkSkXl5eDH3Z/XYupanmU5bDAPkSzYSp1j4frlJdGxQNpk8EiZnlWNi7Ac5BwlNLGZWxA==
+"@vocollege/app@^0.0.161":
+  version "0.0.161"
+  resolved "https://registry.npmjs.org/@vocollege/app/-/app-0.0.161.tgz"
+  integrity sha512-Olw5IMzP7RnttV2vC5jlHJOZ45CZ3QPvGiYWjV7sVS5VBPEjSCVsdJhlDNssry7jFsIlWcNckGHFluqVUXvClQ==
 
 "@vocollege/theme@^0.0.34":
   version "0.0.34"
