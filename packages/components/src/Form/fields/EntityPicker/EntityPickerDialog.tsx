@@ -278,8 +278,16 @@ const EntityPickerDialog: React.FC<EntityPickerDialogProps> = (props) => {
                         variant="subtitle1"
                         className={clsx(
                           classes.rowItemTitle,
-                          classes.textNoWrap
+//                          classes.textNoWrap
                         )}
+                        sx={(theme: any) => ({
+//                          lineHeight: "1rem",
+                          overflow: "auto",
+                          lineHeight: "1.5rem",
+                          paddingTop: "0.3rem",
+                          paddingBottom: "0.3rem",
+                          whiteSpace: "wrap",
+                        })}
                       >
                         {getTitle(item)}
                       </Typography>
