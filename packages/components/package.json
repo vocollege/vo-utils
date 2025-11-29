@@ -1,6 +1,6 @@
 {
   "name": "@vocollege/components",
-  "version": "0.0.218",
+  "version": "0.0.219",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "@types/react-dom": "^18.0.11",
     "@types/react-transition-group": "4.4.5",
     "@types/tinymce": "^4.6.5",
-    "@vocollege/app": "^0.0.161",
+    "@vocollege/app": "^0.0.163",
     "@vocollege/theme": "^0.0.34",
     "axios": "^1.7.1",
     "clsx": "^1.2.1",
@@ -76,7 +76,7 @@
     "@mui/styles": "^5.18.0",
     "@mui/x-date-pickers": "^5.0.3",
     "@nosferatu500/react-sortable-tree": "^4.1.2",
-    "@vocollege/app": "^0.0.161",
+    "@vocollege/app": "^0.0.163",
     "@vocollege/theme": "^0.0.34",
     "axios": "^1.7.1",
     "clsx": "^1.2.1",
