@@ -681,7 +681,7 @@
       },
       {
         "name": "diploma_care_assistant",
-        "label": "Diplom för vårdbiträde"
+        "label": "Diplom, vårdbiträde"
       },
       {
         "name": "diploma_language_representative",
@@ -690,6 +690,10 @@
       {
         "name": "tutor_certificate",
         "label": "Intyg, handledarintyg"
+      },
+      {
+        "name": "ambassador_certificate",
+        "label": "Intyg, vård- och omsorgsambassadör"
       }
     ]
   },

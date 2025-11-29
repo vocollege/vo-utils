@@ -17,7 +17,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import Backdrop from "@mui/material/Backdrop";
-import { alpha } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
@@ -92,9 +91,11 @@ const Help: React.FC<HelpProps> = (props) => {
     settingName,
     category = "help",
     operation,
+    variables,
     client,
     onClose,
     enlargeImages = false,
+    onLoadData,
     ...rest
   } = props;
   const classes = useStyles();
@@ -162,6 +163,7 @@ const Help: React.FC<HelpProps> = (props) => {
     errorPolicy: "all",
     client: client || undefined,
     variables: {
+      ...(variables ? variables : {}),
       name: settingName,
       parent: state.selectedId,
     },
@@ -171,6 +173,7 @@ const Help: React.FC<HelpProps> = (props) => {
 
   useEffect(() => {
     setContent();
+    onLoadData?.(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
