@@ -1006,16 +1006,16 @@
     ]
   },
   "tutorAwardCertificate": {
-    "label": "Certifikat för Årets handledare",
+    "label": "Intyg för Årets handledare",
     "labels": {
-      "tutorAwardCertificates": "Certifikat för Årets handledare",
-      "createTutorAwardCertificate": "Skapa certifikat för Årets handledare",
+      "tutorAwardCertificates": "Intyg för Årets handledare",
+      "createTutorAwardCertificate": "Skapa Intyg för Årets handledare",
       "president": "Ordförande"
     },
     "messages": {
       "intro": "För handledare som utnämnts till den lokala eller regionala utmärkelsen Årets handledare.",
-      "tutorAwardCertificateSaved": "Certifikatet har sparats",
-      "tutorAwardCertificateDeleted": "Certifikatet har raderats"
+      "tutorAwardCertificateSaved": "Intyget har sparats",
+      "tutorAwardCertificateDeleted": "Intyget har raderats"
     },
     "template": {
       "title": "Årets handledare",
