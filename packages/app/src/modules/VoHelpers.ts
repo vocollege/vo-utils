@@ -227,8 +227,8 @@ export const shortenText = (
 };
 
 export const getImageContact = (item: any, width = 400, height = 400) => {
-  let entity = item.entity || item;
-  return entity.images && entity.images[0] && entity.images[0]?.url
+  let entity = item?.entity || item;
+  return entity?.images && entity.images[0] && entity.images[0]?.url
     ? `${entity.images[0]?.url}?d=${width}x${height}`
     : "/images/avatar-user.png";
 };
