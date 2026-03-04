@@ -1261,6 +1261,7 @@
       "numberEducatorYrkeshogskolor": "Antal yrkeshögskolor",
       "numberOfEducators": "Antal utbildare",
       "educatorPerType": "Utbildare per typ",
+      "employerPerType": "Arbetsgivare per typ",
       "certifiedRegionalVoCollege": "Certifierade regionala college",
       "certifiedLocalVoCollege": "Certifierade lokala college",
       "certifiedEducators": "Certifierade utbildare",
@@ -1269,6 +1270,7 @@
     },
     "messages": {
       "educatorCanAppearMultipleTimes": "Notera att en och samma utbildare kan förekomma flera gånger, under olika rubriker. T ex kan en utbildare vara både 'Kommunal Gymnasium' och 'Kommunal vuxenutbildning'.",
+      "employerCanAppearMultipleTimes": "Notera att en och samma arbetsgivare kan förekomma flera gånger, under olika rubriker. VoAdmin tillåter exempelvis att en och samma arbetsgivare ställs in som både 'Kommun' och 'Privat'.",
       "sumOfEducationsCanBeDifferentFromNumberOfEducators": "Notera att summan av utbildningar kan bli annorlunda från 'Antal utbildare', eftersom vissa utbildare kan sakna certfierade utbildningar under vald period och/eller en och samma utbildare kan ha flera utbildningar."
     }
   },
