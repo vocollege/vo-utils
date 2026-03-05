@@ -8,6 +8,8 @@ export const GET_EDUCATIONS_FIELDS = gql`
     code
     created_at
     updated_at
+    diplomaType
+    education
   }
 `;
 export const GET_EDUCATION = gql`

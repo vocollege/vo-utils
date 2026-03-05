@@ -96,6 +96,13 @@ export const SEARCH_GROUP = gql`
         filetype
         url
       }
+      educations {
+        id
+        status
+        title
+        diplomaType
+        education
+      }
       parentGroups {
         id
         name
