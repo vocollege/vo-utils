@@ -17,6 +17,7 @@ export const GET_GROUP = gql`
       educator_type
       employer_type
       certified
+      decertified
       status
       url
       data_protection_policy_url
