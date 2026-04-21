@@ -48,6 +48,8 @@ export interface EnhancedTableProps {
   filters?: EnhancedTableFilter[];
   onDataChange?: (data: any) => void;
   actionButtonIsDisabled?: (action: string, row?: GeneralObject) => boolean;
+  excelQuery?: DocumentNode | undefined;
+  excelDownloadFilename?: string;
 }
 
 export interface EnhancedTableHeadProps {
@@ -70,6 +72,10 @@ export interface EnhancedTableToolbarProps {
 
   SearchFieldProps?: EnhancedTableSearchFieldProps;
   FiltersProps?: EnhancedTableFiltersProps;
+
+  excelQuery?: DocumentNode | undefined;
+  excelDownloadFilename?: string;
+  ExcelFiltersProps?: any;
 }
 
 export interface EnhancedTableStatusCellProps {

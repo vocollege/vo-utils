@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
@@ -16,6 +16,7 @@ import FloatingButton from "@/FloatingButton";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 import EnhancedTableSearchField from "./components/EnhancedTableSearchField";
 import EnhancedTableFilters from "./components/EnhancedTableFilters";
+import DownloadExcelButton from "../DownloadExcelButton";
 
 const useStylesActions = makeStyles(() => stylesActions);
 
@@ -31,10 +32,15 @@ export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     SearchFieldProps,
     FiltersProps,
 
-    // searchLoading,
-    // onSearchTermChange,
-    // searchResult,
+    excelQuery,
+    excelDownloadFilename,
+    ExcelFiltersProps,
   } = props;
+  console.log("FiltersProps: ", FiltersProps);
+  const showExcelDownloadButton = useMemo(() => {
+    if (!excelQuery || !excelDownloadFilename) return false;
+    return true;
+  }, [excelQuery, excelDownloadFilename]);
 
   return (
     <Toolbar className={clsx(classes.root, { [classes.noTitle]: !title })}>
@@ -84,6 +90,18 @@ export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           )}
         </Grid>
       </Grid>
+
+      {showExcelDownloadButton && (
+        <DownloadExcelButton 
+          filename={excelDownloadFilename}
+          query={excelQuery}
+          queryProps={ExcelFiltersProps}
+          sx={(theme: any) => ({
+            right: theme.spacing( addItem ? 13 : 4), 
+            bottom: theme.spacing(4),
+          })}
+        />
+      )}
       {addItem && (
         <FloatingButton
           label=""

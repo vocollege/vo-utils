@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Workbook, AddWorksheetOptions, Column } from "exceljs";
 import { saveAs } from "file-saver";
-
+import { toast } from "react-toastify";
+import { useLazyQuery } from "@apollo/client";
 // Custom.
 import { DownloadExcelButtonProps, Sheet, SheetRow } from "./global";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
-  const { filename, sheets } = props;
-
+  const { filename, sheets, query, queryProps, onData, sx} = props;
   const [workbook, setWorkbook] = useState<Workbook | null>(null);
+  const [loadData, {called, loading, data, error: queryError}] = useLazyQuery(query, {variables: queryProps});
+  const useQueryData = useMemo(() => { return !!query; }, [query]);
 
   // Methods.
 
@@ -32,12 +34,27 @@ const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
     }
   };
 
-  const createWorkbook = () => {
+  const handleClick = () => {
+    if (useQueryData) {
+      loadData();
+      console.log("loadData()");
+    } else {
+      handleDownload();
+    }
+  
+  };
+
+  const createWorkbook = (sheets) => {
     if (!sheets) {
       return;
     }
     const newWorkbook = new Workbook();
 
+    
+    console.log("Trying to create workbook with sheets:", sheets);
+    if (!sheets) {
+      return;
+    }
     sheets.map((v: Sheet) => {
       const options: Partial<AddWorksheetOptions> = {
         pageSetup: {
@@ -69,10 +86,32 @@ const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
   // Effects.
 
   useEffect(() => {
-    createWorkbook();
+    createWorkbook(sheets);
   }, [sheets]);
 
-  if (!workbook) {
+  useEffect(() => {
+    if (data && useQueryData) {
+      createWorkbook(onData ? onData(tempData) : data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (useQueryData && workbook && data) {
+      handleDownload();
+    }
+  }, [workbook, data]);
+
+
+      console.log("QueryError:", queryError);
+  useEffect(() => {
+    if (queryError) {
+      toast.error(queryError.message, {autoClose: 20000});
+    }
+  }, [queryError]);
+
+  console.log("DownloadExcelButton.tsx data:", data, "called:", called, "loading:", loading);
+
+  if (!workbook && !useQueryData) {
     return <></>;
   }
 
@@ -82,12 +121,14 @@ const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
         size="medium"
         color="secondary"
         variant="extended"
-        onClick={handleDownload}
-        sx={{
+        onClick={handleClick}
+        disabled={loading}
+        sx={[{
           position: "fixed",
           bottom: 16,
           right: 16,
-        }}
+        }, ...(sx && Array.isArray(sx) ? sx : [sx]),
+        ]}
       >
         <FileDownloadIcon sx={{ mr: 0.5 }} />
         {I18n.get.actions.downloadExcel}

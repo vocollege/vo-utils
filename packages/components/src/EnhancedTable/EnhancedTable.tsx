@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useMemo } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -61,12 +61,33 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     filters,
     onDataChange,
     actionButtonIsDisabled,
+    excelQuery,
+    excelDownloadFilename,
   } = props;
+
+  const excelFilters = useMemo(() => {
+    if (!excelQuery || !excelDownloadFilename || !state) return null;
+    return {
+      search: state.search,
+      order: state.order,
+      orderBy: [
+        {
+          column: state.orderBy,
+          order: state.order,
+        },
+      ],
+      filters: state.filters,
+      ...queryVariables,
+    };
+    //return Object.fromEntries(Object.entries(state).filter(([key]) => !["limit", "page", "paginatorInfo", "data", "total"].includes(key)));
+  }, [state, excelQuery, excelDownloadFilename]);
+  console.log("excelFilters: ", excelFilters);
 
   if (!operations.delete) {
     operations.delete = gql``;
   }
 
+  console.log("EnhancedTable.tsx state:", state);
   // Methods.
 
   const handleRequestSort = (
@@ -248,6 +269,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     }
   }, [refetch]);
 
+
   return (
     <div className={clsx(classes.root, className)}>
       <Paper className={clsx(classes.paper, classesProp?.paper)} elevation={10}>
@@ -256,6 +278,9 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
           title={title}
           total={state.total}
           enableSearch={enableSearch}
+          excelQuery={excelQuery}
+          excelDownloadFilename={excelDownloadFilename}
+          ExcelFiltersProps={excelFilters}
           SearchFieldProps={{
             searchLoading: queryLoading,
             onSearchTermChange: handleSearch,
@@ -264,6 +289,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
             filters,
             onChange: handleFiltersChange,
           }}
+
         />
         <TableContainer>
           <Table

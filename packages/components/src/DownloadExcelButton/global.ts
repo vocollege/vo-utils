@@ -6,13 +6,20 @@ import {
   WorksheetProperties,
   Column,
 } from "exceljs";
-
+import {
+  DocumentNode,
+  ApolloClient,
+} from "@apollo/client";
 import { GeneralObject } from "@vocollege/app";
 
 export interface DownloadExcelButtonProps {
+  sx?: any;
   filename?: string;
   sheets?: Sheet[];
-  sheetData?: Partial<Worksheet>[];
+  query?: DocumentNode;
+  queryProps?: any;
+  onData?: (data: any) => any; 
+  client?: ApolloClient<object>;
 }
 
 // export interface SheetColumn {

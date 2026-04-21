@@ -1446,6 +1446,10 @@ const Form: React.FC<FormProps> = (props) => {
     }
   }, [isDirty, isValid]);
 
+  /*useEffect(() => {
+    console.log("Form.tsx state:", state);
+  }, [state]);*/
+
   useEffect(() => {
     if (onQueryLoading) {
       onQueryLoading(queryLoading);
