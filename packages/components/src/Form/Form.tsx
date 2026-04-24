@@ -1237,9 +1237,7 @@ const Form: React.FC<FormProps> = (props) => {
     }
 
     if (onComplete) {
-      if (!(autosave && saveTypeRef.current === "autosave")) {
-        onComplete(data, saveTypeRef.current);
-      }
+      onComplete(data, saveTypeRef.current);
     } else if (!autosave) {
       redirect({ refetch: true });
     }
