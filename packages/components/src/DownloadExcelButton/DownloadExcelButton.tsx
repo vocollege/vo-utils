@@ -11,7 +11,7 @@ import { DownloadExcelButtonProps, Sheet, SheetRow } from "./global";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
 const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
-  const { filename, sheets, query, queryProps, onData, sx} = props;
+  const { filename, sheets, query, queryProps, sx, handleExcelQueryData} = props;
   const [workbook, setWorkbook] = useState<Workbook | null>(null);
   const [loadData, {called, loading, data, error: queryError}] = useLazyQuery(query, {variables: queryProps});
   const useQueryData = useMemo(() => { return !!query; }, [query]);
@@ -37,7 +37,6 @@ const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
   const handleClick = () => {
     if (useQueryData) {
       loadData();
-      console.log("loadData()");
     } else {
       handleDownload();
     }
@@ -46,15 +45,11 @@ const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
 
   const createWorkbook = (sheets) => {
     if (!sheets) {
+      console.Error("No sheets to create workbook from");
       return;
     }
     const newWorkbook = new Workbook();
 
-    
-    console.log("Trying to create workbook with sheets:", sheets);
-    if (!sheets) {
-      return;
-    }
     sheets.map((v: Sheet) => {
       const options: Partial<AddWorksheetOptions> = {
         pageSetup: {
@@ -91,9 +86,9 @@ const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
 
   useEffect(() => {
     if (data && useQueryData) {
-      createWorkbook(onData ? onData(tempData) : data);
+      createWorkbook(handleExcelQueryData ? handleExcelQueryData(data) : data);
     }
-  }, [data]);
+  }, [data, useQueryData, handleExcelQueryData]);
 
   useEffect(() => {
     if (useQueryData && workbook && data) {
@@ -102,14 +97,11 @@ const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
   }, [workbook, data]);
 
 
-      console.log("QueryError:", queryError);
   useEffect(() => {
     if (queryError) {
       toast.error(queryError.message, {autoClose: 20000});
     }
   }, [queryError]);
-
-  console.log("DownloadExcelButton.tsx data:", data, "called:", called, "loading:", loading);
 
   if (!workbook && !useQueryData) {
     return <></>;

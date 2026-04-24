@@ -62,7 +62,9 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
     onDataChange,
     actionButtonIsDisabled,
     excelQuery,
+    excelQueryProps,
     excelDownloadFilename,
+    handleExcelQueryData,
   } = props;
 
   const excelFilters = useMemo(() => {
@@ -77,17 +79,14 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
         },
       ],
       filters: state.filters,
-      ...queryVariables,
+      ...excelQueryProps,
     };
-    //return Object.fromEntries(Object.entries(state).filter(([key]) => !["limit", "page", "paginatorInfo", "data", "total"].includes(key)));
-  }, [state, excelQuery, excelDownloadFilename]);
-  console.log("excelFilters: ", excelFilters);
+  }, [state, excelQuery, excelDownloadFilename, excelQueryProps]);
 
   if (!operations.delete) {
     operations.delete = gql``;
   }
 
-  console.log("EnhancedTable.tsx state:", state);
   // Methods.
 
   const handleRequestSort = (
@@ -280,6 +279,7 @@ const EnhancedTable: React.FC<EnhancedTableProps> = (props) => {
           enableSearch={enableSearch}
           excelQuery={excelQuery}
           excelDownloadFilename={excelDownloadFilename}
+          handleExcelQueryData={handleExcelQueryData}
           ExcelFiltersProps={excelFilters}
           SearchFieldProps={{
             searchLoading: queryLoading,

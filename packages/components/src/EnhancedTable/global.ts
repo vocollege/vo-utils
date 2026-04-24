@@ -2,13 +2,12 @@ import { ApolloClient, DocumentNode } from "@apollo/client";
 import { useStyles } from "./styles";
 import { GeneralObject } from "@vocollege/app/dist/global";
 import React from "react";
+import { Sheet } from "../DownloadExcelButton";
 
 export interface EnhancedTableOperations {
   category: string;
   get: DocumentNode;
   delete?: DocumentNode | undefined;
-  // search?: DocumentNode;
-  // searchCategory?: string;
 }
 
 export interface EnhancedTableColumns {
@@ -49,7 +48,9 @@ export interface EnhancedTableProps {
   onDataChange?: (data: any) => void;
   actionButtonIsDisabled?: (action: string, row?: GeneralObject) => boolean;
   excelQuery?: DocumentNode | undefined;
+  excelQueryProps?: any;
   excelDownloadFilename?: string;
+  handleExcelQueryData?: (data: any) => Sheet[];
 }
 
 export interface EnhancedTableHeadProps {
@@ -66,15 +67,13 @@ export interface EnhancedTableToolbarProps {
   total?: number;
   addItem?: () => void;
   enableSearch?: boolean;
-  // searchLoading?: boolean;
-  // onSearchTermChange?: (searchTerm: string) => void;
-  // searchResult?: GeneralObject[];
 
   SearchFieldProps?: EnhancedTableSearchFieldProps;
   FiltersProps?: EnhancedTableFiltersProps;
 
   excelQuery?: DocumentNode | undefined;
   excelDownloadFilename?: string;
+  handleExcelQueryData?: (data: any) => Sheet[];
   ExcelFiltersProps?: any;
 }
 

@@ -34,9 +34,10 @@ export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
     excelQuery,
     excelDownloadFilename,
+
+    handleExcelQueryData,
     ExcelFiltersProps,
   } = props;
-  console.log("FiltersProps: ", FiltersProps);
   const showExcelDownloadButton = useMemo(() => {
     if (!excelQuery || !excelDownloadFilename) return false;
     return true;
@@ -96,6 +97,7 @@ export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           filename={excelDownloadFilename}
           query={excelQuery}
           queryProps={ExcelFiltersProps}
+          handleExcelQueryData={handleExcelQueryData}
           sx={(theme: any) => ({
             right: theme.spacing( addItem ? 13 : 4), 
             bottom: theme.spacing(4),
