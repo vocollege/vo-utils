@@ -50,7 +50,7 @@ export interface EnhancedTableProps {
   excelQuery?: DocumentNode | undefined;
   excelQueryProps?: any;
   excelDownloadFilename?: string;
-  handleExcelQueryData?: (data: any) => Sheet[];
+  handleExcelQueryData?: (data: any) => Sheet[] | null;
 }
 
 export interface EnhancedTableHeadProps {
@@ -73,7 +73,7 @@ export interface EnhancedTableToolbarProps {
 
   excelQuery?: DocumentNode | undefined;
   excelDownloadFilename?: string;
-  handleExcelQueryData?: (data: any) => Sheet[];
+  handleExcelQueryData?: (data: any) => Sheet[] | null;
   ExcelFiltersProps?: any;
 }
 

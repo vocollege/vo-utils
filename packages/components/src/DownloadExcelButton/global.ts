@@ -19,7 +19,7 @@ export interface DownloadExcelButtonProps {
   query?: DocumentNode;
   queryProps?: any;
   client?: ApolloClient<object>;
-  handleExcelQueryData?: (data: any) => Sheet[];
+  handleExcelQueryData?: (data: any) => Sheet[] | null;
 }
 
 // export interface SheetColumn {
