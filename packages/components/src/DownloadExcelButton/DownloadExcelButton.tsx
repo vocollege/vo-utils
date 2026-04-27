@@ -6,14 +6,21 @@ import { Workbook, AddWorksheetOptions, Column } from "exceljs";
 import { saveAs } from "file-saver";
 import { toast } from "react-toastify";
 import { useLazyQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 // Custom.
 import { DownloadExcelButtonProps, Sheet, SheetRow } from "./global";
 import I18n from "@vocollege/app/dist/modules/Services/I18n";
 
+const EMPTY_QUERY = gql`
+  query {
+    __typename
+  }
+`;
+
 const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
   const { filename, sheets, query, queryProps, sx, handleExcelQueryData} = props;
   const [workbook, setWorkbook] = useState<Workbook | null>(null);
-  const [loadData, {called, loading, data, error: queryError}] = useLazyQuery(query, {variables: queryProps});
+  const [loadData, {called, loading, data, error: queryError}] = useLazyQuery(query || EMPTY_QUERY, {variables: queryProps});
   const useQueryData = useMemo(() => { return !!query; }, [query]);
 
   // Methods.
