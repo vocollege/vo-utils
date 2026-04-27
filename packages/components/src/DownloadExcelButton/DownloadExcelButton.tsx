@@ -45,7 +45,7 @@ const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
 
   const createWorkbook = (sheets) => {
     if (!sheets) {
-      console.Error("No sheets to create workbook from");
+      console.error("No sheets to create workbook from");
       return;
     }
     const newWorkbook = new Workbook();
