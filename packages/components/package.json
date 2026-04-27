@@ -1,6 +1,6 @@
 {
   "name": "@vocollege/components",
-  "version": "0.0.222",
+  "version": "0.0.226",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -96,6 +96,6 @@
     "react-toastify": "^8.0.0"
   },
   "dependencies": {
-    "@vocollege/app": "^0.0.168"
+    "@vocollege/app": "^0.0.170"
   }
 }

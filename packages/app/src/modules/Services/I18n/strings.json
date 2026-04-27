@@ -578,7 +578,7 @@
       "fieldPopulatedBy": "Detta fält autogenereras baserat på '::field'.",
       "unsavedContent": "Det finns osparat innehåll. Är du säker på att du vill lämna denna sida?",
       "redirecting": "Omdirigerar...",
-      "personalNumberWhenPossible": "Personnumer är ej obligatoriskt men bör ifyllas när detta är möjligt.",
+      "personalNumberWhenPossible": "Personnummer är frivilligt.",
       "currentPassword": "Om du vill ändra lösenordet så måste nuvarande anges här.",
       "dataProtectionPolicyUrlHelper": "Denna länk kommer att visas i foten på denna VoSida."
     }

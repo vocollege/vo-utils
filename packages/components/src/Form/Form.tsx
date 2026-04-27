@@ -105,6 +105,9 @@ const Form: React.FC<FormProps> = (props) => {
   const saveTypeRef = useRef(null);
   const isMutating = useRef(false);
   const modelExists = useRef(false);
+  const modelIdRef = useRef<number | string | null>(
+    initialState?.[primaryField || "id"] ?? null
+  );
   const [state, dispatch] = useReducer(reducer, initialState);
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
@@ -153,21 +156,25 @@ const Form: React.FC<FormProps> = (props) => {
 
   const onMutationUpdate = async (cache, { data: savedData }) => {
     if (autosave) {
-      const data = savedData[Object.keys(savedData)[0]];
-      const id = data.id;
+      const mutationModel = Object.values(savedData || {}).find(
+        (value: any) => value && typeof value === "object" && "id" in value
+      ) as { id?: number | string } | undefined;
+      const id = mutationModel?.id;
 
-      cache.writeQuery({
-        query: operations.update || fakeMutation,
-        variables: { id: id },
-        data: savedData,
-      });
+      if (id !== undefined && id !== null) {
+        cache.writeQuery({
+          query: operations.update || fakeMutation,
+          variables: { id },
+          data: savedData,
+        });
+      }
 
-      await reset(savedData, { keepIsValid: true, keepErrors: true });
+      await reset(getValues(), { keepIsValid: true, keepErrors: true });
       await trigger();
     }
   };
 
-  const onMutationCompleted = (data: any, baseLabel: string) => {
+  const onMutationCompleted = async (data: any, baseLabel: string) => {
     let label = baseLabel;
     if (
       saveTypeRef.current &&
@@ -180,19 +187,26 @@ const Form: React.FC<FormProps> = (props) => {
       modelExists.current = true;
     }
     if (autosave) {
-      const keys = Object.keys(data);
-      const objectKey = keys.find((k) => k.startsWith("update"));
-      if (objectKey) {
-        const model = data[objectKey];
-        if (model.hasOwnProperty("id")) {
-          const id = model["id"];
-          dispatch({ field: "id", value: id });
-          setValue("id" as const, id, {
-            shouldValidate: true,
-            shouldDirty: true,
-          });
-        }
+      const mutationModel = Object.values(data || {}).find(
+        (value: any) => value && typeof value === "object" && "id" in value
+      ) as { id?: number | string } | undefined;
+      if (mutationModel?.id !== undefined && mutationModel?.id !== null) {
+        const id = mutationModel.id;
+        modelIdRef.current = id;
+        dispatch({ field: "id", value: id });
+        setValue("id" as const, id, {
+          shouldValidate: true,
+          shouldDirty: false,
+        });
       }
+
+      const valuesAfterSave = {
+        ...getValues(),
+        [primaryField || "id"]:
+          mutationModel?.id ?? modelIdRef.current ?? getValues("id"),
+      };
+      await reset(valuesAfterSave, { keepIsValid: true, keepErrors: true });
+      await trigger();
     }
     handleCompleted(data, label);
   };
@@ -329,10 +343,24 @@ const Form: React.FC<FormProps> = (props) => {
       variables = onSave(variables, saveTypeRef.current);
     }
 
-    const hasId = variables.hasOwnProperty("id");
-
     if (!isCreateNew()) {
-      variables[primaryField || "id"] = state[primaryField || "id"];
+      if (autosave) {
+        const modelId =
+          modelIdRef.current ??
+          getValues(`${primaryField || "id"}` as const) ??
+          state[primaryField || "id"];
+        if (
+          modelId === undefined ||
+          modelId === null ||
+          modelId === 0 ||
+          modelId === "0"
+        ) {
+          return;
+        }
+        variables[primaryField || "id"] = modelId;
+      } else {
+        variables[primaryField || "id"] = state[primaryField || "id"];
+      }
       update({
         variables: variables,
       });
@@ -1282,6 +1310,7 @@ const Form: React.FC<FormProps> = (props) => {
         item: mergedData,
       });
     }
+    modelIdRef.current = mergedData[primaryField || "id"] ?? modelIdRef.current;
     await reset(mergedData, { keepIsValid: true, keepErrors: true });
     await trigger();
     if (onDataChange) {
