@@ -88,7 +88,7 @@ const DownloadExcelButton: React.FC<DownloadExcelButtonProps> = (props) => {
   // Effects.
 
   useEffect(() => {
-    createWorkbook(sheets);
+    if (sheets) createWorkbook(sheets);
   }, [sheets]);
 
   useEffect(() => {

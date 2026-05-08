@@ -1054,7 +1054,8 @@
       "createLanguageRepresentativeDiploma": "Skapa diplom för språkombud",
       "place": "Region/Ort",
       "educator1": "Utbildare 1",
-      "educator2": "Utbildare 2"
+      "educator2": "Utbildare 2",
+      "educator3": "Utbildare 3"
     },
     "messages": {
       "intro": "För diplom till de som genomgått utbildning till språkombud.",

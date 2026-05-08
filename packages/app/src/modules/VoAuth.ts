@@ -18,6 +18,7 @@ class VoAuth extends VoBase {
   user: any = null;
   ability: AnyMongoAbility;
   globalAbility: AnyMongoAbility;
+  tokenRefreshTimeout: any;
 
   constructor(key: string) {
     super(key);
@@ -76,6 +77,8 @@ class VoAuth extends VoBase {
 
           this.setSession(response.data);
           await this.loadUser(true);
+          this.startTokenRefreshTimer();
+          window.addEventListener("beforeunload", () => clearTimeout(this.tokenRefreshTimeout));
           resolve(true);
         } else {
           reject("Authorization failed");
@@ -99,44 +102,48 @@ class VoAuth extends VoBase {
   }
 
   setSession(token: any, updateCookie = true) {
-    // const { token_type, access_token, refresh_token, expires_in } = token;
-    const { access_token, refresh_token } = token;
+    const { access_token, refresh_token, expires_in } = token;
 
     if (updateCookie) {
-      let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
-      JsCookies.set(refreshTokenKey, refresh_token, {
+      
+      //console.log("setSession updatingCookie");
+      const expiryTime = new Date().getTime() + (expires_in || 3600) * 1000;
+      JsCookies.set(VoConfig.get.AUTH_STORAGE_EXPIRE_TOKEN || "", expiryTime.toString(), {
+        expires: 21,
+        sameSite: "Lax",
+        domain: VoConfig.get.AUTH_DOMAIN,
+      });
+
+      JsCookies.set(VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "", refresh_token, {
         expires: 21,
         sameSite: "Lax",
         domain: VoConfig.get.AUTH_DOMAIN,
       });
 
       let expires = new Date(new Date().getTime() + 4 * 60 * 60 * 1000);
-      let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
-      JsCookies.set(accessTokenKey, access_token, {
+      JsCookies.set(VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "", access_token, {
         expires,
         sameSite: "Lax",
         domain: VoConfig.get.AUTH_DOMAIN,
       });
     }
 
-    axios.defaults.headers.common["Authorization"] =
-      // token_type + " " + access_token;
-      "Bearer " + access_token;
+    axios.defaults.headers.common["Authorization"] = "Bearer " + access_token;
     let currentGroup = VoGroups.getCurrent(true);
-    axios.defaults.headers.common["VoGroup"] = currentGroup
-      ? currentGroup.id
-      : "";
+    axios.defaults.headers.common["VoGroup"] = currentGroup ? currentGroup.id : "";
+    this.startTokenRefreshTimer();
   }
+
   resetSession() {
-    console.log("Resetting session");
-    let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
+    //console.log("Resetting session");
+    const refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
     Helpers.localStorage.remove(refreshTokenKey);
     JsCookies.remove(refreshTokenKey, {
       domain: VoConfig.get.AUTH_DOMAIN,
       sameSite: "Lax",
     });
 
-    let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
+    const accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
     Helpers.localStorage.remove(accessTokenKey);
     JsCookies.remove(accessTokenKey, {
       domain: VoConfig.get.AUTH_DOMAIN,
@@ -149,6 +156,7 @@ class VoAuth extends VoBase {
 
     delete axios.defaults.headers.common["Authorization"];
   }
+
   async refreshToken() {
     try {
       const token: any = this.getToken();
@@ -173,6 +181,29 @@ class VoAuth extends VoBase {
       this.resetSession();
       throw error;
     }
+  }
+
+  startTokenRefreshTimer() {
+    const expiresAt = JsCookies.get(VoConfig.get.AUTH_STORAGE_EXPIRE_TOKEN);
+    if (!expiresAt) return;
+
+    const expiresInMs = parseInt(expiresAt) - (new Date().getTime());
+    const refreshAt = expiresInMs - (30 * 1000); // 30 sec before expiration
+    clearTimeout(this.tokenRefreshTimeout);
+    this.tokenRefreshTimeout = setTimeout(async () => {
+      try {
+        const newToken = await this.refreshToken();
+        this.setSession(newToken);
+        this.startTokenRefreshTimer();
+      } catch (error) {
+        console.error("Token refresh failed:", error);
+        this.resetSession();
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
+      }
+    }, refreshAt);
+    //console.log("Setting token refresh timeout in: ", refreshAt);
   }
 
   check(forceRedirect = false, forceLoad = false): Promise<any> {
@@ -214,6 +245,7 @@ class VoAuth extends VoBase {
       }
     });
   }
+
   loadUser(force = false): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -231,9 +263,11 @@ class VoAuth extends VoBase {
       }
     });
   }
+
   get currentUser() {
     return this.user;
   }
+
   get isOnlyValidigCandidate() {
     if (this.user?.validig) {
       return this.user?.roles?.length == 1 && this.user?.roles.find((r: any) => r.name ==="candidate");
@@ -243,11 +277,9 @@ class VoAuth extends VoBase {
 
   getToken(): VoTokenType | void {
     try {
-      let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
-      const refreshToken = JsCookies.get(refreshTokenKey);
-
-      let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
-      const accessToken = JsCookies.get(accessTokenKey);
+      const refreshToken = JsCookies.get(VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "");
+      const accessToken = JsCookies.get(VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "");
+      const expiryToken = JsCookies.get(VoConfig.get.AUTH_STORAGE_EXPIRE_TOKEN || "");
 
       // let tokenTypeKey = VoConfig.get.AUTH_STORAGE_TOKEN_TYPE || "";
       // const tokenType = JsCookies.get(tokenTypeKey);
@@ -260,6 +292,7 @@ class VoAuth extends VoBase {
         return {
           refresh_token: refreshToken,
           access_token: accessToken || "",
+          expiry_token: expiryToken || "",
           // token_type: tokenType,
           // expires_in: expiresIn,
         };
@@ -269,17 +302,13 @@ class VoAuth extends VoBase {
     }
   }
 
-  // const getLoginUrl = () => {
-  //     return 'http://localhost:8000/oauth/authorize?client_id=91c51b49-e705-4993-a8c7-497ee47e869e&redirect_uri=http://localhost:3000/auth&response_type=code&scope=*&state=' + state + '&code_challenge=' + challenge + '&code_challenge_method=S256'
-  //   }
-
   initAuth(): { state: string; challenge: string } {
     try {
-      let state = Helpers.createRandomString(40);
-      let verifier = Helpers.createRandomString(128);
-      let challenge = Helpers.base64Url(crypto.SHA256(verifier));
+      const state = Helpers.createRandomString(40);
+      const verifier = Helpers.createRandomString(128);
+      const challenge = Helpers.base64Url(crypto.SHA256(verifier));
 
-      let stateKey = VoConfig.get.AUTH_STORAGE_STATE || "";
+      const stateKey = VoConfig.get.AUTH_STORAGE_STATE || "";
       Helpers.localStorage.remove(stateKey);
       JsCookies.set(stateKey, state, {
         expires: 1,
@@ -287,7 +316,7 @@ class VoAuth extends VoBase {
         domain: VoConfig.get.AUTH_DOMAIN,
       });
 
-      let verifierKey = VoConfig.get.AUTH_STORAGE_VERIFIER || "";
+      const verifierKey = VoConfig.get.AUTH_STORAGE_VERIFIER || "";
       Helpers.localStorage.remove(verifierKey);
       JsCookies.set(verifierKey, verifier, {
         expires: 1,
@@ -295,7 +324,7 @@ class VoAuth extends VoBase {
         domain: VoConfig.get.AUTH_DOMAIN,
       });
 
-      let accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
+      const accessTokenKey = VoConfig.get.AUTH_STORAGE_ACCESS_TOKEN || "";
       Helpers.localStorage.remove(accessTokenKey);
       JsCookies.remove(accessTokenKey, {
         domain: VoConfig.get.AUTH_DOMAIN,
@@ -303,7 +332,7 @@ class VoAuth extends VoBase {
         expires: 1,
       });
 
-      let refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
+      const refreshTokenKey = VoConfig.get.AUTH_STORAGE_REFRESH_TOKEN || "";
       Helpers.localStorage.remove(refreshTokenKey);
       JsCookies.remove(refreshTokenKey, {
         domain: VoConfig.get.AUTH_DOMAIN,
@@ -327,6 +356,7 @@ class VoAuth extends VoBase {
       throw error;
     }
   }
+
   getInitiatedAuth(): { state: string; verifier: string } {
     let stateKey = VoConfig.get.AUTH_STORAGE_STATE || "";
     // const state = Helpers.localStorage.get(stateKey);

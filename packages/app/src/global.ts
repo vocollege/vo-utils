@@ -34,6 +34,7 @@ export type VoTokenType = {
   // token_type: string;
   access_token: string;
   refresh_token: string;
+  expiry_token: string;
   // expires_in: string;
 };
 

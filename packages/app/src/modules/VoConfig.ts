@@ -47,6 +47,7 @@ class VoConfig {
     AUTH_STORAGE_VERIFIER: "vo_verifier",
     AUTH_STORAGE_REFRESH_TOKEN: "vo_rtoken",
     AUTH_STORAGE_ACCESS_TOKEN: "vo_atoken",
+    AUTH_STORAGE_EXPIRE_TOKEN: "vo_etoken",
     // AUTH_STORAGE_TOKEN_TYPE: "voapp_tokentype",
     // AUTH_STORAGE_EXPIRES_IN: "voapp_expiresin",
     AUTH_DOMAIN: ".vo-college.se",

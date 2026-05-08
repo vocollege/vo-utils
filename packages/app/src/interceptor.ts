@@ -7,28 +7,41 @@ import Cookies from "js-cookie";
 // Custom.
 import I18n from "./modules/Services/I18n";
 
-(function () {
-  async function redirect() {
-    try {
-      //console.log("@vocollege/api->interceptor.ts->redirect()");
-      Cookies.set("voapp_redirectTo", window.location.origin, {
-        domain: ".vo-college.se",
-        sameSite: "Lax",
-      });
-      await VoAuth.logout();
-      VoRouter.redirectToLogout();
-    } catch (error) {
-      console.error("Interceptor", error);
-      VoAuth.resetSession();
-    }
-  }
+let isRefreshingToken = false;
+let failedRequestQueue: any[] = [];
 
-  //console.log("@vocollege/api->interceptor.ts");
+function retryFailedRequests() {
+  if (failedRequestQueue.length && !isRefreshingToken) {
+    failedRequestQueue.forEach((request) => {
+      axios.request(request);
+    });
+    failedRequestQueue = [];
+  }
+}
+
+async function redirect() {
+  try {
+    Cookies.set("voapp_redirectTo", window.location.origin, {
+      domain: ".vo-college.se",
+      sameSite: "Lax",
+    });
+    await VoAuth.logout();
+    VoRouter.redirectToLogout();
+  } catch (error) {
+    console.error("Interceptor", error);
+    VoAuth.resetSession();
+  }
+}
+
+(function () {
   axios.defaults.withCredentials = true;
   axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
   axios.interceptors.request.use((req) => {
-    //console.log("Interceptor request", `${req.method} ${req.url}`);
+    const token = VoAuth.getToken();
+    if (!req.headers.Authorization && token) {
+      req.headers.Authorization = `Bearer ${token.access_token}`;
+    }
     return req;
   });
 
@@ -39,28 +52,44 @@ import I18n from "./modules/Services/I18n";
     async (error) => {
       const { config } = error;
       let isTokenRequest = config.url.includes("oauth/token");
-      /*console.log(
-        "@vocollege/api->interceptor.js - isTokenRequest: ",
-        isTokenRequest,
-      );*/
+      
+      if (isTokenRequest) {
+        toast.error(I18n.get.messages.sessionExpired, { autoClose: false });
+        redirect();
+        return Promise.reject(error);
+      }
+
       try {
-        if (
-          !isTokenRequest &&
-          [400, 401, 403].indexOf(error.response?.status) > -1
-        ) {
-          await VoAuth.refreshToken();
+        if ([400, 401, 403].includes(error.response?.status)) {
+          if (!isRefreshingToken && !config._retry) {
+            isRefreshingToken = true;
+            config._retry = true;
+
+            try {
+              const newToken = await VoAuth.refreshToken();
+              config.headers.Authorization = `Bearer ${newToken?.access_token}`;
+              retryFailedRequests();
+              return axios(config);
+            } catch (refreshError) {
+              redirect();
+              return Promise.reject(refreshError);
+            } finally {
+              isRefreshingToken = false;
+            }
+          }
+        }
+          /*await VoAuth.refreshToken();
           const token: any = VoAuth.getToken();
           if (token) {
             config.headers["Authorization"] = "Bearer " + token.access_token;
             return axios.request(config);
           }
-        }
-      } catch (error) {}
-
-      if (isTokenRequest) {
-        toast.error(I18n.get.messages.sessionExpired, { autoClose: false });
-        redirect();
+        }*/
+      } catch (error) {
+        console.error("Interceptor error:", error);
       }
+
+      
       return Promise.reject(error);
     },
   );
