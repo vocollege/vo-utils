@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@apollo/client@^3.3.7", "@apollo/client@^3.6.9", "@apollo/client@^3.8.0":
+"@apollo/client@^3.6.9", "@apollo/client@^3.8.0":
   version "3.10.5"
   resolved "https://registry.npmjs.org/@apollo/client/-/client-3.10.5.tgz"
   integrity sha512-bZh5wLAT8b4KdEmqnqiQeDUttnR+NJ+gDYSN8T+U0uFGN++5LO5PTwySih6kIU5ErGGGw4NHI94YdSET3uLuBA==
@@ -722,10 +722,10 @@
     "@ucast/js" "^3.0.0"
     "@ucast/mongo" "^2.4.0"
 
-"@vocollege/app@^0.0.172":
-  version "0.0.172"
-  resolved "https://registry.npmjs.org/@vocollege/app/-/app-0.0.172.tgz"
-  integrity sha512-6xFU9Z5b8f6/t1YMGC4bO2gh7MulpV1+3EfGHSbhPpmLhVttO1VZA3RRHCAPmCPdLixp6Bt3PsdHELFCmJRuew==
+"@vocollege/app@^0.0.175":
+  version "0.0.175"
+  resolved "https://registry.npmjs.org/@vocollege/app/-/app-0.0.175.tgz"
+  integrity sha512-Ddhg16vLofLu60scCuGsDvbPX9sIzFes5m4Z9tI7gO5bn9RcDIPa/hR7bCmdPWUXv/Nde1wuagQ6Qq5AsJ0yiw==
 
 "@vocollege/theme@^0.0.34":
   version "0.0.34"
@@ -1400,7 +1400,7 @@ graphql-tag@^2.12.6:
   dependencies:
     tslib "^2.1.0"
 
-"graphql@^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "graphql@^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0", "graphql@^14.0.0 || ^15.0.0", "graphql@^15.0.0 || ^16.0.0", graphql@^15.5.0, "graphql@14 - 16":
+"graphql@^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "graphql@^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0", "graphql@^15.0.0 || ^16.0.0", graphql@^15.5.0, "graphql@14 - 16":
   version "15.8.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-15.8.0.tgz"
   integrity sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==

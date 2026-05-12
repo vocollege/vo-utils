@@ -8,8 +8,8 @@ import {
   split,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-// @ts-ignore
-import { createUploadLink } from "apollo-upload-client";
+// @ts-ignore apollo-upload-client v18 publishes this as an exported ESM module without bundled declarations.
+import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
 import VoAuth from "../VoAuth";
 import VoRouter from "../VoRouter";
 import VoGroups from "../VoGroups";
